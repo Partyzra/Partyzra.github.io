@@ -181,7 +181,7 @@ button { color: inherit; }
 .feature-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,.22); }
 .feature-image {
   position: absolute; inset: 0;
-  background-image: url('../Images/Mountain & Trees.png');
+  background-image: url('../Images/photo-full/Mountain.jpg');
   background-size: cover; background-position: center;
   transition: transform .7s cubic-bezier(.2,.7,.2,1);
 }
