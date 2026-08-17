@@ -1,0 +1,270 @@
+/* Shared portfolio styles */
+:root {
+    --portfolio-bg: #333333;
+    --portfolio-surface: #525252;
+    --portfolio-text: #ffffff;
+    --portfolio-muted: #dddddd;
+    --portfolio-accent: #794b12;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    background-color: var(--portfolio-bg);
+    color: var(--portfolio-text);
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    font-size: 1.1rem;
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-link:hover { color: #007bff; }
+
+footer {
+    padding: 20px 0;
+    text-align: center;
+    font-size: 1rem;
+    background-color: var(--portfolio-accent);
+    color: var(--portfolio-muted);
+}
+
+button:focus, a:focus, img:focus {
+    outline: 3px solid #ffffff;
+    outline-offset: 3px;
+}
+
+/* Home page */
+.home-page .container { background-color: var(--portfolio-bg); }
+
+.home-page .card {
+    background-color: var(--portfolio-surface) !important;
+}
+
+.home-page .card:hover {
+    border: 1px solid #ffffff !important;
+}
+
+.home-page .jumbotron {
+    background-image: url('Hawaii.png');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.home-page .jumbotron h1 { font-size: 3.5rem; font-weight: 700; }
+.home-page .jumbotron p { font-size: 1.5rem; }
+
+.home-page .btn-primary {
+    font-size: 1.25rem;
+    padding: 0.75rem 1.5rem;
+    background-color: #5f3714;
+    border: none;
+}
+
+.home-page .btn-primary:hover { background-color: #3467b4; }
+.home-page #about h2, .home-page #portfolio h2, .home-page #contact h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+.home-page #about p {
+    font-size: 1.15rem;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+.home-page #portfolio .portfolio-item {
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: none;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+.home-page #portfolio .portfolio-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+}
+.home-page #portfolio .card-body h5 { font-size: 1.25rem; font-weight: bold; }
+.home-page #portfolio .card-body p { font-size: 1rem; }
+.home-page #contact form { max-width: 600px; margin: 0 auto; }
+
+/* Photography */
+.photo-page {
+    background: linear-gradient(135deg, #333333, #555555);
+    font-family: 'Sofia', serif;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    align-items: start;
+}
+
+@keyframes fadeInMove {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.photo-item {
+    animation: fadeInMove 0.8s ease forwards;
+    opacity: 0;
+}
+
+.photo-img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    display: block;
+}
+
+.photo-img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+.photo-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0,0,0,0.92);
+    padding: 24px 16px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.photo-modal.is-open { display: flex; }
+
+.modal-inner {
+    width: min(1100px, 100%);
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 10px;
+}
+
+.modal-toolbar {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.modal-content-wrap {
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    width: auto;
+    max-width: 100%;
+    max-height: 78vh;
+    object-fit: contain;
+    border-radius: 10px;
+    background: #111;
+}
+
+.modal-caption {
+    text-align: center;
+    color: #fff;
+    min-height: 24px;
+}
+
+.modal-button {
+    background: rgba(0,0,0,0.45);
+    border: 1px solid rgba(255,255,255,0.5);
+    color: #fff;
+    border-radius: 999px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.modal-close {
+    width: 48px;
+    height: 48px;
+    font-size: 32px;
+}
+
+.modal-nav {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 52px;
+    height: 52px;
+    font-size: 34px;
+}
+
+.modal-prev { left: 18px; }
+.modal-next { right: 18px; }
+
+/* Music */
+.music-page {
+    background: #f4f4f4;
+    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.music-page .music-container {
+    margin-top: 90px;
+    margin-bottom: 50px;
+}
+
+.music-page h1 {
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 3em;
+    color: #2c3e50;
+}
+
+.track-item {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.track-info { flex: 1; }
+.track-title { font-size: 1.25rem; font-weight: bold; margin-bottom: 0.25rem; }
+.track-artist { font-size: 1rem; color: #555; margin-bottom: 0; }
+.track-item audio { flex: 0 1 420px; width: 100%; }
+
+@media (max-width: 991px) {
+    .gallery { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .home-page .jumbotron h1 { font-size: 2.5rem; }
+    .home-page .jumbotron p { font-size: 1.2rem; }
+    .home-page .btn-primary { font-size: 1rem; padding: 0.5rem 1rem; }
+    .track-item { flex-direction: column; align-items: stretch; }
+    .music-page .music-container { margin-top: 80px; }
+}
+
+@media (max-width: 575px) {
+    .gallery { grid-template-columns: 1fr; }
+    .photo-img { height: 240px; }
+    .modal-prev { left: 8px; }
+    .modal-next { right: 8px; }
+    .modal-nav { width: 44px; height: 44px; font-size: 28px; }
+}
