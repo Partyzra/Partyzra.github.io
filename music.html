@@ -1,133 +1,82 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Tracks</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Original music by Ryan.">
+  <title>Music — Ryan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="music-page">
-    
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <a class="navbar-brand" href="index.html">Home</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#about">About Me</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="photography.html">Photography</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#contact">Contact</a>
-                </li>
-            </ul>
-        </div>
+  <header class="site-header" data-site-header>
+    <a class="brand" href="index.html">RYAN<span>.</span></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNav" data-nav-toggle><span class="sr-only">Open navigation</span><span></span><span></span></button>
+    <nav class="site-nav" id="siteNav" aria-label="Primary navigation" data-site-nav>
+      <a href="index.html">Home</a>
+      <a href="photography.html">Photography</a>
+      <a class="is-active" href="music.html">Music</a>
+      <a href="index.html#film">Film</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#contact">Contact</a>
     </nav>
+  </header>
 
+  <main>
+    <section class="page-intro music-intro container-wide">
+      <p class="eyebrow">Music</p>
+      <h1>A listening room for <em>works in motion.</em></h1>
+      <div class="page-intro-row">
+        <p>Original tracks and musical experiments. Start a track below; beginning another automatically pauses the previous one.</p>
+        <span>Headphones recommended</span>
+      </div>
+    </section>
 
-    <div class="container music-container">
-        <h1>Music Tracks</h1>
-
-        <!-- Music Track 1 -->
-        <div class="track-item">
-            <div class="track-info">
-                <p class="track-title">All Alone</p>
-                <p class="track-artist"></p>
-            </div>
-            <audio controls>
-                <source src="MusicTracks/All Alone.wav" type="audio/wav">
-                Your browser does not support the audio element.
-            </audio>
+    <section class="listening-room container-wide" aria-label="Music tracks">
+      <article class="track-card" data-track-card>
+        <div class="track-number">01</div>
+        <div class="track-copy">
+          <p class="track-kicker">Original</p>
+          <h2>All Alone</h2>
+          <p>Ryan</p>
         </div>
+        <div class="track-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <audio controls preload="metadata">
+          <source src="MusicTracks/All Alone.wav" type="audio/wav">
+          Your browser does not support HTML audio.
+        </audio>
+      </article>
 
-        <!-- Music Track 2 -->
-        <div class="track-item">
-            <div class="track-info">
-                <p class="track-title">Ocean</p>
-                <p class="track-artist"></p>
-            </div>
-            <audio controls>
-                <source src="MusicTracks/Ocean.mp3" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
+      <article class="track-card" data-track-card>
+        <div class="track-number">02</div>
+        <div class="track-copy">
+          <p class="track-kicker">Original</p>
+          <h2>Lemon Bundt</h2>
+          <p>Ryan</p>
         </div>
+        <div class="track-wave track-wave-alt" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <audio controls preload="metadata">
+          <source src="MusicTracks/Lemon Bundt.wav" type="audio/wav">
+          Your browser does not support HTML audio.
+        </audio>
+      </article>
+    </section>
 
-        <!-- Music Track 3 -->
-        <div class="track-item">
-            <div class="track-info">
-                <p class="track-title">You're Gonna Get It</p>
-                <p class="track-artist"></p>
-            </div>
-            <audio controls>
-                <source src="MusicTracks/You're Gonna Get It.wav" type="audio/wav">
-                Your browser does not support the audio element.
-            </audio>
-        </div>
+    <section class="section sound-future container-wide">
+      <div>
+        <p class="eyebrow">Next phase</p>
+        <h2>Built for a soundtrack.</h2>
+      </div>
+      <p>The site structure is ready for a later “Enter with sound” experience, where a visitor’s first click can begin a chosen track and carry its playback state between pages.</p>
+    </section>
+  </main>
 
-        <!-- Music Track 4 -->
-        <div class="track-item">
-            <div class="track-info">
-                <p class="track-title">Bebop</p>
-                <p class="track-artist"></p>
-            </div>
-            <audio controls>
-                <source src="MusicTracks/Bebop.mp3" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
-        </div>
-
-        <!-- Music Track 5 -->
-        <div class="track-item">
-            <div class="track-info">
-                <p class="track-title">FKJ</p>
-                <p class="track-artist"></p>
-            </div>
-            <audio controls>
-                <source src="MusicTracks/FKJ.wav" type="audio/wav">
-                Your browser does not support the audio element.
-            </audio>
-        </div>
-
-
-        <!-- Music Track 6 -->
-        <div class="track-item">
-            <div class="track-info">
-                <p class="track-title">Dug Up (Piano)</p>
-                <p class="track-artist"></p>
-            </div>
-            <audio controls>
-                <source src="MusicTracks/Piano Dug Up.wav" type="audio/wav">
-                Your browser does not support the audio element.
-            </audio>
-        </div>
-
-        <!-- Music Track 7 -->
-        <div class="track-item">
-            <div class="track-info">
-                <p class="track-title">No Time Off</p>
-                <p class="track-artist">Ryan / VIP </p>
-            </div>
-            <audio controls>
-                <source src="MusicTracks/No Time Off.mp3" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
-        </div>
-
-        <!-- Repeat for up to 20 tracks -->
-    </div>
-
-    <footer class="bg-dark text-white text-center py-3">
-        <p>&copy; R-Music All Rights Reserved.</p>
-    </footer>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <footer class="site-footer">
+    <span>© <span data-year></span> Ryan</span>
+    <span>Music</span>
+  </footer>
+  <script src="js/portfolio.js"></script>
 </body>
 </html>

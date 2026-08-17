@@ -1,166 +1,100 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photography Portfolio</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Guides:wght@400..700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Photography portfolio by Ryan.">
+  <title>Photography — Ryan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body class="photo-page">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="index.html">Home</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="photography.html">Photography</a></li>
-                <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-            </ul>
-        </div>
+  <header class="site-header" data-site-header>
+    <a class="brand" href="index.html">RYAN<span>.</span></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNav" data-nav-toggle><span class="sr-only">Open navigation</span><span></span><span></span></button>
+    <nav class="site-nav" id="siteNav" aria-label="Primary navigation" data-site-nav>
+      <a href="index.html">Home</a>
+      <a class="is-active" href="photography.html">Photography</a>
+      <a href="music.html">Music</a>
+      <a href="index.html#film">Film</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#contact">Contact</a>
     </nav>
+  </header>
 
-    <div class="container py-5">
-        <h1 class="mb-4 text-center">Gallery</h1>
-        <div class="row">
-            <!-- Photo Items -->
-            <div class="col-md-4">
-                <div class="photo-item">
-                    <img src="Images/Jake & Chelsea.png" data-full="Images/Jake & Chelsea.png" alt="Wedding" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Wedding" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/UTCourthouse.png" data-full="Images/UTCourthouse.png" alt="Courthouse" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Courthouse" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/Mountain & Trees.png" data-full="Images/Mountain & Trees.png" alt="Mountain & Trees" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Mountain &amp; Trees" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/Hot Chick.png" data-full="Images/Hot Chick.png" alt="Hot Chick" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Hot Chick" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
+  <main>
+    <section class="page-intro container-wide">
+      <p class="eyebrow">Photography</p>
+      <h1>Moments worth <em>staying with.</em></h1>
+      <div class="page-intro-row">
+        <p>Click any photograph to enter the full-screen viewer. Use the arrow keys, drag with a mouse, or swipe on a phone to move through the entire collection.</p>
+        <span class="photo-count" data-photo-count></span>
+      </div>
+    </section>
 
-                <div class="photo-item">
-                    <img src="Images/masterofdoors.png" data-full="Images/masterofdoors.png" alt="Door" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Door" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
+    <section class="gallery-shell container-wide" aria-label="Photography gallery">
+      <div class="masonry-gallery" data-gallery>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/Jake & Chelsea.png" data-caption="Wedding"><img src="Images/Jake & Chelsea.png" alt="Wedding" loading="eager" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/UTCourthouse.png" data-caption="Courthouse"><img src="Images/UTCourthouse.png" alt="Courthouse" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/Mountain & Trees.png" data-caption="Mountain & Trees"><img src="Images/Mountain & Trees.png" alt="Mountain and trees" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/Hot Chick.png" data-caption="Portrait"><img src="Images/Hot Chick.png" alt="Portrait" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/masterofdoors.png" data-caption="Door"><img src="Images/masterofdoors.png" alt="Door" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/Capitol.png" data-caption="Capitol"><img src="Images/Capitol.png" alt="Capitol" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/Layton.png" data-caption="Layton"><img src="Images/Layton.png" alt="Layton" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/LeafandBeach.jpg" data-caption="Leaf and Beach"><img src="Images/LeafandBeach.jpg" alt="Leaf and beach" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/Sarah.jpg" data-caption="Sarah"><img src="Images/Sarah.jpg" alt="Sarah" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/RustedShack.png" data-caption="Rusted Shack"><img src="Images/RustedShack.png" alt="Rusted shack" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/Grasshopper.png" data-caption="Grasshopper"><img src="Images/Grasshopper.png" alt="Grasshopper" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/MountainShot3.jpg" data-caption="Mountain Shot"><img src="Images/MountainShot3.jpg" alt="Mountain landscape" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/Pinewoods.jpg" data-caption="Pine Woods"><img src="Images/Pinewoods.jpg" alt="Pine woods portrait" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/Dad.jpg" data-caption="Dad"><img src="Images/Dad.jpg" alt="Dad" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/Kauai.jpg" data-caption="Kauai"><img src="Images/Kauai.jpg" alt="Kauai" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/Tiger.png" data-caption="Tiger"><img src="Images/Tiger.png" alt="Tiger" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/DadWalking.jpg" data-caption="Beach Walk"><img src="Images/DadWalking.jpg" alt="Beach walk" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/Football.png" data-caption="Football"><img src="Images/Football.png" alt="Football" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/DerickTori.png" data-caption="Derick & Tori"><img src="Images/DerickTori.png" alt="Derick and Tori" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/Ryan.jpg" data-caption="Ryan"><img src="Images/Ryan.jpg" alt="Ryan" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/Sean.png" data-caption="Sean"><img src="Images/Sean.png" alt="Sean" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/Zey Portrait.png" data-caption="Zey Portrait"><img src="Images/Zey Portrait.png" alt="Zey portrait" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/Door.jpg" data-caption="Door"><img src="Images/Door.jpg" alt="Door" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/Album Cover.png" data-caption="Album Cover"><img src="Images/Album Cover.png" alt="Album cover" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/Tractor & Shed.png" data-caption="Tractor & Shed"><img src="Images/Tractor & Shed.png" alt="Tractor and shed" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/WaterCrash.jpg" data-caption="Water"><img src="Images/WaterCrash.jpg" alt="Water" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/GrasshopperPortrait.png" data-caption="Grasshopper Portrait"><img src="Images/GrasshopperPortrait.png" alt="Grasshopper portrait" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/Refinery Portrait.png" data-caption="Refinery"><img src="Images/Refinery Portrait.png" alt="Refinery portrait" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/Teegan.jpg" data-caption="Teegan"><img src="Images/Teegan.jpg" alt="Teegan" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/bathroom.png" data-caption="Bathroom"><img src="Images/bathroom.png" alt="Bathroom" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/Field.png" data-caption="Field"><img src="Images/Field.png" alt="Field" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/Model.png" data-caption="Model"><img src="Images/Model.png" alt="Model" loading="lazy" decoding="async"></button></figure>
+        <figure class="gallery-item"><button class="gallery-button" type="button" data-full="Images/hh.jpg" data-caption="Portrait"><img src="Images/hh.jpg" alt="Portrait" loading="lazy" decoding="async"></button></figure>
+      </div>
+    </section>
+  </main>
 
-                <div class="photo-item">
-                    <img src="Images/Capitol.png" data-full="Images/Capitol.png" alt="Capitol" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Capitol" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/Layton.png" data-full="Images/Layton.png" alt="Layton" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Layton" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/LeafandBeach.jpg" data-full="Images/LeafandBeach.jpg" alt="Beach" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Beach" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/Sarah.jpg" data-full="Images/Sarah.jpg" alt="Beach" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Beach" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/RustedShack.png" data-full="Images/RustedShack.png" alt="Rusted Shack" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Rusted Shack" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/Grasshopper.png" data-full="Images/Grasshopper.png" alt="Grasshopper" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Grasshopper" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/MountainShot3.jpg" data-full="Images/MountainShot3.jpg" alt="Mountain Shot 3" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Mountain Shot 3" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/Pinewoods.jpg" data-full="Images/Pinewoods.jpg" alt="Zey Portrait" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Zey Portrait" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="photo-item">
-                    <img src="Images/Dad.jpg" data-full="Images/Dad.jpg" alt="Dad" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Dad" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/Kauai.jpg" data-full="Images/Kauai.jpg" alt="Kauai" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Kauai" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/Tiger.png" data-full="Images/Tiger.png" alt="Tiger" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Tiger" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/DadWalking.jpg" data-full="Images/DadWalking.jpg" alt="Beach Walk" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Beach Walk" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/Football.png" data-full="Images/Football.png" alt="Teegan" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Teegan" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/DerickTori.png" data-full="Images/DerickTori.png" alt="DerickTori" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: DerickTori" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/Ryan.jpg" data-full="Images/Ryan.jpg" alt="Ryan" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Ryan" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/Sean.png" data-full="Images/Sean.png" alt="Sean" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Sean" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/Zey Portrait.png" data-full="Images/Zey Portrait.png" alt="Zey Portrait" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Zey Portrait" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/Door.jpg" data-full="Images/Door.jpg" alt="Zey Portrait" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Zey Portrait" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="photo-item">
-                    <img src="Images/Album Cover.png" data-full="Images/Album Cover.png" alt="Album Cover" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Album Cover" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/Tractor & Shed.png" data-full="Images/Tractor & Shed.png" alt="Tractor & Shed" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Tractor &amp; Shed" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/WaterCrash.jpg" data-full="Images/WaterCrash.jpg" alt="Water" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Water" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/GrasshopperPortrait.png" data-full="Images/GrasshopperPortrait.png" alt="Grasshopper Portrait" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Grasshopper Portrait" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/Refinery Portrait.png" data-full="Images/Refinery Portrait.png" alt="Refinery" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Refinery" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item"> 
-                    <img src="Images/Teegan.jpg" data-full="Images/Teegan.jpg" alt="Teegan" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Teegan" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/bathroom.png" data-full="Images/bathroom.png" alt="Bathroom" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Bathroom" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/Field.png" data-full="Images/Field.png" alt="Teegan" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Teegan" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/Model.png" data-full="Images/Model.png" alt="Teegan" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Teegan" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-                <div class="photo-item">
-                    <img src="Images/hh.jpg" data-full="Images/hh.jpg" alt="Zey Portrait" class="photo-img" loading="lazy" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open photo: Zey Portrait" onclick="openModal(this)" onkeydown="handleKeyOpen(event, this)">
-                </div>
-            </div>
-        </div>
+  <div class="lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Photo viewer" data-lightbox>
+    <div class="lightbox-topbar">
+      <div class="lightbox-index" aria-live="polite" data-lightbox-index></div>
+      <button class="icon-button" type="button" aria-label="Close photo viewer" data-lightbox-close>×</button>
     </div>
-    <!-- Photo viewer -->
-    <div id="photoModal" class="photo-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Photo viewer">
-        <button type="button" class="modal-button modal-nav modal-prev" id="modalPrev" aria-label="Previous photo">&#10094;</button>
-        <div class="modal-inner">
-            <div class="modal-toolbar">
-                <button type="button" class="modal-button modal-close" id="modalCloseBtn" aria-label="Close photo">&times;</button>
-            </div>
-            <div class="modal-content-wrap">
-                <img class="modal-content" id="modalImage" alt="Expanded photo">
-            </div>
-            <div class="modal-caption" id="modalCaption"></div>
-        </div>
-        <button type="button" class="modal-button modal-nav modal-next" id="modalNext" aria-label="Next photo">&#10095;</button>
+    <button class="lightbox-nav lightbox-prev" type="button" aria-label="Previous photo" data-lightbox-prev>‹</button>
+    <div class="lightbox-stage" data-lightbox-stage>
+      <div class="lightbox-slide lightbox-slide-prev" aria-hidden="true"><img alt=""></div>
+      <div class="lightbox-slide lightbox-slide-current"><img data-lightbox-image alt=""></div>
+      <div class="lightbox-slide lightbox-slide-next" aria-hidden="true"><img alt=""></div>
     </div>
+    <button class="lightbox-nav lightbox-next" type="button" aria-label="Next photo" data-lightbox-next>›</button>
+    <div class="lightbox-footer">
+      <p data-lightbox-caption></p>
+      <p class="lightbox-hint">Swipe, drag, or use ← →</p>
+    </div>
+  </div>
 
-    <footer class="bg-dark text-white text-center py-3">
-        <p>&copy; R-Photography.</p>
-    </footer>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="js/portfolio.js"></script>
+  <footer class="site-footer">
+    <span>© <span data-year></span> Ryan</span>
+    <span>Photography</span>
+  </footer>
+  <script src="js/portfolio.js"></script>
 </body>
-
 </html>

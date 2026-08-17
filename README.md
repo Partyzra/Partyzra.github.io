@@ -1,22 +1,41 @@
-# Reorganized Portfolio Website
+# Ryan Portfolio — Version 2
 
-This is a cleaned-up version of the uploaded Bootstrap portfolio pages.
+This is the redesigned GitHub Pages version of the portfolio.
 
-## Structure
+## Main files
 
-- `index.html` — home/portfolio landing page from the uploaded `html` file
-- `photography.html` — photography gallery based on the uploaded `Photography.html`
-- `music.html` — music page based on the uploaded `Music` file
-- `css/style.css` — shared and page-specific CSS extracted from the HTML pages
-- `js/portfolio.js` — shared photography modal/viewer JavaScript
-- `Images/photo-thumbs/` — place thumbnail photographs here if you want separate thumbnail files
-- `Images/photo-full/` — place full-resolution photographs here
-- `MusicTracks/` — place your music files here
+- `index.html` — home, selected film/video work, about, contact
+- `photography.html` — masonry gallery + seamless full-screen viewer
+- `music.html` — listening room for music tracks
+- `css/style.css` — shared visual system and responsive layout
+- `js/portfolio.js` — navigation, gallery gestures, image preloading, and audio behavior
 
-## Notes
+## Before publishing
 
-1. The uploaded photography pages referenced images but the actual image files were not part of the upload, so image assets were not copied into this package.
-2. The photography viewer now supports previous/next navigation, Escape to close, and left/right arrow keys.
-3. The music file originally used Windows backslashes in audio URLs; those were changed to web-friendly forward slashes.
-4. `index.html` had a malformed custom stylesheet link and embedded CSS; that CSS is now centralized in `css/style.css`.
-5. The uploaded file named `New Index that AI generated.html` contains another photography page rather than a home page, so it was not used as the primary `index.html`.
+1. Keep your existing `Images/` folder in the repository. The photography page uses the same image filenames from the previous version.
+2. Replace `YOUR_EMAIL@example.com` in `index.html` with the email address you want visitors to use.
+3. The music page currently includes the two audio files that were present in the ZIP: `All Alone.wav` and `Lemon Bundt.wav`.
+4. Test locally before committing to GitHub Desktop.
+
+## Updating GitHub Pages
+
+After replacing the files in your local `partyzra.github.io` repository:
+
+1. Open GitHub Desktop.
+2. Review the Changes list.
+3. Commit with a message such as `Portfolio Version 2 redesign`.
+4. Click **Push origin**.
+5. GitHub Pages will republish automatically.
+
+## Photography viewer controls
+
+- Click a photo to open it.
+- Desktop: Left/Right arrows or onscreen arrows.
+- Touchscreen: swipe left/right.
+- Mouse: click-drag left/right.
+- Escape or × closes the viewer.
+- Neighboring images are preloaded to make transitions feel faster.
+
+## Later: site soundtrack
+
+The current structure intentionally does not force autoplay. A later version can add an `Enter with sound` interaction that starts a selected track after the visitor clicks and stores playback position while navigating between pages.
