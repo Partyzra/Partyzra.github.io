@@ -4,7 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Photography portfolio by Ryan.">
+  <meta name="theme-color" content="#0a0b0d">
   <title>Photography — Ryan</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
@@ -12,7 +14,7 @@
 </head>
 <body class="photo-page">
   <header class="site-header" data-site-header>
-    <a class="brand" href="index.html">RYAN<span>.</span></a>
+    <a class="brand" href="index.html" aria-label="Ryan portfolio home"><span class="brand-mark">R</span><span class="brand-word">RYAN</span></a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNav" data-nav-toggle><span class="sr-only">Open navigation</span><span></span><span></span></button>
     <nav class="site-nav" id="siteNav" aria-label="Primary navigation" data-site-nav>
       <a href="index.html">Home</a>
@@ -25,24 +27,26 @@
   </header>
 
   <main>
-    <section class="page-intro container-wide">
-      <p class="eyebrow">Photography</p>
-      <h1>Moments worth <em>staying with.</em></h1>
-      <div class="page-intro-row">
-        <p>Click any photograph to enter the full-screen viewer. Use the arrow keys, drag with a mouse, or swipe on a phone to move through the entire collection.</p>
-        <span class="photo-count" data-photo-count></span>
+    <section class="photo-hero container-wide">
+      <div class="photo-hero-title">
+        <p class="eyebrow">Photography / Archive</p>
+        <h1>Look slowly.</h1>
+      </div>
+      <div class="photo-hero-copy">
+        <p>Portraits, places, details, and passing moments. Open any frame to move through the collection without leaving the image.</p>
+        <div class="photo-meta-line"><span data-photo-count>Photography archive</span><span>Swipe · Drag · Arrow keys</span></div>
       </div>
     </section>
 
     <section class="gallery-shell container-wide" aria-label="Photography gallery">
-      <div class="masonry-gallery" data-gallery>
-        <!-- Gallery items are generated from js/photos.js so filenames only need to be maintained in one place. -->
-      </div>
+      <div class="gallery-rule"><span>Selected frames</span><span>Click any image to view</span></div>
+      <div class="masonry-gallery" data-gallery></div>
     </section>
   </main>
 
   <div class="lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Photo viewer" data-lightbox>
     <div class="lightbox-topbar">
+      <a class="lightbox-brand" href="photography.html">RYAN / PHOTOGRAPHY</a>
       <div class="lightbox-index" aria-live="polite" data-lightbox-index></div>
       <button class="icon-button" type="button" aria-label="Close photo viewer" data-lightbox-close>×</button>
     </div>
@@ -57,12 +61,15 @@
       <p data-lightbox-caption></p>
       <p class="lightbox-hint">Swipe, drag, or use ← →</p>
     </div>
+    <div class="lightbox-progress" aria-hidden="true"><span data-lightbox-progress></span></div>
   </div>
 
   <footer class="site-footer">
     <span>© <span data-year></span> Ryan</span>
-    <span>Photography</span>
+    <span class="footer-center">Photography</span>
+    <a href="index.html">Return home ↗</a>
   </footer>
+
   <script src="js/photos.js"></script>
   <script src="js/portfolio.js"></script>
 </body>

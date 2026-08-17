@@ -2,7 +2,7 @@
   const qs = (selector, root = document) => root.querySelector(selector);
   const qsa = (selector, root = document) => [...root.querySelectorAll(selector)];
 
-  // Shared header / mobile navigation.
+  // Header and mobile navigation.
   const header = qs('[data-site-header]');
   const navToggle = qs('[data-nav-toggle]');
   const siteNav = qs('[data-site-nav]');
@@ -16,35 +16,99 @@
   if (navToggle && siteNav) {
     navToggle.addEventListener('click', () => {
       const open = siteNav.classList.toggle('is-open');
+      navToggle.classList.toggle('is-open', open);
       navToggle.setAttribute('aria-expanded', String(open));
       document.body.classList.toggle('no-scroll', open);
     });
     qsa('a', siteNav).forEach(link => link.addEventListener('click', () => {
       siteNav.classList.remove('is-open');
+      navToggle.classList.remove('is-open');
       navToggle.setAttribute('aria-expanded', 'false');
       document.body.classList.remove('no-scroll');
     }));
   }
 
-  // Dynamic copyright year.
+  // Dynamic year.
   qsa('[data-year]').forEach(el => { el.textContent = new Date().getFullYear(); });
 
-  // Music behavior: only one HTML audio element plays at a time.
-  const audios = qsa('audio');
-  audios.forEach(audio => {
-    audio.addEventListener('play', () => {
-      audios.forEach(other => {
-        if (other !== audio) other.pause();
+  // Soft reveal on scroll. Elements remain visible when JS is unavailable.
+  const revealItems = qsa('[data-reveal]');
+  if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('reveal-ready');
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-revealed');
+        revealObserver.unobserve(entry.target);
       });
-      qsa('[data-track-card]').forEach(card => card.classList.remove('is-playing'));
-      audio.closest('[data-track-card]')?.classList.add('is-playing');
+    }, { rootMargin: '0px 0px -7% 0px', threshold: 0.08 });
+    revealItems.forEach(item => revealObserver.observe(item));
+  }
+
+  // Custom music controls.
+  const trackCards = qsa('[data-track-card]');
+  const formatTime = value => {
+    if (!Number.isFinite(value)) return '—:—';
+    const minutes = Math.floor(value / 60);
+    const seconds = Math.floor(value % 60).toString().padStart(2, '0');
+    return `${minutes}:${seconds}`;
+  };
+
+  const pauseOtherTracks = activeAudio => {
+    trackCards.forEach(card => {
+      const audio = qs('[data-audio]', card);
+      if (audio && audio !== activeAudio) audio.pause();
     });
-    audio.addEventListener('pause', () => {
-      audio.closest('[data-track-card]')?.classList.remove('is-playing');
+  };
+
+  trackCards.forEach(card => {
+    const audio = qs('[data-audio]', card);
+    const play = qs('[data-track-play]', card);
+    const seek = qs('[data-track-seek]', card);
+    const current = qs('[data-track-current]', card);
+    const duration = qs('[data-track-duration]', card);
+    if (!audio || !play || !seek) return;
+
+    const title = qs('h2', card)?.textContent?.trim() || 'track';
+
+    const syncPlayState = () => {
+      const playing = !audio.paused && !audio.ended;
+      card.classList.toggle('is-playing', playing);
+      play.setAttribute('aria-label', `${playing ? 'Pause' : 'Play'} ${title}`);
+    };
+
+    const syncTimeline = () => {
+      const ratio = audio.duration ? audio.currentTime / audio.duration : 0;
+      seek.value = String(Math.round(ratio * 1000));
+      seek.style.setProperty('--progress', `${ratio * 100}%`);
+      if (current) current.textContent = formatTime(audio.currentTime);
+      if (duration) duration.textContent = formatTime(audio.duration);
+    };
+
+    play.addEventListener('click', () => {
+      if (audio.paused) {
+        pauseOtherTracks(audio);
+        audio.play().catch(() => {});
+      } else {
+        audio.pause();
+      }
     });
-    audio.addEventListener('ended', () => {
-      audio.closest('[data-track-card]')?.classList.remove('is-playing');
+
+    seek.addEventListener('input', () => {
+      if (Number.isFinite(audio.duration) && audio.duration > 0) {
+        audio.currentTime = (Number(seek.value) / 1000) * audio.duration;
+        syncTimeline();
+      }
     });
+
+    audio.addEventListener('loadedmetadata', syncTimeline);
+    audio.addEventListener('durationchange', syncTimeline);
+    audio.addEventListener('timeupdate', syncTimeline);
+    audio.addEventListener('play', () => { pauseOtherTracks(audio); syncPlayState(); });
+    audio.addEventListener('pause', syncPlayState);
+    audio.addEventListener('ended', () => { syncPlayState(); audio.currentTime = 0; syncTimeline(); });
+    syncPlayState();
+    syncTimeline();
   });
 
   // Seamless photography lightbox.
@@ -64,6 +128,7 @@
   const nextImg = qs('img', nextSlide);
   const captionEl = qs('[data-lightbox-caption]', lightbox);
   const indexEl = qs('[data-lightbox-index]', lightbox);
+  const progressEl = qs('[data-lightbox-progress]', lightbox);
   const closeBtn = qs('[data-lightbox-close]', lightbox);
   const prevBtn = qs('[data-lightbox-prev]', lightbox);
   const nextBtn = qs('[data-lightbox-next]', lightbox);
@@ -96,17 +161,16 @@
     nextImg.src = sourceAt(currentIndex + 1);
     nextImg.alt = '';
     captionEl.textContent = captionAt(currentIndex);
-    indexEl.textContent = `${currentIndex + 1} / ${galleryButtons.length}`;
+    indexEl.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(galleryButtons.length).padStart(2, '0')}`;
+    if (progressEl) progressEl.style.width = `${((currentIndex + 1) / galleryButtons.length) * 100}%`;
     preloadAround(currentIndex);
   }
 
   function resetSlidePositions() {
-    currentSlide.style.transform = '';
-    currentSlide.style.opacity = '';
-    prevSlide.style.transform = '';
-    prevSlide.style.opacity = '';
-    nextSlide.style.transform = '';
-    nextSlide.style.opacity = '';
+    [currentSlide, prevSlide, nextSlide].forEach(slide => {
+      slide.style.transform = '';
+      slide.style.opacity = '';
+    });
   }
 
   function open(index, trigger) {
@@ -132,17 +196,17 @@
     stage.classList.remove('is-dragging');
 
     const width = Math.max(stage.clientWidth, 1);
-    currentSlide.style.transform = `translateX(${direction > 0 ? -width : width}px)`;
-    currentSlide.style.opacity = '.18';
+    currentSlide.style.transform = `translate3d(${direction > 0 ? -width : width}px,0,0)`;
+    currentSlide.style.opacity = '.08';
     const incoming = direction > 0 ? nextSlide : prevSlide;
-    incoming.style.transform = 'translateX(0)';
+    incoming.style.transform = 'translate3d(0,0,0)';
     incoming.style.opacity = '1';
 
     window.setTimeout(() => {
       syncSlides(currentIndex + direction);
       resetSlidePositions();
       transitionLock = false;
-    }, 390);
+    }, 430);
   }
 
   galleryButtons.forEach((button, index) => button.addEventListener('click', () => open(index, button)));
@@ -176,12 +240,11 @@
     if (!isPointerDown) return;
     pointerDeltaX = event.clientX - pointerStartX;
     const width = Math.max(stage.clientWidth, 1);
-    const resistance = 0.94;
-    const x = pointerDeltaX * resistance;
-    currentSlide.style.transform = `translateX(${x}px)`;
-    currentSlide.style.opacity = String(Math.max(.38, 1 - Math.abs(x) / width * .7));
-    prevSlide.style.transform = `translateX(calc(-104% + ${x}px))`;
-    nextSlide.style.transform = `translateX(calc(104% + ${x}px))`;
+    const x = pointerDeltaX * .94;
+    currentSlide.style.transform = `translate3d(${x}px,0,0)`;
+    currentSlide.style.opacity = String(Math.max(.28, 1 - Math.abs(x) / width * .78));
+    prevSlide.style.transform = `translate3d(calc(-103% + ${x}px),0,0)`;
+    nextSlide.style.transform = `translate3d(calc(103% + ${x}px),0,0)`;
   });
 
   function finishPointer(event) {
@@ -189,7 +252,7 @@
     isPointerDown = false;
     stage.releasePointerCapture?.(event.pointerId);
     stage.classList.remove('is-dragging');
-    const threshold = Math.min(110, stage.clientWidth * .16);
+    const threshold = Math.min(100, stage.clientWidth * .14);
     if (Math.abs(pointerDeltaX) > threshold) {
       const direction = pointerDeltaX < 0 ? 1 : -1;
       resetSlidePositions();
@@ -199,7 +262,7 @@
     }
     pointerDeltaX = 0;
   }
+
   stage.addEventListener('pointerup', finishPointer);
   stage.addEventListener('pointercancel', finishPointer);
-}
-)();
+})();

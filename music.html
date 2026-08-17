@@ -4,7 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Original music by Ryan.">
+  <meta name="theme-color" content="#0a0b0d">
   <title>Music — Ryan</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
@@ -12,7 +14,7 @@
 </head>
 <body class="music-page">
   <header class="site-header" data-site-header>
-    <a class="brand" href="index.html">RYAN<span>.</span></a>
+    <a class="brand" href="index.html" aria-label="Ryan portfolio home"><span class="brand-mark">R</span><span class="brand-word">RYAN</span></a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNav" data-nav-toggle><span class="sr-only">Open navigation</span><span></span><span></span></button>
     <nav class="site-nav" id="siteNav" aria-label="Primary navigation" data-site-nav>
       <a href="index.html">Home</a>
@@ -25,58 +27,84 @@
   </header>
 
   <main>
-    <section class="page-intro music-intro container-wide">
-      <p class="eyebrow">Music</p>
-      <h1>A listening room for <em>works in motion.</em></h1>
-      <div class="page-intro-row">
-        <p>Original tracks and musical experiments. Start a track below; beginning another automatically pauses the previous one.</p>
-        <span>Headphones recommended</span>
+    <section class="music-hero container-wide">
+      <div class="music-hero-copy">
+        <p class="eyebrow">Original music / Listening room</p>
+        <h1>Turn the room<br><em>into a feeling.</em></h1>
+        <p class="music-deck-intro">Original tracks, sketches, and experiments. The player below is custom-built for the portfolio; starting another track automatically pauses the one before it.</p>
+      </div>
+      <div class="music-art" aria-hidden="true">
+        <div class="music-art-ring ring-one"></div>
+        <div class="music-art-ring ring-two"></div>
+        <div class="music-art-ring ring-three"></div>
+        <div class="music-art-center">R</div>
       </div>
     </section>
 
     <section class="listening-room container-wide" aria-label="Music tracks">
+      <div class="music-list-head"><span>Track</span><span>Title</span><span>Playback</span></div>
+
       <article class="track-card" data-track-card>
         <div class="track-number">01</div>
         <div class="track-copy">
-          <p class="track-kicker">Original</p>
+          <p class="track-kicker">Original recording</p>
           <h2>All Alone</h2>
           <p>Ryan</p>
         </div>
+        <div class="track-control">
+          <button class="track-play" type="button" aria-label="Play All Alone" data-track-play><span class="play-icon">▶</span><span class="pause-icon">Ⅱ</span></button>
+          <div class="track-timeline">
+            <input type="range" min="0" max="1000" value="0" step="1" aria-label="Seek All Alone" data-track-seek>
+            <div class="track-time"><span data-track-current>0:00</span><span data-track-duration>—:—</span></div>
+          </div>
+          <audio preload="metadata" data-audio>
+            <source src="MusicTracks/All Alone.wav" type="audio/wav">
+            Your browser does not support HTML audio.
+          </audio>
+        </div>
         <div class="track-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-        <audio controls preload="metadata">
-          <source src="MusicTracks/All Alone.wav" type="audio/wav">
-          Your browser does not support HTML audio.
-        </audio>
       </article>
 
       <article class="track-card" data-track-card>
         <div class="track-number">02</div>
         <div class="track-copy">
-          <p class="track-kicker">Original</p>
+          <p class="track-kicker">Original recording</p>
           <h2>Lemon Bundt</h2>
           <p>Ryan</p>
         </div>
+        <div class="track-control">
+          <button class="track-play" type="button" aria-label="Play Lemon Bundt" data-track-play><span class="play-icon">▶</span><span class="pause-icon">Ⅱ</span></button>
+          <div class="track-timeline">
+            <input type="range" min="0" max="1000" value="0" step="1" aria-label="Seek Lemon Bundt" data-track-seek>
+            <div class="track-time"><span data-track-current>0:00</span><span data-track-duration>—:—</span></div>
+          </div>
+          <audio preload="metadata" data-audio>
+            <source src="MusicTracks/Lemon Bundt.wav" type="audio/wav">
+            Your browser does not support HTML audio.
+          </audio>
+        </div>
         <div class="track-wave track-wave-alt" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-        <audio controls preload="metadata">
-          <source src="MusicTracks/Lemon Bundt.wav" type="audio/wav">
-          Your browser does not support HTML audio.
-        </audio>
       </article>
     </section>
 
-    <section class="section sound-future container-wide">
+    <section class="section soundtrack-note container-wide" data-reveal>
       <div>
         <p class="eyebrow">Next phase</p>
-        <h2>Built for a soundtrack.</h2>
+        <h2>The site is ready<br>for a soundtrack.</h2>
       </div>
-      <p>The site structure is ready for a later “Enter with sound” experience, where a visitor’s first click can begin a chosen track and carry its playback state between pages.</p>
+      <div>
+        <p>The next audio upgrade can add an “Enter with sound” opening and persistent playback state while visitors move between Photography, Music, and the homepage.</p>
+        <p class="small-note">Browsers generally require a visitor interaction before starting audible playback, so the polished version will begin from a deliberate first click rather than unreliable forced autoplay.</p>
+      </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <span>© <span data-year></span> Ryan</span>
-    <span>Music</span>
+    <span class="footer-center">Original Music</span>
+    <a href="index.html">Return home ↗</a>
   </footer>
+
   <script src="js/portfolio.js"></script>
 </body>
 </html>

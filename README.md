@@ -1,41 +1,63 @@
-# Ryan Portfolio — Version 2
+# Ryan Portfolio — Version 3
 
-This is the redesigned GitHub Pages version of the portfolio.
+Version 3 is a full visual remaster of the GitHub Pages portfolio.
 
-## Main files
+## What changed
 
-- `index.html` — home, selected film/video work, about, contact
-- `photography.html` — masonry gallery + seamless full-screen viewer
-- `music.html` — listening room for music tracks
-- `css/style.css` — shared visual system and responsive layout
-- `js/portfolio.js` — navigation, gallery gestures, image preloading, and audio behavior
+- Full-bleed photographic homepage hero using `Images/photo-full/Mountain.jpg`
+- More editorial typography and spacing across all pages
+- Animated discipline strip and subtle scroll reveals
+- New homepage photography triptych using existing photo filenames
+- Reworked film section with a featured reel and supporting projects
+- Redesigned About and Contact sections
+- Photography gallery keeps the working `js/photos.js` manifest
+- Photo viewer retains drag, swipe, keyboard navigation, and preloading, with a new progress indicator
+- Custom music controls replace the browser-default audio player
+- New favicon in `assets/favicon.svg`
+- Responsive/mobile styling refined throughout
 
-## Before publishing
+## Important: keep your Images folder
 
-1. Keep your existing `Images/` folder in the repository. The photography page uses the same image filenames from the previous version.
-2. Replace `YOUR_EMAIL@example.com` in `index.html` with the email address you want visitors to use.
-3. The music page currently includes the two audio files that were present in the ZIP: `All Alone.wav` and `Lemon Bundt.wav`.
-4. Test locally before committing to GitHub Desktop.
+This package intentionally does not contain your large `Images/` directory. Keep the existing folder in your GitHub repository.
 
-## Updating GitHub Pages
+Version 3 expects these existing files for homepage previews:
 
-After replacing the files in your local `partyzra.github.io` repository:
+- `Images/photo-full/Mountain.jpg`
+- `Images/photo-full/Night Sky.jpg`
+- `Images/photo-full/Sean.JPG`
+- `Images/photo-full/Performance.jpg`
 
-1. Open GitHub Desktop.
-2. Review the Changes list.
-3. Commit with a message such as `Portfolio Version 2 redesign`.
-4. Click **Push origin**.
-5. GitHub Pages will republish automatically.
+The photography page uses all filenames listed in `js/photos.js`.
 
-## Photography viewer controls
+## Install into your existing repository
 
-- Click a photo to open it.
-- Desktop: Left/Right arrows or onscreen arrows.
-- Touchscreen: swipe left/right.
-- Mouse: click-drag left/right.
-- Escape or × closes the viewer.
-- Neighboring images are preloaded to make transitions feel faster.
+Copy these items over the matching files/folders in your local `partyzra.github.io` repository:
 
-## Later: site soundtrack
+- `index.html`
+- `photography.html`
+- `music.html`
+- `css/`
+- `js/`
+- `assets/`
+- `MusicTracks/`
+- `README.md`
 
-The current structure intentionally does not force autoplay. A later version can add an `Enter with sound` interaction that starts a selected track after the visitor clicks and stores playback position while navigating between pages.
+Do **not** delete your existing `Images/` folder.
+
+Then test locally, commit in GitHub Desktop, and Push origin.
+
+## Contact email
+
+Before treating the site as finished, replace `YOUR_EMAIL@example.com` in `index.html` with the email address you want visitors to use.
+
+## Adding photography
+
+1. Add the image to `Images/photo-full/`.
+2. Add one object to `js/photos.js` with the exact filename and desired caption.
+3. Commit and push.
+
+GitHub Pages filenames are case-sensitive, so `.JPG` and `.jpg` must match exactly.
+
+## Next audio phase
+
+The custom player in Version 3 lays the groundwork for a future “Enter with sound” experience and cross-page playback-state persistence.

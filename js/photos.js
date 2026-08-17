@@ -19,8 +19,8 @@ const PORTFOLIO_PHOTOS = [
   { file: 'In The Rain.jpg', caption: 'In The Rain' },
   { file: 'Justin.jpg', caption: 'Justin' },
   { file: 'Lily.jpg', caption: 'Lily' },
-  { file: 'Lily2.jpg', caption: 'Lily2' },
-  { file: 'Lily3.jpg', caption: 'Lily3' },
+  { file: 'Lily2.jpg', caption: 'Lily II' },
+  { file: 'Lily3.jpg', caption: 'Lily III' },
   { file: 'Mountain.jpg', caption: 'Mountain' },
   { file: 'Night Sky.jpg', caption: 'Night Sky' },
   { file: 'Open Mouth.jpg', caption: 'Open Mouth' },
@@ -28,7 +28,7 @@ const PORTFOLIO_PHOTOS = [
   { file: 'Peacock.jpg', caption: 'Peacock' },
   { file: 'Performance.jpg', caption: 'Performance' },
   { file: 'Phoebe.jpg', caption: 'Phoebe' },
-  { file: 'Printing Press3.jpg', caption: 'Printing Press3' },
+  { file: 'Printing Press3.jpg', caption: 'Printing Press' },
   { file: 'Samurai.jpg', caption: 'Samurai' },
   { file: 'Seagull.jpg', caption: 'Seagull' },
   { file: 'Sean.JPG', caption: 'Sean' },
@@ -36,8 +36,7 @@ const PORTFOLIO_PHOTOS = [
   { file: 'Sunset.jpg', caption: 'Sunset' },
   { file: 'The Rocket.jpg', caption: 'The Rocket' },
   { file: 'Weed.JPG', caption: 'Weed' },
-  { file: 'Zeboy!.jpg', caption: 'Zeboy!' },
-
+  { file: 'Zeboy!.jpg', caption: 'Zeboy!' }
 ];
 
 (function renderPhotographyGallery() {
@@ -50,20 +49,26 @@ const PORTFOLIO_PHOTOS = [
   PORTFOLIO_PHOTOS.forEach((photo, index) => {
     const figure = document.createElement('figure');
     figure.className = 'gallery-item';
+    figure.dataset.reveal = '';
 
     const button = document.createElement('button');
     button.className = 'gallery-button';
     button.type = 'button';
     button.dataset.full = basePath + photo.file;
     button.dataset.caption = photo.caption;
+    button.setAttribute('aria-label', `Open photograph ${index + 1}: ${photo.caption}`);
 
     const img = document.createElement('img');
     img.src = basePath + photo.file;
     img.alt = photo.caption;
-    img.loading = index < 3 ? 'eager' : 'lazy';
+    img.loading = index < 4 ? 'eager' : 'lazy';
     img.decoding = 'async';
 
-    button.appendChild(img);
+    const overlay = document.createElement('span');
+    overlay.className = 'gallery-overlay';
+    overlay.innerHTML = `<span class="gallery-index">${String(index + 1).padStart(2, '0')}</span><span class="gallery-caption">${photo.caption}</span><span class="gallery-open">↗</span>`;
+
+    button.append(img, overlay);
     figure.appendChild(button);
     fragment.appendChild(figure);
   });
