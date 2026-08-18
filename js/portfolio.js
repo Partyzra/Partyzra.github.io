@@ -28,8 +28,12 @@
     }));
   }
 
-  // Dynamic year.
-  qsa('[data-year]').forEach(el => { el.textContent = new Date().getFullYear(); });
+  // Dynamic copyright year. Scope this to the footer only.
+  // Photography items also use data-year as metadata, so a global [data-year]
+  // selector would replace each gallery button's image/content with the current year.
+  qsa('.site-footer [data-year]').forEach(el => {
+    el.textContent = new Date().getFullYear();
+  });
 
   // Soft reveal on scroll. Elements remain visible when JS is unavailable.
   const revealItems = qsa('[data-reveal]');
