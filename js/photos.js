@@ -15,16 +15,7 @@
 // ============================================================
 
 const PORTFOLIO_PHOTOS = [
-  {
-    file: 'Abandoned.JPG',
-    title: 'Abandoned',
-    collection: 'Places & Structures',
-    year: '',
-    location: '',
-    featured: false,
-    tags: [],
-    note: ''
-  },
+ 
   {
     file: 'Abandoned1.jpg',
     title: 'Abandoned I',
