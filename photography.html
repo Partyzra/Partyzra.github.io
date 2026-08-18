@@ -39,7 +39,9 @@
     </section>
 
     <section class="gallery-shell container-wide" aria-label="Photography gallery">
-      <div class="gallery-rule"><span>Selected frames</span><span>Click any image to view</span></div>
+      <div class="gallery-rule"><span>Archive / Collections</span><span>Choose a collection or browse everything</span></div>
+      <div class="collection-filters" data-collection-filters aria-label="Photography collections"></div>
+      <div class="gallery-status" aria-live="polite"><span data-gallery-status>All photographs</span><span>Click any image to enter the viewer</span></div>
       <div class="masonry-gallery" data-gallery></div>
     </section>
   </main>
@@ -58,7 +60,7 @@
     </div>
     <button class="lightbox-nav lightbox-next" type="button" aria-label="Next photo" data-lightbox-next>›</button>
     <div class="lightbox-footer">
-      <p data-lightbox-caption></p>
+      <div class="lightbox-copy"><p data-lightbox-caption></p><p class="lightbox-meta" data-lightbox-meta></p></div>
       <p class="lightbox-hint">Swipe, drag, or use ← →</p>
     </div>
     <div class="lightbox-progress" aria-hidden="true"><span data-lightbox-progress></span></div>

@@ -111,13 +111,47 @@
     syncTimeline();
   });
 
-  // Seamless photography lightbox.
-  const galleryButtons = qsa('.gallery-button');
+  // Photography collections + seamless lightbox.
+  const allGalleryButtons = qsa('.gallery-button');
   const countEl = qs('[data-photo-count]');
-  if (countEl && galleryButtons.length) countEl.textContent = `${galleryButtons.length} photographs`;
+  const statusEl = qs('[data-gallery-status]');
+  const filterButtons = qsa('[data-collection-filter]');
+
+  const visibleGalleryButtons = () => allGalleryButtons.filter(button => !button.closest('.gallery-item')?.hidden);
+
+  const updateGalleryCount = (label = 'All') => {
+    const visible = visibleGalleryButtons();
+    if (countEl) countEl.textContent = `${allGalleryButtons.length} photographs`;
+    if (statusEl) statusEl.textContent = label === 'All' ? `${visible.length} photographs` : `${label} / ${visible.length} photographs`;
+  };
+
+  filterButtons.forEach(filter => {
+    filter.addEventListener('click', () => {
+      const selected = filter.dataset.collectionFilter || 'All';
+
+      filterButtons.forEach(button => {
+        const active = button === filter;
+        button.classList.toggle('is-active', active);
+        button.setAttribute('aria-pressed', String(active));
+      });
+
+      allGalleryButtons.forEach(button => {
+        const item = button.closest('.gallery-item');
+        if (!item) return;
+        const matches = selected === 'All' || button.dataset.collection === selected;
+        item.hidden = !matches;
+        item.classList.toggle('is-filtered-out', !matches);
+      });
+
+      updateGalleryCount(selected);
+      window.dispatchEvent(new CustomEvent('portfolio:gallery-filtered', { detail: { collection: selected } }));
+    });
+  });
+
+  updateGalleryCount();
 
   const lightbox = qs('[data-lightbox]');
-  if (!lightbox || !galleryButtons.length) return;
+  if (!lightbox || !allGalleryButtons.length) return;
 
   const stage = qs('[data-lightbox-stage]', lightbox);
   const currentSlide = qs('.lightbox-slide-current', lightbox);
@@ -127,6 +161,7 @@
   const prevImg = qs('img', prevSlide);
   const nextImg = qs('img', nextSlide);
   const captionEl = qs('[data-lightbox-caption]', lightbox);
+  const metaEl = qs('[data-lightbox-meta]', lightbox);
   const indexEl = qs('[data-lightbox-index]', lightbox);
   const progressEl = qs('[data-lightbox-progress]', lightbox);
   const closeBtn = qs('[data-lightbox-close]', lightbox);
@@ -140,20 +175,35 @@
   let isPointerDown = false;
   let transitionLock = false;
 
-  const wrap = index => (index + galleryButtons.length) % galleryButtons.length;
-  const itemAt = index => galleryButtons[wrap(index)];
-  const sourceAt = index => itemAt(index).dataset.full || qs('img', itemAt(index)).src;
-  const captionAt = index => itemAt(index).dataset.caption || qs('img', itemAt(index)).alt || '';
+  const currentSet = () => visibleGalleryButtons().length ? visibleGalleryButtons() : allGalleryButtons;
+  const wrap = (index, items = currentSet()) => (index + items.length) % items.length;
+  const itemAt = index => {
+    const items = currentSet();
+    return items[wrap(index, items)];
+  };
+  const sourceAt = index => itemAt(index)?.dataset.full || qs('img', itemAt(index))?.src || '';
+  const captionAt = index => itemAt(index)?.dataset.title || itemAt(index)?.dataset.caption || qs('img', itemAt(index))?.alt || '';
+  const metaAt = index => {
+    const item = itemAt(index);
+    if (!item) return '';
+    return [item.dataset.collection, item.dataset.location, item.dataset.year].filter(Boolean).join(' · ');
+  };
 
   function preloadAround(index) {
+    const items = currentSet();
+    if (items.length < 2) return;
     [-2, -1, 1, 2].forEach(offset => {
+      const src = sourceAt(index + offset);
+      if (!src) return;
       const preloader = new Image();
-      preloader.src = sourceAt(index + offset);
+      preloader.src = src;
     });
   }
 
   function syncSlides(index) {
-    currentIndex = wrap(index);
+    const items = currentSet();
+    if (!items.length) return;
+    currentIndex = wrap(index, items);
     currentImg.src = sourceAt(currentIndex);
     currentImg.alt = captionAt(currentIndex);
     prevImg.src = sourceAt(currentIndex - 1);
@@ -161,8 +211,9 @@
     nextImg.src = sourceAt(currentIndex + 1);
     nextImg.alt = '';
     captionEl.textContent = captionAt(currentIndex);
-    indexEl.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(galleryButtons.length).padStart(2, '0')}`;
-    if (progressEl) progressEl.style.width = `${((currentIndex + 1) / galleryButtons.length) * 100}%`;
+    if (metaEl) metaEl.textContent = metaAt(currentIndex);
+    indexEl.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(items.length).padStart(2, '0')}`;
+    if (progressEl) progressEl.style.width = `${((currentIndex + 1) / items.length) * 100}%`;
     preloadAround(currentIndex);
   }
 
@@ -173,7 +224,10 @@
     });
   }
 
-  function open(index, trigger) {
+  function open(trigger) {
+    const items = currentSet();
+    const index = items.indexOf(trigger);
+    if (index < 0) return;
     lastFocused = trigger || document.activeElement;
     syncSlides(index);
     lightbox.classList.add('is-open');
@@ -191,7 +245,8 @@
   }
 
   function go(direction) {
-    if (transitionLock || galleryButtons.length < 2) return;
+    const items = currentSet();
+    if (transitionLock || items.length < 2) return;
     transitionLock = true;
     stage.classList.remove('is-dragging');
 
@@ -209,7 +264,7 @@
     }, 430);
   }
 
-  galleryButtons.forEach((button, index) => button.addEventListener('click', () => open(index, button)));
+  allGalleryButtons.forEach(button => button.addEventListener('click', () => open(button)));
   closeBtn.addEventListener('click', close);
   prevBtn.addEventListener('click', () => go(-1));
   nextBtn.addEventListener('click', () => go(1));

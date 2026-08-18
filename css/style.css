@@ -174,6 +174,11 @@ button { color: inherit; }
 .photo-meta-line { display: flex; justify-content: space-between; gap: 18px; padding-top: 17px; border-top: 1px solid var(--line); color: #737982; font-size: .68rem; text-transform: uppercase; letter-spacing: .12em; }
 .gallery-shell { padding-bottom: clamp(80px, 9vw, 140px); }
 .gallery-rule { display: flex; justify-content: space-between; gap: 20px; padding: 13px 0 22px; border-top: 1px solid var(--line); color: #737982; font-size: .66rem; text-transform: uppercase; letter-spacing: .14em; }
+.collection-filters { display: flex; flex-wrap: wrap; gap: 8px; padding: 2px 0 26px; }
+.collection-filter { min-height: 38px; padding: 0 15px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: #8b9098; cursor: pointer; font-size: .69rem; letter-spacing: .08em; transition: color .2s ease, border-color .2s ease, background .2s ease, transform .2s var(--ease); }
+.collection-filter:hover { color: var(--text); border-color: rgba(255,255,255,.28); transform: translateY(-1px); }
+.collection-filter.is-active { color: var(--ink); background: var(--gold-2); border-color: var(--gold-2); }
+.gallery-status { display: flex; justify-content: space-between; gap: 20px; padding: 0 0 18px; color: #666c75; font-size: .64rem; text-transform: uppercase; letter-spacing: .13em; }
 .masonry-gallery { columns: 3 340px; column-gap: 12px; }
 .gallery-item { margin: 0 0 12px; break-inside: avoid; overflow: hidden; background: var(--ink-2); }
 .gallery-button { display: block; width: 100%; padding: 0; border: 0; background: transparent; cursor: zoom-in; position: relative; overflow: hidden; text-align: left; }
@@ -182,7 +187,9 @@ button { color: inherit; }
 .gallery-button:hover .gallery-overlay, .gallery-button:focus-visible .gallery-overlay { opacity: 1; }
 .gallery-button:hover img { transform: scale(1.018); filter: brightness(.92); }
 .gallery-index, .gallery-open { color: var(--gold-2); font-size: .66rem; letter-spacing: .1em; }
+.gallery-copy { display: flex; min-width: 0; flex-direction: column; gap: 2px; }
 .gallery-caption { color: #fff; font-size: .73rem; text-transform: uppercase; letter-spacing: .12em; }
+.gallery-collection { color: rgba(255,255,255,.54); font-size: .58rem; text-transform: uppercase; letter-spacing: .13em; }
 .gallery-open { font-size: 1rem; }
 
 .lightbox { position: fixed; z-index: 5000; inset: 0; display: grid; grid-template-rows: auto 1fr auto; background: rgba(5,6,8,.985); opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility .3s ease; touch-action: none; }
@@ -206,6 +213,8 @@ button { color: inherit; }
 .lightbox-footer { color: #7b8088; font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; }
 .lightbox-footer p { margin: 0; }
 .lightbox-footer [data-lightbox-caption] { color: #dcdde0; font-size: .72rem; text-transform: uppercase; letter-spacing: .13em; }
+.lightbox-copy { display: flex; flex-direction: column; gap: 3px; }
+.lightbox-meta { color: #656b74; font-size: .58rem; letter-spacing: .12em; text-transform: uppercase; }
 .lightbox-hint { grid-column: 3; justify-self: end; }
 .lightbox-progress { position: absolute; z-index: 8; left: 0; right: 0; bottom: 0; height: 2px; background: rgba(255,255,255,.07); }
 .lightbox-progress span { display: block; width: 0; height: 100%; background: var(--gold); transition: width .38s var(--ease); }
@@ -312,10 +321,16 @@ button { color: inherit; }
   .photo-hero h1 { font-size: clamp(4.6rem, 22vw, 7.8rem); }
   .photo-meta-line { flex-direction: column; gap: 5px; }
   .gallery-rule { font-size: .58rem; }
+  .collection-filters { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 18px; scrollbar-width: none; }
+  .collection-filters::-webkit-scrollbar { display: none; }
+  .collection-filter { flex: 0 0 auto; min-height: 36px; padding-inline: 13px; font-size: .63rem; }
+  .gallery-status { font-size: .56rem; }
+  .gallery-status span:last-child { display: none; }
   .masonry-gallery { columns: 2 145px; column-gap: 7px; }
   .gallery-item { margin-bottom: 7px; }
   .gallery-overlay { opacity: 1; padding: 9px; background: linear-gradient(to top, rgba(5,6,8,.6), transparent 44%); }
   .gallery-caption { display: none; }
+  .gallery-collection { display: none; }
   .gallery-index { font-size: .56rem; }
   .lightbox-topbar { grid-template-columns: 1fr auto auto; gap: 12px; }
   .lightbox-brand { display: none; }
