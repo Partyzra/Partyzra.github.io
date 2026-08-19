@@ -457,7 +457,7 @@ const PORTFOLIO_PHOTOS = [
     note: ''
   },
   {
-    file: 'Fence.jpg',
+    file: 'Fence.JPG',
     title: 'Fence',
     collection: 'Places & Structures',
     year: '',
@@ -477,7 +477,7 @@ const PORTFOLIO_PHOTOS = [
     note: ''
   },
   {
-    file: 'Flowers.jpg',
+    file: 'Flowers.JPG',
     title: 'Flowers',
     collection: 'Nature',
     year: '',
@@ -577,7 +577,7 @@ const PORTFOLIO_PHOTOS = [
     note: ''
   },
   {
-    file: 'Me.jpg',
+    file: 'Me.JPG',
     title: 'Me',
     collection: 'Portraits',
     year: '',
@@ -617,7 +617,7 @@ const PORTFOLIO_PHOTOS = [
     note: ''
   },
   {
-    file: 'My Mother.jpg',
+    file: 'My Mother.JPG',
     title: 'My Mother',
     collection: 'Family',
     year: '',
