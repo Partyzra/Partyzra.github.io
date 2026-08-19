@@ -765,7 +765,7 @@ const PORTFOLIO_PHOTOS = [
     featured: false,
     tags: ['nature'],
     note: ''
-  },
+  }
 ];
 
 
