@@ -676,6 +676,96 @@ const PORTFOLIO_PHOTOS = [
     tags: ['flora'],
     note: ''
   },
+  {
+    file: 'Lagoon Water.jpg',
+    title: 'Lagoon Water',
+    collection: 'Places & Structures',
+    year: '',
+    location: '',
+    featured: false,
+    tags: ['coaster'],
+    note: ''
+  },
+   {
+    file: 'Homeless.jpg',
+    title: 'Homeless',
+    collection: 'Places & Structures',
+    year: '',
+    location: '',
+    featured: false,
+    tags: ['people'],
+    note: ''
+  },
+     {
+    file: 'Buffalo.jpg',
+    title: 'Buffalo',
+    collection: 'Nature',
+    year: '',
+    location: '',
+    featured: false,
+    tags: ['nature'],
+    note: ''
+  },
+       {
+    file: 'Buffalo1.jpg',
+    title: 'Buffalo',
+    collection: 'Nature',
+    year: '',
+    location: '',
+    featured: false,
+    tags: ['nature'],
+    note: ''
+  },
+         {
+    file: 'Buffalo2.jpg',
+    title: 'Buffalo',
+    collection: 'Nature',
+    year: '',
+    location: '',
+    featured: false,
+    tags: ['nature'],
+    note: ''
+  },
+         {
+    file: 'Buffalo3.jpg',
+    title: 'Buffalo',
+    collection: 'Nature',
+    year: '',
+    location: '',
+    featured: false,
+    tags: ['nature'],
+    note: ''
+  },
+         {
+    file: 'Buffalo4.jpg',
+    title: 'Buffalo',
+    collection: 'Nature',
+    year: '',
+    location: '',
+    featured: false,
+    tags: ['nature'],
+    note: ''
+  },
+         {
+    file: 'Rocks.jpg',
+    title: 'Rocks',
+    collection: 'Nature',
+    year: '',
+    location: '',
+    featured: false,
+    tags: ['nature'],
+    note: ''
+  },
+           {
+    file: 'Rocks2.jpg',
+    title: 'Rocks',
+    collection: 'Nature',
+    year: '',
+    location: '',
+    featured: false,
+    tags: ['nature'],
+    note: ''
+  },
 ];
 
 
