@@ -117,16 +117,6 @@ const PORTFOLIO_PHOTOS = [
     note: ''
   },
   {
-    file: 'Derick and Tori.JPG',
-    title: 'Derick and Tori',
-    collection: 'Portraits',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['people'],
-    note: ''
-  },
-  {
     file: 'Flowers.JPG',
     title: 'Flowers',
     collection: 'Nature',
@@ -209,16 +199,6 @@ const PORTFOLIO_PHOTOS = [
   {
     file: 'Lily2.jpg',
     title: 'Lily II',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['flora'],
-    note: ''
-  },
-  {
-    file: 'Lily3.jpg',
-    title: 'Lily III',
     collection: 'Nature',
     year: '',
     location: '',
