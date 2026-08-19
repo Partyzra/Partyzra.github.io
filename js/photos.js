@@ -665,7 +665,17 @@ const PORTFOLIO_PHOTOS = [
     featured: false,
     tags: ['flora'],
     note: ''
-  }
+  },
+{
+    file: 'Antelope Island.jpg',
+    title: 'Antelope Island',
+    collection: 'Nature',
+    year: '',
+    location: '',
+    featured: false,
+    tags: ['flora'],
+    note: ''
+  },
 ];
 
 
