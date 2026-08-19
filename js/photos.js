@@ -665,7 +665,7 @@ const PORTFOLIO_PHOTOS = [
     featured: false,
     tags: ['flora'],
     note: ''
-  },
+  }
 ];
 
 
