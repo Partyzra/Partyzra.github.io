@@ -27,7 +27,7 @@ const PORTFOLIO_PHOTOS = [
     note: ''
   },
   {
-    file: 'Abandoned2.jpg',
+    file: 'Abandoned2.JPG',
     title: 'Abandoned II',
     collection: 'Places & Structures',
     year: '',
@@ -154,16 +154,6 @@ const PORTFOLIO_PHOTOS = [
     location: '',
     featured: false,
     tags: ['insect'],
-    note: ''
-  },
-  {
-    file: 'Helmets.JPG',
-    title: 'Helmets',
-    collection: 'Objects & Details',
-    year: '',
-    location: '',
-    featured: false,
-    tags: [],
     note: ''
   },
   {
@@ -394,16 +384,6 @@ const PORTFOLIO_PHOTOS = [
     location: '',
     featured: false,
     tags: ['animal'],
-    note: ''
-  },
-  {
-    file: 'Creepy Derick.jpg',
-    title: 'Creepy Derick',
-    collection: 'Experimental',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['portrait'],
     note: ''
   },
   {
