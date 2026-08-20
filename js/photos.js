@@ -447,16 +447,6 @@ const PORTFOLIO_PHOTOS = [
     note: ''
   },
   {
-    file: 'Dori.jpg',
-    title: 'Dori',
-    collection: 'Portraits',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['portrait'],
-    note: ''
-  },
-  {
     file: 'Fence.JPG',
     title: 'Fence',
     collection: 'Places & Structures',
@@ -599,16 +589,6 @@ const PORTFOLIO_PHOTOS = [
   {
     file: 'My Father2.jpg',
     title: 'My Father II',
-    collection: 'Family',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['portrait'],
-    note: ''
-  },
-  {
-    file: 'My Father3.jpg',
-    title: 'My Father III',
     collection: 'Family',
     year: '',
     location: '',
