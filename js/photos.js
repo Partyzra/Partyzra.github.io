@@ -367,7 +367,7 @@ const PORTFOLIO_PHOTOS = [
     note: ''
   },
   {
-    file: 'Contrast.jpg',
+    file: 'Contrast.JPG',
     title: 'Contrast',
     collection: 'Experimental',
     year: '',
@@ -654,16 +654,6 @@ const PORTFOLIO_PHOTOS = [
     location: '',
     featured: false,
     tags: [],
-    note: ''
-  },
-  {
-    file: 'Weed.jpg',
-    title: 'Weed',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['flora'],
     note: ''
   },
 {
