@@ -166,16 +166,7 @@ const PORTFOLIO_PHOTOS = [
     tags: ['weather'],
     note: ''
   },
-  {
-    file: 'Justin.jpg',
-    title: 'Justin',
-    collection: 'Portraits',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['portrait'],
-    note: ''
-  },
+
   {
     file: 'Lily.jpg',
     title: 'Lily',
@@ -456,6 +447,16 @@ const PORTFOLIO_PHOTOS = [
     tags: ['flora'],
     note: ''
   },
+    {
+    file: 'Flowers1.jpg',
+    title: 'Flowers',
+    collection: 'Nature',
+    year: '',
+    location: '',
+    featured: false,
+    tags: ['flora'],
+    note: ''
+  },
   {
     file: 'Friends.jpg',
     title: 'Friends',
@@ -627,6 +628,16 @@ const PORTFOLIO_PHOTOS = [
     note: ''
   },
 {
+    file: 'Antelope Island1.jpg',
+    title: 'Antelope Island',
+    collection: 'Nature',
+    year: '',
+    location: '',
+    featured: false,
+    tags: ['flora'],
+    note: ''
+  },
+{
     file: 'Lagoon Water.jpg',
     title: 'Lagoon Water',
     collection: 'Places & Structures',
@@ -657,16 +668,6 @@ const PORTFOLIO_PHOTOS = [
     note: ''
   },
 {
-    file: 'Buffalo1.jpg',
-    title: 'Buffalo',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
-  },
-{
     file: 'Buffalo2.jpg',
     title: 'Buffalo',
     collection: 'Nature',
@@ -688,6 +689,26 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     file: 'Buffalo4.jpg',
+    title: 'Buffalo',
+    collection: 'Nature',
+    year: '',
+    location: '',
+    featured: false,
+    tags: ['nature'],
+    note: ''
+  },
+  {
+    file: 'Buffalo5.jpg',
+    title: 'Buffalo',
+    collection: 'Nature',
+    year: '',
+    location: '',
+    featured: false,
+    tags: ['nature'],
+    note: ''
+  },
+  {
+    file: 'Buffalo6.jpg',
     title: 'Buffalo',
     collection: 'Nature',
     year: '',
