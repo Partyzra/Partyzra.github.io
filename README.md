@@ -1,28 +1,34 @@
-# Photography V4.4 — Soundtrack
+# Photography V4.6 — Updated archive
 
-This patch keeps the near-black Photography page, the `Look slowly.` intro, the current grid order from `js/photos.js`, and the full-frame cross-fade viewer.
+This bundle incorporates the latest uploaded `photos.js` into the current dark Photography page.
 
-## New
-
-- Adds **The Drive Back — Tom Anello** as the Photography-page soundtrack.
-- The supplied 67 MB / 24-bit WAV was converted to a web-friendly 192 kbps MP3 (~5.6 MB). The original upload is unchanged.
-- The page attempts audible autoplay when `photography.html` loads.
-- If the browser blocks autoplay, the fixed soundtrack control changes to **Play soundtrack**. One click starts it.
-- The track starts at a restrained volume and fades up to about 42% so it does not overwhelm the photographs.
-- The control remains available while browsing and while the fullscreen photo viewer is open.
-- The track plays once. It does not loop automatically.
-
-## Copy into the GitHub repository
-
-Replace/add these paths:
+## Included
 
 - `photography.html`
 - `css/photography.css`
-- `js/photography-page.js`
+- `js/photos.js` — cleaned current manifest with 101 unique image files
+- `js/photography-page.js` — randomized All view, Antelope Island/Hawaii albums, soundtrack, and full-image viewer
 - `assets/audio/the-drive-back-tom-anello.mp3`
 
-Keep your existing `js/photos.js` and `Images/` folder unchanged.
+## Install
 
-## Browser autoplay note
+Copy the files/folders into the matching locations in your local `partyzra.github.io` repository and replace the older Photography-specific versions.
 
-Modern browsers may block audible autoplay on a visitor's first visit. That cannot be reliably bypassed from page code. This version attempts autoplay immediately and provides the small play/pause control as a graceful fallback.
+Do **not** delete or replace `Images/photo-full/`. The image files remain there.
+
+The page still references your existing `css/style.css`, so keep that file from the main site in place.
+
+## Current behavior
+
+- All photographs shuffle on every page load.
+- Shuffle button creates another random sequence.
+- Antelope Island and Hawaii appear as virtual albums.
+- New Antelope/Buffalo filenames are automatically recognized as Antelope Island.
+- Hawaii collection entries, Kauai, Side of Kauai, and Relaxing are recognized as Hawaii.
+- Clicking a photograph opens the entire image with no intentional cropping.
+- Previous/next transitions use the existing soft cross-fade.
+- The Drive Back soundtrack remains enabled with browser autoplay fallback.
+
+## Archive cleanup
+
+The uploaded manifest contained 102 entries but `Flowers.JPG` appeared twice. This package keeps one copy, leaving 101 unique image filenames.

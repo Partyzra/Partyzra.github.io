@@ -3,1167 +3,1237 @@
 // ============================================================
 // Put image files in: Images/photo-full/
 //
+// file        = exact filename (GitHub Pages is case-sensitive)
 // title       = public display title
-// collection  = primary gallery grouping
-// year        = optional; add when known
-// location    = optional; add when known
-// featured    = can later drive homepage / selected-work modules
+// collection  = broad subject/category metadata
+// album       = optional named photography folder, e.g. Antelope Island / Hawaii
+// year        = optional
+// location    = optional
+// featured    = retained for future use; the current All view is randomized
 // tags        = optional secondary descriptors
-// note        = optional personal caption/story for a future detail view
+// note        = optional personal caption/story
 //
-// GitHub Pages filenames are case-sensitive.
+// The gallery itself is rendered by js/photography-page.js.
 // ============================================================
 
 const PORTFOLIO_PHOTOS = [
- 
   {
-    file: 'Abandoned1.jpg',
-    title: 'Abandoned I',
-    collection: 'Places & Structures',
-    year: '',
-    location: '',
-    featured: false,
-    tags: [],
-    note: ''
-  },
-  {
-    file: 'Abandoned2.JPG',
-    title: 'Abandoned II',
-    collection: 'Places & Structures',
-    year: '',
-    location: '',
-    featured: false,
-    tags: [],
-    note: ''
+    "file": "Abandoned1.jpg",
+    "title": "Abandoned I",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [],
+    "note": ""
   },
   {
-    file: 'Andrew.JPG',
-    title: 'Andrew',
-    collection: 'Portraits',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['portrait'],
-    note: ''
+    "file": "Abandoned2.JPG",
+    "title": "Abandoned II",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [],
+    "note": ""
   },
   {
-    file: 'Barn.jpg',
-    title: 'Barn',
-    collection: 'Places & Structures',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['rural'],
-    note: ''
+    "file": "Andrew.JPG",
+    "title": "Andrew",
+    "collection": "Portraits",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
   },
   {
-    file: 'Barnstreet.jpg',
-    title: 'Barn Street',
-    collection: 'Places & Structures',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['rural'],
-    note: ''
+    "file": "Barn.jpg",
+    "title": "Barn",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "rural"
+    ],
+    "note": ""
   },
   {
-    file: 'Cannibal.jpg',
-    title: 'Cannibal',
-    collection: 'Experimental',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['conceptual'],
-    note: ''
+    "file": "Barnstreet.jpg",
+    "title": "Barn Street",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "rural"
+    ],
+    "note": ""
   },
   {
-    file: 'Carts.jpg',
-    title: 'Carts',
-    collection: 'Objects & Details',
-    year: '',
-    location: '',
-    featured: false,
-    tags: [],
-    note: ''
+    "file": "Cannibal.jpg",
+    "title": "Cannibal",
+    "collection": "Experimental",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "conceptual"
+    ],
+    "note": ""
   },
   {
-    file: 'Clock Tower.jpg',
-    title: 'Clock Tower',
-    collection: 'Places & Structures',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['architecture'],
-    note: ''
+    "file": "Carts.jpg",
+    "title": "Carts",
+    "collection": "Objects & Details",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [],
+    "note": ""
   },
   {
-    file: 'Dad.jpg',
-    title: 'Dad',
-    collection: 'Family',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['portrait'],
-    note: ''
+    "file": "Clock Tower.jpg",
+    "title": "Clock Tower",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "architecture"
+    ],
+    "note": ""
   },
   {
-    file: 'Derick & Tori.JPG',
-    title: 'Derick & Tori',
-    collection: 'Portraits',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['people'],
-    note: ''
+    "file": "Dad.jpg",
+    "title": "Dad",
+    "collection": "Family",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
   },
   {
-    file: 'Flowers.JPG',
-    title: 'Flowers',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['flora'],
-    note: ''
+    "file": "Derick & Tori.JPG",
+    "title": "Derick & Tori",
+    "collection": "Portraits",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
   },
   {
-    file: 'Fox.jpg',
-    title: 'Fox',
-    collection: 'Wildlife',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['animal'],
-    note: ''
+    "file": "Flowers.JPG",
+    "title": "Flowers",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "flora"
+    ],
+    "note": ""
   },
   {
-    file: 'Gargoyle.jpg',
-    title: 'Gargoyle',
-    collection: 'Objects & Details',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['architecture', 'detail'],
-    note: ''
+    "file": "Fox.jpg",
+    "title": "Fox",
+    "collection": "Wildlife",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "animal"
+    ],
+    "note": ""
   },
   {
-    file: 'Grasshopper.jpg',
-    title: 'Grasshopper',
-    collection: 'Wildlife',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['insect'],
-    note: ''
+    "file": "Gargoyle.jpg",
+    "title": "Gargoyle",
+    "collection": "Objects & Details",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "architecture",
+      "detail"
+    ],
+    "note": ""
   },
   {
-    file: 'In The Rain.jpg',
-    title: 'In The Rain',
-    collection: 'Atmosphere',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['weather'],
-    note: ''
-  },
-
-  {
-    file: 'Lily.jpg',
-    title: 'Lily',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['flora'],
-    note: ''
+    "file": "Grasshopper.jpg",
+    "title": "Grasshopper",
+    "collection": "Wildlife",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "insect"
+    ],
+    "note": ""
   },
   {
-    file: 'Lily2.jpg',
-    title: 'Lily II',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['flora'],
-    note: ''
+    "file": "In The Rain.jpg",
+    "title": "In The Rain",
+    "collection": "Atmosphere",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "weather"
+    ],
+    "note": ""
   },
   {
-    file: 'Mountain.jpg',
-    title: 'Mountain',
-    collection: 'Landscape',
-    year: '',
-    location: '',
-    featured: true,
-    tags: ['mountain'],
-    note: ''
+    "file": "Lily.jpg",
+    "title": "Lily",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "flora"
+    ],
+    "note": ""
   },
   {
-    file: 'Night Sky.jpg',
-    title: 'Night Sky',
-    collection: 'Landscape',
-    year: '',
-    location: '',
-    featured: true,
-    tags: ['night'],
-    note: ''
+    "file": "Lily2.jpg",
+    "title": "Lily II",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "flora"
+    ],
+    "note": ""
   },
   {
-    file: 'Open Mouth.jpg',
-    title: 'Open Mouth',
-    collection: 'Experimental',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['portrait', 'conceptual'],
-    note: ''
+    "file": "Mountain.jpg",
+    "title": "Mountain",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": true,
+    "tags": [
+      "mountain"
+    ],
+    "note": ""
   },
   {
-    file: 'Peace.jpg',
-    title: 'Peace',
-    collection: 'Experimental',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['conceptual'],
-    note: ''
+    "file": "Night Sky.jpg",
+    "title": "Night Sky",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": true,
+    "tags": [
+      "night"
+    ],
+    "note": ""
   },
   {
-    file: 'Peacock.jpg',
-    title: 'Peacock',
-    collection: 'Wildlife',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['bird'],
-    note: ''
+    "file": "Open Mouth.jpg",
+    "title": "Open Mouth",
+    "collection": "Experimental",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait",
+      "conceptual"
+    ],
+    "note": ""
   },
   {
-    file: 'Performance.jpg',
-    title: 'Performance',
-    collection: 'Performance',
-    year: '',
-    location: '',
-    featured: true,
-    tags: ['live'],
-    note: ''
+    "file": "Peace.jpg",
+    "title": "Peace",
+    "collection": "Experimental",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "conceptual"
+    ],
+    "note": ""
   },
   {
-    file: 'Phoebe.jpg',
-    title: 'Phoebe',
-    collection: 'Portraits',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['portrait'],
-    note: ''
+    "file": "Peacock.jpg",
+    "title": "Peacock",
+    "collection": "Wildlife",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "bird"
+    ],
+    "note": ""
   },
   {
-    file: 'Printing Press3.jpg',
-    title: 'Printing Press',
-    collection: 'Objects & Details',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['machine'],
-    note: ''
+    "file": "Performance.jpg",
+    "title": "Performance",
+    "collection": "Performance",
+    "year": "",
+    "location": "",
+    "featured": true,
+    "tags": [
+      "live"
+    ],
+    "note": ""
   },
   {
-    file: 'Samurai.jpg',
-    title: 'Samurai',
-    collection: 'Experimental',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['conceptual'],
-    note: ''
+    "file": "Phoebe.jpg",
+    "title": "Phoebe",
+    "collection": "Portraits",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
   },
   {
-    file: 'Seagull.jpg',
-    title: 'Seagull',
-    collection: 'Wildlife',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['bird'],
-    note: ''
+    "file": "Printing Press3.jpg",
+    "title": "Printing Press",
+    "collection": "Objects & Details",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "machine"
+    ],
+    "note": ""
   },
   {
-    file: 'Sean.JPG',
-    title: 'Sean',
-    collection: 'Portraits',
-    year: '',
-    location: '',
-    featured: true,
-    tags: ['portrait'],
-    note: ''
+    "file": "Samurai.jpg",
+    "title": "Samurai",
+    "collection": "Experimental",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "conceptual"
+    ],
+    "note": ""
   },
   {
-    file: 'Sun Kitty.jpg',
-    title: 'Sun Kitty',
-    collection: 'Wildlife',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['animal'],
-    note: ''
+    "file": "Seagull.jpg",
+    "title": "Seagull",
+    "collection": "Wildlife",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "bird"
+    ],
+    "note": ""
   },
   {
-    file: 'Sunset.jpg',
-    title: 'Sunset',
-    collection: 'Landscape',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['sunset'],
-    note: ''
+    "file": "Sean.JPG",
+    "title": "Sean",
+    "collection": "Portraits",
+    "year": "",
+    "location": "",
+    "featured": true,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
   },
   {
-    file: 'The Rocket.jpg',
-    title: 'The Rocket',
-    collection: 'Objects & Details',
-    year: '',
-    location: '',
-    featured: false,
-    tags: [],
-    note: ''
+    "file": "Sun Kitty.jpg",
+    "title": "Sun Kitty",
+    "collection": "Wildlife",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "animal"
+    ],
+    "note": ""
   },
   {
-    file: 'Weed.JPG',
-    title: 'Weed',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['flora'],
-    note: ''
+    "file": "Sunset.jpg",
+    "title": "Sunset",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "sunset"
+    ],
+    "note": ""
   },
   {
-    file: 'Zeboy!.jpg',
-    title: 'Zeboy!',
-    collection: 'Experimental',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['portrait'],
-    note: ''
+    "file": "The Rocket.jpg",
+    "title": "The Rocket",
+    "collection": "Objects & Details",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [],
+    "note": ""
   },
   {
-    file: 'Contrast.JPG',
-    title: 'Contrast',
-    collection: 'Experimental',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['contrast'],
-    note: ''
+    "file": "Weed.JPG",
+    "title": "Weed",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "flora"
+    ],
+    "note": ""
   },
   {
-    file: 'Cornfield.jpg',
-    title: 'Cornfield',
-    collection: 'Landscape',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['rural'],
-    note: ''
+    "file": "Zeboy!.jpg",
+    "title": "Zeboy!",
+    "collection": "Experimental",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
   },
   {
-    file: 'Cow Charging.jpg',
-    title: 'Cow Charging',
-    collection: 'Wildlife',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['animal'],
-    note: ''
+    "file": "Contrast.JPG",
+    "title": "Contrast",
+    "collection": "Experimental",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "contrast"
+    ],
+    "note": ""
   },
   {
-    file: 'Derick.jpg',
-    title: 'Derick',
-    collection: 'Portraits',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['portrait'],
-    note: ''
+    "file": "Cornfield.jpg",
+    "title": "Cornfield",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "rural"
+    ],
+    "note": ""
   },
   {
-    file: 'Derick2.jpg',
-    title: 'Derick II',
-    collection: 'Portraits',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['portrait'],
-    note: ''
+    "file": "Cow Charging.jpg",
+    "title": "Cow Charging",
+    "collection": "Wildlife",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "animal"
+    ],
+    "note": ""
   },
   {
-    file: 'Derick3.jpg',
-    title: 'Derick III',
-    collection: 'Portraits',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['portrait'],
-    note: ''
+    "file": "Derick.jpg",
+    "title": "Derick",
+    "collection": "Portraits",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
   },
   {
-    file: 'Dori is Wednesday.jpg',
-    title: 'Dori is Wednesday',
-    collection: 'Experimental',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['portrait'],
-    note: ''
+    "file": "Derick2.jpg",
+    "title": "Derick II",
+    "collection": "Portraits",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
   },
   {
-    file: 'Fence.JPG',
-    title: 'Fence',
-    collection: 'Places & Structures',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['rural'],
-    note: ''
+    "file": "Derick3.jpg",
+    "title": "Derick III",
+    "collection": "Portraits",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
   },
   {
-    file: 'Field.jpg',
-    title: 'Field',
-    collection: 'Landscape',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['rural'],
-    note: ''
+    "file": "Dori is Wednesday.jpg",
+    "title": "Dori is Wednesday",
+    "collection": "Experimental",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
   },
   {
-    file: 'Flowers.JPG',
-    title: 'Flowers',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['flora'],
-    note: ''
-  },
-    {
-    file: 'Flowers1.jpg',
-    title: 'Flowers',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['flora'],
-    note: ''
+    "file": "Fence.JPG",
+    "title": "Fence",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "rural"
+    ],
+    "note": ""
   },
   {
-    file: 'Friends.jpg',
-    title: 'Friends',
-    collection: 'Portraits',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['people'],
-    note: ''
+    "file": "Field.jpg",
+    "title": "Field",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "rural"
+    ],
+    "note": ""
   },
   {
-    file: 'Grasshopper.png',
-    title: 'Grasshopper',
-    collection: 'Wildlife',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['insect'],
-    note: ''
+    "file": "Flowers1.jpg",
+    "title": "Flowers",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "flora"
+    ],
+    "note": ""
   },
   {
-    file: 'Hawaii Beach.jpg',
-    title: 'Hawaii Beach',
-    collection: 'Hawaii',
-    year: '',
-    location: 'Hawaii',
-    featured: true,
-    tags: ['beach'],
-    note: ''
+    "file": "Friends.jpg",
+    "title": "Friends",
+    "collection": "Portraits",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
   },
   {
-    file: 'Hawaii Couple.jpg',
-    title: 'Hawaii Couple',
-    collection: 'Hawaii',
-    year: '',
-    location: 'Hawaii',
-    featured: false,
-    tags: ['people'],
-    note: ''
+    "file": "Grasshopper.png",
+    "title": "Grasshopper",
+    "collection": "Wildlife",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "insect"
+    ],
+    "note": ""
   },
   {
-    file: 'Hawaii Girl.jpg',
-    title: 'Hawaii Girl',
-    collection: 'Hawaii',
-    year: '',
-    location: 'Hawaii',
-    featured: false,
-    tags: ['portrait'],
-    note: ''
+    "file": "Hawaii Beach.jpg",
+    "title": "Hawaii Beach",
+    "collection": "Hawaii",
+    "year": "",
+    "location": "Hawaii",
+    "featured": true,
+    "tags": [
+      "beach"
+    ],
+    "note": "",
+    "album": "Hawaii"
   },
   {
-    file: 'Hawaii Mountain.jpg',
-    title: 'Hawaii Mountain',
-    collection: 'Hawaii',
-    year: '',
-    location: 'Hawaii',
-    featured: false,
-    tags: ['landscape'],
-    note: ''
+    "file": "Hawaii Couple.jpg",
+    "title": "Hawaii Couple",
+    "collection": "Hawaii",
+    "year": "",
+    "location": "Hawaii",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": "",
+    "album": "Hawaii"
   },
   {
-    file: 'Hawaii Water Crash.jpg',
-    title: 'Hawaii Water Crash',
-    collection: 'Hawaii',
-    year: '',
-    location: 'Hawaii',
-    featured: false,
-    tags: ['ocean'],
-    note: ''
+    "file": "Hawaii Girl.jpg",
+    "title": "Hawaii Girl",
+    "collection": "Hawaii",
+    "year": "",
+    "location": "Hawaii",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": "",
+    "album": "Hawaii"
   },
   {
-    file: 'Helmets.jpg',
-    title: 'Helmets',
-    collection: 'Objects & Details',
-    year: '',
-    location: '',
-    featured: false,
-    tags: [],
-    note: ''
+    "file": "Hawaii Mountain.jpg",
+    "title": "Hawaii Mountain",
+    "collection": "Hawaii",
+    "year": "",
+    "location": "Hawaii",
+    "featured": false,
+    "tags": [
+      "landscape"
+    ],
+    "note": "",
+    "album": "Hawaii"
   },
   {
-    file: 'Horses.jpg',
-    title: 'Horses',
-    collection: 'Wildlife',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['animal'],
-    note: ''
+    "file": "Hawaii Water Crash.jpg",
+    "title": "Hawaii Water Crash",
+    "collection": "Hawaii",
+    "year": "",
+    "location": "Hawaii",
+    "featured": false,
+    "tags": [
+      "ocean"
+    ],
+    "note": "",
+    "album": "Hawaii"
   },
   {
-    file: 'Me.JPG',
-    title: 'Me',
-    collection: 'Portraits',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['self-portrait'],
-    note: ''
+    "file": "Helmets.jpg",
+    "title": "Helmets",
+    "collection": "Objects & Details",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [],
+    "note": ""
   },
   {
-    file: 'My Father.jpg',
-    title: 'My Father',
-    collection: 'Family',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['portrait'],
-    note: ''
+    "file": "Horses.jpg",
+    "title": "Horses",
+    "collection": "Wildlife",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "animal"
+    ],
+    "note": ""
   },
   {
-    file: 'My Father2.jpg',
-    title: 'My Father II',
-    collection: 'Family',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['portrait'],
-    note: ''
+    "file": "Me.JPG",
+    "title": "Me",
+    "collection": "Portraits",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "self-portrait"
+    ],
+    "note": ""
   },
   {
-    file: 'My Mother.JPG',
-    title: 'My Mother',
-    collection: 'Family',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['portrait'],
-    note: ''
+    "file": "My Father.jpg",
+    "title": "My Father",
+    "collection": "Family",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
   },
   {
-    file: 'Night Car.jpg',
-    title: 'Night Car',
-    collection: 'Atmosphere',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['night'],
-    note: ''
+    "file": "My Father2.jpg",
+    "title": "My Father II",
+    "collection": "Family",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
   },
   {
-    file: 'Possey.jpg',
-    title: 'Possey',
-    collection: 'Portraits',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['people'],
-    note: ''
+    "file": "My Mother.JPG",
+    "title": "My Mother",
+    "collection": "Family",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
   },
   {
-    file: 'Rattlesnake Rapids.jpg',
-    title: 'Rattlesnake Rapids',
-    collection: 'Places & Structures',
-    year: '',
-    location: '',
-    featured: false,
-    tags: [],
-    note: ''
-  },
-{
-    file: 'Antelope Island.jpg',
-    title: 'Antelope Island',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['flora'],
-    note: ''
-  },
-{
-    file: 'Antelope Island1.jpg',
-    title: 'Antelope Island',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['flora'],
-    note: ''
-  },
-{
-    file: 'Lagoon Water.jpg',
-    title: 'Lagoon Water',
-    collection: 'Places & Structures',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['coaster'],
-    note: ''
-  },
-{
-    file: 'Homeless.jpg',
-    title: 'Homeless',
-    collection: 'Places & Structures',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['people'],
-    note: ''
-  },
-{
-    file: 'Buffalo.jpg',
-    title: 'Buffalo',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
-  },
-{
-    file: 'Buffalo2.jpg',
-    title: 'Buffalo',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
-  },
-{
-    file: 'Buffalo3.jpg',
-    title: 'Buffalo',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
-  },
-{
-    file: 'Buffalo4.jpg',
-    title: 'Buffalo',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+    "file": "Night Car.jpg",
+    "title": "Night Car",
+    "collection": "Atmosphere",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "night"
+    ],
+    "note": ""
   },
   {
-    file: 'Buffalo5.jpg',
-    title: 'Buffalo',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+    "file": "Possey.jpg",
+    "title": "Possey",
+    "collection": "Portraits",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
   },
   {
-    file: 'Buffalo6.jpg',
-    title: 'Buffalo',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+    "file": "Rattlesnake Rapids.jpg",
+    "title": "Rattlesnake Rapids",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [],
+    "note": ""
   },
-{
-    file: 'Rocks.jpg',
-    title: 'Rocks',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+  {
+    "file": "Antelope Island.jpg",
+    "title": "Antelope Island",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "flora"
+    ],
+    "note": "",
+    "album": "Antelope Island"
   },
-{
-    file: 'Rocks2.jpg',
-    title: 'Rocks',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+  {
+    "file": "Antelope Island1.jpg",
+    "title": "Antelope Island",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "flora"
+    ],
+    "note": "",
+    "album": "Antelope Island"
   },
-{
-    file: 'Album Cover.png',
-    title: 'Album Cover',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['people'],
-    note: ''
+  {
+    "file": "Lagoon Water.jpg",
+    "title": "Lagoon Water",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "coaster"
+    ],
+    "note": ""
   },
-{
-    file: 'Antelope Dr.png',
-    title: 'Antelope Dr',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+  {
+    "file": "Homeless.jpg",
+    "title": "Homeless",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
   },
-{
-    file: 'Bathroom.png',
-    title: 'Bathroom',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+  {
+    "file": "Buffalo.jpg",
+    "title": "Buffalo",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Antelope Island"
   },
-{
-    file: 'Capitol.png',
-    title: 'Capitol',
-    collection: 'landscape',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['landscape'],
-    note: ''
+  {
+    "file": "Buffalo2.jpg",
+    "title": "Buffalo",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Antelope Island"
   },
-{
-    file: 'Car Zoom.JPG',
-    title: 'Car Zoom',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+  {
+    "file": "Buffalo3.jpg",
+    "title": "Buffalo",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Antelope Island"
   },
-{
-    file: 'Courthouse.png',
-    title: 'Courthouse',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+  {
+    "file": "Buffalo4.jpg",
+    "title": "Buffalo",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Antelope Island"
   },
-{
-    file: 'Door.jpg',
-    title: 'Door',
-    collection: 'people',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['people'],
-    note: ''
+  {
+    "file": "Buffalo5.jpg",
+    "title": "Buffalo",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Antelope Island"
   },
-{
-    file: 'Field.png',
-    title: 'Field',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+  {
+    "file": "Buffalo6.jpg",
+    "title": "Buffalo",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Antelope Island"
   },
-{
-    file: 'Grasshopper2.png',
-    title: 'Grasshopper2',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+  {
+    "file": "Rocks.jpg",
+    "title": "Rocks",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   },
-{
-    file: 'GrasshopperPortrait.png',
-    title: 'GrasshopperPortrait',
-    collection: 'Nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+  {
+    "file": "Rocks2.jpg",
+    "title": "Rocks",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   },
-{
-    file: 'Jake & Chelsea.png',
-    title: 'Jake & Chelsea',
-    collection: 'People',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['people'],
-    note: ''
+  {
+    "file": "Album Cover.png",
+    "title": "Album Cover",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
   },
-{
-    file: 'Justin.png',
-    title: 'Justin',
-    collection: 'People',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['people'],
-    note: ''
+  {
+    "file": "Antelope Dr.png",
+    "title": "Antelope Dr",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Antelope Island"
   },
-{
-    file: 'Kauai.jpg',
-    title: 'Kauai',
-    collection: 'Landscape',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+  {
+    "file": "Bathroom.png",
+    "title": "Bathroom",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   },
-{
-    file: 'Lincoln.jpg',
-    title: 'Lincoln',
-    collection: 'People',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['people'],
-    note: ''
+  {
+    "file": "Capitol.png",
+    "title": "Capitol",
+    "collection": "landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "landscape"
+    ],
+    "note": ""
   },
-{
-    file: 'Master of Doors.png',
-    title: 'Master of Doors',
-    collection: 'People',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['people'],
-    note: ''
+  {
+    "file": "Car Zoom.JPG",
+    "title": "Car Zoom",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   },
-{
-    file: 'Model.png',
-    title: 'Model',
-    collection: 'People',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['people'],
-    note: ''
+  {
+    "file": "Courthouse.png",
+    "title": "Courthouse",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   },
-{
-    file: 'Mountain & Trees.png',
-    title: 'Mountain & Trees',
-    collection: 'Landscape',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+  {
+    "file": "Door.jpg",
+    "title": "Door",
+    "collection": "people",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
   },
-{
-    file: 'Mountain & Trees2.JPG',
-    title: 'Mountain & Trees2',
-    collection: 'Landscape',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+  {
+    "file": "Field.png",
+    "title": "Field",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   },
-{
-    file: 'MountainShot.JPG',
-    title: 'MountainShot',
-    collection: 'Landscape',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+  {
+    "file": "Grasshopper2.png",
+    "title": "Grasshopper2",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   },
-{
-    file: 'MountainShot2.JPG',
-    title: 'MountainShot2',
-    collection: 'Landscape',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+  {
+    "file": "GrasshopperPortrait.png",
+    "title": "GrasshopperPortrait",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   },
-{
-    file: 'MountainShot3.jpg',
-    title: 'MountainShot3',
-    collection: 'Landscape',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+  {
+    "file": "Jake & Chelsea.png",
+    "title": "Jake & Chelsea",
+    "collection": "People",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
   },
-{
-    file: 'Refinery Landscape.jpg',
-    title: 'Refinery Landscape',
-    collection: 'Landscape',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['Structure'],
-    note: ''
+  {
+    "file": "Justin.png",
+    "title": "Justin",
+    "collection": "People",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
   },
-{
-    file: 'Refinery Portrait.png',
-    title: 'Refinery Portrait',
-    collection: 'Landscape',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['Structure'],
-    note: ''
+  {
+    "file": "Kauai.jpg",
+    "title": "Kauai",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Hawaii"
   },
-{
-    file: 'Relaxing.jpg',
-    title: 'Relaxing',
-    collection: 'Hawaii',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['beach'],
-    note: ''
+  {
+    "file": "Lincoln.jpg",
+    "title": "Lincoln",
+    "collection": "People",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
   },
-{
-    file: 'Side of Kauai.jpg',
-    title: 'Side of Kauai',
-    collection: 'Landscape',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+  {
+    "file": "Master of Doors.png",
+    "title": "Master of Doors",
+    "collection": "People",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
   },
-{
-    file: 'Tiger.png',
-    title: 'Tiger',
-    collection: 'nature',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+  {
+    "file": "Model.png",
+    "title": "Model",
+    "collection": "People",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
   },
-{
-    file: 'Tractor & Shed.jpg',
-    title: 'Tractor & Shed',
-    collection: 'Landscape',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+  {
+    "file": "Mountain & Trees.png",
+    "title": "Mountain & Trees",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   },
-{
-    file: 'Walking.jpg',
-    title: 'Walking',
-    collection: 'Landscape',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+  {
+    "file": "Mountain & Trees2.JPG",
+    "title": "Mountain & Trees2",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   },
-{
-    file: 'Water Crash.jpg',
-    title: 'Water Crash',
-    collection: 'Landscape',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['nature'],
-    note: ''
+  {
+    "file": "MountainShot.JPG",
+    "title": "MountainShot",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   },
-{
-    file: 'Zey Portrait.png',
-    title: 'Zey Portrait',
-    collection: 'People',
-    year: '',
-    location: '',
-    featured: false,
-    tags: ['people'],
-    note: ''
+  {
+    "file": "MountainShot2.JPG",
+    "title": "MountainShot2",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "MountainShot3.jpg",
+    "title": "MountainShot3",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Refinery Landscape.jpg",
+    "title": "Refinery Landscape",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Structure"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Refinery Portrait.png",
+    "title": "Refinery Portrait",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Structure"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Relaxing.jpg",
+    "title": "Relaxing",
+    "collection": "Hawaii",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "beach"
+    ],
+    "note": "",
+    "album": "Hawaii"
+  },
+  {
+    "file": "Side of Kauai.jpg",
+    "title": "Side of Kauai",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Hawaii"
+  },
+  {
+    "file": "Tiger.png",
+    "title": "Tiger",
+    "collection": "nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Tractor & Shed.jpg",
+    "title": "Tractor & Shed",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Walking.jpg",
+    "title": "Walking",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Water Crash.jpg",
+    "title": "Water Crash",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Zey Portrait.png",
+    "title": "Zey Portrait",
+    "collection": "People",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
   }
 ];
-
-// ============================================================
-// PHOTOGRAPHY DISPLAY ORDER + GALLERY RENDERER
-// ============================================================
-// The manifest above remains the source of truth.
-// This display layer keeps the page simple and controls visual order
-// without forcing you to rearrange 100+ manifest entries by hand.
-
-(function renderPhotographyGallery() {
-  const gallery = document.querySelector('[data-gallery]');
-  const featuredGallery = document.querySelector('[data-featured-gallery]');
-  if (!gallery) return;
-
-  const basePath = 'Images/photo-full/';
-
-  // Do not show the exact same file twice if the manifest accidentally
-  // contains a duplicate entry.
-  const seenFiles = new Set();
-  const uniquePhotos = PORTFOLIO_PHOTOS.filter(photo => {
-    const key = String(photo.file || '').trim();
-    if (!key || seenFiles.has(key)) return false;
-    seenFiles.add(key);
-    return true;
-  });
-
-  // Two photographs intentionally lead the page.
-  const featuredNames = ['Fox.jpg', 'Buffalo.jpg'];
-  const featuredPhotos = featuredNames
-    .map(file => uniquePhotos.find(photo => photo.file === file))
-    .filter(Boolean);
-
-  const featuredFiles = new Set(featuredPhotos.map(photo => photo.file));
-
-  const isPeople = photo => {
-    const collection = String(photo.collection || '').toLowerCase();
-    const tags = (photo.tags || []).map(tag => String(tag).toLowerCase());
-    return ['people', 'portraits', 'family'].includes(collection)
-      || tags.some(tag => ['people', 'portrait', 'self-portrait'].includes(tag));
-  };
-
-  const isLocation = photo => {
-    const collection = String(photo.collection || '').toLowerCase();
-    return ['landscape', 'places & structures', 'hawaii', 'atmosphere'].includes(collection);
-  };
-
-  // After Fox and Buffalo, people come first, then locations, then the
-  // remainder of the archive. Original manifest order is preserved inside
-  // each group.
-  const archivePhotos = uniquePhotos
-    .filter(photo => !featuredFiles.has(photo.file))
-    .map((photo, originalIndex) => ({ photo, originalIndex }))
-    .sort((a, b) => {
-      const group = item => isPeople(item.photo) ? 0 : isLocation(item.photo) ? 1 : 2;
-      return group(a) - group(b) || a.originalIndex - b.originalIndex;
-    })
-    .map(item => item.photo);
-
-  function makePhotoFigure(photo, index, featured = false) {
-    const figure = document.createElement('figure');
-    figure.className = featured ? 'gallery-item featured-item' : 'gallery-item';
-    figure.dataset.collection = photo.collection || '';
-    figure.dataset.featured = String(Boolean(photo.featured));
-
-    const button = document.createElement('button');
-    button.className = 'gallery-button';
-    button.type = 'button';
-    button.dataset.full = basePath + photo.file;
-    button.dataset.title = photo.title || photo.file;
-    button.dataset.caption = photo.title || photo.file;
-    button.dataset.collection = photo.collection || '';
-    button.dataset.year = photo.year || '';
-    button.dataset.location = photo.location || '';
-    button.dataset.note = photo.note || '';
-    button.setAttribute('aria-label', `Open photograph: ${photo.title || photo.file}`);
-
-    const img = document.createElement('img');
-    img.src = basePath + photo.file;
-    img.alt = photo.title || '';
-    img.loading = featured || index < 8 ? 'eager' : 'lazy';
-    img.decoding = 'async';
-    if (featured) img.fetchPriority = 'high';
-
-    // Broken/missing filenames should not leave an empty tile in the grid.
-    img.addEventListener('error', () => {
-      figure.remove();
-      window.dispatchEvent(new CustomEvent('portfolio:photo-missing', { detail: { file: photo.file } }));
-    }, { once: true });
-
-    const overlay = document.createElement('span');
-    overlay.className = 'gallery-overlay';
-
-    const copy = document.createElement('span');
-    copy.className = 'gallery-copy';
-
-    const title = document.createElement('span');
-    title.className = 'gallery-caption';
-    title.textContent = photo.title || photo.file;
-
-    copy.appendChild(title);
-
-    const openIcon = document.createElement('span');
-    openIcon.className = 'gallery-open';
-    openIcon.setAttribute('aria-hidden', 'true');
-    openIcon.textContent = '↗';
-
-    overlay.append(copy, openIcon);
-    button.append(img, overlay);
-    figure.appendChild(button);
-    return figure;
-  }
-
-  gallery.innerHTML = '';
-  if (featuredGallery) featuredGallery.innerHTML = '';
-
-  featuredPhotos.forEach((photo, index) => {
-    featuredGallery?.appendChild(makePhotoFigure(photo, index, true));
-  });
-
-  const fragment = document.createDocumentFragment();
-  archivePhotos.forEach((photo, index) => {
-    fragment.appendChild(makePhotoFigure(photo, index, false));
-  });
-  gallery.appendChild(fragment);
-
-  // Let the site-wide viewer know the gallery has been rendered.
-  window.dispatchEvent(new CustomEvent('portfolio:gallery-ready', {
-    detail: { count: uniquePhotos.length }
-  }));
-})();

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Photography portfolio by Ryan.">
-  <meta name="theme-color" content="#182021">
+  <meta name="theme-color" content="#090a0b">
   <title>Photography — Ryan</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,15 +47,20 @@
     </section>
 
     <section class="photo-grid-section" aria-label="Photography gallery">
+      <div class="photo-album-nav" data-album-nav aria-label="Photography collections"></div>
+
       <div class="photo-grid-bar">
-        <span>Archive</span>
-        <span data-gallery-status>Photographs</span>
+        <span data-album-heading>All photographs</span>
+        <div class="photo-grid-tools">
+          <span data-gallery-status>Photographs</span>
+          <button class="photo-shuffle-button" type="button" data-shuffle-gallery>Shuffle</button>
+        </div>
       </div>
 
       <!--
-        photos.js remains your editable manifest. This page intentionally does
-        NOT use data-gallery, so the older renderer inside photos.js exits
-        immediately. photography-page.js renders the current manifest instead.
+        photos.js remains your editable manifest. The "All" view is shuffled
+        on every page load. Named albums are virtual collections, so the image
+        files can stay together in Images/photo-full/.
       -->
       <div class="photo-grid" id="photoGrid"></div>
     </section>

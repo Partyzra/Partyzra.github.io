@@ -127,13 +127,51 @@
   }
 
   // ----------------------------------------------------------
-  // Gallery rendering
+  // Gallery rendering — randomized archive + virtual collections
   // ----------------------------------------------------------
 
   const grid = qs('#photoGrid');
   if (!grid || typeof PORTFOLIO_PHOTOS === 'undefined') return;
 
   const basePath = 'Images/photo-full/';
+  const albumNav = qs('[data-album-nav]');
+  const albumHeading = qs('[data-album-heading]');
+  const shuffleButton = qs('[data-shuffle-gallery]');
+  const photoCount = qs('[data-photo-count]');
+  const galleryStatus = qs('[data-gallery-status]');
+
+  /*
+    Virtual albums keep the image files in one physical folder, so moving a
+    photograph into a collection never breaks its URL. You can also add an
+    `album` (string) or `albums` (array) property to any entry in photos.js.
+
+    Example:
+      album: 'Antelope Island'
+    or:
+      albums: ['Antelope Island', 'Wildlife']
+  */
+  const ALBUM_RULES = [
+    {
+      name: 'Antelope Island',
+      matches: photo => {
+        const file = String(photo.file || '').toLowerCase();
+        return file.startsWith('antelope island')
+          || file === 'antelope dr.png'
+          || file.startsWith('buffalo');
+      }
+    },
+    {
+      name: 'Hawaii',
+      matches: photo => {
+        const file = String(photo.file || '').toLowerCase();
+        const collection = String(photo.collection || '').toLowerCase();
+        return collection === 'hawaii'
+          || file === 'kauai.jpg'
+          || file === 'side of kauai.jpg'
+          || file === 'relaxing.jpg';
+      }
+    }
+  ];
 
   // Exact duplicate filenames are ignored. Different extensions/case remain
   // separate because GitHub Pages treats them as separate files.
@@ -145,74 +183,166 @@
     return true;
   });
 
-  // Keep the gallery in the exact order defined in photos.js.
-  // No photograph receives a special lead position here.
-  const orderedPhotos = uniquePhotos;
+  const resolveAlbums = photo => {
+    const names = new Set();
 
-  const fragment = document.createDocumentFragment();
+    if (typeof photo.album === 'string' && photo.album.trim()) {
+      names.add(photo.album.trim());
+    }
 
-  orderedPhotos.forEach((photo, index) => {
-    const figure = document.createElement('figure');
-    figure.className = 'photo-grid-item';
+    if (Array.isArray(photo.albums)) {
+      photo.albums.forEach(name => {
+        if (typeof name === 'string' && name.trim()) names.add(name.trim());
+      });
+    }
 
-    const button = document.createElement('button');
-    button.className = 'photo-grid-button';
-    button.type = 'button';
-    button.dataset.full = basePath + photo.file;
-    button.dataset.title = photo.title || photo.file;
-    button.dataset.collection = photo.collection || '';
-    button.dataset.location = photo.location || '';
-    button.dataset.year = photo.year || '';
-    button.dataset.note = photo.note || '';
-    button.setAttribute('aria-label', `Open photograph: ${photo.title || photo.file}`);
+    ALBUM_RULES.forEach(rule => {
+      if (rule.matches(photo)) names.add(rule.name);
+    });
 
-    const img = document.createElement('img');
-    img.className = 'photo-grid-image';
-    img.src = basePath + photo.file;
-    img.alt = photo.title || '';
-    img.loading = index < 6 ? 'eager' : 'lazy';
-    img.decoding = 'async';
-    if (index < 3) img.fetchPriority = 'high';
+    // Existing Hawaii metadata continues to work automatically.
+    if (String(photo.collection || '').toLowerCase() === 'hawaii') {
+      names.add('Hawaii');
+    }
 
-    const markLoaded = () => figure.classList.add('is-loaded');
-    img.addEventListener('load', markLoaded, { once: true });
-    if (img.complete && img.naturalWidth) markLoaded();
+    return [...names];
+  };
 
-    img.addEventListener('error', () => {
-      figure.remove();
-      updateCounts();
-    }, { once: true });
+  const archive = uniquePhotos.map(photo => ({
+    ...photo,
+    __albums: resolveAlbums(photo)
+  }));
 
-    const overlay = document.createElement('span');
-    overlay.className = 'photo-grid-overlay';
+  // Fisher–Yates: a fresh order is created each time photography.html loads.
+  const shuffle = items => {
+    const copy = [...items];
+    for (let i = copy.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  };
 
-    const title = document.createElement('span');
-    title.className = 'photo-grid-title';
-    title.textContent = photo.title || photo.file;
+  let randomizedArchive = shuffle(archive);
+  let activeAlbum = 'All';
 
-    const open = document.createElement('span');
-    open.className = 'photo-grid-open';
-    open.setAttribute('aria-hidden', 'true');
-    open.textContent = '↗';
+  const albumNames = [];
+  const addAlbumName = name => {
+    if (name && !albumNames.includes(name)) albumNames.push(name);
+  };
 
-    overlay.append(title, open);
-    button.append(img, overlay);
-    figure.appendChild(button);
-    fragment.appendChild(figure);
-  });
+  ALBUM_RULES.forEach(rule => addAlbumName(rule.name));
+  archive.forEach(photo => photo.__albums.forEach(addAlbumName));
 
-  grid.replaceChildren(fragment);
-
-  const photoCount = qs('[data-photo-count]');
-  const galleryStatus = qs('[data-gallery-status]');
+  const photosForActiveAlbum = () => {
+    if (activeAlbum === 'All') return randomizedArchive;
+    return randomizedArchive.filter(photo => photo.__albums.includes(activeAlbum));
+  };
 
   function updateCounts() {
     const count = qsa('.photo-grid-button', grid).length;
-    if (photoCount) photoCount.textContent = `${count} photographs`;
-    if (galleryStatus) galleryStatus.textContent = `${count} photographs`;
+    const total = archive.length;
+
+    if (photoCount) photoCount.textContent = `${total} photographs`;
+    if (galleryStatus) galleryStatus.textContent = `${count} photograph${count === 1 ? '' : 's'}`;
+    if (albumHeading) albumHeading.textContent = activeAlbum === 'All' ? 'All photographs' : activeAlbum;
   }
 
-  updateCounts();
+  function renderAlbumNav() {
+    if (!albumNav) return;
+
+    const names = ['All', ...albumNames];
+    const fragment = document.createDocumentFragment();
+
+    names.forEach(name => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'photo-album-tab';
+      button.dataset.album = name;
+      button.textContent = name;
+      button.setAttribute('aria-pressed', String(name === activeAlbum));
+      if (name === activeAlbum) button.classList.add('is-active');
+      fragment.appendChild(button);
+    });
+
+    albumNav.replaceChildren(fragment);
+  }
+
+  function renderGrid() {
+    const photos = photosForActiveAlbum();
+    const fragment = document.createDocumentFragment();
+
+    photos.forEach((photo, index) => {
+      const figure = document.createElement('figure');
+      figure.className = 'photo-grid-item';
+
+      const button = document.createElement('button');
+      button.className = 'photo-grid-button';
+      button.type = 'button';
+      button.dataset.full = basePath + photo.file;
+      button.dataset.title = photo.title || photo.file;
+      button.dataset.collection = photo.collection || '';
+      button.dataset.location = photo.location || '';
+      button.dataset.year = photo.year || '';
+      button.dataset.note = photo.note || '';
+      button.dataset.albums = photo.__albums.join('|');
+      button.setAttribute('aria-label', `Open photograph: ${photo.title || photo.file}`);
+
+      const img = document.createElement('img');
+      img.className = 'photo-grid-image';
+      img.src = basePath + photo.file;
+      img.alt = photo.title || '';
+      img.loading = index < 6 ? 'eager' : 'lazy';
+      img.decoding = 'async';
+      if (index < 3) img.fetchPriority = 'high';
+
+      const markLoaded = () => figure.classList.add('is-loaded');
+      img.addEventListener('load', markLoaded, { once: true });
+      if (img.complete && img.naturalWidth) markLoaded();
+
+      img.addEventListener('error', () => {
+        figure.remove();
+        updateCounts();
+      }, { once: true });
+
+      const overlay = document.createElement('span');
+      overlay.className = 'photo-grid-overlay';
+
+      const title = document.createElement('span');
+      title.className = 'photo-grid-title';
+      title.textContent = photo.title || photo.file;
+
+      const open = document.createElement('span');
+      open.className = 'photo-grid-open';
+      open.setAttribute('aria-hidden', 'true');
+      open.textContent = '↗';
+
+      overlay.append(title, open);
+      button.append(img, overlay);
+      figure.appendChild(button);
+      fragment.appendChild(figure);
+    });
+
+    grid.replaceChildren(fragment);
+    updateCounts();
+  }
+
+  renderAlbumNav();
+  renderGrid();
+
+  albumNav?.addEventListener('click', event => {
+    const button = event.target.closest('[data-album]');
+    if (!button) return;
+
+    activeAlbum = button.dataset.album || 'All';
+    renderAlbumNav();
+    renderGrid();
+  });
+
+  shuffleButton?.addEventListener('click', () => {
+    randomizedArchive = shuffle(randomizedArchive);
+    renderGrid();
+  });
 
   // ----------------------------------------------------------
   // Full-frame viewer — two centered layers, soft cross-fade
@@ -249,8 +379,11 @@
   const metaAt = index => {
     const item = itemAt(index);
     if (!item) return '';
-    return [item.dataset.collection, item.dataset.location, item.dataset.year]
+
+    const albumLabel = activeAlbum !== 'All' ? activeAlbum : '';
+    return [albumLabel, item.dataset.collection, item.dataset.location, item.dataset.year]
       .filter(Boolean)
+      .filter((value, position, values) => values.indexOf(value) === position)
       .join(' · ');
   };
 
@@ -317,8 +450,6 @@
       return;
     }
 
-    // Two requestAnimationFrames ensure the browser paints the incoming image
-    // at opacity 0 before cross-fading it to opacity 1.
     incoming.classList.remove('is-active');
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
@@ -336,6 +467,7 @@
   }
 
   async function openViewer(button) {
+    // Re-read the DOM so the viewer follows the current randomized/album order.
     buttons = qsa('.photo-grid-button', grid);
     const index = buttons.indexOf(button);
     if (index < 0) return;
@@ -386,7 +518,7 @@
   });
 
   // Swipe navigation tracks gesture distance only. It does not move/scale the
-  // image while dragging, so the photograph remains fully contained at all times.
+  // image while dragging, so the photograph remains fully contained.
   stage?.addEventListener('pointerdown', event => {
     if (event.pointerType === 'mouse' && event.button !== 0) return;
     pointerStartX = event.clientX;
