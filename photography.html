@@ -11,11 +11,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/photography.css">
 </head>
-<body class="photo-page">
+<body class="photo-page photo-page-editorial">
   <header class="site-header" data-site-header>
-    <a class="brand" href="index.html" aria-label="Ryan portfolio home"><span class="brand-mark">R</span><span class="brand-word">RYAN</span></a>
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNav" data-nav-toggle><span class="sr-only">Open navigation</span><span></span><span></span></button>
+    <a class="brand" href="index.html" aria-label="Ryan portfolio home">
+      <span class="brand-mark">R</span><span class="brand-word">RYAN</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNav" data-nav-toggle>
+      <span class="sr-only">Open navigation</span><span></span><span></span>
+    </button>
     <nav class="site-nav" id="siteNav" aria-label="Primary navigation" data-site-nav>
       <a href="index.html">Home</a>
       <a class="is-active" href="photography.html">Photography</a>
@@ -27,43 +32,58 @@
   </header>
 
   <main>
-    <section class="photo-hero container-wide">
+    <section class="photo-hero-editorial container-wide">
       <div class="photo-hero-title">
         <p class="eyebrow">Photography / Archive</p>
         <h1>Look slowly.</h1>
       </div>
       <div class="photo-hero-copy">
         <p>Portraits, places, details, and passing moments. Open any frame to move through the collection without leaving the image.</p>
-        <div class="photo-meta-line"><span data-photo-count>Photography archive</span><span>Swipe · Drag · Arrow keys</span></div>
+        <div class="photo-meta-line">
+          <span data-photo-count>Photography archive</span>
+          <span>Swipe · Arrow keys</span>
+        </div>
       </div>
     </section>
 
-    <section class="gallery-shell container-wide" aria-label="Photography gallery">
-      <div class="gallery-rule"><span>Archive / Collections</span><span>Choose a collection or browse everything</span></div>
-      <div class="collection-filters" data-collection-filters aria-label="Photography collections"></div>
-      <div class="gallery-status" aria-live="polite"><span data-gallery-status>All photographs</span><span>Click any image to enter the viewer</span></div>
-      <div class="masonry-gallery" data-gallery></div>
+    <section class="photo-grid-section" aria-label="Photography gallery">
+      <div class="photo-grid-bar">
+        <span>Archive</span>
+        <span data-gallery-status>Photographs</span>
+      </div>
+
+      <!--
+        photos.js remains your editable manifest. This page intentionally does
+        NOT use data-gallery, so the older renderer inside photos.js exits
+        immediately. photography-page.js renders the current manifest instead.
+      -->
+      <div class="photo-grid" id="photoGrid"></div>
     </section>
   </main>
 
-  <div class="lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Photo viewer" data-lightbox>
-    <div class="lightbox-topbar">
-      <a class="lightbox-brand" href="photography.html">RYAN / PHOTOGRAPHY</a>
-      <div class="lightbox-index" aria-live="polite" data-lightbox-index></div>
-      <button class="icon-button" type="button" aria-label="Close photo viewer" data-lightbox-close>×</button>
+  <div class="photo-viewer" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Photo viewer" data-photo-viewer>
+    <div class="photo-viewer-topbar">
+      <span class="photo-viewer-brand">RYAN / PHOTOGRAPHY</span>
+      <div class="photo-viewer-index" aria-live="polite" data-viewer-index></div>
+      <button class="photo-viewer-close" type="button" aria-label="Close photo viewer" data-viewer-close>×</button>
     </div>
-    <button class="lightbox-nav lightbox-prev" type="button" aria-label="Previous photo" data-lightbox-prev>‹</button>
-    <div class="lightbox-stage" data-lightbox-stage>
-      <div class="lightbox-slide lightbox-slide-prev" aria-hidden="true"><img alt=""></div>
-      <div class="lightbox-slide lightbox-slide-current"><img data-lightbox-image alt=""></div>
-      <div class="lightbox-slide lightbox-slide-next" aria-hidden="true"><img alt=""></div>
+
+    <button class="photo-viewer-nav photo-viewer-prev" type="button" aria-label="Previous photograph" data-viewer-prev>‹</button>
+
+    <div class="photo-viewer-stage" data-viewer-stage>
+      <img class="photo-viewer-image is-active" data-viewer-image-a alt="">
+      <img class="photo-viewer-image" data-viewer-image-b alt="">
     </div>
-    <button class="lightbox-nav lightbox-next" type="button" aria-label="Next photo" data-lightbox-next>›</button>
-    <div class="lightbox-footer">
-      <div class="lightbox-copy"><p data-lightbox-caption></p><p class="lightbox-meta" data-lightbox-meta></p></div>
-      <p class="lightbox-hint">Swipe, drag, or use ← →</p>
+
+    <button class="photo-viewer-nav photo-viewer-next" type="button" aria-label="Next photograph" data-viewer-next>›</button>
+
+    <div class="photo-viewer-footer">
+      <div class="photo-viewer-copy">
+        <p class="photo-viewer-caption" data-viewer-caption></p>
+        <p class="photo-viewer-meta" data-viewer-meta></p>
+      </div>
+      <p class="photo-viewer-hint">Swipe or use ← →</p>
     </div>
-    <div class="lightbox-progress" aria-hidden="true"><span data-lightbox-progress></span></div>
   </div>
 
   <footer class="site-footer">
@@ -73,6 +93,6 @@
   </footer>
 
   <script src="js/photos.js"></script>
-  <script src="js/portfolio.js"></script>
+  <script src="js/photography-page.js"></script>
 </body>
 </html>

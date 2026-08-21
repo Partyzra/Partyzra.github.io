@@ -1018,89 +1018,131 @@ const PORTFOLIO_PHOTOS = [
   }
 ];
 
-
+// ============================================================
+// PHOTOGRAPHY DISPLAY ORDER + GALLERY RENDERER
+// ============================================================
+// The manifest above remains the source of truth.
+// This display layer keeps the page simple and controls visual order
+// without forcing you to rearrange 100+ manifest entries by hand.
 
 (function renderPhotographyGallery() {
   const gallery = document.querySelector('[data-gallery]');
+  const featuredGallery = document.querySelector('[data-featured-gallery]');
   if (!gallery) return;
 
-  const filterBar = document.querySelector('[data-collection-filters]');
   const basePath = 'Images/photo-full/';
-  const fragment = document.createDocumentFragment();
 
-  gallery.innerHTML = '';
+  // Do not show the exact same file twice if the manifest accidentally
+  // contains a duplicate entry.
+  const seenFiles = new Set();
+  const uniquePhotos = PORTFOLIO_PHOTOS.filter(photo => {
+    const key = String(photo.file || '').trim();
+    if (!key || seenFiles.has(key)) return false;
+    seenFiles.add(key);
+    return true;
+  });
 
-  PORTFOLIO_PHOTOS.forEach((photo, index) => {
+  // Two photographs intentionally lead the page.
+  const featuredNames = ['Fox.jpg', 'Buffalo.jpg'];
+  const featuredPhotos = featuredNames
+    .map(file => uniquePhotos.find(photo => photo.file === file))
+    .filter(Boolean);
+
+  const featuredFiles = new Set(featuredPhotos.map(photo => photo.file));
+
+  const isPeople = photo => {
+    const collection = String(photo.collection || '').toLowerCase();
+    const tags = (photo.tags || []).map(tag => String(tag).toLowerCase());
+    return ['people', 'portraits', 'family'].includes(collection)
+      || tags.some(tag => ['people', 'portrait', 'self-portrait'].includes(tag));
+  };
+
+  const isLocation = photo => {
+    const collection = String(photo.collection || '').toLowerCase();
+    return ['landscape', 'places & structures', 'hawaii', 'atmosphere'].includes(collection);
+  };
+
+  // After Fox and Buffalo, people come first, then locations, then the
+  // remainder of the archive. Original manifest order is preserved inside
+  // each group.
+  const archivePhotos = uniquePhotos
+    .filter(photo => !featuredFiles.has(photo.file))
+    .map((photo, originalIndex) => ({ photo, originalIndex }))
+    .sort((a, b) => {
+      const group = item => isPeople(item.photo) ? 0 : isLocation(item.photo) ? 1 : 2;
+      return group(a) - group(b) || a.originalIndex - b.originalIndex;
+    })
+    .map(item => item.photo);
+
+  function makePhotoFigure(photo, index, featured = false) {
     const figure = document.createElement('figure');
-    figure.className = 'gallery-item';
-    figure.dataset.reveal = '';
-    figure.dataset.collection = photo.collection;
+    figure.className = featured ? 'gallery-item featured-item' : 'gallery-item';
+    figure.dataset.collection = photo.collection || '';
     figure.dataset.featured = String(Boolean(photo.featured));
 
     const button = document.createElement('button');
     button.className = 'gallery-button';
     button.type = 'button';
     button.dataset.full = basePath + photo.file;
-    button.dataset.title = photo.title;
-    button.dataset.caption = photo.title; // backwards-compatible with the viewer
-    button.dataset.collection = photo.collection;
+    button.dataset.title = photo.title || photo.file;
+    button.dataset.caption = photo.title || photo.file;
+    button.dataset.collection = photo.collection || '';
     button.dataset.year = photo.year || '';
     button.dataset.location = photo.location || '';
     button.dataset.note = photo.note || '';
-    button.setAttribute('aria-label', `Open photograph ${index + 1}: ${photo.title}`);
+    button.setAttribute('aria-label', `Open photograph: ${photo.title || photo.file}`);
 
     const img = document.createElement('img');
     img.src = basePath + photo.file;
-    img.alt = photo.title;
-    img.loading = index < 6 ? 'eager' : 'lazy';
+    img.alt = photo.title || '';
+    img.loading = featured || index < 8 ? 'eager' : 'lazy';
     img.decoding = 'async';
+    if (featured) img.fetchPriority = 'high';
+
+    // Broken/missing filenames should not leave an empty tile in the grid.
+    img.addEventListener('error', () => {
+      figure.remove();
+      window.dispatchEvent(new CustomEvent('portfolio:photo-missing', { detail: { file: photo.file } }));
+    }, { once: true });
 
     const overlay = document.createElement('span');
     overlay.className = 'gallery-overlay';
-
-    const number = document.createElement('span');
-    number.className = 'gallery-index';
-    number.textContent = String(index + 1).padStart(2, '0');
 
     const copy = document.createElement('span');
     copy.className = 'gallery-copy';
 
     const title = document.createElement('span');
     title.className = 'gallery-caption';
-    title.textContent = photo.title;
+    title.textContent = photo.title || photo.file;
 
-    const collection = document.createElement('span');
-    collection.className = 'gallery-collection';
-    collection.textContent = photo.collection;
-
-    copy.append(title, collection);
+    copy.appendChild(title);
 
     const openIcon = document.createElement('span');
     openIcon.className = 'gallery-open';
     openIcon.setAttribute('aria-hidden', 'true');
     openIcon.textContent = '↗';
 
-    overlay.append(number, copy, openIcon);
+    overlay.append(copy, openIcon);
     button.append(img, overlay);
     figure.appendChild(button);
-    fragment.appendChild(figure);
+    return figure;
+  }
+
+  gallery.innerHTML = '';
+  if (featuredGallery) featuredGallery.innerHTML = '';
+
+  featuredPhotos.forEach((photo, index) => {
+    featuredGallery?.appendChild(makePhotoFigure(photo, index, true));
   });
 
+  const fragment = document.createDocumentFragment();
+  archivePhotos.forEach((photo, index) => {
+    fragment.appendChild(makePhotoFigure(photo, index, false));
+  });
   gallery.appendChild(fragment);
 
-  if (!filterBar) return;
-
-  const collections = [...new Set(PORTFOLIO_PHOTOS.map(photo => photo.collection))];
-  const options = ['All', ...collections];
-
-  options.forEach((name, index) => {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'collection-filter';
-    button.dataset.collectionFilter = name;
-    button.textContent = name;
-    button.setAttribute('aria-pressed', index === 0 ? 'true' : 'false');
-    if (index === 0) button.classList.add('is-active');
-    filterBar.appendChild(button);
-  });
+  // Let the site-wide viewer know the gallery has been rendered.
+  window.dispatchEvent(new CustomEvent('portfolio:gallery-ready', {
+    detail: { count: uniquePhotos.length }
+  }));
 })();

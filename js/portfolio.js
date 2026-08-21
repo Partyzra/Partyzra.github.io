@@ -115,55 +115,27 @@
     syncTimeline();
   });
 
-  // Photography collections + seamless lightbox.
-  const allGalleryButtons = qsa('.gallery-button');
+  // Photography: simple gallery + full-frame viewer.
+  const allGalleryButtons = qsa('.gallery-button').filter(button => button.isConnected);
   const countEl = qs('[data-photo-count]');
   const statusEl = qs('[data-gallery-status]');
-  const filterButtons = qsa('[data-collection-filter]');
 
-  const visibleGalleryButtons = () => allGalleryButtons.filter(button => !button.closest('.gallery-item')?.hidden);
+  const connectedGalleryButtons = () => allGalleryButtons.filter(button => button.isConnected);
 
-  const updateGalleryCount = (label = 'All') => {
-    const visible = visibleGalleryButtons();
-    if (countEl) countEl.textContent = `${allGalleryButtons.length} photographs`;
-    if (statusEl) statusEl.textContent = label === 'All' ? `${visible.length} photographs` : `${label} / ${visible.length} photographs`;
+  const syncGalleryCount = () => {
+    const count = connectedGalleryButtons().length;
+    if (countEl) countEl.textContent = `${count} photographs`;
+    if (statusEl) statusEl.textContent = `${count} photographs`;
   };
 
-  filterButtons.forEach(filter => {
-    filter.addEventListener('click', () => {
-      const selected = filter.dataset.collectionFilter || 'All';
-
-      filterButtons.forEach(button => {
-        const active = button === filter;
-        button.classList.toggle('is-active', active);
-        button.setAttribute('aria-pressed', String(active));
-      });
-
-      allGalleryButtons.forEach(button => {
-        const item = button.closest('.gallery-item');
-        if (!item) return;
-        const matches = selected === 'All' || button.dataset.collection === selected;
-        item.hidden = !matches;
-        item.classList.toggle('is-filtered-out', !matches);
-      });
-
-      updateGalleryCount(selected);
-      window.dispatchEvent(new CustomEvent('portfolio:gallery-filtered', { detail: { collection: selected } }));
-    });
-  });
-
-  updateGalleryCount();
+  syncGalleryCount();
+  window.addEventListener('portfolio:photo-missing', syncGalleryCount);
 
   const lightbox = qs('[data-lightbox]');
   if (!lightbox || !allGalleryButtons.length) return;
 
   const stage = qs('[data-lightbox-stage]', lightbox);
-  const currentSlide = qs('.lightbox-slide-current', lightbox);
-  const prevSlide = qs('.lightbox-slide-prev', lightbox);
-  const nextSlide = qs('.lightbox-slide-next', lightbox);
   const currentImg = qs('[data-lightbox-image]', lightbox);
-  const prevImg = qs('img', prevSlide);
-  const nextImg = qs('img', nextSlide);
   const captionEl = qs('[data-lightbox-caption]', lightbox);
   const metaEl = qs('[data-lightbox-meta]', lightbox);
   const indexEl = qs('[data-lightbox-index]', lightbox);
@@ -178,11 +150,13 @@
   let pointerDeltaX = 0;
   let isPointerDown = false;
   let transitionLock = false;
+  let transitionTimer = 0;
 
-  const currentSet = () => visibleGalleryButtons().length ? visibleGalleryButtons() : allGalleryButtons;
+  const currentSet = () => connectedGalleryButtons();
   const wrap = (index, items = currentSet()) => (index + items.length) % items.length;
   const itemAt = index => {
     const items = currentSet();
+    if (!items.length) return null;
     return items[wrap(index, items)];
   };
   const sourceAt = index => itemAt(index)?.dataset.full || qs('img', itemAt(index))?.src || '';
@@ -193,100 +167,138 @@
     return [item.dataset.collection, item.dataset.location, item.dataset.year].filter(Boolean).join(' · ');
   };
 
-  function preloadAround(index) {
-    const items = currentSet();
-    if (items.length < 2) return;
-    [-2, -1, 1, 2].forEach(offset => {
-      const src = sourceAt(index + offset);
-      if (!src) return;
-      const preloader = new Image();
-      preloader.src = src;
+  const preloadCache = new Map();
+
+  function preload(src) {
+    if (!src) return Promise.resolve();
+    if (preloadCache.has(src)) return preloadCache.get(src);
+
+    const promise = new Promise(resolve => {
+      const image = new Image();
+      image.onload = async () => {
+        try { if (image.decode) await image.decode(); } catch (_) {}
+        resolve();
+      };
+      image.onerror = resolve;
+      image.src = src;
+      if (image.complete) image.onload();
     });
+
+    preloadCache.set(src, promise);
+    return promise;
   }
 
-  function syncSlides(index) {
+  function preloadAround(index) {
+    [-2, -1, 1, 2].forEach(offset => preload(sourceAt(index + offset)));
+  }
+
+  function syncCopy(index) {
     const items = currentSet();
     if (!items.length) return;
     currentIndex = wrap(index, items);
-    currentImg.src = sourceAt(currentIndex);
-    currentImg.alt = captionAt(currentIndex);
-    prevImg.src = sourceAt(currentIndex - 1);
-    prevImg.alt = '';
-    nextImg.src = sourceAt(currentIndex + 1);
-    nextImg.alt = '';
-    captionEl.textContent = captionAt(currentIndex);
+    if (captionEl) captionEl.textContent = captionAt(currentIndex);
     if (metaEl) metaEl.textContent = metaAt(currentIndex);
-    indexEl.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(items.length).padStart(2, '0')}`;
+    if (indexEl) indexEl.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(items.length).padStart(2, '0')}`;
     if (progressEl) progressEl.style.width = `${((currentIndex + 1) / items.length) * 100}%`;
-    preloadAround(currentIndex);
   }
 
-  function resetSlidePositions() {
-    [currentSlide, prevSlide, nextSlide].forEach(slide => {
-      slide.style.transform = '';
-      slide.style.opacity = '';
+  async function show(index, { animate = false, direction = 1 } = {}) {
+    const items = currentSet();
+    if (!items.length) return;
+
+    const targetIndex = wrap(index, items);
+    const src = sourceAt(targetIndex);
+    if (!src) return;
+
+    // Adjacent photographs are normally already in cache. Awaiting the target
+    // before swapping prevents the viewer from briefly showing an empty frame.
+    await preload(src);
+
+    if (animate) {
+      currentImg.style.setProperty('--photo-exit-x', `${direction > 0 ? -14 : 14}px`);
+      currentImg.classList.add('is-leaving');
+      await new Promise(resolve => window.setTimeout(resolve, 150));
+    }
+
+    syncCopy(targetIndex);
+
+    // Place the new image slightly on the opposite side, then softly settle it
+    // to center. The image box itself always fills the stage with object-fit:
+    // contain, so portrait and landscape photographs remain completely visible.
+    currentImg.classList.add('no-transition');
+    currentImg.classList.remove('is-leaving');
+    currentImg.src = src;
+    currentImg.alt = captionAt(targetIndex);
+    currentImg.style.opacity = '0';
+    currentImg.style.transform = `translate3d(${animate ? (direction > 0 ? 12 : -12) : 0}px, 0, 0) scale(.992)`;
+
+    try { if (currentImg.decode) await currentImg.decode(); } catch (_) {}
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        currentImg.classList.remove('no-transition');
+        currentImg.style.opacity = '1';
+        currentImg.style.transform = 'translate3d(0,0,0) scale(1)';
+      });
     });
+
+    preloadAround(targetIndex);
   }
 
-  function open(trigger) {
+  async function open(trigger) {
     const items = currentSet();
     const index = items.indexOf(trigger);
     if (index < 0) return;
+
     lastFocused = trigger || document.activeElement;
-    syncSlides(index);
+    await show(index, { animate: false });
     lightbox.classList.add('is-open');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.classList.add('no-scroll');
-    closeBtn.focus({ preventScroll: true });
+    closeBtn?.focus({ preventScroll: true });
   }
 
   function close() {
+    window.clearTimeout(transitionTimer);
+    transitionLock = false;
     lightbox.classList.remove('is-open');
     lightbox.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('no-scroll');
-    resetSlidePositions();
+    currentImg.classList.remove('is-leaving', 'no-transition');
+    currentImg.style.transform = '';
+    currentImg.style.opacity = '';
     if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus({ preventScroll: true });
   }
 
-  function go(direction) {
+  async function go(direction) {
     const items = currentSet();
     if (transitionLock || items.length < 2) return;
     transitionLock = true;
-    stage.classList.remove('is-dragging');
+    stage?.classList.remove('is-dragging');
 
-    const width = Math.max(stage.clientWidth, 1);
-    currentSlide.style.transform = `translate3d(${direction > 0 ? -width : width}px,0,0)`;
-    currentSlide.style.opacity = '.08';
-    const incoming = direction > 0 ? nextSlide : prevSlide;
-    incoming.style.transform = 'translate3d(0,0,0)';
-    incoming.style.opacity = '1';
+    await show(currentIndex + direction, { animate: true, direction });
 
-    window.setTimeout(() => {
-      syncSlides(currentIndex + direction);
-      resetSlidePositions();
+    transitionTimer = window.setTimeout(() => {
       transitionLock = false;
-    }, 430);
+    }, 360);
   }
 
   allGalleryButtons.forEach(button => button.addEventListener('click', () => open(button)));
-  closeBtn.addEventListener('click', close);
-  prevBtn.addEventListener('click', () => go(-1));
-  nextBtn.addEventListener('click', () => go(1));
+  closeBtn?.addEventListener('click', close);
+  prevBtn?.addEventListener('click', () => go(-1));
+  nextBtn?.addEventListener('click', () => go(1));
 
-  lightbox.addEventListener('keydown', event => {
+  document.addEventListener('keydown', event => {
+    if (!lightbox.classList.contains('is-open')) return;
     if (event.key === 'Escape') close();
-    if (event.key === 'ArrowLeft') go(-1);
-    if (event.key === 'ArrowRight') go(1);
-    if (event.key === 'Tab') {
-      const focusables = [closeBtn, prevBtn, nextBtn].filter(Boolean);
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
-      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
-      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
-    }
+    if (event.key === 'ArrowLeft') { event.preventDefault(); go(-1); }
+    if (event.key === 'ArrowRight') { event.preventDefault(); go(1); }
   });
 
-  stage.addEventListener('pointerdown', event => {
+  // Swipe/drag is intentionally restrained. It provides feedback without
+  // physically pulling neighboring slides into view, which keeps the full
+  // photograph stable and centered.
+  stage?.addEventListener('pointerdown', event => {
     if (event.pointerType === 'mouse' && event.button !== 0) return;
     isPointerDown = true;
     pointerStartX = event.clientX;
@@ -295,33 +307,32 @@
     stage.setPointerCapture?.(event.pointerId);
   });
 
-  stage.addEventListener('pointermove', event => {
-    if (!isPointerDown) return;
+  stage?.addEventListener('pointermove', event => {
+    if (!isPointerDown || transitionLock) return;
     pointerDeltaX = event.clientX - pointerStartX;
     const width = Math.max(stage.clientWidth, 1);
-    const x = pointerDeltaX * .94;
-    currentSlide.style.transform = `translate3d(${x}px,0,0)`;
-    currentSlide.style.opacity = String(Math.max(.28, 1 - Math.abs(x) / width * .78));
-    prevSlide.style.transform = `translate3d(calc(-103% + ${x}px),0,0)`;
-    nextSlide.style.transform = `translate3d(calc(103% + ${x}px),0,0)`;
+    const softX = Math.max(-42, Math.min(42, pointerDeltaX * .14));
+    const opacity = Math.max(.72, 1 - Math.abs(pointerDeltaX) / width * .45);
+    currentImg.style.transform = `translate3d(${softX}px,0,0) scale(.995)`;
+    currentImg.style.opacity = String(opacity);
   });
 
   function finishPointer(event) {
     if (!isPointerDown) return;
     isPointerDown = false;
-    stage.releasePointerCapture?.(event.pointerId);
-    stage.classList.remove('is-dragging');
-    const threshold = Math.min(100, stage.clientWidth * .14);
-    if (Math.abs(pointerDeltaX) > threshold) {
-      const direction = pointerDeltaX < 0 ? 1 : -1;
-      resetSlidePositions();
-      go(direction);
-    } else {
-      resetSlidePositions();
-    }
+    stage?.releasePointerCapture?.(event.pointerId);
+    stage?.classList.remove('is-dragging');
+
+    const threshold = Math.min(90, Math.max(52, stage.clientWidth * .1));
+    const delta = pointerDeltaX;
     pointerDeltaX = 0;
+
+    currentImg.style.transform = 'translate3d(0,0,0) scale(1)';
+    currentImg.style.opacity = '1';
+
+    if (Math.abs(delta) >= threshold) go(delta < 0 ? 1 : -1);
   }
 
-  stage.addEventListener('pointerup', finishPointer);
-  stage.addEventListener('pointercancel', finishPointer);
+  stage?.addEventListener('pointerup', finishPointer);
+  stage?.addEventListener('pointercancel', finishPointer);
 })();
