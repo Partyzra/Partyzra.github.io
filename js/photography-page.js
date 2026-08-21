@@ -57,37 +57,9 @@
     return true;
   });
 
-  const leadOrder = ['Fox.jpg', 'Buffalo.jpg'];
-
-  const isPeople = photo => {
-    const collection = String(photo.collection || '').toLowerCase();
-    const tags = (photo.tags || []).map(tag => String(tag).toLowerCase());
-    return ['people', 'portraits', 'family'].includes(collection)
-      || tags.some(tag => ['people', 'portrait', 'self-portrait'].includes(tag));
-  };
-
-  const isLocation = photo => {
-    const collection = String(photo.collection || '').toLowerCase();
-    return ['landscape', 'places & structures', 'hawaii', 'atmosphere'].includes(collection);
-  };
-
-  // Fox, Buffalo, then people, then places/landscapes, then everything else.
-  // Original photos.js order is preserved within each group.
-  const orderedPhotos = uniquePhotos
-    .map((photo, originalIndex) => ({ photo, originalIndex }))
-    .sort((a, b) => {
-      const rank = item => {
-        const lead = leadOrder.indexOf(item.photo.file);
-        if (lead !== -1) return lead;
-        if (isPeople(item.photo)) return 10;
-        if (isLocation(item.photo)) return 20;
-        return 30;
-      };
-
-      const difference = rank(a) - rank(b);
-      return difference || a.originalIndex - b.originalIndex;
-    })
-    .map(item => item.photo);
+  // Keep the gallery in the exact order defined in photos.js.
+  // No photograph receives a special lead position here.
+  const orderedPhotos = uniquePhotos;
 
   const fragment = document.createDocumentFragment();
 
@@ -112,7 +84,7 @@
     img.alt = photo.title || '';
     img.loading = index < 6 ? 'eager' : 'lazy';
     img.decoding = 'async';
-    if (index < 2) img.fetchPriority = 'high';
+    if (index < 3) img.fetchPriority = 'high';
 
     const markLoaded = () => figure.classList.add('is-loaded');
     img.addEventListener('load', markLoaded, { once: true });
