@@ -532,3 +532,117 @@ body.no-scroll {
     transition: none !important;
   }
 }
+
+/* ------------------------------------------------------------
+   Photography soundtrack
+   ------------------------------------------------------------ */
+
+.photo-soundtrack-audio {
+  display: none;
+}
+
+.photo-soundtrack-control {
+  position: fixed;
+  z-index: 9200;
+  right: clamp(14px, 2vw, 28px);
+  bottom: clamp(14px, 2vw, 26px);
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 48px;
+  max-width: min(340px, calc(100vw - 28px));
+  padding: 9px 13px 9px 10px;
+  border: 1px solid rgba(240,238,233,.14);
+  border-radius: 999px;
+  background: rgba(9,10,11,.80);
+  color: var(--photo-text);
+  box-shadow: 0 14px 45px rgba(0,0,0,.28);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  cursor: pointer;
+  opacity: .78;
+  transition: opacity .2s ease, border-color .2s ease, background .2s ease, transform .2s ease;
+}
+
+.photo-soundtrack-control:hover,
+.photo-soundtrack-control:focus-visible,
+.photo-soundtrack-control.needs-interaction {
+  opacity: 1;
+  border-color: rgba(240,238,233,.28);
+  background: rgba(14,15,16,.94);
+}
+
+.photo-soundtrack-control:focus-visible {
+  outline: 2px solid var(--photo-accent);
+  outline-offset: 3px;
+}
+
+.photo-soundtrack-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(240,238,233,.18);
+  border-radius: 50%;
+  color: var(--photo-text);
+  font-size: .72rem;
+  line-height: 1;
+}
+
+.photo-soundtrack-copy {
+  display: grid;
+  min-width: 0;
+  gap: 1px;
+  text-align: left;
+}
+
+.photo-soundtrack-status,
+.photo-soundtrack-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.photo-soundtrack-status {
+  color: var(--photo-text);
+  font-size: .57rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+}
+
+.photo-soundtrack-title {
+  color: var(--photo-dim);
+  font-size: .66rem;
+  letter-spacing: .01em;
+}
+
+.photo-soundtrack-control.is-playing .photo-soundtrack-icon {
+  border-color: rgba(240,238,233,.32);
+}
+
+@media (max-width: 600px) {
+  .photo-soundtrack-control {
+    right: 10px;
+    bottom: 10px;
+    min-height: 44px;
+    padding: 7px 9px;
+  }
+
+  .photo-soundtrack-copy {
+    display: none;
+  }
+
+  .photo-soundtrack-icon {
+    flex-basis: 28px;
+    width: 28px;
+    height: 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-soundtrack-control {
+    transition: none;
+  }
+}

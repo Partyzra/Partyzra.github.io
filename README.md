@@ -1,22 +1,28 @@
-# Photography V4.3 — Near-Black Theme
+# Photography V4.4 — Soundtrack
 
-This is a small visual patch for Photography V4.2/V4.1.
+This patch keeps the near-black Photography page, the `Look slowly.` intro, the current grid order from `js/photos.js`, and the full-frame cross-fade viewer.
 
-## Replace
-Copy only:
+## New
 
-- `css/photography.css`
+- Adds **The Drive Back — Tom Anello** as the Photography-page soundtrack.
+- The supplied 67 MB / 24-bit WAV was converted to a web-friendly 192 kbps MP3 (~5.6 MB). The original upload is unchanged.
+- The page attempts audible autoplay when `photography.html` loads.
+- If the browser blocks autoplay, the fixed soundtrack control changes to **Play soundtrack**. One click starts it.
+- The track starts at a restrained volume and fades up to about 42% so it does not overwhelm the photographs.
+- The control remains available while browsing and while the fullscreen photo viewer is open.
+- The track plays once. It does not loop automatically.
 
-into the matching `css/` folder in your local `partyzra.github.io` repository.
+## Copy into the GitHub repository
 
-## Keep unchanged
-Do not replace:
+Replace/add these paths:
 
 - `photography.html`
-- `js/photos.js`
+- `css/photography.css`
 - `js/photography-page.js`
-- `Images/`
-- `MusicTracks/`
+- `assets/audio/the-drive-back-tom-anello.mp3`
 
-## Visual change
-The Photography page now uses one continuous near-black background across the intro, gallery, footer, and fullscreen viewer. Gallery tiles are also dark so unloaded/loading areas do not flash a different color. Text is warm off-white with subdued gray secondary text.
+Keep your existing `js/photos.js` and `Images/` folder unchanged.
+
+## Browser autoplay note
+
+Modern browsers may block audible autoplay on a visitor's first visit. That cannot be reliably bypassed from page code. This version attempts autoplay immediately and provides the small play/pause control as a graceful fallback.

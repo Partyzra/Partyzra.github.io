@@ -39,6 +39,94 @@
   });
 
   // ----------------------------------------------------------
+  // Photography soundtrack
+  // ----------------------------------------------------------
+
+  const soundtrack = qs('[data-photo-soundtrack]');
+  const soundtrackToggle = qs('[data-soundtrack-toggle]');
+  const soundtrackIcon = qs('[data-soundtrack-icon]');
+  const soundtrackStatus = qs('[data-soundtrack-status]');
+
+  if (soundtrack && soundtrackToggle) {
+    const targetVolume = 0.42;
+    let fadeFrame = null;
+
+    const setSoundtrackUI = (state) => {
+      const playing = state === 'playing';
+      const blocked = state === 'blocked';
+      const ended = state === 'ended';
+
+      soundtrackToggle.classList.toggle('is-playing', playing);
+      soundtrackToggle.classList.toggle('needs-interaction', blocked);
+      soundtrackToggle.setAttribute('aria-pressed', String(playing));
+      soundtrackToggle.setAttribute('aria-label', playing ? 'Pause soundtrack' : (ended ? 'Replay soundtrack' : 'Play soundtrack'));
+
+      if (soundtrackIcon) soundtrackIcon.textContent = playing ? 'Ⅱ' : '▶';
+      if (soundtrackStatus) {
+        soundtrackStatus.textContent = playing ? 'Now playing' : (ended ? 'Replay soundtrack' : (blocked ? 'Play soundtrack' : 'Soundtrack'));
+      }
+    };
+
+    const fadeVolume = (from, to, duration = 1600) => {
+      if (fadeFrame) cancelAnimationFrame(fadeFrame);
+      const started = performance.now();
+      soundtrack.volume = Math.max(0, Math.min(1, from));
+
+      const step = now => {
+        const progress = Math.min(1, (now - started) / duration);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        soundtrack.volume = from + (to - from) * eased;
+        if (progress < 1) fadeFrame = requestAnimationFrame(step);
+      };
+
+      fadeFrame = requestAnimationFrame(step);
+    };
+
+    const startSoundtrack = async () => {
+      try {
+        soundtrack.volume = 0.12;
+        await soundtrack.play();
+        fadeVolume(0.12, targetVolume);
+        setSoundtrackUI('playing');
+        return true;
+      } catch (_) {
+        soundtrack.volume = targetVolume;
+        setSoundtrackUI('blocked');
+        return false;
+      }
+    };
+
+    const pauseSoundtrack = () => {
+      if (fadeFrame) cancelAnimationFrame(fadeFrame);
+      soundtrack.pause();
+      soundtrack.volume = targetVolume;
+      setSoundtrackUI('paused');
+    };
+
+    soundtrackToggle.addEventListener('click', async () => {
+      if (!soundtrack.paused && !soundtrack.ended) {
+        pauseSoundtrack();
+        return;
+      }
+
+      if (soundtrack.ended) soundtrack.currentTime = 0;
+      await startSoundtrack();
+    });
+
+    soundtrack.addEventListener('play', () => setSoundtrackUI('playing'));
+    soundtrack.addEventListener('pause', () => {
+      if (!soundtrack.ended) setSoundtrackUI('paused');
+    });
+    soundtrack.addEventListener('ended', () => setSoundtrackUI('ended'));
+
+    // Attempt audible autoplay as soon as the page script runs. Modern browsers
+    // may reject this on a first visit; in that case the control changes to a
+    // clear "Play soundtrack" fallback and one click starts playback.
+    setSoundtrackUI('paused');
+    startSoundtrack();
+  }
+
+  // ----------------------------------------------------------
   // Gallery rendering
   // ----------------------------------------------------------
 
