@@ -162,7 +162,8 @@
           || file === 'antelope dr.png'
           || file.startsWith('buffalo')
           || file === 'rocks.jpg'
-          || file === 'rocks2.jpg';
+          || file === 'rocks2.jpg'
+          || file === 'flowers1.jpg';
       }
     },
     {
@@ -207,6 +208,8 @@
         // older metadata happens to label them as portraits/people.
         const explicitlyNotPeople = file === 'possey.jpg'
           || file === 'door.jpg'
+          || file === 'open mouth.jpg'
+          || file === 'homeless.jpg'
           || /(^|[\s_.-])(cat|kitty)([\s_.-]|$)/.test(file)
           || /(^|\s)(cat|kitty)(\s|$)/.test(title);
 

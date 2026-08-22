@@ -231,7 +231,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Open Mouth.jpg",
     "title": "Open Mouth",
-    "collection": "Experimental",
+    "collection": "Nature",
     "year": "",
     "location": "",
     "featured": false,
