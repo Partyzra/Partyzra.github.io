@@ -527,19 +527,7 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
-  {
-    "file": "Grasshopper.png",
-    "title": "Grasshopper",
-    "collection": "Wildlife",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "insect"
-    ],
-    "note": ""
-  },
-  {
+{
     "file": "Hawaii Beach.jpg",
     "title": "Hawaii Beach",
     "collection": "Hawaii",
@@ -723,6 +711,19 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Antelope Island1.jpg",
+    "title": "Antelope Island",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "flora"
+    ],
+    "note": "",
+    "album": "Antelope Island"
+  },
+    {
+    "file": "Antelope Island2.jpg",
     "title": "Antelope Island",
     "collection": "Nature",
     "year": "",
