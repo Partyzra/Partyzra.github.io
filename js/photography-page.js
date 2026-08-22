@@ -189,6 +189,9 @@
           || file === 'samurai.jpg'
           || file === 'printing press3.jpg'
           || file === 'peacock.jpg'
+          || file === 'clock tower.jpg'
+          || file === 'performance.jpg'
+          || file === 'carts.jpg'
           || tags.includes('coaster');
       }
     },
