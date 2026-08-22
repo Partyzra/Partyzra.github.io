@@ -1237,8 +1237,8 @@ const PORTFOLIO_PHOTOS = [
       "people"
     ],
     "note": ""
-  }
-{
+  },
+  {
     "file": "Path.jpg",
     "title": "Path",
     "collection": "Landscape",

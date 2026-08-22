@@ -1,0 +1,16 @@
+Photography V4.8.1 — photo manifest syntax fix
+
+Cause:
+The Zey Portrait.png object in js/photos.js was not followed by a comma
+before the newly-added Path.jpg object. That caused the entire photos.js
+file to fail JavaScript parsing, so PORTFOLIO_PHOTOS was never defined and
+the Photography page rendered no images.
+
+Fixed:
+- Added the missing comma between Zey Portrait.png and Path.jpg.
+- Kept Path.jpg in the Landscape collection.
+- Validated js/photos.js, js/photography-page.js, and js/portfolio.js with
+  JavaScript syntax checks.
+
+If your Images/photo-full/Path.jpg file exists with exactly that spelling
+and capitalization, it will now be included normally.
