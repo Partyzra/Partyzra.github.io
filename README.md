@@ -1,34 +1,18 @@
-# Photography V4.6 — Updated archive
+# Photography V4.8 — fresh shuffle + People album cleanup
 
-This bundle incorporates the latest uploaded `photos.js` into the current dark Photography page.
+This version is based on V4.7 and keeps the mobile progressive-loading work, soundtrack, dark design, albums, and full-image viewer.
 
-## Included
+## Changes
 
-- `photography.html`
-- `css/photography.css`
-- `js/photos.js` — cleaned current manifest with 101 unique image files
-- `js/photography-page.js` — randomized All view, Antelope Island/Hawaii albums, soundtrack, and full-image viewer
-- `assets/audio/the-drive-back-tom-anello.mp3`
+- **All photographs reshuffle once on every page load.** The shuffle is a lightweight Fisher–Yates pass; it does not meaningfully affect page speed. Image downloading/decoding remains the expensive part and still uses progressive loading.
+- The shuffled order stays fixed for the current page visit. Switching between All, Antelope Island, Hawaii, Lagoon, People, and Landscapes does not reshuffle again until reload.
+- **People album exclusions:** `Possey.jpg`, `Door.jpg`, and filenames/titles containing the standalone words `cat` or `kitty` are excluded from People even if older metadata says `People`, `Portraits`, or has a people/portrait tag.
+- This means `Sun Kitty.jpg` is also protected from accidentally appearing in People now or later.
 
 ## Install
 
-Copy the files/folders into the matching locations in your local `partyzra.github.io` repository and replace the older Photography-specific versions.
+For the small patch, replace only:
 
-Do **not** delete or replace `Images/photo-full/`. The image files remain there.
+- `js/photography-page.js`
 
-The page still references your existing `css/style.css`, so keep that file from the main site in place.
-
-## Current behavior
-
-- All photographs shuffle on every page load.
-- Shuffle button creates another random sequence.
-- Antelope Island and Hawaii appear as virtual albums.
-- New Antelope/Buffalo filenames are automatically recognized as Antelope Island.
-- Hawaii collection entries, Kauai, Side of Kauai, and Relaxing are recognized as Hawaii.
-- Clicking a photograph opens the entire image with no intentional cropping.
-- Previous/next transitions use the existing soft cross-fade.
-- The Drive Back soundtrack remains enabled with browser autoplay fallback.
-
-## Archive cleanup
-
-The uploaded manifest contained 102 entries but `Flowers.JPG` appeared twice. This package keeps one copy, leaving 101 unique image filenames.
+Everything else can remain as-is.

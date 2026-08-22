@@ -1238,4 +1238,16 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   }
+{
+    "file": "Path.jpg",
+    "title": "Path",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
 ];

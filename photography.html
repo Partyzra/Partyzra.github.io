@@ -53,21 +53,21 @@
         <span data-album-heading>All photographs</span>
         <div class="photo-grid-tools">
           <span data-gallery-status>Photographs</span>
-          <button class="photo-shuffle-button" type="button" data-shuffle-gallery>Shuffle</button>
         </div>
       </div>
 
       <!--
-        photos.js remains your editable manifest. The "All" view is shuffled
-        on every page load. Named albums are virtual collections, so the image
-        files can stay together in Images/photo-full/.
+        photos.js remains your editable manifest. The "All" view uses a
+        fixed random-looking order, so it stays the same on every visit.
+        Named albums are virtual collections, so the image files can stay
+        together in Images/photo-full/.
       -->
       <div class="photo-grid" id="photoGrid"></div>
     </section>
   </main>
 
 
-  <audio class="photo-soundtrack-audio" data-photo-soundtrack preload="auto" autoplay>
+  <audio class="photo-soundtrack-audio" data-photo-soundtrack preload="metadata" autoplay>
     <source src="assets/audio/the-drive-back-tom-anello.mp3" type="audio/mpeg">
   </audio>
 

@@ -136,25 +136,28 @@
   const basePath = 'Images/photo-full/';
   const albumNav = qs('[data-album-nav]');
   const albumHeading = qs('[data-album-heading]');
-  const shuffleButton = qs('[data-shuffle-gallery]');
   const photoCount = qs('[data-photo-count]');
   const galleryStatus = qs('[data-gallery-status]');
 
   /*
-    Virtual albums keep the image files in one physical folder, so moving a
-    photograph into a collection never breaks its URL. You can also add an
-    `album` (string) or `albums` (array) property to any entry in photos.js.
+    Virtual albums keep every file in Images/photo-full/. A photo can appear
+    in All plus one or more albums without duplicating the image.
 
-    Example:
-      album: 'Antelope Island'
+    You can also explicitly add this to any photos.js item later:
+      album: 'Lagoon'
     or:
-      albums: ['Antelope Island', 'Wildlife']
+      albums: ['People', 'Hawaii']
   */
+  const normalize = value => String(value || '').trim().toLowerCase();
+  const normalizedTags = photo => (Array.isArray(photo.tags) ? photo.tags : [])
+    .map(normalize)
+    .filter(Boolean);
+
   const ALBUM_RULES = [
     {
       name: 'Antelope Island',
       matches: photo => {
-        const file = String(photo.file || '').toLowerCase();
+        const file = normalize(photo.file);
         return file.startsWith('antelope island')
           || file === 'antelope dr.png'
           || file.startsWith('buffalo');
@@ -163,12 +166,57 @@
     {
       name: 'Hawaii',
       matches: photo => {
-        const file = String(photo.file || '').toLowerCase();
-        const collection = String(photo.collection || '').toLowerCase();
+        const file = normalize(photo.file);
+        const collection = normalize(photo.collection);
         return collection === 'hawaii'
           || file === 'kauai.jpg'
           || file === 'side of kauai.jpg'
           || file === 'relaxing.jpg';
+      }
+    },
+    {
+      name: 'Lagoon',
+      matches: photo => {
+        const file = normalize(photo.file);
+        const tags = normalizedTags(photo);
+        return file.includes('lagoon')
+          || file === 'rattlesnake rapids.jpg'
+          || file === 'cannibal.jpg'
+          || file === 'the rocket.jpg'
+          || tags.includes('coaster');
+      }
+    },
+    {
+      name: 'People',
+      matches: photo => {
+        const file = normalize(photo.file);
+        const title = normalize(photo.title);
+        const collection = normalize(photo.collection);
+        const tags = normalizedTags(photo);
+
+        // These are intentionally not part of the People album even if
+        // older metadata happens to label them as portraits/people.
+        const explicitlyNotPeople = file === 'possey.jpg'
+          || file === 'door.jpg'
+          || /(^|[\s_.-])(cat|kitty)([\s_.-]|$)/.test(file)
+          || /(^|\s)(cat|kitty)(\s|$)/.test(title);
+
+        if (explicitlyNotPeople) return false;
+
+        return ['people', 'portraits', 'family'].includes(collection)
+          || tags.some(tag => ['people', 'portrait', 'self-portrait'].includes(tag));
+      }
+    },
+    {
+      name: 'Landscapes',
+      matches: photo => {
+        const file = normalize(photo.file);
+        const collection = normalize(photo.collection);
+        const tags = normalizedTags(photo);
+
+        return collection === 'landscape'
+          || tags.includes('landscape')
+          || /(^|[\s_-])(mountain|field|sunset|cornfield|kauai)([\s_.-]|$)/.test(file);
       }
     }
   ];
@@ -200,11 +248,6 @@
       if (rule.matches(photo)) names.add(rule.name);
     });
 
-    // Existing Hawaii metadata continues to work automatically.
-    if (String(photo.collection || '').toLowerCase() === 'hawaii') {
-      names.add('Hawaii');
-    }
-
     return [...names];
   };
 
@@ -213,26 +256,35 @@
     __albums: resolveAlbums(photo)
   }));
 
-  // Fisher–Yates: a fresh order is created each time photography.html loads.
+  /*
+    Fresh shuffle on every page load.
+
+    This work is tiny compared with decoding/downloading photographs: a
+    Fisher-Yates shuffle is O(n), so even a collection with hundreds of
+    images is effectively instant. The expensive part remains image loading,
+    which is still handled progressively below.
+
+    We shuffle once per page load and keep that order for the whole visit.
+    Switching between albums therefore feels stable until the page reloads.
+  */
   const shuffle = items => {
-    const copy = [...items];
-    for (let i = copy.length - 1; i > 0; i -= 1) {
+    const result = [...items];
+
+    for (let i = result.length - 1; i > 0; i -= 1) {
       const j = Math.floor(Math.random() * (i + 1));
-      [copy[i], copy[j]] = [copy[j], copy[i]];
+      [result[i], result[j]] = [result[j], result[i]];
     }
-    return copy;
+
+    return result;
   };
 
-  let randomizedArchive = shuffle(archive);
+  const randomizedArchive = shuffle(archive);
+
   let activeAlbum = 'All';
 
-  const albumNames = [];
-  const addAlbumName = name => {
-    if (name && !albumNames.includes(name)) albumNames.push(name);
-  };
-
-  ALBUM_RULES.forEach(rule => addAlbumName(rule.name));
-  archive.forEach(photo => photo.__albums.forEach(addAlbumName));
+  // Keep the navigation intentionally curated instead of surfacing every
+  // metadata category as a new tab.
+  const albumNames = ALBUM_RULES.map(rule => rule.name);
 
   const photosForActiveAlbum = () => {
     if (activeAlbum === 'All') return randomizedArchive;
@@ -268,9 +320,37 @@
     albumNav.replaceChildren(fragment);
   }
 
+  /*
+    The full-resolution files remain the source images for now, but we avoid
+    asking a phone to download 100+ of them at once. Only the first few grid
+    images receive a src immediately; the rest are attached shortly before
+    they approach the viewport.
+  */
+  const saveData = Boolean(navigator.connection?.saveData);
+  const smallScreen = window.matchMedia('(max-width: 700px)').matches;
+  const eagerCount = saveData ? 2 : (smallScreen ? 4 : 8);
+  const observerMargin = saveData ? '300px 0px' : (smallScreen ? '650px 0px' : '1100px 0px');
+
+  const loadGridImage = img => {
+    if (!img || img.src || !img.dataset.src) return;
+    img.src = img.dataset.src;
+  };
+
+  const gridImageObserver = 'IntersectionObserver' in window
+    ? new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          loadGridImage(entry.target);
+          gridImageObserver.unobserve(entry.target);
+        });
+      }, { rootMargin: observerMargin, threshold: 0.01 })
+    : null;
+
   function renderGrid() {
     const photos = photosForActiveAlbum();
     const fragment = document.createDocumentFragment();
+
+    gridImageObserver?.disconnect();
 
     photos.forEach((photo, index) => {
       const figure = document.createElement('figure');
@@ -290,11 +370,21 @@
 
       const img = document.createElement('img');
       img.className = 'photo-grid-image';
-      img.src = basePath + photo.file;
+      img.dataset.src = basePath + photo.file;
       img.alt = photo.title || '';
-      img.loading = index < 6 ? 'eager' : 'lazy';
+      img.loading = 'lazy';
       img.decoding = 'async';
-      if (index < 3) img.fetchPriority = 'high';
+
+      if (index < eagerCount) {
+        img.loading = 'eager';
+        if (index < Math.min(3, eagerCount)) img.fetchPriority = 'high';
+        loadGridImage(img);
+      } else if (gridImageObserver) {
+        img.fetchPriority = 'low';
+        gridImageObserver.observe(img);
+      } else {
+        loadGridImage(img);
+      }
 
       const markLoaded = () => figure.classList.add('is-loaded');
       img.addEventListener('load', markLoaded, { once: true });
@@ -337,11 +427,11 @@
     activeAlbum = button.dataset.album || 'All';
     renderAlbumNav();
     renderGrid();
-  });
 
-  shuffleButton?.addEventListener('click', () => {
-    randomizedArchive = shuffle(randomizedArchive);
-    renderGrid();
+    // Keep album changes anchored near the start of the gallery on phones.
+    if (window.matchMedia('(max-width: 700px)').matches) {
+      grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   });
 
   // ----------------------------------------------------------
