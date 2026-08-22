@@ -160,7 +160,9 @@
         const file = normalize(photo.file);
         return file.startsWith('antelope island')
           || file === 'antelope dr.png'
-          || file.startsWith('buffalo');
+          || file.startsWith('buffalo')
+          || file === 'rocks.jpg'
+          || file === 'rocks2.jpg';
       }
     },
     {
@@ -171,7 +173,8 @@
         return collection === 'hawaii'
           || file === 'kauai.jpg'
           || file === 'side of kauai.jpg'
-          || file === 'relaxing.jpg';
+          || file === 'relaxing.jpg'
+          || file === 'water crash.jpg';
       }
     },
     {
@@ -183,6 +186,9 @@
           || file === 'rattlesnake rapids.jpg'
           || file === 'cannibal.jpg'
           || file === 'the rocket.jpg'
+          || file === 'samurai.jpg'
+          || file === 'printing press3.jpg'
+          || file === 'peacock.jpg'
           || tags.includes('coaster');
       }
     },
@@ -203,7 +209,8 @@
 
         if (explicitlyNotPeople) return false;
 
-        return ['people', 'portraits', 'family'].includes(collection)
+        return file === 'performance.jpg'
+          || ['people', 'portraits', 'family'].includes(collection)
           || tags.some(tag => ['people', 'portrait', 'self-portrait'].includes(tag));
       }
     },
