@@ -37,7 +37,7 @@ const PORTFOLIO_PHOTOS = [
     "tags": [],
     "note": ""
   },
-  {
+{
     "file": "Andrew.JPG",
     "title": "Andrew",
     "collection": "Portraits",
@@ -49,7 +49,7 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
-  {
+{
     "file": "Barn.jpg",
     "title": "Barn",
     "collection": "Places & Structures",
@@ -61,7 +61,7 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
-  {
+{
     "file": "Barnstreet.jpg",
     "title": "Barn Street",
     "collection": "Places & Structures",
@@ -73,7 +73,7 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
-  {
+{
     "file": "Cannibal.jpg",
     "title": "Cannibal",
     "collection": "Experimental",
@@ -85,7 +85,7 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
-  {
+{
     "file": "Carts.jpg",
     "title": "Carts",
     "collection": "Objects & Details",
@@ -95,7 +95,7 @@ const PORTFOLIO_PHOTOS = [
     "tags": [],
     "note": ""
   },
-  {
+{
     "file": "Clock Tower.jpg",
     "title": "Clock Tower",
     "collection": "Places & Structures",
@@ -107,19 +107,7 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
-  {
-    "file": "Dad.jpg",
-    "title": "Dad",
-    "collection": "Family",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "portrait"
-    ],
-    "note": ""
-  },
-  {
+{
     "file": "Derick & Tori.JPG",
     "title": "Derick & Tori",
     "collection": "Portraits",
@@ -131,7 +119,7 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
-  {
+{
     "file": "Flowers.JPG",
     "title": "Flowers",
     "collection": "Nature",
@@ -143,7 +131,7 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
-  {
+{
     "file": "Fox.jpg",
     "title": "Fox",
     "collection": "Wildlife",
@@ -155,7 +143,7 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
-  {
+{
     "file": "Gargoyle.jpg",
     "title": "Gargoyle",
     "collection": "Objects & Details",
@@ -168,7 +156,7 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
-  {
+{
     "file": "Grasshopper.jpg",
     "title": "Grasshopper",
     "collection": "Wildlife",
