@@ -1250,4 +1250,73 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
+{
+    "file": "Squirrel.JPG",
+    "title": "Squirrel",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Fox1.jpg",
+    "title": "Fox",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Fox2.jpg",
+    "title": "Fox",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "View.jpg",
+    "title": "View",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+  },
+{
+    "file": "Fox3.jpg",
+    "title": "Sun Kitty",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+  },
+{
+    "file": "Fox4.jpg",
+    "title": "Distance Kitty",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+  }
 ];
