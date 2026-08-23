@@ -169,6 +169,18 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
+    "file": "Grasshopper.png",
+    "title": "Grasshopper",
+    "collection": "Wildlife",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "insect"
+    ],
+    "note": ""
+  },
+  {
     "file": "In The Rain.jpg",
     "title": "In The Rain",
     "collection": "Atmosphere",
@@ -201,18 +213,6 @@ const PORTFOLIO_PHOTOS = [
     "featured": false,
     "tags": [
       "flora"
-    ],
-    "note": ""
-  },
-  {
-    "file": "Mountain.jpg",
-    "title": "Mountain",
-    "collection": "Landscape",
-    "year": "",
-    "location": "",
-    "featured": true,
-    "tags": [
-      "mountain"
     ],
     "note": ""
   },
@@ -984,19 +984,7 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
-  {
-    "file": "Grasshopper2.png",
-    "title": "Grasshopper2",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": ""
-  },
-  {
+{
     "file": "GrasshopperPortrait.png",
     "title": "GrasshopperPortrait",
     "collection": "Nature",
@@ -1095,7 +1083,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Mountain & Trees2.JPG",
-    "title": "Mountain & Trees2",
+    "title": "Mountain & Trees",
     "collection": "Landscape",
     "year": "",
     "location": "",
@@ -1107,7 +1095,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "MountainShot.JPG",
-    "title": "MountainShot",
+    "title": "Mountain Shot",
     "collection": "Landscape",
     "year": "",
     "location": "",
@@ -1117,21 +1105,9 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
-  {
-    "file": "MountainShot2.JPG",
-    "title": "MountainShot2",
-    "collection": "Landscape",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": ""
-  },
-  {
+{
     "file": "MountainShot3.jpg",
-    "title": "MountainShot3",
+    "title": "Mountain Shot",
     "collection": "Landscape",
     "year": "",
     "location": "",
