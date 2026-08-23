@@ -1286,6 +1286,17 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
   },
+  {
+    "file": "View2.jpg",
+    "title": "View",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+  },
 {
     "file": "Fox3.jpg",
     "title": "Sun Kitty",
