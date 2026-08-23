@@ -1143,7 +1143,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Refinery Landscape.jpg",
-    "title": "Refinery Landscape",
+    "title": "Refinery",
     "collection": "Landscape",
     "year": "",
     "location": "",
@@ -1155,7 +1155,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Refinery Portrait.png",
-    "title": "Refinery Portrait",
+    "title": "Refinery",
     "collection": "Landscape",
     "year": "",
     "location": "",
