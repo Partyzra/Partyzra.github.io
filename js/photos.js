@@ -1339,5 +1339,5 @@ const PORTFOLIO_PHOTOS = [
     "tags": [
       "nature"
     ]
-    },
+  }
 ];
