@@ -197,6 +197,26 @@
       }
     },
     {
+      name: 'Animals',
+      matches: photo => {
+        const file = normalize(photo.file);
+        const title = normalize(photo.title);
+        const collection = normalize(photo.collection);
+        const tags = normalizedTags(photo);
+
+        const animalWord = /(^|[\s_.-])(fox|buffalo|cow|horse|horses|grasshopper|peacock|seagull|squirrel|tiger|bird|kitty|cat)([\s_.-]|$)/;
+
+        return collection === 'wildlife'
+          || tags.some(tag => ['animal', 'bird', 'insect', 'wildlife'].includes(tag))
+          || file === 'open mouth.jpg'
+          || file.startsWith('buffalo')
+          || file.startsWith('fox')
+          || file.startsWith('grasshopper')
+          || animalWord.test(file)
+          || animalWord.test(title);
+      }
+    },
+    {
       name: 'People',
       matches: photo => {
         const file = normalize(photo.file);
@@ -466,13 +486,36 @@
   const caption = qs('[data-viewer-caption]', viewer);
   const meta = qs('[data-viewer-meta]', viewer);
   const indexLabel = qs('[data-viewer-index]', viewer);
+  const zoomButton = qs('[data-viewer-zoom]', viewer);
+  const zoomPlusLine = qs('[data-viewer-zoom-plus-line]', viewer);
 
   let buttons = qsa('.photo-grid-button', grid);
   let currentIndex = 0;
   let activeLayer = 0;
   let lastFocused = null;
   let transitionLocked = false;
-  let pointerStartX = null;
+
+  const MIN_ZOOM = 1;
+  const BUTTON_ZOOM = 2.35;
+  const MAX_ZOOM = 4;
+  let zoomScale = MIN_ZOOM;
+  let zoomX = 0;
+  let zoomY = 0;
+
+  // Pointer state supports both swipe navigation and true two-finger pinch.
+  const activePointers = new Map();
+  let gestureMode = null; // 'swipe', 'pan', or 'pinch'
+  let swipeStartX = 0;
+  let panStartX = 0;
+  let panStartY = 0;
+  let panOriginX = 0;
+  let panOriginY = 0;
+  let pinchStartDistance = 0;
+  let pinchStartScale = MIN_ZOOM;
+  let pinchStartX = 0;
+  let pinchStartY = 0;
+  let pinchAnchorX = 0;
+  let pinchAnchorY = 0;
 
   const wrap = index => (index + buttons.length) % buttons.length;
   const itemAt = index => buttons[wrap(index)];
@@ -488,6 +531,130 @@
       .filter(Boolean)
       .filter((value, position, values) => values.indexOf(value) === position)
       .join(' · ');
+  };
+
+  const activeViewerImage = () => images[activeLayer] || null;
+
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+  function clampPan() {
+    const image = activeViewerImage();
+    if (!image || !stage || zoomScale <= MIN_ZOOM) {
+      zoomX = 0;
+      zoomY = 0;
+      return;
+    }
+
+    const styles = getComputedStyle(stage);
+    const availableWidth = Math.max(
+      1,
+      stage.clientWidth - parseFloat(styles.paddingLeft || 0) - parseFloat(styles.paddingRight || 0)
+    );
+    const availableHeight = Math.max(
+      1,
+      stage.clientHeight - parseFloat(styles.paddingTop || 0) - parseFloat(styles.paddingBottom || 0)
+    );
+
+    const baseWidth = image.offsetWidth || availableWidth;
+    const baseHeight = image.offsetHeight || availableHeight;
+    const maxX = Math.max(0, (baseWidth * zoomScale - availableWidth) / 2);
+    const maxY = Math.max(0, (baseHeight * zoomScale - availableHeight) / 2);
+
+    zoomX = clamp(zoomX, -maxX, maxX);
+    zoomY = clamp(zoomY, -maxY, maxY);
+  }
+
+  function syncZoomUI() {
+    const zoomed = zoomScale > MIN_ZOOM + 0.01;
+    viewer.classList.toggle('is-zoomed', zoomed);
+    stage?.classList.toggle('is-zoomed', zoomed);
+
+    if (zoomButton) {
+      zoomButton.setAttribute('aria-pressed', String(zoomed));
+      zoomButton.setAttribute('aria-label', zoomed ? 'Reset photo zoom' : 'Zoom in on photo');
+      zoomButton.title = zoomed ? 'Reset zoom' : 'Zoom in';
+    }
+
+    // The horizontal stroke is always visible; hiding the vertical stroke turns
+    // the magnifying-glass plus into a minus while the image is enlarged.
+    if (zoomPlusLine) zoomPlusLine.style.opacity = zoomed ? '0' : '1';
+  }
+
+  function applyZoom({ clampPosition = true } = {}) {
+    const image = activeViewerImage();
+    if (!image) return;
+
+    zoomScale = clamp(zoomScale, MIN_ZOOM, MAX_ZOOM);
+    if (clampPosition) clampPan();
+
+    if (zoomScale <= MIN_ZOOM + 0.01) {
+      zoomScale = MIN_ZOOM;
+      zoomX = 0;
+      zoomY = 0;
+      image.style.transform = '';
+    } else {
+      image.style.transform = `translate3d(${zoomX}px, ${zoomY}px, 0) scale(${zoomScale})`;
+    }
+
+    syncZoomUI();
+  }
+
+  function resetZoom() {
+    zoomScale = MIN_ZOOM;
+    zoomX = 0;
+    zoomY = 0;
+    images.forEach(image => {
+      if (image) image.style.transform = '';
+    });
+    syncZoomUI();
+  }
+
+  function setZoom(nextScale, anchorClientX = null, anchorClientY = null) {
+    const previousScale = zoomScale;
+    const rect = stage?.getBoundingClientRect();
+
+    if (rect && anchorClientX !== null && anchorClientY !== null && previousScale > 0) {
+      const anchorX = anchorClientX - rect.left - rect.width / 2;
+      const anchorY = anchorClientY - rect.top - rect.height / 2;
+      const ratio = nextScale / previousScale;
+
+      // Keep the part beneath the user's fingers/cursor in roughly the same
+      // screen position as magnification changes.
+      zoomX = anchorX - ratio * (anchorX - zoomX);
+      zoomY = anchorY - ratio * (anchorY - zoomY);
+    }
+
+    zoomScale = clamp(nextScale, MIN_ZOOM, MAX_ZOOM);
+    applyZoom();
+  }
+
+  function toggleButtonZoom() {
+    if (zoomScale > MIN_ZOOM + 0.01) {
+      resetZoom();
+      return;
+    }
+
+    const rect = stage?.getBoundingClientRect();
+    setZoom(
+      BUTTON_ZOOM,
+      rect ? rect.left + rect.width / 2 : null,
+      rect ? rect.top + rect.height / 2 : null
+    );
+  }
+
+  const pointerDistance = () => {
+    const points = [...activePointers.values()];
+    if (points.length < 2) return 0;
+    return Math.hypot(points[1].x - points[0].x, points[1].y - points[0].y);
+  };
+
+  const pointerMidpoint = () => {
+    const points = [...activePointers.values()];
+    if (points.length < 2) return { x: 0, y: 0 };
+    return {
+      x: (points[0].x + points[1].x) / 2,
+      y: (points[0].y + points[1].y) / 2
+    };
   };
 
   const preloadCache = new Map();
@@ -523,6 +690,10 @@
   async function display(index, animate = true) {
     if (!buttons.length || transitionLocked) return;
 
+    // Every new photograph starts in the complete fitted view. Zoom is an
+    // inspection state for the current image, not something carried to the next.
+    resetZoom();
+
     const target = wrap(index);
     const src = srcAt(target);
     if (!src) return;
@@ -536,6 +707,7 @@
 
     incoming.src = src;
     incoming.alt = titleAt(target);
+    incoming.style.transform = '';
 
     try {
       if (incoming.decode) await incoming.decode();
@@ -577,6 +749,9 @@
 
     lastFocused = button;
     transitionLocked = false;
+    activePointers.clear();
+    gestureMode = null;
+    resetZoom();
     await display(index, false);
     viewer.classList.add('is-open');
     viewer.setAttribute('aria-hidden', 'false');
@@ -589,13 +764,18 @@
     viewer.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('no-scroll');
     transitionLocked = false;
-    pointerStartX = null;
+    activePointers.clear();
+    gestureMode = null;
+    resetZoom();
     if (lastFocused && typeof lastFocused.focus === 'function') {
       lastFocused.focus({ preventScroll: true });
     }
   }
 
-  const go = direction => display(currentIndex + direction, true);
+  const go = direction => {
+    resetZoom();
+    display(currentIndex + direction, true);
+  };
 
   grid.addEventListener('click', event => {
     const button = event.target.closest('.photo-grid-button');
@@ -605,11 +785,30 @@
   closeButton?.addEventListener('click', closeViewer);
   prevButton?.addEventListener('click', () => go(-1));
   nextButton?.addEventListener('click', () => go(1));
+  zoomButton?.addEventListener('click', toggleButtonZoom);
 
   document.addEventListener('keydown', event => {
     if (!viewer.classList.contains('is-open')) return;
 
     if (event.key === 'Escape') closeViewer();
+
+    if (event.key === '+' || event.key === '=') {
+      event.preventDefault();
+      setZoom(Math.min(MAX_ZOOM, zoomScale + .6));
+    }
+
+    if (event.key === '-') {
+      event.preventDefault();
+      setZoom(Math.max(MIN_ZOOM, zoomScale - .6));
+    }
+
+    if (event.key === '0') {
+      event.preventDefault();
+      resetZoom();
+    }
+
+    // Arrow keys remain photo navigation. The image can be panned with pointer
+    // or touch after zooming.
     if (event.key === 'ArrowLeft') {
       event.preventDefault();
       go(-1);
@@ -620,25 +819,142 @@
     }
   });
 
-  // Swipe navigation tracks gesture distance only. It does not move/scale the
-  // image while dragging, so the photograph remains fully contained.
+  // ----------------------------------------------------------
+  // Viewer gestures
+  //
+  // At 1x: one finger / mouse drag navigates between photographs.
+  // Above 1x: one finger / mouse drag pans the enlarged photograph.
+  // Two touch pointers: pinch continuously between 1x and 4x.
+  // ----------------------------------------------------------
+
   stage?.addEventListener('pointerdown', event => {
     if (event.pointerType === 'mouse' && event.button !== 0) return;
-    pointerStartX = event.clientX;
+
+    activePointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     stage.setPointerCapture?.(event.pointerId);
+
+    if (activePointers.size >= 2 && event.pointerType !== 'mouse') {
+      gestureMode = 'pinch';
+      pinchStartDistance = Math.max(pointerDistance(), 1);
+      pinchStartScale = zoomScale;
+      pinchStartX = zoomX;
+      pinchStartY = zoomY;
+
+      const midpoint = pointerMidpoint();
+      const rect = stage.getBoundingClientRect();
+      pinchAnchorX = midpoint.x - rect.left - rect.width / 2;
+      pinchAnchorY = midpoint.y - rect.top - rect.height / 2;
+      return;
+    }
+
+    if (zoomScale > MIN_ZOOM + 0.01) {
+      gestureMode = 'pan';
+      panStartX = event.clientX;
+      panStartY = event.clientY;
+      panOriginX = zoomX;
+      panOriginY = zoomY;
+      stage.classList.add('is-panning');
+    } else {
+      gestureMode = 'swipe';
+      swipeStartX = event.clientX;
+    }
   });
 
-  stage?.addEventListener('pointerup', event => {
-    if (pointerStartX === null) return;
-    const delta = event.clientX - pointerStartX;
-    pointerStartX = null;
+  stage?.addEventListener('pointermove', event => {
+    if (!activePointers.has(event.pointerId)) return;
+
+    activePointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+
+    if (activePointers.size >= 2 && event.pointerType !== 'mouse') {
+      if (gestureMode !== 'pinch') {
+        gestureMode = 'pinch';
+        pinchStartDistance = Math.max(pointerDistance(), 1);
+        pinchStartScale = zoomScale;
+        pinchStartX = zoomX;
+        pinchStartY = zoomY;
+
+        const midpoint = pointerMidpoint();
+        const rect = stage.getBoundingClientRect();
+        pinchAnchorX = midpoint.x - rect.left - rect.width / 2;
+        pinchAnchorY = midpoint.y - rect.top - rect.height / 2;
+      }
+
+      const distance = Math.max(pointerDistance(), 1);
+      const nextScale = clamp(
+        pinchStartScale * (distance / pinchStartDistance),
+        MIN_ZOOM,
+        MAX_ZOOM
+      );
+      const ratio = nextScale / Math.max(pinchStartScale, .001);
+
+      zoomScale = nextScale;
+      zoomX = pinchAnchorX - ratio * (pinchAnchorX - pinchStartX);
+      zoomY = pinchAnchorY - ratio * (pinchAnchorY - pinchStartY);
+      applyZoom();
+      event.preventDefault();
+      return;
+    }
+
+    if (gestureMode === 'pan' && zoomScale > MIN_ZOOM + 0.01) {
+      zoomX = panOriginX + (event.clientX - panStartX);
+      zoomY = panOriginY + (event.clientY - panStartY);
+      applyZoom();
+      event.preventDefault();
+    }
+  });
+
+  function finishPointer(event, cancelled = false) {
+    if (!activePointers.has(event.pointerId)) return;
+
+    const point = activePointers.get(event.pointerId);
+    activePointers.delete(event.pointerId);
     stage.releasePointerCapture?.(event.pointerId);
 
-    const threshold = Math.min(90, Math.max(48, stage.clientWidth * .09));
-    if (Math.abs(delta) >= threshold) go(delta < 0 ? 1 : -1);
+    if (gestureMode === 'swipe' && !cancelled && zoomScale <= MIN_ZOOM + 0.01) {
+      const delta = (point?.x ?? event.clientX) - swipeStartX;
+      const threshold = Math.min(90, Math.max(48, stage.clientWidth * .09));
+      if (Math.abs(delta) >= threshold) go(delta < 0 ? 1 : -1);
+    }
+
+    if (activePointers.size === 1 && zoomScale > MIN_ZOOM + 0.01) {
+      // A pinch can naturally turn into a one-finger pan when one finger lifts.
+      const remaining = [...activePointers.values()][0];
+      gestureMode = 'pan';
+      panStartX = remaining.x;
+      panStartY = remaining.y;
+      panOriginX = zoomX;
+      panOriginY = zoomY;
+      stage.classList.add('is-panning');
+      return;
+    }
+
+    if (activePointers.size === 0) {
+      gestureMode = null;
+      stage.classList.remove('is-panning');
+
+      // Snap very small pinch scales back to the clean fitted view.
+      if (zoomScale < 1.04) resetZoom();
+      else applyZoom();
+    }
+  }
+
+  stage?.addEventListener('pointerup', event => finishPointer(event, false));
+  stage?.addEventListener('pointercancel', event => finishPointer(event, true));
+
+  // Double-click / double-tap-style desktop interaction is a convenient
+  // secondary shortcut without changing the primary magnifier control.
+  stage?.addEventListener('dblclick', event => {
+    if (event.pointerType === 'touch') return;
+    if (zoomScale > MIN_ZOOM + 0.01) {
+      resetZoom();
+    } else {
+      setZoom(BUTTON_ZOOM, event.clientX, event.clientY);
+    }
   });
 
-  stage?.addEventListener('pointercancel', () => {
-    pointerStartX = null;
-  });
+  window.addEventListener('resize', () => {
+    if (viewer.classList.contains('is-open') && zoomScale > MIN_ZOOM) applyZoom();
+  }, { passive: true });
+
+  syncZoomUI();
 })();
