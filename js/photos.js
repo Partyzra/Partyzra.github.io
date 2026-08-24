@@ -913,18 +913,6 @@ const PORTFOLIO_PHOTOS = [
     "album": "Antelope Island"
   },
   {
-    "file": "Bathroom.png",
-    "title": "Bathroom",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": ""
-  },
-  {
     "file": "Capitol.png",
     "title": "Capitol",
     "collection": "landscape",
@@ -1318,5 +1306,35 @@ const PORTFOLIO_PHOTOS = [
     "tags": [
       "nature"
     ],
-  }
+  },
+{
+    "file": "Zey.jpg",
+    "title": "Zey",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+  {
+    "file": "Bird.jpg",
+    "title": "Bird",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+  {
+    "file": "Seagull1.jpg",
+    "title": "Seagull",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ]
 ];
