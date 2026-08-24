@@ -1317,6 +1317,7 @@ const PORTFOLIO_PHOTOS = [
     "tags": [
       "nature"
     ],
+    },
   {
     "file": "Bird.jpg",
     "title": "Bird",
@@ -1327,6 +1328,7 @@ const PORTFOLIO_PHOTOS = [
     "tags": [
       "nature"
     ],
+    },
   {
     "file": "Seagull1.jpg",
     "title": "Seagull",
@@ -1337,4 +1339,5 @@ const PORTFOLIO_PHOTOS = [
     "tags": [
       "nature"
     ]
+    },
 ];
