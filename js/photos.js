@@ -1217,7 +1217,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Zey Portrait.png",
-    "title": "Zey Portrait",
+    "title": "Zey",
     "collection": "People",
     "year": "",
     "location": "",
