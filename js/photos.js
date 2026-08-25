@@ -131,18 +131,7 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
-{
-    "file": "Fox.jpg",
-    "title": "Fox",
-    "collection": "Wildlife",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "animal"
-    ],
-    "note": ""
-  },
+
 {
     "file": "Gargoyle.jpg",
     "title": "Gargoyle",
