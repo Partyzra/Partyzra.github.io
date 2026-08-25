@@ -177,7 +177,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  cursor: zoom-in;
+  cursor: default;
   overflow: hidden;
 }
 
@@ -300,8 +300,7 @@
   gap: 3px;
 }
 
-.photo-viewer-close,
-.photo-viewer-zoom {
+.photo-viewer-close {
   display: grid;
   place-items: center;
   width: 40px;
@@ -321,42 +320,19 @@
   font-size: 31px;
 }
 
-.photo-viewer-zoom {
-  border-radius: 50%;
-}
 
 .photo-viewer-close:hover,
-.photo-viewer-zoom:hover,
-.photo-viewer-close:focus-visible,
-.photo-viewer-zoom:focus-visible {
+.photo-viewer-close:focus-visible {
   color: var(--photo-accent);
   opacity: 1;
 }
 
-.photo-viewer-close:focus-visible,
-.photo-viewer-zoom:focus-visible {
+.photo-viewer-close:focus-visible {
   outline: 1px solid rgba(240,238,233,.42);
   outline-offset: 0;
 }
 
-.photo-viewer-zoom[aria-pressed="true"] {
-  background: rgba(240,238,233,.08);
-  opacity: 1;
-}
 
-.photo-viewer-zoom-icon {
-  width: 22px;
-  height: 22px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.45;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.photo-viewer-zoom-icon [data-viewer-zoom-plus-line] {
-  transition: opacity .18s ease;
-}
 
 .photo-viewer-stage {
   position: relative;
@@ -368,15 +344,7 @@
   overflow: hidden;
   touch-action: none;
   overscroll-behavior: contain;
-  cursor: zoom-in;
-}
-
-.photo-viewer-stage.is-zoomed {
-  cursor: grab;
-}
-
-.photo-viewer-stage.is-panning {
-  cursor: grabbing;
+  cursor: default;
 }
 
 /*
@@ -402,12 +370,23 @@
   will-change: transform, opacity;
   user-select: none;
   -webkit-user-drag: none;
+  pointer-events: none;
   box-shadow: 0 26px 84px rgba(0,0,0,.34);
 }
 
 .photo-viewer-image.is-active {
   opacity: 1;
   transform: scale(1);
+  pointer-events: auto;
+  cursor: zoom-in;
+}
+
+.photo-viewer-stage.is-zoomed .photo-viewer-image.is-active {
+  cursor: grab;
+}
+
+.photo-viewer-stage.is-panning .photo-viewer-image.is-active {
+  cursor: grabbing;
 }
 
 .photo-viewer-stage.is-zoomed .photo-viewer-image.is-active,
@@ -554,8 +533,7 @@ body.no-scroll {
     padding-left: max(10px, env(safe-area-inset-left));
   }
 
-  .photo-viewer-close,
-  .photo-viewer-zoom {
+  .photo-viewer-close {
     width: 44px;
     height: 44px;
   }

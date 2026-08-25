@@ -486,8 +486,6 @@
   const caption = qs('[data-viewer-caption]', viewer);
   const meta = qs('[data-viewer-meta]', viewer);
   const indexLabel = qs('[data-viewer-index]', viewer);
-  const zoomButton = qs('[data-viewer-zoom]', viewer);
-  const zoomPlusLine = qs('[data-viewer-zoom-plus-line]', viewer);
 
   let buttons = qsa('.photo-grid-button', grid);
   let currentIndex = 0;
@@ -506,6 +504,8 @@
   const activePointers = new Map();
   let gestureMode = null; // 'swipe', 'pan', or 'pinch'
   let swipeStartX = 0;
+  let pointerStartY = 0;
+  let suppressClickZoom = false;
   let panStartX = 0;
   let panStartY = 0;
   let panOriginX = 0;
@@ -568,16 +568,6 @@
     const zoomed = zoomScale > MIN_ZOOM + 0.01;
     viewer.classList.toggle('is-zoomed', zoomed);
     stage?.classList.toggle('is-zoomed', zoomed);
-
-    if (zoomButton) {
-      zoomButton.setAttribute('aria-pressed', String(zoomed));
-      zoomButton.setAttribute('aria-label', zoomed ? 'Reset photo zoom' : 'Zoom in on photo');
-      zoomButton.title = zoomed ? 'Reset zoom' : 'Zoom in';
-    }
-
-    // The horizontal stroke is always visible; hiding the vertical stroke turns
-    // the magnifying-glass plus into a minus while the image is enlarged.
-    if (zoomPlusLine) zoomPlusLine.style.opacity = zoomed ? '0' : '1';
   }
 
   function applyZoom({ clampPosition = true } = {}) {
@@ -626,20 +616,6 @@
 
     zoomScale = clamp(nextScale, MIN_ZOOM, MAX_ZOOM);
     applyZoom();
-  }
-
-  function toggleButtonZoom() {
-    if (zoomScale > MIN_ZOOM + 0.01) {
-      resetZoom();
-      return;
-    }
-
-    const rect = stage?.getBoundingClientRect();
-    setZoom(
-      BUTTON_ZOOM,
-      rect ? rect.left + rect.width / 2 : null,
-      rect ? rect.top + rect.height / 2 : null
-    );
   }
 
   const pointerDistance = () => {
@@ -785,7 +761,6 @@
   closeButton?.addEventListener('click', closeViewer);
   prevButton?.addEventListener('click', () => go(-1));
   nextButton?.addEventListener('click', () => go(1));
-  zoomButton?.addEventListener('click', toggleButtonZoom);
 
   document.addEventListener('keydown', event => {
     if (!viewer.classList.contains('is-open')) return;
@@ -833,7 +808,14 @@
     activePointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     stage.setPointerCapture?.(event.pointerId);
 
+    if (activePointers.size === 1) {
+      swipeStartX = event.clientX;
+      pointerStartY = event.clientY;
+      suppressClickZoom = false;
+    }
+
     if (activePointers.size >= 2 && event.pointerType !== 'mouse') {
+      suppressClickZoom = true;
       gestureMode = 'pinch';
       pinchStartDistance = Math.max(pointerDistance(), 1);
       pinchStartScale = zoomScale;
@@ -856,7 +838,6 @@
       stage.classList.add('is-panning');
     } else {
       gestureMode = 'swipe';
-      swipeStartX = event.clientX;
     }
   });
 
@@ -864,6 +845,10 @@
     if (!activePointers.has(event.pointerId)) return;
 
     activePointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+
+    if (Math.hypot(event.clientX - swipeStartX, event.clientY - pointerStartY) > 7) {
+      suppressClickZoom = true;
+    }
 
     if (activePointers.size >= 2 && event.pointerType !== 'mouse') {
       if (gestureMode !== 'pinch') {
@@ -913,7 +898,10 @@
     if (gestureMode === 'swipe' && !cancelled && zoomScale <= MIN_ZOOM + 0.01) {
       const delta = (point?.x ?? event.clientX) - swipeStartX;
       const threshold = Math.min(90, Math.max(48, stage.clientWidth * .09));
-      if (Math.abs(delta) >= threshold) go(delta < 0 ? 1 : -1);
+      if (Math.abs(delta) >= threshold) {
+        suppressClickZoom = true;
+        go(delta < 0 ? 1 : -1);
+      }
     }
 
     if (activePointers.size === 1 && zoomScale > MIN_ZOOM + 0.01) {
@@ -941,15 +929,40 @@
   stage?.addEventListener('pointerup', event => finishPointer(event, false));
   stage?.addEventListener('pointercancel', event => finishPointer(event, true));
 
-  // Double-click / double-tap-style desktop interaction is a convenient
-  // secondary shortcut without changing the primary magnifier control.
+  // Pointer capture keeps swipe/pan gestures reliable, but it can retarget the
+  // resulting click to the stage instead of the <img>. Use the active image's
+  // rendered bounds rather than event.target so click-to-zoom remains reliable.
+  function pointIsOnActiveImage(clientX, clientY) {
+    const image = activeViewerImage();
+    if (!image || !image.classList.contains('is-active')) return false;
+
+    const rect = image.getBoundingClientRect();
+    if (!rect.width || !rect.height) return false;
+
+    return clientX >= rect.left
+      && clientX <= rect.right
+      && clientY >= rect.top
+      && clientY <= rect.bottom;
+  }
+
+  // The photograph itself is the primary desktop zoom control. At the fitted
+  // view, clicking any point inside the visible photograph magnifies toward
+  // that exact point. Clicking the surrounding black stage does nothing.
+  stage?.addEventListener('click', event => {
+    if (transitionLocked || suppressClickZoom || zoomScale > MIN_ZOOM + 0.01) return;
+    if (!pointIsOnActiveImage(event.clientX, event.clientY)) return;
+
+    setZoom(BUTTON_ZOOM, event.clientX, event.clientY);
+  });
+
+  // Double-click while already enlarged provides an optional closer look at
+  // the point under the cursor, while panning remains the normal zoomed action.
   stage?.addEventListener('dblclick', event => {
-    if (event.pointerType === 'touch') return;
-    if (zoomScale > MIN_ZOOM + 0.01) {
-      resetZoom();
-    } else {
-      setZoom(BUTTON_ZOOM, event.clientX, event.clientY);
-    }
+    if (event.pointerType === 'touch' || suppressClickZoom) return;
+    if (zoomScale <= MIN_ZOOM + 0.01) return;
+    if (!pointIsOnActiveImage(event.clientX, event.clientY)) return;
+
+    setZoom(Math.min(MAX_ZOOM, zoomScale + .75), event.clientX, event.clientY);
   });
 
   window.addEventListener('resize', () => {
