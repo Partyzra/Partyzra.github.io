@@ -86,6 +86,17 @@
         <div class="track-wave track-wave-alt" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
       </article>
     </section>
+
+    <section class="section soundtrack-note container-wide" data-reveal>
+      <div>
+        <p class="eyebrow">Next phase</p>
+        <h2>The site is ready<br>for a soundtrack.</h2>
+      </div>
+      <div>
+        <p>The next audio upgrade can add an “Enter with sound” opening and persistent playback state while visitors move between Photography, Music, and the homepage.</p>
+        <p class="small-note">Browsers generally require a visitor interaction before starting audible playback, so the polished version will begin from a deliberate first click rather than unreliable forced autoplay.</p>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
