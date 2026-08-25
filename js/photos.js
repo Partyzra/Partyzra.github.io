@@ -505,19 +505,6 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
 {
-    "file": "Hawaii Beach.jpg",
-    "title": "Hawaii Beach",
-    "collection": "Hawaii",
-    "year": "",
-    "location": "Hawaii",
-    "featured": true,
-    "tags": [
-      "beach"
-    ],
-    "note": "",
-    "album": "Hawaii"
-  },
-  {
     "file": "Hawaii Couple.jpg",
     "title": "Hawaii Couple",
     "collection": "Hawaii",
