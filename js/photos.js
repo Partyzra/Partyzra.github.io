@@ -421,7 +421,7 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Derick2.jpg",
+    "file": "Derick2.JPG",
     "title": "Derick II",
     "collection": "Portraits",
     "year": "",
@@ -802,20 +802,7 @@ const PORTFOLIO_PHOTOS = [
     "note": "",
     "album": "Antelope Island"
   },
-  {
-    "file": "Buffalo4.jpg",
-    "title": "Buffalo",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": "",
-    "album": "Antelope Island"
-  },
-  {
+{
     "file": "Buffalo5.jpg",
     "title": "Buffalo",
     "collection": "Nature",
@@ -1437,5 +1424,17 @@ const PORTFOLIO_PHOTOS = [
       "Landscape"
     ],
     "album": "Landscapes"
+  }
+{
+    "file": "Joey.jpg",
+    "title": "Joey",
+    "collection": "People",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "People"
+    ],
+    "album": "People"
   }
 ];
