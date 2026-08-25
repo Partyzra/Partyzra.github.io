@@ -1081,7 +1081,19 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
-  {
+{
+    "file": "Refinery.jpg",
+    "title": "Refinery",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Structure"
+    ],
+    "note": ""
+  },
+{
     "file": "Relaxing.jpg",
     "title": "Relaxing",
     "collection": "Hawaii",
