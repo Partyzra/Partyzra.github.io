@@ -683,7 +683,8 @@ const PORTFOLIO_PHOTOS = [
     "location": "",
     "featured": false,
     "tags": [],
-    "note": ""
+    "note": "",
+    "album": "Lagoon"
   },
   {
     "file": "Antelope Island.jpg",
@@ -1338,7 +1339,8 @@ const PORTFOLIO_PHOTOS = [
     "featured": false,
     "tags": [
       "Lagoon"
-    ]
+    ],
+    "album": "Lagoon"
   },
 {
     "file": "Doll1.jpg",
@@ -1349,7 +1351,8 @@ const PORTFOLIO_PHOTOS = [
     "featured": false,
     "tags": [
       "Lagoon"
-    ]
+    ],
+    "album": "Lagoon"
   },
 {
     "file": "Guns.jpg",
@@ -1360,7 +1363,8 @@ const PORTFOLIO_PHOTOS = [
     "featured": false,
     "tags": [
       "Lagoon"
-    ]
+    ],
+    "album": "Lagoon"
   },
 {
     "file": "Rattlesnake Rapids1.jpg",
@@ -1371,7 +1375,8 @@ const PORTFOLIO_PHOTOS = [
     "featured": false,
     "tags": [
       "Lagoon"
-    ]
+    ],
+    "album": "Lagoon"
   },
 {
     "file": "Rattlesnake Rapids2.jpg",
@@ -1382,7 +1387,8 @@ const PORTFOLIO_PHOTOS = [
     "featured": false,
     "tags": [
       "Lagoon"
-    ]
+    ],
+    "album": "Lagoon"
   },
 {
     "file": "Rattlesnake Rapids3.jpg",
@@ -1393,7 +1399,8 @@ const PORTFOLIO_PHOTOS = [
     "featured": false,
     "tags": [
       "Lagoon"
-    ]
+    ],
+    "album": "Lagoon"
   },
 {
     "file": "Rattlesnake Rapids4.jpg",
@@ -1404,7 +1411,8 @@ const PORTFOLIO_PHOTOS = [
     "featured": false,
     "tags": [
       "Lagoon"
-    ]
+    ],
+    "album": "Lagoon"
   },
 {
     "file": "Stone.jpg",
@@ -1415,7 +1423,8 @@ const PORTFOLIO_PHOTOS = [
     "featured": false,
     "tags": [
       "Lagoon"
-    ]
+    ],
+    "album": "Lagoon"
   },
 {
     "file": "Zeboy!!!.jpg",
@@ -1426,6 +1435,7 @@ const PORTFOLIO_PHOTOS = [
     "featured": false,
     "tags": [
       "Lagoon"
-    ]
+    ],
+    "album": "Lagoon"
   }
 ];
