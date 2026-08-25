@@ -133,14 +133,16 @@
   const grid = qs('#photoGrid');
   if (!grid || typeof PORTFOLIO_PHOTOS === 'undefined') return;
 
-  const basePath = 'Images/photo-full/';
+  const fullBasePath = 'Images/photo-full/';
+  const thumbBasePath = 'Images/photo-thumbs/';
+  const thumbnailPathFor = file => `${thumbBasePath}${file}.webp`;
   const albumNav = qs('[data-album-nav]');
   const albumHeading = qs('[data-album-heading]');
   const photoCount = qs('[data-photo-count]');
   const galleryStatus = qs('[data-gallery-status]');
 
   /*
-    Virtual albums keep every file in Images/photo-full/. A photo can appear
+    Virtual albums keep every full-resolution file in Images/photo-full/. A photo can appear
     in All plus one or more albums without duplicating the image.
 
     You can also explicitly add this to any photos.js item later:
@@ -354,10 +356,15 @@
   }
 
   /*
-    The full-resolution files remain the source images for now, but we avoid
-    asking a phone to download 100+ of them at once. Only the first few grid
-    images receive a src immediately; the rest are attached shortly before
-    they approach the viewport.
+    The grid uses lightweight WebP files generated locally in
+    Images/photo-thumbs/. The full-resolution originals are only referenced
+    by the fullscreen viewer. Lazy/progressive loading remains in place so the
+    page does not request every thumbnail at once.
+
+    Thumbnail names deliberately preserve the original filename + extension:
+      Fox.jpg      -> Images/photo-thumbs/Fox.jpg.webp
+      Field.png    -> Images/photo-thumbs/Field.png.webp
+    This prevents collisions when both .jpg and .png versions exist.
   */
   const saveData = Boolean(navigator.connection?.saveData);
   const smallScreen = window.matchMedia('(max-width: 700px)').matches;
@@ -392,7 +399,11 @@
       const button = document.createElement('button');
       button.className = 'photo-grid-button';
       button.type = 'button';
-      button.dataset.full = basePath + photo.file;
+      const fullSrc = fullBasePath + photo.file;
+      const thumbSrc = thumbnailPathFor(photo.file);
+
+      button.dataset.full = fullSrc;
+      button.dataset.thumb = thumbSrc;
       button.dataset.title = photo.title || photo.file;
       button.dataset.collection = photo.collection || '';
       button.dataset.location = photo.location || '';
@@ -403,7 +414,8 @@
 
       const img = document.createElement('img');
       img.className = 'photo-grid-image';
-      img.dataset.src = basePath + photo.file;
+      img.dataset.src = thumbSrc;
+      img.dataset.fallback = fullSrc;
       img.alt = photo.title || '';
       img.loading = 'lazy';
       img.decoding = 'async';
@@ -424,9 +436,18 @@
       if (img.complete && img.naturalWidth) markLoaded();
 
       img.addEventListener('error', () => {
+        // During setup (or if one thumbnail was missed), fall back to the
+        // original instead of leaving a blank tile. Once photo-thumbs is
+        // complete, normal gallery browsing never needs this fallback.
+        if (!img.dataset.fallbackAttempted && img.dataset.fallback) {
+          img.dataset.fallbackAttempted = 'true';
+          img.src = img.dataset.fallback;
+          return;
+        }
+
         figure.remove();
         updateCounts();
-      }, { once: true });
+      });
 
       const overlay = document.createElement('span');
       overlay.className = 'photo-grid-overlay';

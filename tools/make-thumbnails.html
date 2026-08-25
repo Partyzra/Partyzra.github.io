@@ -1,0 +1,219 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Partyzra Thumbnail Maker</title>
+<style>
+  :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #090a0b; color: #f0eee9; }
+  main { width: min(760px, calc(100% - 32px)); margin: 48px auto; }
+  h1 { font: 500 clamp(2rem, 7vw, 4.4rem)/.95 Georgia, serif; margin: 0 0 16px; }
+  p { color: #b2b0aa; line-height: 1.6; }
+  .panel { border: 1px solid rgba(240,238,233,.14); background: #111315; padding: 22px; margin-top: 24px; }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin: 14px 0; }
+  button { min-height: 44px; border: 1px solid rgba(240,238,233,.2); background: #17191b; color: #f0eee9; padding: 10px 15px; cursor: pointer; }
+  button:hover:not(:disabled) { background: #202326; }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  label { display: inline-flex; align-items: center; gap: 8px; color: #d7d3cb; }
+  input[type="number"] { width: 92px; min-height: 42px; background: #090a0b; color: #f0eee9; border: 1px solid rgba(240,238,233,.2); padding: 8px; font-size: 16px; }
+  progress { width: 100%; height: 14px; }
+  #log { min-height: 84px; max-height: 260px; overflow: auto; white-space: pre-wrap; background: #08090a; border: 1px solid rgba(240,238,233,.1); padding: 12px; color: #b2b0aa; font: 12px/1.55 ui-monospace, SFMono-Regular, Consolas, monospace; }
+  .path { color: #f0eee9; word-break: break-word; }
+  .small { font-size: .9rem; }
+</style>
+<main>
+  <h1>Thumbnail Maker</h1>
+  <p>This runs entirely on your computer. Your full-resolution photographs are never uploaded anywhere. It creates lightweight WebP copies for the Photography grid and leaves the originals untouched.</p>
+
+  <section class="panel">
+    <div class="row">
+      <button id="chooseSource" type="button">1. Choose photo-full folder</button>
+      <span id="sourceLabel" class="path">Not selected</span>
+    </div>
+    <div class="row">
+      <button id="chooseOutput" type="button">2. Choose / create photo-thumbs folder</button>
+      <span id="outputLabel" class="path">Not selected</span>
+    </div>
+    <div class="row">
+      <label>Longest edge <input id="maxEdge" type="number" min="600" max="2000" step="100" value="1200"> px</label>
+      <label><input id="overwrite" type="checkbox"> Rebuild existing thumbnails</label>
+    </div>
+    <div class="row">
+      <button id="run" type="button" disabled>3. Make thumbnails</button>
+      <strong id="status">Choose both folders first.</strong>
+    </div>
+    <progress id="progress" max="1" value="0"></progress>
+    <p class="small">Recommended: 1200 px. Existing thumbnails are skipped by default, so later you can add a few new photos and run this again.</p>
+    <div id="log" aria-live="polite"></div>
+  </section>
+</main>
+<script>
+(() => {
+  const supported = 'showDirectoryPicker' in window && 'createImageBitmap' in window;
+  const chooseSource = document.querySelector('#chooseSource');
+  const chooseOutput = document.querySelector('#chooseOutput');
+  const sourceLabel = document.querySelector('#sourceLabel');
+  const outputLabel = document.querySelector('#outputLabel');
+  const maxEdgeInput = document.querySelector('#maxEdge');
+  const overwriteInput = document.querySelector('#overwrite');
+  const runButton = document.querySelector('#run');
+  const status = document.querySelector('#status');
+  const progress = document.querySelector('#progress');
+  const log = document.querySelector('#log');
+
+  let sourceDir = null;
+  let outputDir = null;
+  let running = false;
+
+  const writeLog = message => {
+    log.textContent += `${message}\n`;
+    log.scrollTop = log.scrollHeight;
+  };
+
+  const refreshReady = () => {
+    runButton.disabled = running || !supported || !sourceDir || !outputDir;
+    if (!supported) {
+      status.textContent = 'Please open this file in current Chrome or Microsoft Edge.';
+    } else if (!sourceDir || !outputDir) {
+      status.textContent = 'Choose both folders first.';
+    } else if (!running) {
+      status.textContent = 'Ready.';
+    }
+  };
+
+  const webpName = fileName => `${fileName}.webp`; // Preserve the original extension to avoid name collisions (e.g. Field.jpg vs Field.png).
+  const isSupportedPhoto = name => /\.(jpe?g|png|webp)$/i.test(name);
+
+  async function outputExists(name) {
+    try {
+      await outputDir.getFileHandle(name, { create: false });
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  async function canvasToBlob(canvas, quality) {
+    return new Promise((resolve, reject) => {
+      canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('WebP encoding failed.')), 'image/webp', quality);
+    });
+  }
+
+  async function makeOne(fileHandle, maxEdge) {
+    const file = await fileHandle.getFile();
+    const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
+
+    try {
+      const scale = Math.min(1, maxEdge / Math.max(bitmap.width, bitmap.height));
+      const width = Math.max(1, Math.round(bitmap.width * scale));
+      const height = Math.max(1, Math.round(bitmap.height * scale));
+
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext('2d', { alpha: false });
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(bitmap, 0, 0, width, height);
+
+      const blob = await canvasToBlob(canvas, 0.82);
+      const targetName = webpName(file.name);
+      const target = await outputDir.getFileHandle(targetName, { create: true });
+      const writer = await target.createWritable();
+      await writer.write(blob);
+      await writer.close();
+
+      return { targetName, sourceBytes: file.size, thumbBytes: blob.size, width, height };
+    } finally {
+      bitmap.close();
+    }
+  }
+
+  chooseSource.addEventListener('click', async () => {
+    try {
+      sourceDir = await window.showDirectoryPicker({ mode: 'read' });
+      sourceLabel.textContent = sourceDir.name;
+      refreshReady();
+    } catch (error) {
+      if (error?.name !== 'AbortError') writeLog(`Source folder error: ${error.message || error}`);
+    }
+  });
+
+  chooseOutput.addEventListener('click', async () => {
+    try {
+      outputDir = await window.showDirectoryPicker({ mode: 'readwrite' });
+      outputLabel.textContent = outputDir.name;
+      refreshReady();
+    } catch (error) {
+      if (error?.name !== 'AbortError') writeLog(`Output folder error: ${error.message || error}`);
+    }
+  });
+
+  runButton.addEventListener('click', async () => {
+    if (!sourceDir || !outputDir || running) return;
+
+    const maxEdge = Math.max(600, Math.min(2000, Number(maxEdgeInput.value) || 1200));
+    maxEdgeInput.value = String(maxEdge);
+    const overwrite = overwriteInput.checked;
+
+    const handles = [];
+    for await (const entry of sourceDir.values()) {
+      if (entry.kind === 'file' && isSupportedPhoto(entry.name)) handles.push(entry);
+    }
+    handles.sort((a, b) => a.name.localeCompare(b.name));
+
+    if (!handles.length) {
+      status.textContent = 'No JPG, JPEG, PNG, or WebP images found in that folder.';
+      return;
+    }
+
+    running = true;
+    refreshReady();
+    log.textContent = '';
+    progress.max = handles.length;
+    progress.value = 0;
+    let made = 0;
+    let skipped = 0;
+    let failed = 0;
+    let sourceTotal = 0;
+    let thumbTotal = 0;
+
+    status.textContent = `Processing 0 / ${handles.length}…`;
+
+    for (let i = 0; i < handles.length; i += 1) {
+      const handle = handles[i];
+      const targetName = webpName(handle.name);
+
+      try {
+        if (!overwrite && await outputExists(targetName)) {
+          skipped += 1;
+          writeLog(`SKIP  ${targetName}`);
+        } else {
+          const result = await makeOne(handle, maxEdge);
+          made += 1;
+          sourceTotal += result.sourceBytes;
+          thumbTotal += result.thumbBytes;
+          writeLog(`OK    ${handle.name} → ${result.targetName}  (${result.width}×${result.height}, ${(result.thumbBytes / 1024).toFixed(0)} KB)`);
+        }
+      } catch (error) {
+        failed += 1;
+        writeLog(`FAIL  ${handle.name}: ${error.message || error}`);
+      }
+
+      progress.value = i + 1;
+      status.textContent = `Processing ${i + 1} / ${handles.length}…`;
+      await new Promise(resolve => setTimeout(resolve, 0));
+    }
+
+    const reduction = sourceTotal > 0 ? (100 * (1 - thumbTotal / sourceTotal)).toFixed(1) : '—';
+    status.textContent = `Finished: ${made} made, ${skipped} skipped, ${failed} failed.`;
+    writeLog('');
+    writeLog(`Finished. New thumbnails: ${(thumbTotal / 1024 / 1024).toFixed(1)} MB from ${(sourceTotal / 1024 / 1024).toFixed(1)} MB of processed originals (${reduction}% smaller).`);
+    running = false;
+    refreshReady();
+  });
+
+  refreshReady();
+})();
+</script>
