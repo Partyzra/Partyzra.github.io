@@ -1,13 +1,12 @@
-# V4.12.10 — Photography folder corrections
+# V4.13.1 — Staggered Film Layout
 
 Replace:
-- `js/photography-page.js`
+- `css/style.css`
 
-Folder changes:
-- Phoebe.jpg → Animals; explicitly removed from People
-- Lily.jpg → People
-- Lily2.jpg → People
-- Zey Portrait.png → People
-- Zey.jpg → People
+Changes only the placement of the moving-film studies:
+- Forest shot is left-weighted/inset.
+- Deer shot is centered and lower.
+- A `.film-motion-intro--right` class is included for a future third video on the right.
+- On phones, the videos remain centered for a clean responsive layout.
 
-All other Photography behavior, including the two-track soundtrack, is unchanged.
+No autoplay, lazy-loading, framing, or video behavior was changed.

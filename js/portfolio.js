@@ -49,62 +49,80 @@
     revealItems.forEach(item => revealObserver.observe(item));
   }
 
-  // Film motion hero: keep the poster visible until the silent video is ready,
-  // then autoplay only when the Film section is near the viewport.
-  const filmHeroVideo = qs('[data-film-hero-video]');
-  const filmMotionIntro = qs('[data-film-motion-intro]');
+  // Film motion studies: keep each clip dormant until it nears the viewport,
+  // then play silently and pause again when it moves well offscreen.
+  const filmMotionIntros = qsa('[data-film-motion-intro]');
 
-  if (filmHeroVideo && filmMotionIntro) {
+  if (filmMotionIntros.length) {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let filmVideoLoaded = false;
-    let filmVideoNearby = false;
+    const motionItems = [];
 
-    filmHeroVideo.muted = true;
-    filmHeroVideo.defaultMuted = true;
-    filmHeroVideo.playsInline = true;
+    filmMotionIntros.forEach(intro => {
+      const video = qs('video', intro);
+      if (!video) return;
 
-    const loadFilmHero = () => {
-      if (filmVideoLoaded || reduceMotion) return;
-      filmVideoLoaded = true;
-      filmHeroVideo.load();
-    };
+      const item = {
+        intro,
+        video,
+        loaded: false,
+        nearby: false
+      };
 
-    const playFilmHero = () => {
-      if (reduceMotion || !filmVideoNearby || document.hidden) return;
-      loadFilmHero();
-      filmHeroVideo.play().catch(() => {
-        // If a browser declines autoplay, the poster remains as the fallback.
+      video.muted = true;
+      video.defaultMuted = true;
+      video.playsInline = true;
+
+      item.load = () => {
+        if (item.loaded || reduceMotion) return;
+        item.loaded = true;
+        video.load();
+      };
+
+      item.play = () => {
+        if (reduceMotion || !item.nearby || document.hidden) return;
+        item.load();
+        video.play().catch(() => {
+          // If a browser declines autoplay, the frame simply remains still.
+        });
+      };
+
+      video.addEventListener('playing', () => {
+        intro.classList.add('is-video-ready');
       });
-    };
 
-    filmHeroVideo.addEventListener('playing', () => {
-      filmMotionIntro.classList.add('is-video-ready');
+      motionItems.push(item);
     });
 
     if (!reduceMotion && 'IntersectionObserver' in window) {
       const filmObserver = new IntersectionObserver(entries => {
         entries.forEach(entry => {
-          filmVideoNearby = entry.isIntersecting;
-          if (filmVideoNearby) {
-            playFilmHero();
-          } else if (filmVideoLoaded) {
-            filmHeroVideo.pause();
+          const item = motionItems.find(candidate => candidate.intro === entry.target);
+          if (!item) return;
+          item.nearby = entry.isIntersecting;
+          if (item.nearby) {
+            item.play();
+          } else if (item.loaded) {
+            item.video.pause();
           }
         });
-      }, { rootMargin: '280px 0px 280px 0px', threshold: 0.01 });
+      }, { rootMargin: '320px 0px 320px 0px', threshold: 0.01 });
 
-      filmObserver.observe(filmMotionIntro);
+      motionItems.forEach(item => filmObserver.observe(item.intro));
 
       document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-          filmHeroVideo.pause();
-        } else if (filmVideoNearby) {
-          playFilmHero();
-        }
+        motionItems.forEach(item => {
+          if (document.hidden) {
+            item.video.pause();
+          } else if (item.nearby) {
+            item.play();
+          }
+        });
       });
     } else if (!reduceMotion) {
-      filmVideoNearby = true;
-      playFilmHero();
+      motionItems.forEach(item => {
+        item.nearby = true;
+        item.play();
+      });
     }
   }
 
