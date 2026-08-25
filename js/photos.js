@@ -493,7 +493,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Field.jpg",
-    "title": "UT-193",
+    "title": "Field",
     "collection": "Landscape",
     "year": "",
     "location": "",

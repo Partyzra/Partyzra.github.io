@@ -382,7 +382,7 @@
 }
 
 .photo-viewer-stage.is-zoomed .photo-viewer-image.is-active {
-  cursor: grab;
+  cursor: zoom-out;
 }
 
 .photo-viewer-stage.is-panning .photo-viewer-image.is-active {

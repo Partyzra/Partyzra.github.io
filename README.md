@@ -1,7 +1,15 @@
-# Photography V4.9.3 — Click-to-Zoom Fix (Patch)
+# Photography V4.10.1 — Original Grid Revert
 
+This patch removes the V4.10 framed five-column experiment and restores the previous Photography grid styling.
+
+## Install
 Replace only:
 
-`js/photography-page.js`
+- `css/photography.css`
 
-This fixes click-to-zoom by checking whether the click coordinates are inside the visible photograph rather than relying on `event.target`, which can be retargeted by pointer capture.
+No JavaScript, photo metadata, album rules, viewer zoom, soundtrack, or image files are changed.
+
+## Thumbnail optimization
+The current gallery already defers most image requests until they approach the viewport, but the grid still points to the full-resolution originals in `Images/photo-full/`.
+
+For a true bandwidth/decoding improvement, create dedicated grid thumbnails (recommended: about 960px maximum dimension, WebP) in `Images/photo-thumbs/` and make the grid use those while the fullscreen viewer continues to use `Images/photo-full/`.

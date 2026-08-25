@@ -945,24 +945,21 @@
       && clientY <= rect.bottom;
   }
 
-  // The photograph itself is the primary desktop zoom control. At the fitted
-  // view, clicking any point inside the visible photograph magnifies toward
-  // that exact point. Clicking the surrounding black stage does nothing.
+  // The photograph itself is the primary zoom control. At the fitted view,
+  // clicking any point inside the visible photograph magnifies toward that
+  // exact point. While enlarged, a clean click (as opposed to a drag/pan)
+  // returns the image to its complete fitted view. The surrounding black
+  // stage remains inert.
   stage?.addEventListener('click', event => {
-    if (transitionLocked || suppressClickZoom || zoomScale > MIN_ZOOM + 0.01) return;
+    if (transitionLocked || suppressClickZoom) return;
     if (!pointIsOnActiveImage(event.clientX, event.clientY)) return;
+
+    if (zoomScale > MIN_ZOOM + 0.01) {
+      resetZoom();
+      return;
+    }
 
     setZoom(BUTTON_ZOOM, event.clientX, event.clientY);
-  });
-
-  // Double-click while already enlarged provides an optional closer look at
-  // the point under the cursor, while panning remains the normal zoomed action.
-  stage?.addEventListener('dblclick', event => {
-    if (event.pointerType === 'touch' || suppressClickZoom) return;
-    if (zoomScale <= MIN_ZOOM + 0.01) return;
-    if (!pointIsOnActiveImage(event.clientX, event.clientY)) return;
-
-    setZoom(Math.min(MAX_ZOOM, zoomScale + .75), event.clientX, event.clientY);
   });
 
   window.addEventListener('resize', () => {
