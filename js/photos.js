@@ -1424,7 +1424,7 @@ const PORTFOLIO_PHOTOS = [
       "Landscape"
     ],
     "album": "Landscapes"
-  }
+  },
 {
     "file": "Joey.jpg",
     "title": "Joey",
