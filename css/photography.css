@@ -933,3 +933,98 @@ body.no-scroll {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* ============================================================
+   V4.13.5 — manual soundtrack controls
+   ============================================================ */
+
+.photo-soundtrack-player {
+  position: fixed;
+  z-index: 9200;
+  right: clamp(14px, 2vw, 28px);
+  bottom: clamp(14px, 2vw, 26px);
+  display: flex;
+  align-items: stretch;
+  gap: 7px;
+  max-width: min(455px, calc(100vw - 28px));
+}
+
+.photo-soundtrack-player .photo-soundtrack-control {
+  position: static;
+  z-index: auto;
+  right: auto;
+  bottom: auto;
+}
+
+.photo-soundtrack-next {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 48px;
+  padding: 9px 13px;
+  border: 1px solid rgba(240,238,233,.14);
+  border-radius: 999px;
+  background: rgba(9,10,11,.80);
+  color: var(--photo-muted);
+  box-shadow: 0 14px 45px rgba(0,0,0,.22);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  cursor: pointer;
+  opacity: .78;
+  font: inherit;
+  font-size: .58rem;
+  font-weight: 600;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity .2s ease, border-color .2s ease, background .2s ease, color .2s ease;
+}
+
+.photo-soundtrack-next:hover,
+.photo-soundtrack-next:focus-visible {
+  opacity: 1;
+  color: var(--photo-text);
+  border-color: rgba(240,238,233,.28);
+  background: rgba(14,15,16,.94);
+}
+
+.photo-soundtrack-next:focus-visible {
+  outline: 2px solid var(--photo-accent);
+  outline-offset: 3px;
+}
+
+.photo-soundtrack-next-icon {
+  font-size: .82rem;
+}
+
+@media (max-width: 600px) {
+  .photo-soundtrack-player {
+    right: max(10px, env(safe-area-inset-right));
+    bottom: max(10px, env(safe-area-inset-bottom));
+    gap: 6px;
+  }
+
+  .photo-soundtrack-player .photo-soundtrack-control,
+  .photo-soundtrack-next {
+    min-height: 44px;
+  }
+
+  .photo-soundtrack-next {
+    width: 44px;
+    padding: 7px;
+  }
+
+  .photo-soundtrack-next-label {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-soundtrack-next {
+    transition: none;
+  }
+}

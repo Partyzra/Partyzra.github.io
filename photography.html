@@ -67,17 +67,23 @@
   </main>
 
 
-  <audio class="photo-soundtrack-audio" data-photo-soundtrack preload="metadata" autoplay>
+  <audio class="photo-soundtrack-audio" data-photo-soundtrack preload="metadata">
     <source src="assets/audio/the-drive-back-tom-anello.mp3" type="audio/mpeg">
   </audio>
 
-  <button class="photo-soundtrack-control" type="button" data-soundtrack-toggle aria-label="Play soundtrack" aria-pressed="false">
-    <span class="photo-soundtrack-icon" data-soundtrack-icon aria-hidden="true">▶</span>
-    <span class="photo-soundtrack-copy">
-      <span class="photo-soundtrack-status" data-soundtrack-status>Play soundtrack</span>
-      <span class="photo-soundtrack-title" data-soundtrack-title>The Drive Back — Tom Anello</span>
-    </span>
-  </button>
+  <div class="photo-soundtrack-player" aria-label="Photography soundtrack controls">
+    <button class="photo-soundtrack-control" type="button" data-soundtrack-toggle aria-label="Play soundtrack" aria-pressed="false">
+      <span class="photo-soundtrack-icon" data-soundtrack-icon aria-hidden="true">▶</span>
+      <span class="photo-soundtrack-copy">
+        <span class="photo-soundtrack-status" data-soundtrack-status>Play soundtrack</span>
+        <span class="photo-soundtrack-title" data-soundtrack-title>The Drive Back — Tom Anello</span>
+      </span>
+    </button>
+    <button class="photo-soundtrack-next" type="button" data-soundtrack-next aria-label="Next song">
+      <span class="photo-soundtrack-next-icon" aria-hidden="true">→</span>
+      <span class="photo-soundtrack-next-label">Next song</span>
+    </button>
+  </div>
 
   <div class="photo-viewer" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Photo viewer" data-photo-viewer>
     <div class="photo-viewer-topbar">

@@ -1,6 +1,16 @@
-# V4.13.4 — Photo filename case fallback
+# V4.13.5 — Manual Photography soundtrack
 
 Replace:
+- `photography.html`
+- `css/photography.css`
 - `js/photography-page.js`
 
-The current manifest lists `Derick2.JPG`. This update keeps that metadata intact, but makes both the thumbnail grid and fullscreen viewer try common extension-case variants (`.JPG` / `.jpg`) before removing an image as missing. This addresses Windows-vs-GitHub-Pages filename case differences without changing the rest of the Photography page.
+Behavior:
+- The Photography page opens silently.
+- Play/Pause controls the selected track.
+- The initial selected track is The Drive Back — Tom Anello.
+- Next song switches between The Drive Back and Guitar Solo.
+- If music is playing, Next song immediately continues with the next track.
+- If music is paused, Next song changes the selection but remains paused.
+- Tracks do not auto-advance when they end.
+- Existing gallery, case-fallback, collection, thumbnail, viewer, and zoom behavior is preserved.
