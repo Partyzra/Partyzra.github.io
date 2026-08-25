@@ -39,17 +39,37 @@
   });
 
   // ----------------------------------------------------------
-  // Photography soundtrack
+  // Photography soundtrack — two-track sequence
   // ----------------------------------------------------------
 
   const soundtrack = qs('[data-photo-soundtrack]');
   const soundtrackToggle = qs('[data-soundtrack-toggle]');
   const soundtrackIcon = qs('[data-soundtrack-icon]');
   const soundtrackStatus = qs('[data-soundtrack-status]');
+  const soundtrackTitle = qs('[data-soundtrack-title]');
 
   if (soundtrack && soundtrackToggle) {
     const targetVolume = 0.42;
+    const soundtrackTracks = [
+      {
+        src: 'assets/audio/the-drive-back-tom-anello.mp3',
+        title: 'The Drive Back — Tom Anello'
+      },
+      {
+        src: 'MusicTracks/Guitar Solo.wav',
+        title: 'Guitar Solo'
+      }
+    ];
+
+    let currentTrackIndex = 0;
     let fadeFrame = null;
+    let advancingTrack = false;
+
+    const currentTrack = () => soundtrackTracks[currentTrackIndex];
+
+    const setTrackTitle = () => {
+      if (soundtrackTitle) soundtrackTitle.textContent = currentTrack().title;
+    };
 
     const setSoundtrackUI = (state) => {
       const playing = state === 'playing';
@@ -65,6 +85,7 @@
       if (soundtrackStatus) {
         soundtrackStatus.textContent = playing ? 'Now playing' : (ended ? 'Replay soundtrack' : (blocked ? 'Play soundtrack' : 'Soundtrack'));
       }
+      setTrackTitle();
     };
 
     const fadeVolume = (from, to, duration = 1600) => {
@@ -82,11 +103,23 @@
       fadeFrame = requestAnimationFrame(step);
     };
 
-    const startSoundtrack = async () => {
+    const loadTrack = index => {
+      currentTrackIndex = Math.max(0, Math.min(soundtrackTracks.length - 1, index));
+      const track = currentTrack();
+
+      if (soundtrack.getAttribute('src') !== track.src) {
+        soundtrack.src = track.src;
+        soundtrack.load();
+      }
+
+      setTrackTitle();
+    };
+
+    const startSoundtrack = async ({ gentleFade = true } = {}) => {
       try {
-        soundtrack.volume = 0.12;
+        soundtrack.volume = gentleFade ? 0.12 : targetVolume;
         await soundtrack.play();
-        fadeVolume(0.12, targetVolume);
+        if (gentleFade) fadeVolume(0.12, targetVolume);
         setSoundtrackUI('playing');
         return true;
       } catch (_) {
@@ -109,19 +142,39 @@
         return;
       }
 
-      if (soundtrack.ended) soundtrack.currentTime = 0;
+      // After the final track ends, Replay starts the complete sequence again.
+      if (soundtrack.ended && currentTrackIndex === soundtrackTracks.length - 1) {
+        loadTrack(0);
+      } else if (soundtrack.ended) {
+        soundtrack.currentTime = 0;
+      }
+
       await startSoundtrack();
     });
 
     soundtrack.addEventListener('play', () => setSoundtrackUI('playing'));
     soundtrack.addEventListener('pause', () => {
-      if (!soundtrack.ended) setSoundtrackUI('paused');
+      if (!soundtrack.ended && !advancingTrack) setSoundtrackUI('paused');
     });
-    soundtrack.addEventListener('ended', () => setSoundtrackUI('ended'));
 
-    // Attempt audible autoplay as soon as the page script runs. Modern browsers
-    // may reject this on a first visit; in that case the control changes to a
-    // clear "Play soundtrack" fallback and one click starts playback.
+    soundtrack.addEventListener('ended', async () => {
+      if (currentTrackIndex < soundtrackTracks.length - 1) {
+        advancingTrack = true;
+        loadTrack(currentTrackIndex + 1);
+        const started = await startSoundtrack({ gentleFade: false });
+        advancingTrack = false;
+        if (!started) setSoundtrackUI('blocked');
+        return;
+      }
+
+      setSoundtrackUI('ended');
+    });
+
+    // The HTML source already points at the first track. Keep the JS state and
+    // visible title synchronized with it, then attempt audible autoplay. Modern
+    // browsers may reject that on a first visit; the existing control remains
+    // the one-click fallback and, once playback begins, track two follows track one.
+    setTrackTitle();
     setSoundtrackUI('paused');
     startSoundtrack();
   }
