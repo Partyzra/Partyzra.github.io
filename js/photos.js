@@ -326,19 +326,7 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
-  {
-    "file": "Sun Kitty.jpg",
-    "title": "Sun Kitty",
-    "collection": "Wildlife",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "animal"
-    ],
-    "note": ""
-  },
-  {
+{
     "file": "Sunset.jpg",
     "title": "Sunset",
     "collection": "Landscape",
