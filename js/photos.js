@@ -1437,7 +1437,7 @@ const PORTFOLIO_PHOTOS = [
       "Lagoon"
     ],
     "album": "Lagoon"
-  }
+  },
 {
     "file": "Coca Cola.jpg",
     "title": "Coca Cola",
