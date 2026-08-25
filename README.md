@@ -1,17 +1,8 @@
-# Photography V4.11.2 — Lagoon album update
+# V4.12.6 — Remove Film divider band
 
-Replace `js/photos.js` with the included file.
+Replace:
+- `css/style.css`
 
-Explicitly added to the `Lagoon` album:
-- Zeboy!!!.jpg
-- Doll.jpg
-- Doll1.jpg
-- Guns.jpg
-- Stone.jpg
-- Rattlesnake Rapids.jpg
-- Rattlesnake Rapids1.jpg
-- Rattlesnake Rapids2.jpg
-- Rattlesnake Rapids3.jpg
-- Rattlesnake Rapids4.jpg
+The dark horizontal strip above the aerial video was caused by the first child's top margin collapsing outside `.film-section`, exposing the darker page/body background.
 
-No other Photography-page behavior was intentionally changed.
+This update contains that margin inside the Film section, so the normal Film background now fills the spacing above the video. The spacing itself remains; only the unintended darker divider band is removed.

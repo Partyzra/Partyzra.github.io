@@ -97,12 +97,31 @@
     </section>
 
     <section class="section film-section" id="film">
+      <div class="film-motion-intro" data-film-motion-intro>
+        <video
+          class="film-motion-video"
+          data-film-hero-video
+          muted
+          loop
+          playsinline
+          preload="none"
+          poster="video/aerial-forest-poster.webp"
+          aria-hidden="true"
+          tabindex="-1"
+          disablepictureinpicture
+        >
+          <source media="(max-width: 700px)" src="video/aerial-forest-hero-mobile.mp4" type="video/mp4">
+          <source src="video/aerial-forest-hero.mp4" type="video/mp4">
+        </video>
+        <span class="sr-only">A slow aerial view moving forward over a forest and mountain landscape.</span>
+      </div>
+
       <div class="section-heading container-wide" data-reveal>
         <div>
           <p class="eyebrow">Film & video</p>
           <h2>Work that lives<br>between the cuts.</h2>
         </div>
-        <p>Selected commercial, music-video, short-film, and demo-reel work. Each piece is embedded directly from YouTube.</p>
+        <p>A quiet moving-image introduction, followed by selected commercial, music-video, short-film, and demo-reel work.</p>
       </div>
 
       <div class="film-feature container-wide" data-reveal>

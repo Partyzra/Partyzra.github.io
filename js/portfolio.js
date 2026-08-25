@@ -49,6 +49,65 @@
     revealItems.forEach(item => revealObserver.observe(item));
   }
 
+  // Film motion hero: keep the poster visible until the silent video is ready,
+  // then autoplay only when the Film section is near the viewport.
+  const filmHeroVideo = qs('[data-film-hero-video]');
+  const filmMotionIntro = qs('[data-film-motion-intro]');
+
+  if (filmHeroVideo && filmMotionIntro) {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let filmVideoLoaded = false;
+    let filmVideoNearby = false;
+
+    filmHeroVideo.muted = true;
+    filmHeroVideo.defaultMuted = true;
+    filmHeroVideo.playsInline = true;
+
+    const loadFilmHero = () => {
+      if (filmVideoLoaded || reduceMotion) return;
+      filmVideoLoaded = true;
+      filmHeroVideo.load();
+    };
+
+    const playFilmHero = () => {
+      if (reduceMotion || !filmVideoNearby || document.hidden) return;
+      loadFilmHero();
+      filmHeroVideo.play().catch(() => {
+        // If a browser declines autoplay, the poster remains as the fallback.
+      });
+    };
+
+    filmHeroVideo.addEventListener('playing', () => {
+      filmMotionIntro.classList.add('is-video-ready');
+    });
+
+    if (!reduceMotion && 'IntersectionObserver' in window) {
+      const filmObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          filmVideoNearby = entry.isIntersecting;
+          if (filmVideoNearby) {
+            playFilmHero();
+          } else if (filmVideoLoaded) {
+            filmHeroVideo.pause();
+          }
+        });
+      }, { rootMargin: '280px 0px 280px 0px', threshold: 0.01 });
+
+      filmObserver.observe(filmMotionIntro);
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          filmHeroVideo.pause();
+        } else if (filmVideoNearby) {
+          playFilmHero();
+        }
+      });
+    } else if (!reduceMotion) {
+      filmVideoNearby = true;
+      playFilmHero();
+    }
+  }
+
   // Custom music controls.
   const trackCards = qsa('[data-track-card]');
   const formatTime = value => {
