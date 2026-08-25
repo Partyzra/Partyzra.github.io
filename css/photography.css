@@ -188,12 +188,22 @@
   object-fit: cover;
   object-position: center;
   opacity: 0;
-  transform: scale(1.008);
-  transition: opacity .38s ease, transform .75s cubic-bezier(.22,.72,.2,1), filter .45s ease;
+  transform: translateY(5px) scale(1.008);
+  transition: opacity .44s ease-out, transform .68s cubic-bezier(.22,.72,.2,1), filter .45s ease;
 }
 
-.photo-grid-item.is-loaded .photo-grid-image {
+/*
+  The image can be fully downloaded before the visitor reaches it, but it only
+  becomes visible when its tile actually enters the viewport. This produces a
+  soft, quick photographic reveal without sacrificing progressive preloading.
+*/
+.photo-grid-item.is-visible .photo-grid-image {
   opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.photo-grid-item:not(.is-visible) .photo-grid-overlay {
+  opacity: 0 !important;
 }
 
 .photo-grid-overlay {
@@ -584,6 +594,10 @@ body.no-scroll {
   .photo-viewer,
   .photo-viewer-image {
     transition: none !important;
+  }
+
+  .photo-grid-item.is-visible .photo-grid-image {
+    transform: none;
   }
 }
 

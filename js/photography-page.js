@@ -386,11 +386,38 @@
       }, { rootMargin: observerMargin, threshold: 0.01 })
     : null;
 
+  /*
+    Loading and revealing are intentionally separate.
+
+    Thumbnails still begin downloading before they reach the viewport so the
+    gallery feels instant while scrolling. A second observer waits until the
+    actual tile becomes visible, then gives the loaded image its soft reveal.
+    This preserves the speed benefit of preloading without letting photographs
+    finish their fade before the visitor has actually reached them.
+  */
+  const revealGridItem = figure => {
+    if (!figure || !figure.classList.contains('is-loaded')) return;
+    figure.classList.add('is-visible');
+    gridRevealObserver?.unobserve(figure);
+  };
+
+  const gridRevealObserver = 'IntersectionObserver' in window
+    ? new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const figure = entry.target;
+          figure.dataset.inView = 'true';
+          revealGridItem(figure);
+        });
+      }, { rootMargin: '0px 0px 24px 0px', threshold: 0.06 })
+    : null;
+
   function renderGrid() {
     const photos = photosForActiveAlbum();
     const fragment = document.createDocumentFragment();
 
     gridImageObserver?.disconnect();
+    gridRevealObserver?.disconnect();
 
     photos.forEach((photo, index) => {
       const figure = document.createElement('figure');
@@ -431,7 +458,16 @@
         loadGridImage(img);
       }
 
-      const markLoaded = () => figure.classList.add('is-loaded');
+      const markLoaded = () => {
+        figure.classList.add('is-loaded');
+
+        // If the tile has already entered the viewport, reveal it now. If it
+        // loaded ahead of the scroll position, the reveal observer will wait
+        // and fire only when the visitor actually reaches it.
+        if (!gridRevealObserver || figure.dataset.inView === 'true') {
+          requestAnimationFrame(() => revealGridItem(figure));
+        }
+      };
       img.addEventListener('load', markLoaded, { once: true });
       if (img.complete && img.naturalWidth) markLoaded();
 
@@ -468,6 +504,16 @@
     });
 
     grid.replaceChildren(fragment);
+
+    // Observe the mounted tiles after the DOM swap so their viewport geometry
+    // is accurate. Browsers without IntersectionObserver simply reveal a tile
+    // as soon as its thumbnail finishes loading.
+    if (gridRevealObserver) {
+      qsa('.photo-grid-item', grid).forEach(figure => gridRevealObserver.observe(figure));
+    } else {
+      qsa('.photo-grid-item.is-loaded', grid).forEach(figure => revealGridItem(figure));
+    }
+
     updateCounts();
   }
 
