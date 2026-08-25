@@ -1328,5 +1328,104 @@ const PORTFOLIO_PHOTOS = [
     "tags": [
       "nature"
     ]
+  },
+{
+    "file": "Doll.jpg",
+    "title": "Doll",
+    "collection": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Lagoon"
+    ]
+  },
+{
+    "file": "Doll1.jpg",
+    "title": "Doll",
+    "collection": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Lagoon"
+    ]
+  },
+{
+    "file": "Guns.jpg",
+    "title": "Guns",
+    "collection": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Lagoon"
+    ]
+  },
+{
+    "file": "Rattlesnake Rapids1.jpg",
+    "title": "Rattlesnake Rapids",
+    "collection": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Lagoon"
+    ]
+  },
+{
+    "file": "Rattlesnake Rapids2.jpg",
+    "title": "Rattlesnake Rapids",
+    "collection": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Lagoon"
+    ]
+  },
+{
+    "file": "Rattlesnake Rapids3.jpg",
+    "title": "Rattlesnake Rapids",
+    "collection": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Lagoon"
+    ]
+  },
+{
+    "file": "Rattlesnake Rapids4.jpg",
+    "title": "Rattlesnake Rapids",
+    "collection": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Lagoon"
+    ]
+  },
+{
+    "file": "Stone.jpg",
+    "title": "Stone",
+    "collection": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Lagoon"
+    ]
+  },
+{
+    "file": "Zeboy!!!.jpg",
+    "title": "Zey",
+    "collection": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Lagoon"
+    ]
   }
 ];
