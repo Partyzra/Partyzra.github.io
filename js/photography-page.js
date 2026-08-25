@@ -263,6 +263,7 @@
 
         return collection === 'wildlife'
           || tags.some(tag => ['animal', 'bird', 'insect', 'wildlife'].includes(tag))
+          || file === 'phoebe.jpg'
           || file === 'open mouth.jpg'
           || file.startsWith('buffalo')
           || file.startsWith('fox')
@@ -282,6 +283,7 @@
         // These are intentionally not part of the People album even if
         // older metadata happens to label them as portraits/people.
         const explicitlyNotPeople = file === 'possey.jpg'
+          || file === 'phoebe.jpg'
           || file === 'door.jpg'
           || file === 'open mouth.jpg'
           || file === 'homeless.jpg'
@@ -291,6 +293,10 @@
         if (explicitlyNotPeople) return false;
 
         return file === 'performance.jpg'
+          || file === 'lily.jpg'
+          || file === 'lily2.jpg'
+          || file === 'zey portrait.png'
+          || file === 'zey.jpg'
           || ['people', 'portraits', 'family'].includes(collection)
           || tags.some(tag => ['people', 'portrait', 'self-portrait'].includes(tag));
       }

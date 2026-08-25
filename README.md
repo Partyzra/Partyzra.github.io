@@ -1,7 +1,13 @@
-# V4.12.8 — Sunset homepage hero
+# V4.12.10 — Photography folder corrections
 
 Replace:
-- `css/style.css`
+- `js/photography-page.js`
 
-Changes only the main homepage hero image from `Mountain.jpg` to `Sunset.jpg`.
-All existing hero sizing, overlay, animation, and other site styling remain unchanged.
+Folder changes:
+- Phoebe.jpg → Animals; explicitly removed from People
+- Lily.jpg → People
+- Lily2.jpg → People
+- Zey Portrait.png → People
+- Zey.jpg → People
+
+All other Photography behavior, including the two-track soundtrack, is unchanged.
