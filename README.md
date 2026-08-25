@@ -1,14 +1,15 @@
-# V4.13.2 — Music page simplification
+# V4.13.3 — Deer hosted path fix
 
 Replace:
-- `music.html`
+- `index.html`
 
-Removed from the live Music page:
-- “Next Phase”
-- “The site is ready for a soundtrack.”
-- the entire explanatory column to its right
+The Deer video source has been corrected from:
+- `Video/Deer.mp4`
 
-Backup included:
-- `backups/music-page-before-simplification.html.bak`
+to:
+- `video/Deer.mp4`
 
-The `.bak` file is an untouched copy of the Music page before this change. To restore it later, copy its contents back into `music.html` (or rename it to `music.html`).
+Keep the actual video file at:
+- `video/Deer.mp4`
+
+This fixes the case-sensitive hosted path while leaving the Forest/Deer layout, lazy loading, autoplay, looping, muted playback, and styling unchanged.
