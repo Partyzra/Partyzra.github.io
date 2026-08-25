@@ -1028,3 +1028,126 @@ body.no-scroll {
     transition: none;
   }
 }
+
+/* ============================================================
+   V4.13.6 — integrated soundtrack next control
+   One shared pill: Play/Pause + track info + skip-next icon.
+   ============================================================ */
+
+.photo-soundtrack-player {
+  gap: 0;
+  align-items: stretch;
+  overflow: hidden;
+  border: 1px solid rgba(240,238,233,.14);
+  border-radius: 999px;
+  background: rgba(9,10,11,.80);
+  box-shadow: 0 14px 45px rgba(0,0,0,.28);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  opacity: .78;
+  transition: opacity .2s ease, border-color .2s ease, background .2s ease;
+}
+
+.photo-soundtrack-player:hover,
+.photo-soundtrack-player:focus-within {
+  opacity: 1;
+  border-color: rgba(240,238,233,.28);
+  background: rgba(14,15,16,.94);
+}
+
+.photo-soundtrack-player .photo-soundtrack-control {
+  min-width: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  opacity: 1;
+}
+
+.photo-soundtrack-player .photo-soundtrack-control:hover,
+.photo-soundtrack-player .photo-soundtrack-control:focus-visible,
+.photo-soundtrack-player .photo-soundtrack-control.needs-interaction {
+  border-color: transparent;
+  background: transparent;
+  opacity: 1;
+}
+
+.photo-soundtrack-player .photo-soundtrack-control:focus-visible {
+  outline: 0;
+  box-shadow: inset 0 0 0 2px var(--photo-accent);
+}
+
+.photo-soundtrack-next {
+  flex: 0 0 46px;
+  width: 46px;
+  min-height: 48px;
+  padding: 0;
+  border: 0;
+  border-left: 1px solid rgba(240,238,233,.12);
+  border-radius: 0;
+  background: transparent;
+  color: var(--photo-muted);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  opacity: 1;
+  transition: color .2s ease, background .2s ease, border-color .2s ease;
+}
+
+.photo-soundtrack-next:hover,
+.photo-soundtrack-next:focus-visible {
+  color: var(--photo-text);
+  border-color: rgba(240,238,233,.20);
+  background: rgba(240,238,233,.055);
+  opacity: 1;
+}
+
+.photo-soundtrack-next:focus-visible {
+  outline: 0;
+  box-shadow: inset 0 0 0 2px var(--photo-accent);
+}
+
+.photo-soundtrack-next-icon {
+  display: block;
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.photo-soundtrack-next-icon path:first-child {
+  stroke: none;
+}
+
+.photo-soundtrack-next-icon path:last-child {
+  fill: none;
+}
+
+@media (max-width: 600px) {
+  .photo-soundtrack-player {
+    gap: 0;
+  }
+
+  .photo-soundtrack-player .photo-soundtrack-control {
+    min-height: 44px;
+  }
+
+  .photo-soundtrack-next {
+    flex-basis: 42px;
+    width: 42px;
+    min-height: 44px;
+    padding: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-soundtrack-player,
+  .photo-soundtrack-next {
+    transition: none;
+  }
+}
