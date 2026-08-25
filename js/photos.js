@@ -18,7 +18,7 @@
 
 const PORTFOLIO_PHOTOS = [
   {
-    "file": "Abandoned1.jpg",
+    "file": "Abandoned1.png",
     "title": "Abandoned I",
     "collection": "Places & Structures",
     "year": "",
