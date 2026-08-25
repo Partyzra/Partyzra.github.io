@@ -1309,7 +1309,7 @@ const PORTFOLIO_PHOTOS = [
     },
   {
     "file": "Bird.jpg",
-    "title": "Bird",
+    "title": "Western Gull",
     "collection": "Nature",
     "year": "",
     "location": "",
