@@ -188,7 +188,36 @@
 
   const fullBasePath = 'Images/photo-full/';
   const thumbBasePath = 'Images/photo-thumbs/';
-  const thumbnailPathFor = file => `${thumbBasePath}${file}.webp`;
+
+  // GitHub Pages is case-sensitive, while Windows normally is not. A filename
+  // such as Derick2.JPG can therefore work locally but fail online if Git has
+  // the same file tracked as Derick2.jpg (or vice versa). Try the exact name
+  // first, then common extension-case variants before treating an image as
+  // genuinely missing.
+  const fileCaseVariants = file => {
+    const exact = String(file || '').trim();
+    if (!exact) return [];
+
+    const variants = [exact];
+    const match = exact.match(/^(.*)\.([^.]+)$/);
+    if (!match) return variants;
+
+    const [, stem, extension] = match;
+    [extension.toLowerCase(), extension.toUpperCase()].forEach(nextExtension => {
+      const candidate = `${stem}.${nextExtension}`;
+      if (!variants.includes(candidate)) variants.push(candidate);
+    });
+
+    return variants;
+  };
+
+  const fullPathsFor = file => fileCaseVariants(file)
+    .map(candidate => `${fullBasePath}${candidate}`);
+
+  const thumbnailPathsFor = file => fileCaseVariants(file)
+    .map(candidate => `${thumbBasePath}${candidate}.webp`);
+
+  const thumbnailPathFor = file => thumbnailPathsFor(file)[0] || '';
   const albumNav = qs('[data-album-nav]');
   const albumHeading = qs('[data-album-heading]');
   const photoCount = qs('[data-photo-count]');
@@ -485,10 +514,15 @@
       const button = document.createElement('button');
       button.className = 'photo-grid-button';
       button.type = 'button';
-      const fullSrc = fullBasePath + photo.file;
-      const thumbSrc = thumbnailPathFor(photo.file);
+      const fullCandidates = fullPathsFor(photo.file);
+      const thumbCandidates = thumbnailPathsFor(photo.file);
+      const fullSrc = fullCandidates[0] || '';
+      const thumbSrc = thumbCandidates[0] || '';
+      const gridCandidates = [...thumbCandidates, ...fullCandidates]
+        .filter((value, position, values) => value && values.indexOf(value) === position);
 
       button.dataset.full = fullSrc;
+      button.dataset.fullCandidates = JSON.stringify(fullCandidates);
       button.dataset.thumb = thumbSrc;
       button.dataset.title = photo.title || photo.file;
       button.dataset.collection = photo.collection || '';
@@ -500,8 +534,9 @@
 
       const img = document.createElement('img');
       img.className = 'photo-grid-image';
-      img.dataset.src = thumbSrc;
-      img.dataset.fallback = fullSrc;
+      img.dataset.src = gridCandidates[0] || '';
+      img.dataset.candidates = JSON.stringify(gridCandidates);
+      img.dataset.candidateIndex = '0';
       img.alt = photo.title || '';
       img.loading = 'lazy';
       img.decoding = 'async';
@@ -531,12 +566,18 @@
       if (img.complete && img.naturalWidth) markLoaded();
 
       img.addEventListener('error', () => {
-        // During setup (or if one thumbnail was missed), fall back to the
-        // original instead of leaving a blank tile. Once photo-thumbs is
-        // complete, normal gallery browsing never needs this fallback.
-        if (!img.dataset.fallbackAttempted && img.dataset.fallback) {
-          img.dataset.fallbackAttempted = 'true';
-          img.src = img.dataset.fallback;
+        let candidates = [];
+        try {
+          candidates = JSON.parse(img.dataset.candidates || '[]');
+        } catch (_) {}
+
+        const currentIndex = Number.parseInt(img.dataset.candidateIndex || '0', 10);
+        const nextIndex = Number.isFinite(currentIndex) ? currentIndex + 1 : 1;
+        const nextSrc = candidates[nextIndex];
+
+        if (nextSrc) {
+          img.dataset.candidateIndex = String(nextIndex);
+          img.src = nextSrc;
           return;
         }
 
@@ -645,7 +686,19 @@
 
   const wrap = index => (index + buttons.length) % buttons.length;
   const itemAt = index => buttons[wrap(index)];
-  const srcAt = index => itemAt(index)?.dataset.full || '';
+  const srcCandidatesAt = index => {
+    const item = itemAt(index);
+    if (!item) return [];
+
+    try {
+      const parsed = JSON.parse(item.dataset.fullCandidates || '[]');
+      if (Array.isArray(parsed) && parsed.length) return parsed.filter(Boolean);
+    } catch (_) {}
+
+    return item.dataset.full ? [item.dataset.full] : [];
+  };
+
+  const srcAt = index => srcCandidatesAt(index)[0] || '';
   const titleAt = index => itemAt(index)?.dataset.title || '';
 
   const metaAt = index => {
@@ -762,23 +815,33 @@
   const preloadCache = new Map();
 
   function preload(src) {
-    if (!src) return Promise.resolve();
+    if (!src) return Promise.resolve(false);
     if (preloadCache.has(src)) return preloadCache.get(src);
 
     const promise = new Promise(resolve => {
       const image = new Image();
-      image.onload = () => resolve();
-      image.onerror = () => resolve();
+      image.onload = () => resolve(true);
+      image.onerror = () => resolve(false);
       image.src = src;
-      if (image.complete) resolve();
+      if (image.complete) resolve(Boolean(image.naturalWidth));
     });
 
     preloadCache.set(src, promise);
     return promise;
   }
 
+  async function resolveFullSrc(index) {
+    const candidates = srcCandidatesAt(index);
+    for (const src of candidates) {
+      if (await preload(src)) return src;
+    }
+    return candidates[0] || '';
+  }
+
   function preloadAround(index) {
-    [-2, -1, 1, 2].forEach(offset => preload(srcAt(index + offset)));
+    [-2, -1, 1, 2].forEach(offset => {
+      resolveFullSrc(index + offset).catch(() => {});
+    });
   }
 
   function syncCopy(index) {
@@ -797,11 +860,13 @@
     resetZoom();
 
     const target = wrap(index);
-    const src = srcAt(target);
-    if (!src) return;
 
     transitionLocked = animate;
-    await preload(src);
+    const src = await resolveFullSrc(target);
+    if (!src) {
+      transitionLocked = false;
+      return;
+    }
 
     const outgoing = images[activeLayer];
     const incomingLayer = images.length > 1 ? 1 - activeLayer : activeLayer;

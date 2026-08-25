@@ -1,15 +1,6 @@
-# V4.13.3 — Deer hosted path fix
+# V4.13.4 — Photo filename case fallback
 
 Replace:
-- `index.html`
+- `js/photography-page.js`
 
-The Deer video source has been corrected from:
-- `Video/Deer.mp4`
-
-to:
-- `video/Deer.mp4`
-
-Keep the actual video file at:
-- `video/Deer.mp4`
-
-This fixes the case-sensitive hosted path while leaving the Forest/Deer layout, lazy loading, autoplay, looping, muted playback, and styling unchanged.
+The current manifest lists `Derick2.JPG`. This update keeps that metadata intact, but makes both the thumbnail grid and fullscreen viewer try common extension-case variants (`.JPG` / `.jpg`) before removing an image as missing. This addresses Windows-vs-GitHub-Pages filename case differences without changing the rest of the Photography page.
