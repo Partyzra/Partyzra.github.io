@@ -73,7 +73,7 @@ button { color: inherit; }
 .nav-toggle.is-open span:nth-of-type(3) { transform: translateY(-4px) rotate(-45deg); }
 
 .hero-v3 { min-height: 100svh; position: relative; overflow: hidden; display: flex; align-items: flex-end; padding: calc(var(--header-h) + 80px) 0 clamp(52px, 8vw, 100px); isolation: isolate; }
-.hero-photo { position: absolute; inset: 0; z-index: -4; background: url('../Images/photo-full/Mountain.jpg') center 58% / cover no-repeat; transform: scale(1.025); animation: hero-breathe 16s ease-in-out infinite alternate; }
+.hero-photo { position: absolute; inset: 0; z-index: -4; background: url('../Images/photo-full/Sunset.jpg') center 58% / cover no-repeat; transform: scale(1.025); animation: hero-breathe 16s ease-in-out infinite alternate; }
 @keyframes hero-breathe { from { transform: scale(1.025); } to { transform: scale(1.075); } }
 .hero-shade { position: absolute; inset: 0; z-index: -3; background: linear-gradient(90deg, rgba(6,7,9,.95) 0%, rgba(6,7,9,.75) 40%, rgba(6,7,9,.28) 72%, rgba(6,7,9,.3) 100%), linear-gradient(to top, rgba(6,7,9,.75), transparent 46%); }
 .hero-noise { position: absolute; inset: 0; z-index: -2; opacity: .12; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.28'/%3E%3C/svg%3E"); mix-blend-mode: soft-light; }
