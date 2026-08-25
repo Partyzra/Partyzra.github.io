@@ -1438,4 +1438,16 @@ const PORTFOLIO_PHOTOS = [
     ],
     "album": "Lagoon"
   }
+{
+    "file": "Coca Cola.jpg",
+    "title": "Coca Cola",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Landscape"
+    ],
+    "album": "Landscapes"
+  }
 ];
