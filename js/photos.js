@@ -604,7 +604,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "My Father2.jpg",
-    "title": "My Father II",
+    "title": "My Father",
     "collection": "Family",
     "year": "",
     "location": "",
