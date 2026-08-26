@@ -728,7 +728,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Lagoon Water.jpg",
-    "title": "Lagoon Water",
+    "title": "Lagoona Beach",
     "collection": "Places & Structures",
     "year": "",
     "location": "",
