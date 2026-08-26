@@ -195,7 +195,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Lily2.jpg",
-    "title": "Lily II",
+    "title": "Lily",
     "collection": "Nature",
     "year": "",
     "location": "",
