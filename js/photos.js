@@ -987,7 +987,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Master of Doors.png",
-    "title": "Master of Doors",
+    "title": "Wednesday",
     "collection": "People",
     "year": "",
     "location": "",
