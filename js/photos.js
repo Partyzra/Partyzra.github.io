@@ -1204,6 +1204,18 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
 {
+    "file": "Fox.jpg",
+    "title": "Fox",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
     "file": "Fox1.jpg",
     "title": "Fox",
     "collection": "Nature",
