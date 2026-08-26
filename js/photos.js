@@ -362,7 +362,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Zeboy!.jpg",
-    "title": "Zeboy!",
+    "title": "Zey",
     "collection": "Experimental",
     "year": "",
     "location": "",
@@ -422,7 +422,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Derick2.JPG",
-    "title": "Derick II",
+    "title": "Derick",
     "collection": "Portraits",
     "year": "",
     "location": "",
@@ -446,7 +446,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Dori is Wednesday.jpg",
-    "title": "Dori is Wednesday",
+    "title": "Wednesday",
     "collection": "Experimental",
     "year": "",
     "location": "",
