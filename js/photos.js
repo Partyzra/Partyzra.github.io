@@ -106,6 +106,16 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
 {
+    "file": "Minecart.jpg",
+    "title": "Minecart",
+    "collection": "Objects & Details",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [],
+    "note": ""
+  },
+{
     "file": "Clock Tower.jpg",
     "title": "Clock Tower",
     "collection": "Places & Structures",
