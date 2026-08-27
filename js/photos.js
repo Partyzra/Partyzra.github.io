@@ -454,7 +454,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Derick3.jpg",
-    "title": "Derick III",
+    "title": "Derick",
     "collection": "Portraits",
     "year": "",
     "location": "",
