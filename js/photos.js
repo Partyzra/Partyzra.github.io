@@ -1471,5 +1471,17 @@ const PORTFOLIO_PHOTOS = [
       "night"
     ],
     "note": ""
+  },
+  {
+    "file": "Tractor Field.jpg",
+    "title": "Tractor Field",
+    "collection": "Landscapes",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "night"
+    ],
+    "note": ""
   }
 ];
