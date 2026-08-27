@@ -359,7 +359,9 @@
   });
 
   const resolveAlbums = photo => {
-    const names = new Set();
+    // Every photograph always belongs to the master All collection. Named
+    // albums are additive only: they never make a photograph exclusive.
+    const names = new Set(['All']);
 
     if (typeof photo.album === 'string' && photo.album.trim()) {
       names.add(photo.album.trim());
@@ -413,10 +415,8 @@
   // metadata category as a new tab.
   const albumNames = ALBUM_RULES.map(rule => rule.name);
 
-  const photosForActiveAlbum = () => {
-    if (activeAlbum === 'All') return randomizedArchive;
-    return randomizedArchive.filter(photo => photo.__albums.includes(activeAlbum));
-  };
+  const photosForActiveAlbum = () =>
+    randomizedArchive.filter(photo => photo.__albums.includes(activeAlbum));
 
   function updateCounts() {
     const count = qsa('.photo-grid-button', grid).length;

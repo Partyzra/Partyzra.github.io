@@ -1,14 +1,9 @@
-# V4.14.1 — Photography navigation fix
+# V4.14.2 — All Photos Master Collection
 
 Replace only:
 
-- `js/site-shell.js`
-- `js/shell-navigation.js`
+- `js/photography-page.js`
 
-What changed:
+Every photograph is now explicitly assigned to the `All` collection first. Named albums such as Lagoon, People, Animals, Landscapes, Hawaii, and Antelope Island are additive only.
 
-- Home → Photography now changes the iframe content before attempting any browser-history URL update.
-- `file://` local-folder testing no longer relies on `history.pushState`, which can be rejected by browsers for local files.
-- Home and Photography content pages now call the persistent shell directly when possible, with `postMessage` retained as a fallback.
-- The persistent soundtrack player remains in the outer shell, so audio continues without restarting during Home ↔ Photography navigation.
-- Guitar Solo remains track 1; The Drive Back remains track 2.
+With your current `photos.js`, `Minecart.jpg` remains assigned to `Lagoon`, so it will appear in both `All` and `Lagoon`.
