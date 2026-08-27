@@ -1468,7 +1468,7 @@ const PORTFOLIO_PHOTOS = [
     "location": "",
     "featured": false,
     "tags": [
-      "night"
+      "evening"
     ],
     "note": ""
   },
@@ -1480,7 +1480,19 @@ const PORTFOLIO_PHOTOS = [
     "location": "",
     "featured": false,
     "tags": [
-      "night"
+      "sunset"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Rock.jpg",
+    "title": "Rock",
+    "collection": "Landscapes",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "sunset"
     ],
     "note": ""
   }
