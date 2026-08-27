@@ -1447,5 +1447,17 @@ const PORTFOLIO_PHOTOS = [
       "People"
     ],
     "album": "People"
+  },
+  {
+    "file": "Ice Field.jpg",
+    "title": "Ice Field",
+    "collection": "Landscapes",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "night"
+    ],
+    "note": ""
   }
 ];
