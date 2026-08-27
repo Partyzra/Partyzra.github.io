@@ -469,6 +469,18 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
+    "file": "Fence1.JPG",
+    "title": "Fence",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "rural"
+    ],
+    "note": ""
+  },
+  {
     "file": "Field.jpg",
     "title": "Field",
     "collection": "Landscape",
