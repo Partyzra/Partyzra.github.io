@@ -9,118 +9,29 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/photography.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/site-shell.css">
 </head>
-<body class="photo-page photo-page-editorial">
-  <header class="site-header" data-site-header>
-    <a class="brand" href="index.html" aria-label="Ryan portfolio home">
-      <span class="brand-mark">R</span><span class="brand-word">RYAN</span>
-    </a>
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNav" data-nav-toggle>
-      <span class="sr-only">Open navigation</span><span></span><span></span>
-    </button>
-    <nav class="site-nav" id="siteNav" aria-label="Primary navigation" data-site-nav>
-      <a href="index.html">Home</a>
-      <a class="is-active" href="photography.html">Photography</a>
-      <a href="music.html">Music</a>
-      <a href="index.html#film">Film</a>
-      <a href="index.html#about">About</a>
-      <a href="index.html#contact">Contact</a>
-    </nav>
-  </header>
+<body class="site-shell-page">
+  <iframe class="site-shell-frame" data-site-shell-frame src="photography-content.html" title="Ryan photography portfolio"></iframe>
 
-  <main>
-    <section class="photo-hero-editorial container-wide">
-      <div class="photo-hero-title">
-        <p class="eyebrow">Photography / Archive</p>
-        <h1>Look slowly.</h1>
-      </div>
-      <div class="photo-hero-copy">
-        <p>Portraits, places, details, and passing moments. Open any frame to move through the collection without leaving the image.</p>
-        <div class="photo-meta-line">
-          <span data-photo-count>Photography archive</span>
-          <span>Swipe · Arrow keys</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="photo-grid-section" aria-label="Photography gallery">
-      <div class="photo-album-nav" data-album-nav aria-label="Photography collections"></div>
-
-      <div class="photo-grid-bar">
-        <span data-album-heading>All photographs</span>
-        <div class="photo-grid-tools">
-          <span data-gallery-status>Photographs</span>
-        </div>
-      </div>
-
-      <!--
-        photos.js remains your editable manifest. The "All" view uses a
-        fresh randomized order each time the page is loaded.
-        Named albums are virtual collections, so the image files can stay
-        together in Images/photo-full/.
-      -->
-      <div class="photo-grid" id="photoGrid"></div>
-    </section>
-  </main>
-
-
-  <audio class="photo-soundtrack-audio" data-photo-soundtrack preload="metadata">
-    <source src="assets/audio/the-drive-back-tom-anello.mp3" type="audio/mpeg">
-  </audio>
-
-  <div class="photo-soundtrack-player" aria-label="Photography soundtrack controls">
-    <button class="photo-soundtrack-control" type="button" data-soundtrack-toggle aria-label="Play soundtrack" aria-pressed="false">
-      <span class="photo-soundtrack-icon" data-soundtrack-icon aria-hidden="true">▶</span>
-      <span class="photo-soundtrack-copy">
-        <span class="photo-soundtrack-status" data-soundtrack-status>Play soundtrack</span>
-        <span class="photo-soundtrack-title" data-soundtrack-title>The Drive Back — Tom Anello</span>
+  <audio class="site-soundtrack-audio" data-site-soundtrack preload="metadata"></audio>
+  <div class="site-soundtrack-player" aria-label="Site soundtrack controls">
+    <button class="site-soundtrack-control" type="button" data-soundtrack-toggle aria-label="Play soundtrack" aria-pressed="false">
+      <span class="site-soundtrack-icon" data-soundtrack-icon aria-hidden="true">▶</span>
+      <span class="site-soundtrack-copy">
+        <span class="site-soundtrack-status" data-soundtrack-status>Play soundtrack</span>
+        <span class="site-soundtrack-title" data-soundtrack-title>Guitar Solo</span>
       </span>
     </button>
-    <button class="photo-soundtrack-next" type="button" data-soundtrack-next aria-label="Next song" title="Next song">
-      <svg class="photo-soundtrack-next-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <button class="site-soundtrack-next" type="button" data-soundtrack-next aria-label="Next song" title="Next song">
+      <svg class="site-soundtrack-next-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
         <path d="M5.5 5.5 14 12l-8.5 6.5v-13Z"></path>
         <path d="M17.5 5.5v13"></path>
       </svg>
     </button>
   </div>
 
-  <div class="photo-viewer" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Photo viewer" data-photo-viewer>
-    <div class="photo-viewer-topbar">
-      <span class="photo-viewer-brand">RYAN / PHOTOGRAPHY</span>
-      <div class="photo-viewer-index" aria-live="polite" data-viewer-index></div>
-      <div class="photo-viewer-actions">
-        <button class="photo-viewer-close" type="button" aria-label="Close photo viewer" data-viewer-close>×</button>
-      </div>
-    </div>
-
-    <button class="photo-viewer-nav photo-viewer-prev" type="button" aria-label="Previous photograph" data-viewer-prev>‹</button>
-
-    <div class="photo-viewer-stage" data-viewer-stage>
-      <img class="photo-viewer-image is-active" data-viewer-image-a alt="">
-      <img class="photo-viewer-image" data-viewer-image-b alt="">
-    </div>
-
-    <button class="photo-viewer-nav photo-viewer-next" type="button" aria-label="Next photograph" data-viewer-next>›</button>
-
-    <div class="photo-viewer-footer">
-      <div class="photo-viewer-copy">
-        <p class="photo-viewer-caption" data-viewer-caption></p>
-        <p class="photo-viewer-meta" data-viewer-meta></p>
-      </div>
-      <p class="photo-viewer-hint">Click to zoom · Pinch to zoom · ← →</p>
-    </div>
-  </div>
-
-  <footer class="site-footer">
-    <span>© <span data-year></span> Ryan</span>
-    <span class="footer-center">Photography</span>
-    <a href="index.html">Return home ↗</a>
-  </footer>
-
-  <script src="js/photos.js"></script>
-  <script src="js/photography-page.js"></script>
+  <script src="js/site-shell.js"></script>
 </body>
 </html>

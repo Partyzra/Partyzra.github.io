@@ -1,0 +1,207 @@
+:root {
+  --soundtrack-text: #f0eee9;
+  --soundtrack-muted: #b2b0aa;
+  --soundtrack-dim: #7c7f80;
+  --soundtrack-accent: #ddd8cf;
+}
+
+html,
+body.site-shell-page {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #090a0b;
+}
+
+.site-shell-frame {
+  position: fixed;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #090a0b;
+}
+
+.site-soundtrack-audio {
+  display: none;
+}
+
+.site-soundtrack-player {
+  position: fixed;
+  z-index: 2147483000;
+  right: clamp(14px, 2vw, 28px);
+  bottom: clamp(14px, 2vw, 26px);
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  max-width: min(390px, calc(100vw - 28px));
+  border: 1px solid rgba(240,238,233,.14);
+  border-radius: 999px;
+  background: rgba(9,10,11,.80);
+  box-shadow: 0 14px 45px rgba(0,0,0,.28);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  opacity: .80;
+  font-family: "DM Sans", system-ui, sans-serif;
+  transition: opacity .2s ease, border-color .2s ease, background .2s ease;
+}
+
+.site-soundtrack-player:hover,
+.site-soundtrack-player:focus-within {
+  opacity: 1;
+  border-color: rgba(240,238,233,.28);
+  background: rgba(14,15,16,.94);
+}
+
+.site-soundtrack-control,
+.site-soundtrack-next {
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+
+.site-soundtrack-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+  min-height: 48px;
+  max-width: min(340px, calc(100vw - 74px));
+  padding: 9px 13px 9px 10px;
+  border: 0;
+  background: transparent;
+  color: var(--soundtrack-text);
+  font: inherit;
+}
+
+.site-soundtrack-control:focus-visible,
+.site-soundtrack-next:focus-visible {
+  outline: 0;
+  box-shadow: inset 0 0 0 2px var(--soundtrack-accent);
+}
+
+.site-soundtrack-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(240,238,233,.18);
+  border-radius: 50%;
+  color: var(--soundtrack-text);
+  font-size: .72rem;
+  line-height: 1;
+}
+
+.site-soundtrack-control.is-playing .site-soundtrack-icon {
+  border-color: rgba(240,238,233,.32);
+}
+
+.site-soundtrack-copy {
+  display: grid;
+  min-width: 0;
+  gap: 1px;
+  text-align: left;
+}
+
+.site-soundtrack-status,
+.site-soundtrack-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.site-soundtrack-status {
+  color: var(--soundtrack-text);
+  font-size: .57rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+}
+
+.site-soundtrack-title {
+  color: var(--soundtrack-dim);
+  font-size: .66rem;
+  letter-spacing: .01em;
+}
+
+.site-soundtrack-next {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 46px;
+  width: 46px;
+  min-height: 48px;
+  padding: 0;
+  border: 0;
+  border-left: 1px solid rgba(240,238,233,.12);
+  background: transparent;
+  color: var(--soundtrack-muted);
+  transition: color .2s ease, background .2s ease, border-color .2s ease;
+}
+
+.site-soundtrack-next:hover,
+.site-soundtrack-next:focus-visible {
+  color: var(--soundtrack-text);
+  border-color: rgba(240,238,233,.20);
+  background: rgba(240,238,233,.055);
+}
+
+.site-soundtrack-next-icon {
+  display: block;
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.site-soundtrack-next-icon path:first-child {
+  stroke: none;
+}
+
+.site-soundtrack-next-icon path:last-child {
+  fill: none;
+}
+
+@media (max-width: 600px) {
+  .site-soundtrack-player {
+    right: max(10px, env(safe-area-inset-right));
+    bottom: max(10px, env(safe-area-inset-bottom));
+  }
+
+  .site-soundtrack-control,
+  .site-soundtrack-next {
+    min-height: 44px;
+  }
+
+  .site-soundtrack-control {
+    padding: 7px 9px;
+  }
+
+  .site-soundtrack-copy {
+    display: none;
+  }
+
+  .site-soundtrack-icon {
+    flex-basis: 28px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .site-soundtrack-next {
+    flex-basis: 42px;
+    width: 42px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-soundtrack-player,
+  .site-soundtrack-next {
+    transition: none;
+  }
+}
