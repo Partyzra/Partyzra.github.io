@@ -17,9 +17,19 @@
 // ============================================================
 
 const PORTFOLIO_PHOTOS = [
+    {
+    "file": "Abandoned.jpg",
+    "title": "Abandoned",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [],
+    "note": ""
+  },
   {
     "file": "Abandoned1.png",
-    "title": "Abandoned I",
+    "title": "Abandoned",
     "collection": "Places & Structures",
     "year": "",
     "location": "",
@@ -29,7 +39,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Abandoned2.JPG",
-    "title": "Abandoned II",
+    "title": "Abandoned",
     "collection": "Places & Structures",
     "year": "",
     "location": "",
