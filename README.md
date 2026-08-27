@@ -1,8 +1,13 @@
-# V4.13.6 — Integrated soundtrack next control
+# V4.13.7 — Film tagline update
 
-Replace only:
+Replace only `index.html` in the site root.
 
-- `photography.html`
-- `css/photography.css`
+Changed the Film section intro line from:
 
-The soundtrack behavior is unchanged. This update only combines the Play/Pause control and Next Song action into one connected pill. The Next Song action is now represented by a skip-next icon with an accessible `aria-label`/tooltip.
+“A quiet moving-image introduction, followed by selected commercial, music-video, short-film, and demo-reel work.”
+
+to:
+
+“Sometimes silence is the best thing you can hear.”
+
+No other files or behavior were changed.
