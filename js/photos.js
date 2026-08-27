@@ -109,6 +109,7 @@ const PORTFOLIO_PHOTOS = [
     "file": "Minecart.jpg",
     "title": "Minecart",
     "collection": "Objects & Details",
+    "album": "Lagoon",
     "year": "",
     "location": "",
     "featured": false,

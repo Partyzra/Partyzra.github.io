@@ -1,13 +1,15 @@
-# V4.13.8 — Horses third film motion study
+# V4.13.9 — Minecart Lagoon assignment
 
-Replace only `index.html` in the site root.
+Based on the user's current `portfoliooo.7z` repo.
 
-This adds `video/Horses.mp4` as the third moving-image study in the Film section. It uses the existing right-weighted layout class, completing the left → center → right sequence:
+## Change
+- `Minecart.jpg` now has `album: "Lagoon"` in `js/photos.js`.
+- No other portfolio behavior was changed.
 
-- Forest: left
-- Deer: center
-- Horses: right
+## Replace
+- `js/photos.js`
 
-The existing motion-video JavaScript handles it automatically: muted autoplay when near the viewport, looping, no controls, lazy loading, and pausing when far offscreen.
-
-Expected media path: `video/Horses.mp4` (case-sensitive on GitHub Pages).
+## Note
+The uploaded repo intentionally does not contain the large `Images/` folders, so the actual hosted original/thumbnail filenames cannot be verified from this archive. The current gallery loader already tries `.jpg` / `.JPG` extension-case variants. If Minecart is still absent from **All** after this code change, verify that the hosted repo contains one of these corresponding paths (matching the real filename stem exactly):
+- `Images/photo-full/Minecart.jpg` or `.JPG`
+- `Images/photo-thumbs/Minecart.jpg.webp` or `.JPG.webp`
