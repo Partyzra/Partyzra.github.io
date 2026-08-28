@@ -291,7 +291,7 @@ const PORTFOLIO_PHOTOS = [
     "file": "Peace.jpg",
     "title": "Peace",
     "collection": "Experimental",
-    "album": "Lagoon",
+    "album": "People",
     "year": "",
     "location": "",
     "featured": false,
