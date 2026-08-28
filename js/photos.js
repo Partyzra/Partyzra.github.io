@@ -1068,7 +1068,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "MountainShot.JPG",
-    "title": "Mountain Shot",
+    "title": "Colorado Mountain",
     "collection": "Landscape",
     "year": "",
     "location": "",
@@ -1080,7 +1080,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "MountainShot3.jpg",
-    "title": "Mountain Shot",
+    "title": "Colorado Mountain",
     "collection": "Landscape",
     "year": "",
     "location": "",
