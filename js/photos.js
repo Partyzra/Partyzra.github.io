@@ -1585,7 +1585,7 @@ const PORTFOLIO_PHOTOS = [
       "sunset"
     ],
     "note": ""
-  }
+  },
   {
     "file": "It's Dinner Time!.jpg",
     "title": "It's Dinner Time!",
