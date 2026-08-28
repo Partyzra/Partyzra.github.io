@@ -131,6 +131,17 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
 {
+    "file": "Carriage.jpg",
+    "title": "Carriage",
+    "collection": "Objects & Details",
+    "album": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [],
+    "note": ""
+  },
+{
     "file": "Clock Tower.jpg",
     "title": "Clock Tower",
     "collection": "Places & Structures",
