@@ -253,10 +253,13 @@
     // the thumbnail grid; the fullscreen viewer still uses the complete image.
     if (stem === 'model') return '50% 100%';       // hat + hair at bottom
     if (stem === 'the rocket') return '50% 0%';   // people at top
-    if (stem === 'derick') return '50% 10%';      // head near top
+    if (stem === 'derick') return '50% 20%';      // head near top
     if (stem === 'fox2') return '50% 10%';        // fox head near top
+    if (stem === 'lincoln') return '50% 80%';        // feet near bottom
+    if (stem === 'derick & tori') return '50% 15%';  // Heads near top
+    if (stem === 'zeboy!') return '50% 45%';  // Center
 
-    return '50% 50%';
+
   };
 
   const albumNav = qs('[data-album-nav]');
