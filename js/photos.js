@@ -891,6 +891,7 @@ const PORTFOLIO_PHOTOS = [
     "file": "Buffalo1.jpg",
     "title": "Buffalo",
     "collection": "Nature",
+    "album": "Antelope Island",
     "year": "",
     "location": "",
     "featured": false,
