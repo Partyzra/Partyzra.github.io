@@ -392,7 +392,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Printing Press3.jpg",
-    "title": "Printing Press",
+    "title": "Sewing Machine",
     "collection": "Objects & Details",
     "year": "",
     "location": "",
@@ -594,7 +594,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Field.jpg",
-    "title": "Field",
+    "title": "UT-193",
     "collection": "Landscape",
     "year": "",
     "location": "",

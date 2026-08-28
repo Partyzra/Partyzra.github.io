@@ -245,7 +245,7 @@
     if (file.startsWith('peacock')) return '50% 18%';
 
     // The portrait Fox image needs the same upward bias.
-    if (file === 'fox2.jpg' || file === 'fox2.jpeg' || file === 'fox2.png') {
+    if (file === 'fox.jpg' || file === 'fox.jpeg' || file === 'fox.png') {
       return '50% 20%';
     }
 
@@ -439,7 +439,9 @@
 
   const randomizedArchive = shuffle(archive);
 
-  let activeAlbum = 'All';
+  // Open the Photography archive on Lagoon by default. All remains the
+  // master collection and is still available from the collection tabs.
+  let activeAlbum = 'Lagoon';
 
   // Keep the navigation intentionally curated instead of surfacing every
   // metadata category as a new tab.

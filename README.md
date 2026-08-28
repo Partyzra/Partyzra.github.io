@@ -1,16 +1,9 @@
-# V4.14.4 — Continuous soundtrack on Music
+# V4.14.5 — Lagoon default Photography collection
 
-This patch extends the persistent soundtrack shell from Home + Photography to Home + Photography + Music.
+The Photography archive now opens with the **Lagoon** tab selected instead of **All**.
 
-Replace/add:
-- `music.html` (replace existing public Music page with shell wrapper)
-- `music-content.html` (new; contains the existing Music page)
-- `js/site-shell.js`
-- `js/shell-navigation.js`
+Replace only:
 
-No Photography manifest or gallery files are changed.
+- `js/photography-page.js`
 
-Behavior:
-- The site soundtrack continues at the same playback position when navigating among Home, Photography, and Music.
-- Guitar Solo remains track 1; The Drive Back remains track 2.
-- The Music page's own All Alone / Lemon Bundt players remain available inside the page.
+`All` remains the master collection and can still be selected normally.
