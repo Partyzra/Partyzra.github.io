@@ -403,6 +403,18 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
+    "file": "Printing Press.jpg",
+    "title": "rinting Press",
+    "collection": "Objects & Details",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "machine"
+    ],
+    "note": ""
+  },
+  {
     "file": "Samurai.jpg",
     "title": "Samurai",
     "collection": "Experimental",
