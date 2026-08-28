@@ -693,6 +693,19 @@ const PORTFOLIO_PHOTOS = [
     "album": "Hawaii"
   },
   {
+    "file": "Leaf on beach.jpg",
+    "title": "Leaf On Beach",
+    "collection": "Hawaii",
+    "year": "",
+    "location": "Hawaii",
+    "featured": false,
+    "tags": [
+      "ocean"
+    ],
+    "note": "",
+    "album": "Hawaii"
+  },
+  {
     "file": "Helmets.jpg",
     "title": "Helmets",
     "collection": "Objects & Details",
