@@ -324,6 +324,30 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
+    "file": "Performance2.jpg",
+    "title": "Performance",
+    "collection": "Performance",
+    "year": "",
+    "location": "",
+    "featured": true,
+    "tags": [
+      "live"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Ferris Wheel.jpg",
+    "title": "Ferris Wheel",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": true,
+    "tags": [
+      "live"
+    ],
+    "note": ""
+  },
+  {
     "file": "Phoebe.jpg",
     "title": "Phoebe",
     "collection": "Portraits",
