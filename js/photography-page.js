@@ -239,15 +239,22 @@
     if (explicitFocus) return explicitFocus;
 
     const file = String(photo?.file || '').trim().toLowerCase();
+    const stem = file.replace(/\.[^.]+$/, '');
 
     // All Peacock images favor the upper part of the frame so the head/face is
     // shown instead of the center of the body.
-    if (file.startsWith('peacock')) return '50% 18%';
+    if (stem.startsWith('peacock')) return '50% 18%';
 
     // The portrait Fox image needs the same upward bias.
-    if (file === 'fox.jpg' || file === 'fox.jpeg' || file === 'fox.png') {
-      return '50% 20%';
-    }
+    if (stem === 'fox') return '50% 20%';
+
+    // Individual grid crops requested for portraits/details whose important
+    // subject is far from the geometric center of the frame. These only affect
+    // the thumbnail grid; the fullscreen viewer still uses the complete image.
+    if (stem === 'model') return '50% 100%';       // hat + hair at bottom
+    if (stem === 'the rocket') return '50% 0%';   // people at top
+    if (stem === 'derick') return '50% 10%';      // head near top
+    if (stem === 'fox2') return '50% 10%';        // fox head near top
 
     return '50% 50%';
   };
