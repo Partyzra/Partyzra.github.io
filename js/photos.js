@@ -1519,7 +1519,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Rock.jpg",
-    "title": "Rock",
+    "title": "Centerpiece",
     "collection": "Landscapes",
     "year": "",
     "location": "",
