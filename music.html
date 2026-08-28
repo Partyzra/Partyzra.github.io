@@ -9,91 +9,29 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/site-shell.css">
 </head>
-<body class="music-page">
-  <header class="site-header" data-site-header>
-    <a class="brand" href="index.html" aria-label="Ryan portfolio home"><span class="brand-mark">R</span><span class="brand-word">RYAN</span></a>
-    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNav" data-nav-toggle><span class="sr-only">Open navigation</span><span></span><span></span></button>
-    <nav class="site-nav" id="siteNav" aria-label="Primary navigation" data-site-nav>
-      <a href="index.html">Home</a>
-      <a href="photography.html">Photography</a>
-      <a class="is-active" href="music.html">Music</a>
-      <a href="index.html#film">Film</a>
-      <a href="index.html#about">About</a>
-      <a href="index.html#contact">Contact</a>
-    </nav>
-  </header>
+<body class="site-shell-page">
+  <iframe class="site-shell-frame" data-site-shell-frame src="music-content.html" title="Ryan music"></iframe>
 
-  <main>
-    <section class="music-hero container-wide">
-      <div class="music-hero-copy">
-        <p class="eyebrow">Original music / Listening room</p>
-        <h1>Turn the room<br><em>into a feeling.</em></h1>
-        <p class="music-deck-intro">Original tracks, sketches, and experiments. The player below is custom-built for the portfolio; starting another track automatically pauses the one before it.</p>
-      </div>
-      <div class="music-art" aria-hidden="true">
-        <div class="music-art-ring ring-one"></div>
-        <div class="music-art-ring ring-two"></div>
-        <div class="music-art-ring ring-three"></div>
-        <div class="music-art-center">R</div>
-      </div>
-    </section>
+  <audio class="site-soundtrack-audio" data-site-soundtrack preload="metadata"></audio>
+  <div class="site-soundtrack-player" aria-label="Site soundtrack controls">
+    <button class="site-soundtrack-control" type="button" data-soundtrack-toggle aria-label="Play soundtrack" aria-pressed="false">
+      <span class="site-soundtrack-icon" data-soundtrack-icon aria-hidden="true">▶</span>
+      <span class="site-soundtrack-copy">
+        <span class="site-soundtrack-status" data-soundtrack-status>Play soundtrack</span>
+        <span class="site-soundtrack-title" data-soundtrack-title>Guitar Solo</span>
+      </span>
+    </button>
+    <button class="site-soundtrack-next" type="button" data-soundtrack-next aria-label="Next song" title="Next song">
+      <svg class="site-soundtrack-next-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M5.5 5.5 14 12l-8.5 6.5v-13Z"></path>
+        <path d="M17.5 5.5v13"></path>
+      </svg>
+    </button>
+  </div>
 
-    <section class="listening-room container-wide" aria-label="Music tracks">
-      <div class="music-list-head"><span>Track</span><span>Title</span><span>Playback</span></div>
-
-      <article class="track-card" data-track-card>
-        <div class="track-number">01</div>
-        <div class="track-copy">
-          <p class="track-kicker">Original recording</p>
-          <h2>All Alone</h2>
-          <p>Ryan</p>
-        </div>
-        <div class="track-control">
-          <button class="track-play" type="button" aria-label="Play All Alone" data-track-play><span class="play-icon">▶</span><span class="pause-icon">Ⅱ</span></button>
-          <div class="track-timeline">
-            <input type="range" min="0" max="1000" value="0" step="1" aria-label="Seek All Alone" data-track-seek>
-            <div class="track-time"><span data-track-current>0:00</span><span data-track-duration>—:—</span></div>
-          </div>
-          <audio preload="metadata" data-audio>
-            <source src="MusicTracks/All Alone.wav" type="audio/wav">
-            Your browser does not support HTML audio.
-          </audio>
-        </div>
-        <div class="track-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-      </article>
-
-      <article class="track-card" data-track-card>
-        <div class="track-number">02</div>
-        <div class="track-copy">
-          <p class="track-kicker">Original recording</p>
-          <h2>Lemon Bundt</h2>
-          <p>Ryan</p>
-        </div>
-        <div class="track-control">
-          <button class="track-play" type="button" aria-label="Play Lemon Bundt" data-track-play><span class="play-icon">▶</span><span class="pause-icon">Ⅱ</span></button>
-          <div class="track-timeline">
-            <input type="range" min="0" max="1000" value="0" step="1" aria-label="Seek Lemon Bundt" data-track-seek>
-            <div class="track-time"><span data-track-current>0:00</span><span data-track-duration>—:—</span></div>
-          </div>
-          <audio preload="metadata" data-audio>
-            <source src="MusicTracks/Lemon Bundt.wav" type="audio/wav">
-            Your browser does not support HTML audio.
-          </audio>
-        </div>
-        <div class="track-wave track-wave-alt" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-      </article>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <span>© <span data-year></span> Ryan</span>
-    <span class="footer-center">Original Music</span>
-    <a href="index.html">Return home ↗</a>
-  </footer>
-
-  <script src="js/portfolio.js"></script>
+  <script src="js/site-shell.js"></script>
 </body>
 </html>

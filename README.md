@@ -1,36 +1,16 @@
-# V4.14.3 — Animal grid focal points
+# V4.14.4 — Continuous soundtrack on Music
 
-Replace only:
+This patch extends the persistent soundtrack shell from Home + Photography to Home + Photography + Music.
 
-- `js/photography-page.js`
+Replace/add:
+- `music.html` (replace existing public Music page with shell wrapper)
+- `music-content.html` (new; contains the existing Music page)
+- `js/site-shell.js`
+- `js/shell-navigation.js`
 
-## What changed
+No Photography manifest or gallery files are changed.
 
-The Photography grid can now use a custom crop focal point without changing the fullscreen/original image.
-
-Current automatic focal points:
-
-- Any filename beginning with `Peacock` → upper-centered crop (`50% 18%`)
-- `Fox.jpg` → upper-centered crop (`50% 20%`)
-- Everything else → normal centered crop (`50% 50%`)
-
-This means Peacock/Peacock2/Peacock3/etc. will show the head area rather than the center of the body when displayed as cropped grid thumbnails.
-
-## Manual control for any future photo
-
-You can optionally add a `focus` property to any entry in `js/photos.js`:
-
-```js
-{
-  file: 'Example.jpg',
-  title: 'Example',
-  collection: 'Wildlife',
-  focus: '50% 20%',
-  ...
-}
-```
-
-- First percentage = horizontal position (0% left, 50% center, 100% right)
-- Second percentage = vertical position (0% top, 50% center, 100% bottom)
-
-Only the grid crop changes. The fullscreen viewer still uses the complete full-resolution photograph.
+Behavior:
+- The site soundtrack continues at the same playback position when navigating among Home, Photography, and Music.
+- Guitar Solo remains track 1; The Drive Back remains track 2.
+- The Music page's own All Alone / Lemon Bundt players remain available inside the page.

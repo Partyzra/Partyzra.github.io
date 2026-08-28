@@ -17,6 +17,11 @@
       publicPath: 'photography.html',
       contentPath: 'photography-content.html',
       title: 'Photography — Ryan'
+    },
+    music: {
+      publicPath: 'music.html',
+      contentPath: 'music-content.html',
+      title: 'Music — Ryan'
     }
   };
 
@@ -27,9 +32,9 @@
 
   const routeFromLocation = () => {
     const path = window.location.pathname.toLowerCase();
-    return path.endsWith('/photography.html') || path.endsWith('photography.html')
-      ? 'photography'
-      : 'home';
+    if (path.endsWith('/photography.html') || path.endsWith('photography.html')) return 'photography';
+    if (path.endsWith('/music.html') || path.endsWith('music.html')) return 'music';
+    return 'home';
   };
 
   let currentRoute = routeFromLocation();
@@ -74,7 +79,9 @@
   // Same-origin content pages can call this directly. shell-navigation.js
   // still falls back to postMessage when direct parent access is unavailable.
   window.__portfolioNavigate = (routeName, hash = '') => {
-    const route = routeName === 'photography' ? 'photography' : 'home';
+    const route = routeName === 'photography'
+      ? 'photography'
+      : (routeName === 'music' ? 'music' : 'home');
     const nextHash = cleanHash(hash || '');
 
     if (route === currentRoute) {
@@ -102,7 +109,9 @@
       const data = event.data;
       if (!data || data.type !== 'portfolio:navigate') return;
 
-      const route = data.route === 'photography' ? 'photography' : 'home';
+      const route = data.route === 'photography'
+        ? 'photography'
+        : (data.route === 'music' ? 'music' : 'home');
       const hash = cleanHash(data.hash || '');
 
       window.__portfolioNavigate(route, hash);

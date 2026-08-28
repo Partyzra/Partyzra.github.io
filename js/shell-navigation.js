@@ -1,11 +1,14 @@
 (() => {
   const inShell = window.parent !== window;
   const isPhotographyContent = document.body.classList.contains('photo-page');
+  const isMusicContent = document.body.classList.contains('music-page');
 
   // These content documents are implementation details. If one is opened
   // directly, return the visitor to the corresponding public shell page.
   if (!inShell) {
-    const target = isPhotographyContent ? 'photography.html' : 'index.html';
+    const target = isPhotographyContent
+      ? 'photography.html'
+      : (isMusicContent ? 'music.html' : 'index.html');
     window.location.replace(`${target}${window.location.hash || ''}`);
     return;
   }
@@ -33,7 +36,7 @@
     const requestShellNavigation = route => {
       const hash = url.hash || '';
 
-      // Home and Photography are same-origin inside the persistent shell, so
+      // Home, Photography, and Music are same-origin inside the persistent shell, so
       // direct parent navigation is the most reliable route. Keep postMessage
       // as a fallback for environments that block direct frame access.
       try {
@@ -58,11 +61,10 @@
       return;
     }
 
-    // Other full pages (for example Music) intentionally leave the shell.
-    // The continuous soundtrack requirement is scoped to Home + Photography.
     if (file === 'music.html') {
       event.preventDefault();
-      window.top.location.href = link.href;
+      requestShellNavigation('music');
+      return;
     }
   });
 })();

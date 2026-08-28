@@ -1586,4 +1586,17 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   }
+  {
+    "file": "It's Dinner Time!.jpg",
+    "title": "It's Dinner Time!",
+    "collection": "Objects & Details",
+    "album": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "sunset"
+    ],
+    "note": ""
+  }
 ];
