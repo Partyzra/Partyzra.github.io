@@ -888,6 +888,19 @@ const PORTFOLIO_PHOTOS = [
     "album": "Antelope Island"
   },
   {
+    "file": "Buffalo1.jpg",
+    "title": "Buffalo",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Antelope Island"
+  },
+  {
     "file": "Buffalo2.jpg",
     "title": "Buffalo",
     "collection": "Nature",
