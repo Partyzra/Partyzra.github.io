@@ -142,6 +142,17 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
 {
+    "file": "Gun.jpg",
+    "title": "Gun & Holster",
+    "collection": "Objects & Details",
+    "album": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [],
+    "note": ""
+  },
+{
     "file": "Clock Tower.jpg",
     "title": "Clock Tower",
     "collection": "Places & Structures",
