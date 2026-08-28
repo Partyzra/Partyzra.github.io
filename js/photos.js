@@ -96,6 +96,18 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
 {
+    "file": "Cannibal1.jpg",
+    "title": "Cannibal",
+    "collection": "Experimental",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "conceptual"
+    ],
+    "note": ""
+  },
+{
     "file": "Carts.jpg",
     "title": "Carts",
     "collection": "Objects & Details",
@@ -265,6 +277,30 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Peacock.jpg",
+    "title": "Peacock",
+    "collection": "Wildlife",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "bird"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Peacock.5.jpg",
+    "title": "Peacock",
+    "collection": "Wildlife",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "bird"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Peacock1.jpg",
     "title": "Peacock",
     "collection": "Wildlife",
     "year": "",
