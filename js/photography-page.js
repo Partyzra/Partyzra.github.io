@@ -222,6 +222,36 @@
     .map(candidate => `${thumbBasePath}${candidate}.webp`);
 
   const thumbnailPathFor = file => thumbnailPathsFor(file)[0] || '';
+
+  // Grid thumbnails are cropped with object-fit: cover. By default the crop is
+  // centered, but portraits sometimes need the focal point moved upward so the
+  // subject's face stays visible. An explicit `focus` value in photos.js wins;
+  // otherwise use a couple of sensible defaults for the animal portraits that
+  // need it right now.
+  //
+  // Example in photos.js:
+  //   focus: '50% 20%'
+  //
+  // The first number moves left/right and the second moves up/down. Fullscreen
+  // viewing is untouched; this only changes the thumbnail crop in the grid.
+  const gridFocusFor = photo => {
+    const explicitFocus = String(photo?.focus || photo?.gridFocus || '').trim();
+    if (explicitFocus) return explicitFocus;
+
+    const file = String(photo?.file || '').trim().toLowerCase();
+
+    // All Peacock images favor the upper part of the frame so the head/face is
+    // shown instead of the center of the body.
+    if (file.startsWith('peacock')) return '50% 18%';
+
+    // The portrait Fox image needs the same upward bias.
+    if (file === 'fox.jpg' || file === 'fox.jpeg' || file === 'fox.png') {
+      return '50% 20%';
+    }
+
+    return '50% 50%';
+  };
+
   const albumNav = qs('[data-album-nav]');
   const albumHeading = qs('[data-album-heading]');
   const photoCount = qs('[data-photo-count]');
@@ -538,6 +568,7 @@
 
       const img = document.createElement('img');
       img.className = 'photo-grid-image';
+      img.style.objectPosition = gridFocusFor(photo);
       img.dataset.src = gridCandidates[0] || '';
       img.dataset.candidates = JSON.stringify(gridCandidates);
       img.dataset.candidateIndex = '0';
