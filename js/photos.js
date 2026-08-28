@@ -1540,7 +1540,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Stone.jpg",
-    "title": "Stone",
+    "title": "Shrine",
     "collection": "Lagoon",
     "year": "",
     "location": "",
