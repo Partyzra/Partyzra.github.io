@@ -1,9 +1,9 @@
-# V4.14.5 — Lagoon default Photography collection
+# V4.14.6 — All Default
 
-The Photography archive now opens with the **Lagoon** tab selected instead of **All**.
+Reverts the Photography page default collection from **Lagoon** back to **All**.
 
 Replace only:
 
 - `js/photography-page.js`
 
-`All` remains the master collection and can still be selected normally.
+No other Photography behavior is changed.

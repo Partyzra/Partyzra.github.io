@@ -439,9 +439,9 @@
 
   const randomizedArchive = shuffle(archive);
 
-  // Open the Photography archive on Lagoon by default. All remains the
-  // master collection and is still available from the collection tabs.
-  let activeAlbum = 'Lagoon';
+  // Open the Photography archive on the master All collection by default.
+  // Named albums remain available from the collection tabs.
+  let activeAlbum = 'All';
 
   // Keep the navigation intentionally curated instead of surfacing every
   // metadata category as a new tab.
