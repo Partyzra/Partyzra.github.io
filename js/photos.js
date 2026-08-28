@@ -1162,7 +1162,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Refinery Portrait.png",
     "title": "Refinery",
-    "collection": "Landscape",
+    "collection": "Portrait",
     "year": "",
     "location": "",
     "featured": false,
