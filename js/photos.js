@@ -1014,18 +1014,6 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
-  {
-    "file": "Field.png",
-    "title": "Field",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": ""
-  },
 {
     "file": "GrasshopperPortrait.png",
     "title": "GrasshopperPortrait",
