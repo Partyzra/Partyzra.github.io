@@ -404,8 +404,9 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Printing Press.jpg",
-    "title": "rinting Press",
+    "title": "Printing Press",
     "collection": "Objects & Details",
+    "album": "Lagoon",
     "year": "",
     "location": "",
     "featured": false,
