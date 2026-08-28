@@ -245,7 +245,7 @@
     if (file.startsWith('peacock')) return '50% 18%';
 
     // The portrait Fox image needs the same upward bias.
-    if (file === 'fox.jpg' || file === 'fox.jpeg' || file === 'fox.png') {
+    if (file === 'fox2.jpg' || file === 'fox2.jpeg' || file === 'fox2.png') {
       return '50% 20%';
     }
 
