@@ -1138,6 +1138,18 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
+    "file": "Miss Watson.jpg",
+    "title": "Isaac",
+    "collection": "People",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
+  },
+  {
     "file": "Master of Doors.png",
     "title": "Wednesday",
     "collection": "People",
