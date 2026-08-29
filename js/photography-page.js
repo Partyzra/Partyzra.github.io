@@ -251,13 +251,15 @@
     // Individual grid crops requested for portraits/details whose important
     // subject is far from the geometric center of the frame. These only affect
     // the thumbnail grid; the fullscreen viewer still uses the complete image.
-    if (stem === 'model') return '50% 90%';       // hat + hair at bottom
+    if (stem === 'model') return '50% 85%';       // hat + hair at bottom
     if (stem === 'the rocket') return '50% 0%';   // people at top
     if (stem === 'derick') return '50% 20%';      // head near top
     if (stem === 'fox2') return '50% 20%';        // fox head near top
     if (stem === 'lincoln') return '50% 80%';        // feet near bottom
     if (stem === 'derick & tori') return '50% 15%';  // Heads near top
     if (stem === 'zeboy!') return '50% 45%';  // Center
+    if (stem === 'zey portrait') return '50% 25%';        // head near top
+    if (stem === 'sean') return '50% 25%';      // head near top
 
 
   };
