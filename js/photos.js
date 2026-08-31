@@ -765,6 +765,18 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
+    "file": "Bullet Bike.jpg",
+    "title": "Bullet Bike",
+    "collection": "Family",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
+  },
+  {
     "file": "My Mother.JPG",
     "title": "My Mother",
     "collection": "Family",
