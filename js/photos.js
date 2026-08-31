@@ -440,7 +440,7 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Sean.JPG",
+    "file": "Sean.jpg",
     "title": "Sean",
     "collection": "Portraits",
     "year": "",
