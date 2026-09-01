@@ -463,6 +463,18 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
+{
+    "file": "Lunar Eclipse.jpg",
+    "title": "Lunar Eclipse",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "night"
+    ],
+    "note": ""
+  },
   {
     "file": "The Rocket.jpg",
     "title": "The Rocket",
