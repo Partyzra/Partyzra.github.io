@@ -1174,6 +1174,18 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
+    "file": "Isaac.jpg",
+    "title": "Isaac",
+    "collection": "People",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
+  },
+  {
     "file": "Master of Doors.png",
     "title": "Wednesday",
     "collection": "People",
@@ -1308,6 +1320,19 @@ const PORTFOLIO_PHOTOS = [
     "album": "Hawaii"
   },
   {
+    "file": "Hawaii Lighthouse.jpg",
+    "title": "Lighthouse",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Hawaii"
+  },
+  {
     "file": "Tiger.png",
     "title": "Tiger",
     "collection": "nature",
@@ -1406,6 +1431,18 @@ const PORTFOLIO_PHOTOS = [
 {
     "file": "Fox(2).jpg",
     "title": "Fox",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Bird Refuge.jpg",
+    "title": "Bird Refuge",
     "collection": "Nature",
     "year": "",
     "location": "",
