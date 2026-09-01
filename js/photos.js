@@ -1735,7 +1735,7 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": "",
-    "album": "Ranch"
+    "album": "Animals"
   },
 {
     "file": "Goat1.jpg",
@@ -1748,7 +1748,7 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": "",
-    "album": "Ranch"
+    "album": "Animals"
   },
 {
     "file": "Goat2.jpg",
@@ -1761,7 +1761,7 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": "",
-    "album": "Ranch"
+    "album": "Animals"
   },
 {
     "file": "Goat3.jpg",
@@ -1774,7 +1774,7 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": "",
-    "album": "Ranch"
+    "album": "Animals"
   },
 {
     "file": "Turkey.jpg",
@@ -1787,7 +1787,7 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": "",
-    "album": "Ranch"
+    "album": "Animals"
   },
 {
     "file": "Young Goat.jpg",
@@ -1800,7 +1800,7 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": "",
-    "album": "Ranch"
+    "album": "Animals"
   },
 {
     "file": "Black Pig.jpg",
@@ -1813,7 +1813,7 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": "",
-    "album": "Ranch"
+    "album": "Animals"
   },
 {
     "file": "Cow & Calf.jpg",
@@ -1826,7 +1826,7 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": "",
-    "album": "Ranch"
+    "album": "Animals"
   },
 {
     "file": "Cow.jpg",
@@ -1839,7 +1839,7 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": "",
-    "album": "Ranch"
+    "album": "Animals"
   },
 {
     "file": "Duck In Water.jpg",
@@ -1852,6 +1852,6 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": "",
-    "album": "Ranch"
+    "album": "Animals"
   }
 ];
