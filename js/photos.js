@@ -891,6 +891,19 @@ const PORTFOLIO_PHOTOS = [
     "album": "Antelope Island"
   },
 {
+    "file": "Antelope Island5.jpg",
+    "title": "Antelope Island",
+    "collection": "Nature",
+    "album": "Antelope Island",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "flora"
+    ],
+    "note": ""
+  },
+{
     "file": "Lagoon Water.jpg",
     "title": "Lagoona Beach",
     "collection": "Places & Structures",
