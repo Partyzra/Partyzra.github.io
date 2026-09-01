@@ -770,7 +770,7 @@ const PORTFOLIO_PHOTOS = [
     "file": "Bullet Bike.jpg",
     "title": "Bullet Bike",
     "collection": "Family",
-    "year": "",
+    "album": "People",
     "location": "",
     "featured": false,
     "tags": [
