@@ -1,30 +1,11 @@
-# V4.14.7 — Grid focal-point adjustments
+# V4.14.8 — Remove Photography Grid Hover Gradient
 
 Replace only:
 
-- `js/photography-page.js`
+- `css/photography.css`
 
-Grid-only focal points added:
-- Model → `50% 100%` (bottom)
-- The Rocket → `50% 0%` (top)
-- Derick → `50% 10%` (upper)
-- Fox2 → `50% 10%` (upper)
-
-Existing Peacock and Fox focal behavior is preserved.
-
-## Manual control
-Add a `focus` property to any item in `js/photos.js`:
-
-```js
-{
-  file: 'Example.jpg',
-  title: 'Example',
-  collection: 'People',
-  focus: '50% 20%'
-}
-```
-
-The first percentage is horizontal (0%=left, 50%=center, 100%=right).
-The second is vertical (0%=top, 50%=center, 100%=bottom).
-
-An explicit `focus` in `photos.js` overrides any automatic default in `photography-page.js`.
+Change:
+- Removes the dark lower-half gradient that appeared when hovering a Photography grid thumbnail.
+- Preserves the existing thumbnail pop/scale animation.
+- Preserves the hover title and ↗ indicator.
+- Does not change fullscreen viewing, focal-point crops, album behavior, or soundtrack/navigation behavior.

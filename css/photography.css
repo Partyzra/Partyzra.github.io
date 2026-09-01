@@ -214,7 +214,8 @@
   justify-content: space-between;
   gap: 20px;
   padding: 14px 15px;
-  background: linear-gradient(to top, rgba(0,0,0,.66), transparent 50%);
+  /* Keep the title/arrow hover affordance without darkening the photograph. */
+  background: transparent;
   opacity: 0;
   transition: opacity .25s ease;
   pointer-events: none;
