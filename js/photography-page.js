@@ -261,7 +261,7 @@
     if (stem === 'zey portrait') return '50% 25%';        // head near top
     if (stem === 'sean') return '50% 25%';      // head near top
     if (stem === 'miss watson') return '50% 15%';      // head near top
-    if (stem === 'fox1') return '50% 0%';      // head near top
+    if (stem === 'fox1') return '50% 10%';      // head near top
 
 
   };
