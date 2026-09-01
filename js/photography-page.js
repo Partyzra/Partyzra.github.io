@@ -262,7 +262,7 @@
     if (stem === 'sean') return '50% 25%';      // head near top
     if (stem === 'miss watson') return '50% 15%';      // head near top
     if (stem === 'fox1') return '50% 10%';      // head near top
-    if (stem === 'barn street') return '0% 50%';      // to the left
+    if (stem === 'barn street') return '10% 50%';      // to the left
 
 
   };
