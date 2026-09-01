@@ -1313,14 +1313,15 @@ const PORTFOLIO_PHOTOS = [
     "file": "Hawaii Lighthouse.jpg",
     "title": "Lighthouse",
     "collection": "Landscape",
+     "album": "Hawaii",
     "year": "",
     "location": "",
     "featured": false,
     "tags": [
       "nature"
     ],
-    "note": "",
-    "album": "Hawaii"
+    "note": ""
+   
   },
   {
     "file": "Tiger.png",
