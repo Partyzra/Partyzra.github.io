@@ -487,19 +487,7 @@ const PORTFOLIO_PHOTOS = [
     "tags": [],
     "note": ""
   },
-  {
-    "file": "Weed.JPG",
-    "title": "Weed",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "flora"
-    ],
-    "note": ""
-  },
-  {
+{
     "file": "Zeboy!.jpg",
     "title": "Zey",
     "collection": "Experimental",
@@ -1735,5 +1723,135 @@ const PORTFOLIO_PHOTOS = [
       "sunset"
     ],
     "note": ""
+  },
+{
+    "file": "Goat.jpg",
+    "title": "Goat",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Ranch"
+  },
+{
+    "file": "Goat1.jpg",
+    "title": "Goat",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Ranch"
+  },
+{
+    "file": "Goat2.jpg",
+    "title": "Goat",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Ranch"
+  },
+{
+    "file": "Goat3.jpg",
+    "title": "Goat",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Ranch"
+  },
+{
+    "file": "Turkey.jpg",
+    "title": "Turkey",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Ranch"
+  },
+{
+    "file": "Young Goat.jpg",
+    "title": "Young Goat",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Ranch"
+  },
+{
+    "file": "Black Pig.jpg",
+    "title": "Black Pig",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Ranch"
+  },
+{
+    "file": "Cow & Calf.jpg",
+    "title": "Cow & Calf",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Ranch"
+  },
+{
+    "file": "Cow.jpg",
+    "title": "Cow",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Ranch"
+  },
+{
+    "file": "Duck In Water.jpg",
+    "title": "Duck In Water",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Ranch"
   }
 ];
