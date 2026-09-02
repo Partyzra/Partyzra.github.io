@@ -527,7 +527,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Contrast.JPG",
-    "title": "Contrast",
+    "title": "Wood",
     "collection": "Experimental",
     "year": "",
     "location": "",
