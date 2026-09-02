@@ -73,7 +73,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Barnstreet.jpg",
-    "title": "Barn Street",
+    "title": "Barn St",
     "collection": "Places & Structures",
     "year": "",
     "location": "",
