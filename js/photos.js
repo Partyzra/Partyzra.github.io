@@ -452,6 +452,32 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
+  {
+    "file": "Sean1.jpg",
+    "title": "Sean",
+    "collection": "Portraits",
+    "ablum": "People",
+    "year": "",
+    "location": "",
+    "featured": true,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Cabbage.jpg",
+    "title": "Cabbage",
+    "collection": "Portraits",
+    "ablum": "People",
+    "year": "",
+    "location": "",
+    "featured": true,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
+  },
 {
     "file": "Sunset.jpg",
     "title": "Sunset",
@@ -1215,18 +1241,6 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Mountain & Trees.png",
-    "title": "Mountain & Trees",
-    "collection": "Landscape",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": ""
-  },
-  {
-    "file": "Mountain & Trees2.JPG",
     "title": "Mountain & Trees",
     "collection": "Landscape",
     "year": "",
