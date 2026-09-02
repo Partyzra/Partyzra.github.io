@@ -1,31 +1,14 @@
-# V4.15 — Photo variants / alternate snapshots
+# V4.15.3 — Even Film Spacing
 
-Adds alternate snapshots inside the fullscreen Photography viewer.
+Replace only:
 
-Replace/add these files in the repo:
+- `css/style.css`
 
-- `js/photos.js`
-- `js/photography-page.js`
-- `css/photography.css`
-- `photography-content.html`
+This removes the old extra bottom spacing from the Horses clip (`film-motion-intro--right`) and moves that larger end-of-stack spacing to the Deer clip instead.
 
-Configured sets:
+Result:
+- Forest → Horses: normal stack gap
+- Horses → Deer: same normal stack gap
+- Deer → Film & Video content: larger section break remains
 
-- `Bullet Bike.jpg` -> `Bullet Bike1.jpg`
-- `Andrew.JPG` -> `Andrew1.jpg`
-- `My Mother.jpg` -> `My Mother1.jpg`
-- `Side of Kauai.jpg` -> `Side of Kauai1.jpg`
-
-The primary photo remains the only grid tile. When opened, a small 01 / 02 / 03 selector appears only when that subject has alternate snapshots. Main left/right arrows still navigate between different subjects.
-
-To add another set later, edit the primary photo in `js/photos.js`:
-
-```js
-{
-  "file": "Example.jpg",
-  "variants": ["Example1.jpg", "Example2.jpg"],
-  "title": "Example"
-}
-```
-
-Do not add the alternate files as separate `PORTFOLIO_PHOTOS` entries unless you also want them to appear as their own grid tiles. The alternate full-resolution files must exist in `Images/photo-full/`. Thumbnails are not required for alternates unless they are also grid entries.
+No video sizing, alignment, loading, or playback behavior changed.

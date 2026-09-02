@@ -1075,7 +1075,7 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Antelope Dr.png",
+    "file": "Antelope Dr.jpg",
     "title": "Antelope Dr",
     "collection": "Nature",
     "year": "",
@@ -1697,7 +1697,7 @@ const PORTFOLIO_PHOTOS = [
     "tags": [
       "Lagoon"
     ],
-    "album": "Lagoon"
+    "album": "People"
   },
 {
     "file": "Coca Cola.jpg",
