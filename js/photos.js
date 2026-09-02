@@ -470,6 +470,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Cabbage.jpg",
+    "variants": ["Cabbage1.JPG"],
     "title": "Cabbage",
     "collection": "Portraits",
     "ablum": "People",
@@ -1432,6 +1433,18 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Path.jpg",
+    "title": "Path",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Path1.JPG",
     "title": "Path",
     "collection": "Landscape",
     "year": "",
