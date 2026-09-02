@@ -265,6 +265,7 @@
     if (stem === 'barnstreet') return '10% 60%';      // to the left
     if (stem === 'seagull1') return '100% 50%';      // to the right
     if (stem === 'horses') return '50% 0%';   // horse at top
+    if (stem === 'my mother') return '50% 17%';   // head at top
 
   };
 
@@ -326,6 +327,7 @@
           || file === 'peacock.jpg'
           || file === 'clock tower.jpg'
           || file === 'performance.jpg'
+          || file === 'performance2.jpg'
           || file === 'carts.jpg'
           || tags.includes('coaster');
       }
@@ -372,6 +374,7 @@
         if (explicitlyNotPeople) return false;
 
         return file === 'performance.jpg'
+          || file === 'performance2.jpg'
           || file === 'lily.jpg'
           || file === 'lily2.jpg'
           || file === 'zey portrait.png'
