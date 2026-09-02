@@ -4,6 +4,8 @@
 // Put image files in: Images/photo-full/
 //
 // file        = exact filename (GitHub Pages is case-sensitive)
+// variants    = optional alternate snapshots shown inside the fullscreen viewer
+//               e.g. ["Portrait1.jpg", "Portrait2.jpg"]
 // title       = public display title
 // collection  = broad subject/category metadata
 // album       = optional named photography folder, e.g. Antelope Island / Hawaii
@@ -49,6 +51,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Andrew.JPG",
+    "variants": ["Andrew1.jpg"],
     "title": "Andrew",
     "collection": "Portraits",
     "year": "",
@@ -794,6 +797,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Bullet Bike.jpg",
+    "variants": ["Bullet Bike1.jpg"],
     "title": "Bullet Bike",
     "collection": "Family",
     "album": "People",
@@ -806,6 +810,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "My Mother.jpg",
+    "variants": ["My Mother1.jpg"],
     "title": "My Mother",
     "collection": "Family",
     "year": "",
@@ -1216,6 +1221,19 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
+    "file": "Jake.jpg",
+    "title": "Jake",
+    "collection": "People",
+    "album": "People",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
+  },
+  {
     "file": "Master of Doors.png",
     "title": "Wednesday",
     "collection": "People",
@@ -1326,6 +1344,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Side of Kauai.jpg",
+    "variants": ["Side of Kauai1.jpg"],
     "title": "Side of Kauai",
     "collection": "Landscape",
     "year": "",

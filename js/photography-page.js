@@ -576,8 +576,10 @@
       const gridCandidates = [...thumbCandidates, ...fullCandidates]
         .filter((value, position, values) => value && values.indexOf(value) === position);
 
+      button.dataset.file = photo.file || '';
       button.dataset.full = fullSrc;
       button.dataset.fullCandidates = JSON.stringify(fullCandidates);
+      button.dataset.variants = JSON.stringify(Array.isArray(photo.variants) ? photo.variants.filter(Boolean) : []);
       button.dataset.thumb = thumbSrc;
       button.dataset.title = photo.title || photo.file;
       button.dataset.collection = photo.collection || '';
@@ -709,9 +711,11 @@
   const caption = qs('[data-viewer-caption]', viewer);
   const meta = qs('[data-viewer-meta]', viewer);
   const indexLabel = qs('[data-viewer-index]', viewer);
+  const variantControls = qs('[data-viewer-variants]', viewer);
 
   let buttons = qsa('.photo-grid-button', grid);
   let currentIndex = 0;
+  let currentVariantIndex = 0;
   let activeLayer = 0;
   let lastFocused = null;
   let transitionLocked = false;
@@ -742,19 +746,43 @@
 
   const wrap = index => (index + buttons.length) % buttons.length;
   const itemAt = index => buttons[wrap(index)];
-  const srcCandidatesAt = index => {
+
+  const variantFilesAt = index => {
     const item = itemAt(index);
     if (!item) return [];
 
+    let alternates = [];
     try {
-      const parsed = JSON.parse(item.dataset.fullCandidates || '[]');
-      if (Array.isArray(parsed) && parsed.length) return parsed.filter(Boolean);
+      const parsed = JSON.parse(item.dataset.variants || '[]');
+      if (Array.isArray(parsed)) alternates = parsed.filter(Boolean);
     } catch (_) {}
 
-    return item.dataset.full ? [item.dataset.full] : [];
+    const primary = item.dataset.file || '';
+    return [primary, ...alternates]
+      .filter(Boolean)
+      .filter((value, position, values) => values.indexOf(value) === position);
   };
 
-  const srcAt = index => srcCandidatesAt(index)[0] || '';
+  const srcCandidatesAt = (index, variantIndex = 0) => {
+    const item = itemAt(index);
+    if (!item) return [];
+
+    // The primary image already carries its resolved candidates on the grid
+    // button. Alternate snapshots are resolved from their filenames so they
+    // receive the same .jpg/.JPG case fallback as every other full-size image.
+    if (variantIndex === 0) {
+      try {
+        const parsed = JSON.parse(item.dataset.fullCandidates || '[]');
+        if (Array.isArray(parsed) && parsed.length) return parsed.filter(Boolean);
+      } catch (_) {}
+
+      return item.dataset.full ? [item.dataset.full] : [];
+    }
+
+    const variantFile = variantFilesAt(index)[variantIndex];
+    return variantFile ? fullPathsFor(variantFile) : [];
+  };
+
   const titleAt = index => itemAt(index)?.dataset.title || '';
 
   const metaAt = index => {
@@ -886,8 +914,8 @@
     return promise;
   }
 
-  async function resolveFullSrc(index) {
-    const candidates = srcCandidatesAt(index);
+  async function resolveFullSrc(index, variantIndex = 0) {
+    const candidates = srcCandidatesAt(index, variantIndex);
     for (const src of candidates) {
       if (await preload(src)) return src;
     }
@@ -896,7 +924,14 @@
 
   function preloadAround(index) {
     [-2, -1, 1, 2].forEach(offset => {
-      resolveFullSrc(index + offset).catch(() => {});
+      resolveFullSrc(index + offset, 0).catch(() => {});
+    });
+  }
+
+  function preloadVariants(index) {
+    variantFilesAt(index).forEach((_, variantIndex) => {
+      if (variantIndex === 0) return;
+      resolveFullSrc(index, variantIndex).catch(() => {});
     });
   }
 
@@ -908,6 +943,33 @@
     }
   }
 
+  function renderVariantControls(index) {
+    if (!variantControls) return;
+
+    const files = variantFilesAt(index);
+    if (files.length <= 1) {
+      variantControls.hidden = true;
+      variantControls.replaceChildren();
+      return;
+    }
+
+    const fragment = document.createDocumentFragment();
+    files.forEach((_, variantIndex) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'photo-viewer-variant';
+      button.dataset.viewerVariant = String(variantIndex);
+      button.textContent = String(variantIndex + 1).padStart(2, '0');
+      button.setAttribute('aria-label', `Show alternate ${variantIndex + 1} of ${files.length}`);
+      button.setAttribute('aria-pressed', String(variantIndex === currentVariantIndex));
+      if (variantIndex === currentVariantIndex) button.classList.add('is-active');
+      fragment.appendChild(button);
+    });
+
+    variantControls.replaceChildren(fragment);
+    variantControls.hidden = false;
+  }
+
   async function display(index, animate = true) {
     if (!buttons.length || transitionLocked) return;
 
@@ -916,9 +978,10 @@
     resetZoom();
 
     const target = wrap(index);
+    currentVariantIndex = 0;
 
     transitionLocked = animate;
-    const src = await resolveFullSrc(target);
+    const src = await resolveFullSrc(target, currentVariantIndex);
     if (!src) {
       transitionLocked = false;
       return;
@@ -938,12 +1001,14 @@
 
     currentIndex = target;
     syncCopy(target);
+    renderVariantControls(target);
 
     if (!animate || incoming === outgoing) {
       outgoing?.classList.remove('is-active');
       incoming.classList.add('is-active');
       activeLayer = incomingLayer;
       preloadAround(target);
+      preloadVariants(target);
       transitionLocked = false;
       return;
     }
@@ -958,7 +1023,63 @@
 
     activeLayer = incomingLayer;
     preloadAround(target);
+    preloadVariants(target);
 
+    window.setTimeout(() => {
+      transitionLocked = false;
+    }, 460);
+  }
+
+  async function displayVariant(nextVariantIndex, animate = true) {
+    if (transitionLocked) return;
+
+    const files = variantFilesAt(currentIndex);
+    if (files.length <= 1) return;
+
+    const targetVariant = clamp(nextVariantIndex, 0, files.length - 1);
+    if (targetVariant === currentVariantIndex) return;
+
+    resetZoom();
+    transitionLocked = animate;
+
+    const src = await resolveFullSrc(currentIndex, targetVariant);
+    if (!src) {
+      transitionLocked = false;
+      return;
+    }
+
+    const outgoing = images[activeLayer];
+    const incomingLayer = images.length > 1 ? 1 - activeLayer : activeLayer;
+    const incoming = images[incomingLayer];
+
+    incoming.src = src;
+    incoming.alt = `${titleAt(currentIndex)} — alternate ${targetVariant + 1}`;
+    incoming.style.transform = '';
+
+    try {
+      if (incoming.decode) await incoming.decode();
+    } catch (_) {}
+
+    currentVariantIndex = targetVariant;
+    renderVariantControls(currentIndex);
+
+    if (!animate || incoming === outgoing) {
+      outgoing?.classList.remove('is-active');
+      incoming.classList.add('is-active');
+      activeLayer = incomingLayer;
+      transitionLocked = false;
+      return;
+    }
+
+    incoming.classList.remove('is-active');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        incoming.classList.add('is-active');
+        outgoing?.classList.remove('is-active');
+      });
+    });
+
+    activeLayer = incomingLayer;
     window.setTimeout(() => {
       transitionLocked = false;
     }, 460);
@@ -1009,6 +1130,14 @@
   prevButton?.addEventListener('click', () => go(-1));
   nextButton?.addEventListener('click', () => go(1));
 
+  variantControls?.addEventListener('click', event => {
+    const button = event.target.closest('[data-viewer-variant]');
+    if (!button) return;
+
+    const variantIndex = Number.parseInt(button.dataset.viewerVariant || '', 10);
+    if (Number.isFinite(variantIndex)) displayVariant(variantIndex, true);
+  });
+
   document.addEventListener('keydown', event => {
     if (!viewer.classList.contains('is-open')) return;
 
@@ -1027,6 +1156,19 @@
     if (event.key === '0') {
       event.preventDefault();
       resetZoom();
+    }
+
+    // Bracket keys cycle alternate snapshots when the current subject has
+    // more than one version. Left/right arrows remain subject navigation.
+    if (event.key === '[') {
+      event.preventDefault();
+      const count = variantFilesAt(currentIndex).length;
+      if (count > 1) displayVariant((currentVariantIndex - 1 + count) % count, true);
+    }
+    if (event.key === ']') {
+      event.preventDefault();
+      const count = variantFilesAt(currentIndex).length;
+      if (count > 1) displayVariant((currentVariantIndex + 1) % count, true);
     }
 
     // Arrow keys remain photo navigation. The image can be panned with pointer

@@ -460,6 +460,69 @@
   display: none;
 }
 
+/*
+  Alternate-shot selector. It only appears for photographs that declare a
+  `variants` array in photos.js. The main left/right viewer arrows still move
+  between different subjects; these compact numbers stay within one subject.
+*/
+.photo-viewer-variants {
+  grid-column: 2;
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.photo-viewer-variants[hidden] {
+  display: none !important;
+}
+
+.photo-viewer-variant {
+  position: relative;
+  min-width: 26px;
+  padding: 5px 2px 7px;
+  border: 0;
+  background: transparent;
+  color: var(--photo-dim);
+  font: inherit;
+  font-size: .58rem;
+  line-height: 1;
+  letter-spacing: .12em;
+  cursor: pointer;
+  opacity: .72;
+  transition: color .2s ease, opacity .2s ease;
+}
+
+.photo-viewer-variant::after {
+  content: "";
+  position: absolute;
+  right: 3px;
+  bottom: 1px;
+  left: 3px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform .2s ease;
+}
+
+.photo-viewer-variant:hover,
+.photo-viewer-variant:focus-visible,
+.photo-viewer-variant.is-active {
+  color: var(--photo-text);
+  opacity: 1;
+}
+
+.photo-viewer-variant.is-active::after {
+  transform: scaleX(1);
+}
+
+.photo-viewer-variant:focus-visible {
+  outline: 1px solid rgba(240,238,233,.34);
+  outline-offset: 2px;
+}
+
 .photo-viewer-hint {
   grid-column: 3;
   justify-self: end;
@@ -571,11 +634,17 @@ body.no-scroll {
   .photo-viewer-next { right: 8px; }
 
   .photo-viewer-footer {
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    justify-content: center;
+    gap: 14px;
     padding: 10px 62px 18px;
-    text-align: center;
+    text-align: left;
+  }
+
+  .photo-viewer-variants {
+    grid-column: 2;
+    justify-self: end;
   }
 
   .photo-viewer-caption {
