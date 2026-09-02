@@ -263,11 +263,7 @@
     if (stem === 'miss watson') return '50% 15%';      // head near top
     if (stem === 'fox1') return '50% 10%';      // head near top
     if (stem === 'barnstreet') return '10% 60%';      // to the left
-
     if (stem === 'seagull1') return '100% 50%';      // to the right
-
-        if (stem === 'horses') return '0% 60%';      // to the left
-
 
   };
 
