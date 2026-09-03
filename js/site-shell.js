@@ -126,29 +126,56 @@
 
   const targetVolume = 0.50;
   const tracks = [
-  {
-    src: 'MusicTracks/Lovely Day, Good As Hell Mashup - Pomplamoose.mp3',
-    title: 'Lovely Day, Good As Hell Mashup'
-  },
-  {
-    src: 'MusicTracks/Painkillers - Rainbow Cat Surprise.mp3',
-    title: 'Painkillers'
-  },
-  {
-    src: 'MusicTracks/Guitar Solo.wav',
-    title: 'Unknown Guitar Track'
-  },
-  {
-    src: 'assets/audio/the-drive-back-tom-anello.mp3',
-    title: 'The Drive Back — Tom Anello'
-  }
-];
+    {
+      // GitHub Pages is case-sensitive, so keep a few safe fallbacks for this
+      // filename. The first entry remains the canonical filename to use.
+      sources: [
+        'MusicTracks/Lovely Day, Good As Hell - Pomplamoose.mp3',
+        'MusicTracks/Lovely Day, Good as Hell - Pomplamoose.mp3',
+        'MusicTracks/Lovely Day, Good As Hell - Pomplamoose.MP3',
+        'MusicTracks/Lovely Day, Good as Hell - Pomplamoose.MP3'
+      ],
+      title: 'Lovely Day, Good As Hell'
+    },
+    {
+      src: 'MusicTracks/Painkillers - Rainbow Cat Surprise.mp3',
+      title: 'Painkillers'
+    },
+    {
+      src: 'MusicTracks/Guitar Solo.wav',
+      title: 'Unknown Guitar Track'
+    },
+    {
+      src: 'assets/audio/the-drive-back-tom-anello.mp3',
+      title: 'The Drive Back — Tom Anello'
+    }
+  ];
 
   let currentTrackIndex = 0;
+  let currentSourceIndex = 0;
   let fadeFrame = null;
   let changingTrack = false;
 
   const currentTrack = () => tracks[currentTrackIndex];
+
+  const trackSources = track => {
+    if (Array.isArray(track.sources) && track.sources.length) return track.sources;
+    return track.src ? [track.src] : [];
+  };
+
+  const mediaUrl = path => {
+    // Encode each path segment independently. This safely handles spaces,
+    // commas and other filename punctuation without encoding the slashes.
+    return String(path || '')
+      .split('/')
+      .map(segment => encodeURIComponent(segment))
+      .join('/');
+  };
+
+  const currentSource = () => {
+    const sources = trackSources(currentTrack());
+    return sources[currentSourceIndex] || sources[0] || '';
+  };
 
   const setTrackTitle = () => {
     if (title) title.textContent = currentTrack().title;
@@ -182,30 +209,55 @@
     fadeFrame = requestAnimationFrame(step);
   };
 
-  const loadTrack = index => {
-    currentTrackIndex = ((index % tracks.length) + tracks.length) % tracks.length;
-    const track = currentTrack();
+  const loadCurrentSource = () => {
+    const source = currentSource();
+    if (!source) return;
 
-    if (soundtrack.getAttribute('src') !== track.src) {
-      soundtrack.src = track.src;
+    const safeSource = mediaUrl(source);
+    const currentAttr = soundtrack.getAttribute('src') || '';
+    if (currentAttr !== safeSource) {
+      soundtrack.setAttribute('src', safeSource);
       soundtrack.load();
     }
+  };
 
+  const loadTrack = index => {
+    currentTrackIndex = ((index % tracks.length) + tracks.length) % tracks.length;
+    currentSourceIndex = 0;
+    loadCurrentSource();
     setTrackTitle();
   };
 
   const playSoundtrack = async ({ gentleFade = true } = {}) => {
-    try {
-      soundtrack.volume = gentleFade ? 0.12 : targetVolume;
-      await soundtrack.play();
-      if (gentleFade) fadeVolume(0.12, targetVolume);
-      setUI('playing');
-      return true;
-    } catch (_) {
-      soundtrack.volume = targetVolume;
+    const sources = trackSources(currentTrack());
+    if (!sources.length) {
       setUI('paused');
       return false;
     }
+
+    // If a hosted filename differs only by case, try the next declared source
+    // automatically instead of leaving the Play button apparently broken.
+    for (let attempt = currentSourceIndex; attempt < sources.length; attempt += 1) {
+      currentSourceIndex = attempt;
+      loadCurrentSource();
+
+      try {
+        soundtrack.volume = gentleFade ? 0.12 : targetVolume;
+        await soundtrack.play();
+        if (gentleFade) fadeVolume(0.12, targetVolume);
+        setUI('playing');
+        return true;
+      } catch (_) {
+        soundtrack.pause();
+        soundtrack.currentTime = 0;
+      }
+    }
+
+    currentSourceIndex = 0;
+    loadCurrentSource();
+    soundtrack.volume = targetVolume;
+    setUI('paused');
+    return false;
   };
 
   const pauseSoundtrack = () => {
@@ -250,7 +302,7 @@
   });
   soundtrack.addEventListener('ended', () => setUI('ended'));
 
-  // The site opens silent, with Guitar Solo selected first.
+  // The site opens silent, with Lovely Day, Good As Hell selected first.
   loadTrack(0);
   soundtrack.volume = targetVolume;
   setUI('paused');
