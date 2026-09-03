@@ -1,10 +1,13 @@
-# V4.15.5 — Minimal Homepage
+# V4.15.6 — Minimal homepage, restored character
 
-Replace:
+Replace only `home.html`.
 
-- `home.html`
-- `css/style.css`
+Keeps the tighter V4.15.5 minimalist layout while restoring:
+- the scrolling discipline marquee, expanded with LIGHT / TEXTURE / MEMORY / PLACE / MOMENT
+- “One practice, three ways in.”
+- “A few frames, before the full gallery.”
+- “Work that lives between the cuts.”
+- the full previous About wording
+- the previous Contact wording and button
 
-This applies the new minimal-but-atmospheric direction to the main page while preserving the Sunset hero, Observe / Listen / Remember identity, current Forest → Horses → Deer film stack, navigation shell, soundtrack, and existing media behavior.
-
-Main changes: smaller/cleaner hero typography, concise text navigation, removal of the scrolling discipline marquee, reduced explanatory copy, tighter section spacing, simpler Photography/Music panels, a shorter archive heading, simplified Film/About/Contact headings, and quieter visual treatment throughout.
+The compact hero, tighter spacing, smaller typography, current Film stack/order, and persistent soundtrack/navigation remain unchanged.
