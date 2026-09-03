@@ -78,50 +78,51 @@
    ------------------------------------------------------------ */
 
 .photo-hero-editorial {
-  min-height: clamp(430px, 58vh, 700px);
+  min-height: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1.65fr) minmax(300px, .75fr);
-  align-items: center;
-  gap: clamp(44px, 8vw, 130px);
-  padding-top: clamp(72px, 9vw, 130px);
-  padding-bottom: clamp(66px, 9vw, 130px);
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
+  align-items: end;
+  gap: clamp(28px, 5vw, 72px);
+  padding-top: clamp(34px, 4.4vw, 62px);
+  padding-bottom: clamp(28px, 3.6vw, 48px);
 }
 
 .photo-hero-editorial .eyebrow {
-  margin-bottom: 18px;
+  margin-bottom: 10px;
 }
 
 .photo-hero-editorial h1 {
   margin: 0;
-  max-width: 780px;
+  max-width: 620px;
   font-family: var(--serif);
-  font-size: clamp(5.2rem, 10.5vw, 11.5rem);
+  font-size: clamp(2.8rem, 5.2vw, 5.8rem);
   font-weight: 400;
-  line-height: .82;
-  letter-spacing: -.065em;
+  line-height: .92;
+  letter-spacing: -.05em;
 }
 
 .photo-hero-copy {
-  align-self: center;
-  max-width: 470px;
+  align-self: end;
+  max-width: 390px;
+  padding-bottom: .18em;
 }
 
 .photo-hero-copy > p {
   margin: 0;
   color: var(--photo-muted);
-  font-size: clamp(1rem, 1.35vw, 1.18rem);
-  line-height: 1.62;
+  font-size: clamp(.88rem, 1vw, 1rem);
+  line-height: 1.5;
 }
 
 .photo-meta-line {
   display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  margin-top: 34px;
-  padding-top: 17px;
+  justify-content: flex-start;
+  gap: 18px;
+  margin-top: 16px;
+  padding-top: 10px;
   border-top: 1px solid var(--photo-line);
   color: var(--photo-dim);
-  font-size: .62rem;
+  font-size: .58rem;
   text-transform: uppercase;
   letter-spacing: .14em;
 }
@@ -460,72 +461,71 @@
   display: none;
 }
 
-/*
-  Alternate-shot selector. It only appears for photographs that declare a
-  `variants` array in photos.js. The main left/right viewer arrows still move
-  between different subjects; these compact numbers stay within one subject.
-*/
+.photo-viewer-hint {
+  grid-column: 3;
+  justify-self: end;
+}
+
+/* Optional alternate snapshots for a single subject. The control appears only
+   when that photo declares two or more viewer frames in photos.js. */
 .photo-viewer-variants {
   grid-column: 2;
   justify-self: center;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   min-width: 0;
 }
 
 .photo-viewer-variants[hidden] {
-  display: none !important;
+  display: none;
 }
 
-.photo-viewer-variant {
-  position: relative;
-  min-width: 26px;
-  padding: 5px 2px 7px;
-  border: 0;
+.photo-viewer-variants-label {
+  color: var(--photo-dim);
+  font-size: .55rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+}
+
+.photo-viewer-variant-buttons {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.photo-viewer-variant-button {
+  appearance: none;
+  display: grid;
+  place-items: center;
+  min-width: 29px;
+  height: 27px;
+  padding: 0 7px;
+  border: 1px solid rgba(240,238,233,.14);
+  border-radius: 999px;
   background: transparent;
   color: var(--photo-dim);
   font: inherit;
-  font-size: .58rem;
-  line-height: 1;
-  letter-spacing: .12em;
+  font-size: .55rem;
+  letter-spacing: .08em;
   cursor: pointer;
-  opacity: .72;
-  transition: color .2s ease, opacity .2s ease;
+  transition: color .2s ease, border-color .2s ease, background .2s ease;
 }
 
-.photo-viewer-variant::after {
-  content: "";
-  position: absolute;
-  right: 3px;
-  bottom: 1px;
-  left: 3px;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform .2s ease;
-}
-
-.photo-viewer-variant:hover,
-.photo-viewer-variant:focus-visible,
-.photo-viewer-variant.is-active {
+.photo-viewer-variant-button:hover,
+.photo-viewer-variant-button:focus-visible,
+.photo-viewer-variant-button.is-active {
   color: var(--photo-text);
-  opacity: 1;
+  border-color: rgba(240,238,233,.34);
 }
 
-.photo-viewer-variant.is-active::after {
-  transform: scaleX(1);
+.photo-viewer-variant-button.is-active {
+  background: rgba(240,238,233,.08);
 }
 
-.photo-viewer-variant:focus-visible {
-  outline: 1px solid rgba(240,238,233,.34);
+.photo-viewer-variant-button:focus-visible {
+  outline: 1px solid rgba(240,238,233,.5);
   outline-offset: 2px;
-}
-
-.photo-viewer-hint {
-  grid-column: 3;
-  justify-self: end;
 }
 
 body.no-scroll {
@@ -538,19 +538,19 @@ body.no-scroll {
 
 @media (max-width: 900px) {
   .photo-hero-editorial {
-    min-height: auto;
+    min-height: 0;
     grid-template-columns: 1fr;
-    gap: 34px;
-    padding-top: 82px;
-    padding-bottom: 68px;
+    gap: 18px;
+    padding-top: 34px;
+    padding-bottom: 30px;
   }
 
   .photo-hero-editorial h1 {
-    font-size: clamp(4.7rem, 17vw, 8rem);
+    font-size: clamp(2.8rem, 10vw, 4.8rem);
   }
 
   .photo-hero-copy {
-    max-width: 600px;
+    max-width: 520px;
   }
 
   .photo-grid {
@@ -566,18 +566,17 @@ body.no-scroll {
 
 @media (max-width: 600px) {
   .photo-hero-editorial {
-    padding-top: 64px;
-    padding-bottom: 52px;
+    padding-top: 26px;
+    padding-bottom: 24px;
   }
 
   .photo-hero-editorial h1 {
-    font-size: clamp(4rem, 20vw, 6.2rem);
+    font-size: clamp(2.65rem, 13vw, 4.1rem);
   }
 
   .photo-meta-line {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 7px;
+    margin-top: 12px;
+    padding-top: 8px;
   }
 
   .photo-grid-bar {
@@ -593,7 +592,7 @@ body.no-scroll {
   }
 
   .photo-viewer {
-    grid-template-rows: 54px minmax(0, 1fr) 74px;
+    grid-template-rows: 54px minmax(0, 1fr) 82px;
   }
 
   .photo-viewer-brand,
@@ -635,16 +634,32 @@ body.no-scroll {
 
   .photo-viewer-footer {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 14px;
-    padding: 10px 62px 18px;
-    text-align: left;
+    grid-template-columns: 1fr;
+    align-content: center;
+    justify-items: center;
+    gap: 5px;
+    padding: 8px 62px 14px;
+    text-align: center;
+  }
+
+  .photo-viewer-copy,
+  .photo-viewer-variants {
+    grid-column: 1;
+    justify-self: center;
   }
 
   .photo-viewer-variants {
-    grid-column: 2;
-    justify-self: end;
+    gap: 6px;
+  }
+
+  .photo-viewer-variants-label {
+    font-size: .5rem;
+  }
+
+  .photo-viewer-variant-button {
+    min-width: 27px;
+    height: 25px;
+    padding: 0 6px;
   }
 
   .photo-viewer-caption {
@@ -662,7 +677,8 @@ body.no-scroll {
   .photo-grid-image,
   .photo-grid-overlay,
   .photo-viewer,
-  .photo-viewer-image {
+  .photo-viewer-image,
+  .photo-viewer-variant-button {
     transition: none !important;
   }
 
@@ -900,18 +916,18 @@ body.no-scroll {
 
 @media (max-width: 700px) {
   .photo-hero-editorial {
-    gap: 26px;
-    padding-top: 54px;
-    padding-bottom: 46px;
+    gap: 14px;
+    padding-top: 24px;
+    padding-bottom: 22px;
   }
 
   .photo-hero-editorial h1 {
-    font-size: clamp(4rem, 18vw, 6.4rem);
+    font-size: clamp(2.55rem, 12.5vw, 4rem);
   }
 
   .photo-hero-copy > p {
-    font-size: .98rem;
-    line-height: 1.58;
+    font-size: .9rem;
+    line-height: 1.48;
   }
 
   /*
