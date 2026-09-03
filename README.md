@@ -1,11 +1,7 @@
-# V4.16 — Homepage triptych thumbnails
+# V4.16.2 — Luminous Remember
 
-Replace only `home.html`.
+Replace only:
 
-The three preview images under “A few frames, before the full gallery.” now load from `Images/photo-thumbs/` instead of `Images/photo-full/`:
+- `css/style.css`
 
-- `Sean.JPG.webp`
-- `Mountain & Trees.png.webp`
-- `Performance.jpg.webp`
-
-No layout, links, labels, film, soundtrack, or Photography viewer behavior was changed.
+Changes the homepage **Remember.** accent from the flat oxblood red to a slightly brighter muted red with a soft, restrained glow. No layout, typography, animation, soundtrack, or page behavior is changed.
