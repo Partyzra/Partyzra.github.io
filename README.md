@@ -1,7 +1,9 @@
-# V4.16.2 — Luminous Remember
+# V4.16.10 — Lighter “Look”
 
 Replace only:
 
-- `css/style.css`
+`css/photography.css`
 
-Changes the homepage **Remember.** accent from the flat oxblood red to a slightly brighter muted red with a soft, restrained glow. No layout, typography, animation, soundtrack, or page behavior is changed.
+“Look” keeps the same muted brass/champagne hue from V4.16.9, blended 50% toward white: `#e2d2b3`.
+
+The animated water-gradient “slowly.” is unchanged.

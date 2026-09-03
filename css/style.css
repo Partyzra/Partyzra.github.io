@@ -305,7 +305,26 @@ button { color: inherit; }
 .music-page { background: var(--ink); }
 .music-hero { min-height: 82vh; padding-top: calc(var(--header-h) + clamp(86px, 10vw, 150px)); padding-bottom: clamp(72px, 9vw, 120px); display: grid; grid-template-columns: 1fr .72fr; gap: clamp(40px, 8vw, 130px); align-items: center; }
 .music-hero h1 { margin: 0; font-family: var(--serif); font-size: clamp(4rem, 8vw, 8.4rem); font-weight: 400; line-height: .95; letter-spacing: -.065em; }
-.music-hero h1 em { color: var(--gold-2); font-weight: 400; }
+.music-hero h1 em { color: var(--text); font-weight: 400; }
+.music-feeling-accent {
+  /* Metallic gold: bronze edges, bright champagne highlight, soft warm bloom. */
+  color: #d9b54a;
+  background: linear-gradient(115deg,
+    #765115 0%,
+    #b98220 20%,
+    #e5bd4f 36%,
+    #fff1a6 48%,
+    #d9aa32 61%,
+    #9a6918 82%,
+    #e0b847 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter:
+    drop-shadow(0 0 5px rgba(232, 190, 76, .26))
+    drop-shadow(0 0 16px rgba(170, 112, 18, .14));
+}
 .music-deck-intro { max-width: 660px; margin: 34px 0 0; color: var(--muted); }
 .music-art { justify-self: center; position: relative; width: min(42vw, 520px); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, #6e5937 0 4%, #121316 4.4% 15%, #2c261d 15.4% 16%, #111317 16.4% 27%, #2c261d 27.4% 28%, #111317 28.4% 40%, #2c261d 40.4% 41%, #0d0f12 41.4% 100%); box-shadow: 0 45px 100px rgba(0,0,0,.45), inset 0 0 55px rgba(255,255,255,.03); animation: spin-record 38s linear infinite; }
 .music-art::after { content: ""; position: absolute; inset: 8%; border-radius: 50%; background: conic-gradient(from 20deg, transparent, rgba(255,255,255,.09), transparent 16%, transparent 45%, rgba(255,255,255,.06), transparent 62%); mix-blend-mode: screen; }

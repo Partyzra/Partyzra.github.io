@@ -99,6 +99,51 @@
   font-weight: 400;
   line-height: .92;
   letter-spacing: -.05em;
+  /* Same brass-champagne hue, blended 50% toward white so “Look” stays soft beside the brighter water-gradient “slowly.” */
+  color: #e2d2b3;
+}
+
+.photo-hero-accent {
+  /* Fallback blue if animated gradient text is unavailable. */
+  color: #78c8e8;
+  text-shadow:
+    0 0 8px rgba(119, 205, 238, .30),
+    0 0 22px rgba(71, 151, 205, .18);
+}
+
+@supports ((background-clip: text) or (-webkit-background-clip: text)) {
+  .photo-hero-accent {
+    background: linear-gradient(
+      105deg,
+      #bcecf7 0%,
+      #75c9e8 18%,
+      #3e8fbd 38%,
+      #22577f 52%,
+      #62b7dc 70%,
+      #c8f2f8 86%,
+      #4a9bc7 100%
+    );
+    background-size: 260% 100%;
+    background-position: 0% 50%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: photo-water-shimmer 8s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes photo-water-shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 58% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-hero-accent {
+    animation: none;
+    background-position: 48% 50%;
+  }
 }
 
 .photo-hero-copy {
