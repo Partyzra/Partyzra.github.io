@@ -1582,6 +1582,17 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     },
+    {
+    "file": "Seagull.jpg",
+    "title": "Seagull",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ]
+  },
   {
     "file": "Bird.jpg",
     "title": "Western Gull",
