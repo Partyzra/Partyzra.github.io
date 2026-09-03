@@ -124,17 +124,25 @@
 
   if (!soundtrack || !toggle) return;
 
-  const targetVolume = 0.42;
+  const targetVolume = 0.50;
   const tracks = [
-    {
-      src: 'MusicTracks/Guitar Solo.wav',
-      title: 'Guitar Solo'
-    },
-    {
-      src: 'assets/audio/the-drive-back-tom-anello.mp3',
-      title: 'The Drive Back — Tom Anello'
-    }
-  ];
+  {
+    src: 'MusicTracks/Lovely Day, Good As Hell Mashup - Pomplamoose.mp3',
+    title: 'Lovely Day, Good As Hell Mashup'
+  },
+  {
+    src: 'MusicTracks/Painkillers - Rainbow Cat Surprise.mp3',
+    title: 'Painkillers'
+  },
+  {
+    src: 'MusicTracks/Guitar Solo.wav',
+    title: 'Unknown Guitar Track'
+  },
+  {
+    src: 'assets/audio/the-drive-back-tom-anello.mp3',
+    title: 'The Drive Back — Tom Anello'
+  }
+];
 
   let currentTrackIndex = 0;
   let fadeFrame = null;
