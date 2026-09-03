@@ -501,12 +501,13 @@
   min-width: 29px;
   height: 27px;
   padding: 0 7px;
-  border: 1px solid rgba(240,238,233,.14);
+  border: 1px solid rgba(240,238,233,.28);
   border-radius: 999px;
-  background: transparent;
-  color: var(--photo-dim);
+  background: rgba(240,238,233,.035);
+  color: var(--photo-muted);
   font: inherit;
-  font-size: .55rem;
+  font-size: .58rem;
+  font-weight: 600;
   letter-spacing: .08em;
   cursor: pointer;
   transition: color .2s ease, border-color .2s ease, background .2s ease;
@@ -516,11 +517,13 @@
 .photo-viewer-variant-button:focus-visible,
 .photo-viewer-variant-button.is-active {
   color: var(--photo-text);
-  border-color: rgba(240,238,233,.34);
+  border-color: rgba(240,238,233,.58);
+  background: rgba(240,238,233,.08);
 }
 
 .photo-viewer-variant-button.is-active {
-  background: rgba(240,238,233,.08);
+  background: rgba(240,238,233,.16);
+  border-color: rgba(240,238,233,.72);
 }
 
 .photo-viewer-variant-button:focus-visible {
@@ -649,17 +652,41 @@ body.no-scroll {
   }
 
   .photo-viewer-variants {
-    gap: 6px;
+    /* The soundtrack is rendered by the persistent outer shell and therefore
+       sits above this iframe. Raise the frame selector above the bottom control
+       row so it cannot be covered by the player and remains easy to tap. */
+    position: fixed;
+    z-index: 12;
+    left: 50%;
+    bottom: max(70px, calc(env(safe-area-inset-bottom) + 62px));
+    transform: translateX(-50%);
+    grid-column: auto;
+    justify-self: auto;
+    gap: 7px;
+    padding: 5px 7px;
+    border: 1px solid rgba(240,238,233,.14);
+    border-radius: 999px;
+    background: rgba(5,6,7,.88);
+    box-shadow: 0 10px 30px rgba(0,0,0,.28);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 
   .photo-viewer-variants-label {
-    font-size: .5rem;
+    color: var(--photo-muted);
+    font-size: .52rem;
+    font-weight: 600;
+  }
+
+  .photo-viewer-variant-buttons {
+    gap: 5px;
   }
 
   .photo-viewer-variant-button {
-    min-width: 27px;
-    height: 25px;
-    padding: 0 6px;
+    min-width: 42px;
+    height: 38px;
+    padding: 0 9px;
+    font-size: .62rem;
   }
 
   .photo-viewer-caption {

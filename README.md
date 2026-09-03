@@ -1,20 +1,15 @@
-# V4.15.8 — First two soundtrack tracks playback fix
+# V4.15.9 — Visible + Mobile-Friendly Alternate Frames
 
-Replace only:
+Replace these files in the repository:
 
-- `js/site-shell.js`
+- `css/photography.css`
+- `js/photography-page.js`
 
-The live GitHub repository currently contains these exact filenames:
+## What changed
 
-- `MusicTracks/Lovely Day, Good As Hell Mashup - Pomplamoose .mp3`
-- `MusicTracks/Pain Killers - Rainbow Kitten Surprise.mp3`
-
-The previous player paths did not match those hosted names, so GitHub Pages could not load either file.
-
-This patch:
-
-- points the first two playlist entries at the exact currently-hosted filenames;
-- keeps Lovely Day first and Painkillers second;
-- includes fallback filename candidates for later filename cleanup;
-- leaves Guitar Solo and The Drive Back unchanged;
-- leaves the continuous Home / Photography / Music soundtrack shell unchanged.
+- Fixes the alternate-frame button class mismatch that caused 01 / 02 controls to render with browser-default bright styling.
+- Preserves the `FRAME` label instead of deleting it when the controls are rendered.
+- Makes 01 / 02 / 03 buttons higher contrast and easier to read.
+- Gives frame buttons larger mobile touch targets.
+- On screens 600px and narrower, raises the FRAME selector above the bottom viewer controls so the persistent soundtrack player cannot cover it.
+- No changes to photo assignments, albums, zoom/pan, swiping, soundtrack playback, or the main gallery grid.

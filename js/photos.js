@@ -1572,17 +1572,6 @@ const PORTFOLIO_PHOTOS = [
     ],
   },
 {
-    "file": "Zey.jpg",
-    "title": "Zey",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    },
-    {
     "file": "Seagull.jpg",
     "title": "Seagull",
     "collection": "Nature",

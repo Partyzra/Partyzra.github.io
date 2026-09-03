@@ -266,7 +266,7 @@
     if (stem === 'seagull1') return '100% 50%';      // to the right
     if (stem === 'horses') return '50% 0%';   // horse at top
     if (stem === 'my mother') return '50% 17%';   // head at top
-    if (stem === 'seagull') return '50% 5%';   // people at top
+    if (stem === 'seagull') return '50% 10%';   // people at top
 
   };
 
@@ -713,6 +713,7 @@
   const meta = qs('[data-viewer-meta]', viewer);
   const indexLabel = qs('[data-viewer-index]', viewer);
   const variantControls = qs('[data-viewer-variants]', viewer);
+  const variantButtons = qs('[data-viewer-variant-buttons]', viewer);
 
   let buttons = qsa('.photo-grid-button', grid);
   let currentIndex = 0;
@@ -945,12 +946,12 @@
   }
 
   function renderVariantControls(index) {
-    if (!variantControls) return;
+    if (!variantControls || !variantButtons) return;
 
     const files = variantFilesAt(index);
     if (files.length <= 1) {
       variantControls.hidden = true;
-      variantControls.replaceChildren();
+      variantButtons.replaceChildren();
       return;
     }
 
@@ -958,16 +959,16 @@
     files.forEach((_, variantIndex) => {
       const button = document.createElement('button');
       button.type = 'button';
-      button.className = 'photo-viewer-variant';
+      button.className = 'photo-viewer-variant-button';
       button.dataset.viewerVariant = String(variantIndex);
       button.textContent = String(variantIndex + 1).padStart(2, '0');
-      button.setAttribute('aria-label', `Show alternate ${variantIndex + 1} of ${files.length}`);
+      button.setAttribute('aria-label', `Show frame ${variantIndex + 1} of ${files.length}`);
       button.setAttribute('aria-pressed', String(variantIndex === currentVariantIndex));
       if (variantIndex === currentVariantIndex) button.classList.add('is-active');
       fragment.appendChild(button);
     });
 
-    variantControls.replaceChildren(fragment);
+    variantButtons.replaceChildren(fragment);
     variantControls.hidden = false;
   }
 
