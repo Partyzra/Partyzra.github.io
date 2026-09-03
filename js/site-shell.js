@@ -124,7 +124,7 @@
 
   if (!soundtrack || !toggle) return;
 
-  const targetVolume = 0.50;
+  const targetVolume = 1;
   const tracks = [
     {
       // Exact filename currently published in the GitHub MusicTracks folder.
