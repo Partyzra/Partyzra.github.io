@@ -1,15 +1,11 @@
-# V4.15.9 — Visible + Mobile-Friendly Alternate Frames
+# V4.16 — Homepage triptych thumbnails
 
-Replace these files in the repository:
+Replace only `home.html`.
 
-- `css/photography.css`
-- `js/photography-page.js`
+The three preview images under “A few frames, before the full gallery.” now load from `Images/photo-thumbs/` instead of `Images/photo-full/`:
 
-## What changed
+- `Sean.JPG.webp`
+- `Mountain & Trees.png.webp`
+- `Performance.jpg.webp`
 
-- Fixes the alternate-frame button class mismatch that caused 01 / 02 controls to render with browser-default bright styling.
-- Preserves the `FRAME` label instead of deleting it when the controls are rendered.
-- Makes 01 / 02 / 03 buttons higher contrast and easier to read.
-- Gives frame buttons larger mobile touch targets.
-- On screens 600px and narrower, raises the FRAME selector above the bottom viewer controls so the persistent soundtrack player cannot cover it.
-- No changes to photo assignments, albums, zoom/pan, swiping, soundtrack playback, or the main gallery grid.
+No layout, links, labels, film, soundtrack, or Photography viewer behavior was changed.
