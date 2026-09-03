@@ -1,18 +1,20 @@
-# V4.15.7 — Lovely Day playback fix
+# V4.15.8 — First two soundtrack tracks playback fix
 
 Replace only:
 
 - `js/site-shell.js`
 
-What changed:
+The live GitHub repository currently contains these exact filenames:
 
-- `Lovely Day, Good As Hell` remains track 1.
-- The player now URL-encodes media filenames safely for hosted playback.
-- The Lovely Day track includes case-sensitive filename fallbacks for `As/as` and `.mp3/.MP3`.
-- If the first Lovely Day path fails, Play automatically tries the next candidate.
-- Playlist order remains: Lovely Day → Painkillers → Unknown Guitar Track → The Drive Back.
-- Continuous playback between Home, Photography and Music is unchanged.
+- `MusicTracks/Lovely Day, Good As Hell Mashup - Pomplamoose .mp3`
+- `MusicTracks/Pain Killers - Rainbow Kitten Surprise.mp3`
 
-The preferred/canonical file location is:
+The previous player paths did not match those hosted names, so GitHub Pages could not load either file.
 
-`MusicTracks/Lovely Day, Good As Hell - Pomplamoose.mp3`
+This patch:
+
+- points the first two playlist entries at the exact currently-hosted filenames;
+- keeps Lovely Day first and Painkillers second;
+- includes fallback filename candidates for later filename cleanup;
+- leaves Guitar Solo and The Drive Back unchanged;
+- leaves the continuous Home / Photography / Music soundtrack shell unchanged.

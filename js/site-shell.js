@@ -127,26 +127,30 @@
   const targetVolume = 0.50;
   const tracks = [
     {
-      // GitHub Pages is case-sensitive, so keep a few safe fallbacks for this
-      // filename. The first entry remains the canonical filename to use.
+      // Exact filename currently published in the GitHub MusicTracks folder.
+      // Alternate names are kept as fallbacks in case the file is cleaned up later.
       sources: [
-        'MusicTracks/Lovely Day, Good As Hell - Pomplamoose.mp3',
-        'MusicTracks/Lovely Day, Good as Hell - Pomplamoose.mp3',
-        'MusicTracks/Lovely Day, Good As Hell - Pomplamoose.MP3',
-        'MusicTracks/Lovely Day, Good as Hell - Pomplamoose.MP3'
+        'MusicTracks/Lovely Day, Good As Hell Mashup - Pomplamoose .mp3',
+        'MusicTracks/Lovely Day, Good As Hell Mashup - Pomplamoose.mp3',
+        'MusicTracks/Lovely Day, Good As Hell - Pomplamoose.mp3'
       ],
       title: 'Lovely Day, Good As Hell'
     },
     {
-      src: 'MusicTracks/Painkillers - Rainbow Cat Surprise.mp3',
+      // Exact filename currently published in the GitHub MusicTracks folder.
+      sources: [
+        'MusicTracks/Pain Killers - Rainbow Kitten Surprise.mp3',
+        'MusicTracks/Painkillers - Rainbow Kitten Surprise.mp3',
+        'MusicTracks/Painkillers - Rainbow Cat Surprise.mp3'
+      ],
       title: 'Painkillers'
     },
     {
-      src: 'MusicTracks/Guitar Solo.wav',
+      sources: ['MusicTracks/Guitar Solo.wav'],
       title: 'Unknown Guitar Track'
     },
     {
-      src: 'assets/audio/the-drive-back-tom-anello.mp3',
+      sources: ['assets/audio/the-drive-back-tom-anello.mp3'],
       title: 'The Drive Back — Tom Anello'
     }
   ];
@@ -157,25 +161,7 @@
   let changingTrack = false;
 
   const currentTrack = () => tracks[currentTrackIndex];
-
-  const trackSources = track => {
-    if (Array.isArray(track.sources) && track.sources.length) return track.sources;
-    return track.src ? [track.src] : [];
-  };
-
-  const mediaUrl = path => {
-    // Encode each path segment independently. This safely handles spaces,
-    // commas and other filename punctuation without encoding the slashes.
-    return String(path || '')
-      .split('/')
-      .map(segment => encodeURIComponent(segment))
-      .join('/');
-  };
-
-  const currentSource = () => {
-    const sources = trackSources(currentTrack());
-    return sources[currentSourceIndex] || sources[0] || '';
-  };
+  const currentSources = () => currentTrack().sources || [];
 
   const setTrackTitle = () => {
     if (title) title.textContent = currentTrack().title;
@@ -209,37 +195,41 @@
     fadeFrame = requestAnimationFrame(step);
   };
 
-  const loadCurrentSource = () => {
-    const source = currentSource();
-    if (!source) return;
+  const loadSource = sourceIndex => {
+    const sources = currentSources();
+    if (!sources.length) return false;
 
-    const safeSource = mediaUrl(source);
-    const currentAttr = soundtrack.getAttribute('src') || '';
-    if (currentAttr !== safeSource) {
-      soundtrack.setAttribute('src', safeSource);
+    currentSourceIndex = Math.max(0, Math.min(sourceIndex, sources.length - 1));
+    const src = sources[currentSourceIndex];
+
+    if (soundtrack.getAttribute('src') !== src) {
+      soundtrack.src = src;
       soundtrack.load();
     }
+
+    return true;
   };
 
   const loadTrack = index => {
     currentTrackIndex = ((index % tracks.length) + tracks.length) % tracks.length;
     currentSourceIndex = 0;
-    loadCurrentSource();
+    loadSource(0);
     setTrackTitle();
   };
 
   const playSoundtrack = async ({ gentleFade = true } = {}) => {
-    const sources = trackSources(currentTrack());
+    const sources = currentSources();
     if (!sources.length) {
       setUI('paused');
       return false;
     }
 
-    // If a hosted filename differs only by case, try the next declared source
-    // automatically instead of leaving the Play button apparently broken.
-    for (let attempt = currentSourceIndex; attempt < sources.length; attempt += 1) {
-      currentSourceIndex = attempt;
-      loadCurrentSource();
+    // Try every known filename for this track. This protects the site from
+    // small GitHub filename differences (spaces, wording, or later cleanup).
+    for (let i = currentSourceIndex; i < sources.length; i += 1) {
+      if (i !== currentSourceIndex || soundtrack.getAttribute('src') !== sources[i]) {
+        loadSource(i);
+      }
 
       try {
         soundtrack.volume = gentleFade ? 0.12 : targetVolume;
@@ -249,12 +239,9 @@
         return true;
       } catch (_) {
         soundtrack.pause();
-        soundtrack.currentTime = 0;
       }
     }
 
-    currentSourceIndex = 0;
-    loadCurrentSource();
     soundtrack.volume = targetVolume;
     setUI('paused');
     return false;
