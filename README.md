@@ -1,9 +1,10 @@
-# V4.16.10 — Lighter “Look”
+# V4.17.4 — Right Column Order
 
-Replace only:
+Replace only `home.html`.
 
-`css/photography.css`
+Film layout:
 
-“Look” keeps the same muted brass/champagne hue from V4.16.9, blended 50% toward white: `#e2d2b3`.
+- Left: Forest / Horses / Hot Box
+- Right: Deer / Snow / Abandoned
 
-The animated water-gradient “slowly.” is unchanged.
+No sizing, styling, playback, or mobile behavior was changed.

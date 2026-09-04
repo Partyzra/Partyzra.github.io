@@ -140,18 +140,32 @@ button { color: inherit; }
      it collapse outside the section and expose the darker body background. */
   display: flow-root;
 }
+.film-motion-columns {
+  /* Let the six opening studies feel cinematic: use nearly the full viewport
+     while keeping a narrow, deliberate gutter between the two columns. */
+  width: min(98vw, 1900px);
+  margin: clamp(26px, 4vw, 58px) auto clamp(78px, 8vw, 132px);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(14px, 1.6vw, 30px);
+  align-items: start;
+}
+.film-motion-column {
+  display: grid;
+  gap: clamp(22px, 2.7vw, 42px);
+  min-width: 0;
+}
+.film-motion-column--left { justify-items: start; }
+.film-motion-column--right { justify-items: end; }
 .film-motion-intro {
-  --film-frame-pad: clamp(6px, .55vw, 9px);
+  --film-frame-pad: clamp(5px, .42vw, 8px);
   position: relative;
-  /* Every moving-image study uses the same frame. Keeping the sizing here on
-     the base class means future fourth, fifth, and sixth clips inherit the
-     same vertical-stack layout automatically. */
-  width: min(72vw, 1040px, 108vh);
+  width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
   box-sizing: border-box;
   padding: var(--film-frame-pad);
-  margin: 0 auto clamp(30px, 3.5vw, 52px);
+  margin: 0;
   background: #080a0d;
   border: 0;
   box-shadow: 0 22px 58px rgba(0,0,0,.30);
@@ -172,7 +186,7 @@ button { color: inherit; }
   left: var(--film-frame-pad);
   right: var(--film-frame-pad);
   bottom: var(--film-frame-pad);
-  height: clamp(48px, 8vw, 120px);
+  height: clamp(40px, 5vw, 92px);
   pointer-events: none;
   background: linear-gradient(to bottom, transparent, rgba(15,17,21,.28));
 }
@@ -190,31 +204,6 @@ button { color: inherit; }
 }
 .film-motion-intro.is-video-ready .film-motion-video { opacity: 1; }
 
-/* The current three moving-image studies form a left-indented vertical
-   column. Their size stays identical; only the horizontal alignment changes.
-   A matching right-side column can be introduced later for additional films. */
-.film-motion-intro--forest,
-.film-motion-intro--deer,
-.film-motion-intro--right {
-  width: min(72vw, 1040px, 108vh);
-  margin-left: clamp(24px, 7vw, 112px);
-  margin-right: auto;
-}
-
-/* Ready for a future right-hand group without changing the clip size. */
-.film-motion-intro--column-right {
-  width: min(72vw, 1040px, 108vh);
-  margin-left: auto;
-  margin-right: clamp(24px, 7vw, 112px);
-}
-
-.film-motion-intro--forest {
-  margin-top: clamp(26px, 4vw, 58px);
-}
-
-.film-motion-intro--deer {
-  margin-bottom: clamp(78px, 8vw, 132px);
-}
 .film-feature { display: grid; grid-template-columns: 1.4fr .6fr; gap: 34px; align-items: end; padding-bottom: 74px; border-bottom: 1px solid var(--line); }
 .video-frame { position: relative; aspect-ratio: 16/9; overflow: hidden; background: #000; border: 1px solid var(--line); }
 .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
@@ -417,24 +406,15 @@ button { color: inherit; }
   .photo-triptych { grid-template-columns: 1fr; gap: 10px; }
   .triptych-frame, .triptych-tall, .triptych-low { grid-column: auto; height: 62vh; min-height: 370px; max-height: 600px; }
   .film-grid { grid-template-columns: 1fr; }
-  .film-motion-intro {
+  .film-motion-columns {
     width: calc(100% - 32px);
-    aspect-ratio: 16 / 9;
-    margin-top: 0;
-    margin-right: auto;
-    margin-left: auto;
-    margin-bottom: 22px;
+    grid-template-columns: 1fr;
+    gap: 22px;
+    margin-top: 20px;
+    margin-bottom: 72px;
   }
-  .film-motion-intro--forest,
-  .film-motion-intro--deer,
-  .film-motion-intro--right,
-  .film-motion-intro--column-right {
-    width: calc(100% - 32px);
-    margin-right: auto;
-    margin-left: auto;
-  }
-  .film-motion-intro--forest { margin-top: 20px; }
-  .film-motion-intro--deer { margin-bottom: 72px; }
+  .film-motion-column { gap: 22px; }
+  .film-motion-intro { width: 100%; }
   .film-motion-video { object-position: center 52%; }
   .site-footer { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 7px; min-height: 120px; }
   .site-footer a { justify-self: center; }
