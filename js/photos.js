@@ -1076,7 +1076,7 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Antelope Dr.jpg",
+    "file": "Antelope Drive.jpg",
     "title": "Antelope Dr",
     "collection": "Nature",
     "year": "",
@@ -1786,46 +1786,7 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
 {
-    "file": "Goat.jpg",
-    "title": "Goat",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": "",
-    "album": "Animals"
-  },
-{
-    "file": "Goat1.jpg",
-    "title": "Goat",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": "",
-    "album": "Animals"
-  },
-{
     "file": "Goat2.jpg",
-    "title": "Goat",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": "",
-    "album": "Animals"
-  },
-{
-    "file": "Goat3.jpg",
     "title": "Goat",
     "collection": "Nature",
     "year": "",

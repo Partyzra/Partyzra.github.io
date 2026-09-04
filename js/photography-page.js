@@ -295,7 +295,7 @@
       matches: photo => {
         const file = normalize(photo.file);
         return file.startsWith('antelope island')
-          || file === 'antelope dr.png'
+          || file === 'antelope drive.jpg'
           || file.startsWith('buffalo')
           || file === 'rocks.jpg'
           || file === 'rocks2.jpg'
