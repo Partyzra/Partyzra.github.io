@@ -1963,7 +1963,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "People Coming.jpg",
     "title": "People Coming",
-    "collection": "Landscape",
+    "collection": "Nature",
      "album": "American Fork Canyon",
     "year": "",
     "location": "",
