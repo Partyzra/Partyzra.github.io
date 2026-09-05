@@ -1875,5 +1875,131 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": "",
     "album": "Animals"
+  },
+  {
+    "file": "Trees.jpg",
+    "title": "Trees",
+    "collection": "Landscape",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "Halo Mountain.jpg",
+    "title": "Halo Mountain",
+    "collection": "Landscape",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "Reflection.jpg",
+    "title": "Reflection",
+    "collection": "Landscape",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "Best.jpg",
+    "title": "Sunset Mountain",
+    "collection": "Landscape",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "Power Line.jpg",
+    "title": "Power Line",
+    "collection": "Landscape",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "Power Line1.jpg",
+    "title": "Power Clouds",
+    "collection": "Landscape",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "People Coming.jpg",
+    "title": "People Coming",
+    "collection": "Landscape",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "Ball in sky.jpg",
+    "title": "Ball In Sky",
+    "collection": "Landscape",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "AFView.jpg",
+    "title": "Lake Mountain",
+    "collection": "Landscape",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
   }
 ];
