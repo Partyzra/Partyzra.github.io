@@ -295,7 +295,7 @@
       matches: photo => {
         const file = normalize(photo.file);
         return file.startsWith('antelope island')
-          || file === 'antelope drive.jpg'
+          || file === 'antelope dr.png'
           || file.startsWith('buffalo')
           || file === 'rocks.jpg'
           || file === 'rocks2.jpg'
@@ -463,9 +463,33 @@
   // Named albums remain available from the collection tabs.
   let activeAlbum = 'All';
 
-  // Keep the navigation intentionally curated instead of surfacing every
-  // metadata category as a new tab.
-  const albumNames = ALBUM_RULES.map(rule => rule.name);
+  // Keep the existing curated album order, then automatically append any
+  // custom album names declared directly in photos.js. This means a new entry
+  // such as `album: 'American Fork Canyon'` immediately creates its own tab;
+  // no photography-page.js edit is needed for future albums.
+  const albumNames = [];
+  const albumNameKeys = new Set();
+
+  const addAlbumName = name => {
+    const cleanName = String(name || '').trim();
+    const key = normalize(cleanName);
+    if (!cleanName || key === 'all' || albumNameKeys.has(key)) return;
+
+    albumNameKeys.add(key);
+    albumNames.push(cleanName);
+  };
+
+  // Preserve the familiar order of the built-in albums first.
+  ALBUM_RULES.forEach(rule => addAlbumName(rule.name));
+
+  // Then add user-created albums in the order they first appear in photos.js.
+  uniquePhotos.forEach(photo => {
+    if (typeof photo.album === 'string') addAlbumName(photo.album);
+
+    if (Array.isArray(photo.albums)) {
+      photo.albums.forEach(addAlbumName);
+    }
+  });
 
   const photosForActiveAlbum = () =>
     randomizedArchive.filter(photo => photo.__albums.includes(activeAlbum));
