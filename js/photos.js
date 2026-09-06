@@ -999,6 +999,19 @@ const PORTFOLIO_PHOTOS = [
     "note": "",
     "album": "Antelope Island"
   },
+  {
+    "file": "Buffalo4.jpg",
+    "title": "Bison",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Antelope Island"
+  },
 {
     "file": "Buffalo5.jpg",
     "title": "Buffalo",
@@ -1027,6 +1040,34 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Buffalo7.jpg",
+    "title": "Bison",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Antelope Island"
+  },
+  {
+    "file": "Buffalo8.jpg",
+    "variants": ["Buffalo9.jpg"],
+    "title": "Bison",
+    "collection": "Nature",
+
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Antelope Island"
+  },
+  {
+    "file": "Buffalo10.jpg",
     "title": "Bison",
     "collection": "Nature",
     "year": "",
@@ -1914,7 +1955,19 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": ""
-   
+  },
+  {
+    "file": "American Couple.jpg",
+    "title": "American Couple",
+    "collection": "Landscape",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   },
   {
     "file": "Halo Mountain.jpg",
