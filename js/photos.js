@@ -1080,6 +1080,7 @@ const PORTFOLIO_PHOTOS = [
     "file": "Rocks3.jpg",
     "title": "Rocks",
     "collection": "Nature",
+    "album": "American Fork Canyon",
     "year": "",
     "location": "",
     "featured": false,
