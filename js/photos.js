@@ -1026,6 +1026,19 @@ const PORTFOLIO_PHOTOS = [
     "album": "Antelope Island"
   },
   {
+    "file": "Buffalo7.jpg",
+    "title": "Bison",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Antelope Island"
+  },
+  {
     "file": "Rocks.jpg",
     "title": "Rocks",
     "collection": "Nature",
@@ -1053,6 +1066,18 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Rocks2.jpg",
+    "title": "Rocks",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Rocks3.jpg",
     "title": "Rocks",
     "collection": "Nature",
     "year": "",
@@ -1933,6 +1958,34 @@ const PORTFOLIO_PHOTOS = [
    
   },
   {
+    "file": "Sunset Mountain.jpg",
+    "title": "Sunset Mountain",
+    "collection": "Landscape",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "Lake.jpg",
+    "title": "Lake",
+    "collection": "Landscape",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
     "file": "Power Line.jpg",
     "title": "Power Line",
     "collection": "Landscape",
@@ -1975,22 +2028,8 @@ const PORTFOLIO_PHOTOS = [
    
   },
   {
-    "file": "Ball in sky.jpg",
-    "title": "Ball In Sky",
-    "collection": "Landscape",
-     "album": "American Fork Canyon",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": ""
-   
-  },
-  {
-    "file": "AFView.jpg",
-    "title": "Lake Mountain",
+    "file": "Silver Lake.jpg",
+    "title": "Silver Lake",
     "collection": "Landscape",
      "album": "American Fork Canyon",
     "year": "",
