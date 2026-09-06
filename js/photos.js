@@ -420,6 +420,19 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
+    "file": "Wild Mouse.jpg",
+    "title": "Wild Mouse",
+    "collection": "Objects & Details",
+    "album": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "machine"
+    ],
+    "note": ""
+  },
+  {
     "file": "Samurai.jpg",
     "title": "Samurai",
     "collection": "Experimental",
@@ -946,20 +959,7 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
-  {
-    "file": "Buffalo.jpg",
-    "title": "Buffalo",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": "",
-    "album": "Antelope Island"
-  },
-  {
+{
     "file": "Buffalo1.jpg",
     "title": "Buffalo",
     "collection": "Nature",
@@ -1001,6 +1001,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Buffalo4.jpg",
+    "variants": ["Buffalo.jpg"],
     "variants": ["Buffalo5.jpg"],
     "title": "Bison",
     "collection": "Nature",
