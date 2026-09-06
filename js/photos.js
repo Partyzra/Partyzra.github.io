@@ -1001,20 +1001,8 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Buffalo4.jpg",
+    "variants": ["Buffalo5.jpg"],
     "title": "Bison",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": "",
-    "album": "Antelope Island"
-  },
-{
-    "file": "Buffalo5.jpg",
-    "title": "Buffalo",
     "collection": "Nature",
     "year": "",
     "location": "",
