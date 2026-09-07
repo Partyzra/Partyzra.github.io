@@ -18,7 +18,7 @@
   --photo-dim: #7c7f80;
   --photo-line: rgba(240, 238, 233, .12);
   --photo-accent: #ddd8cf;
-  --photo-viewer-bg: #050607;
+  --photo-viewer-bg: rgba(5, 6, 7, .50);
 
   background: var(--photo-bg);
   color: var(--photo-text);

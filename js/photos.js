@@ -1194,18 +1194,6 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
 {
-    "file": "GrasshopperPortrait.png",
-    "title": "GrasshopperPortrait",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": ""
-  },
-  {
     "file": "Jake & Chelsea.png",
     "title": "Jake & Chelsea",
     "collection": "People",
@@ -1526,7 +1514,7 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
 {
-    "file": "Fox(2).jpg",
+    "file": "Fox1.5.jpg",
     "title": "Fox",
     "collection": "Nature",
     "year": "",
@@ -1540,18 +1528,6 @@ const PORTFOLIO_PHOTOS = [
 {
     "file": "Bird Refuge.jpg",
     "title": "Bird Refuge",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": ""
-  },
-{
-    "file": "Fox1.jpg",
-    "title": "Fox",
     "collection": "Nature",
     "year": "",
     "location": "",
