@@ -1352,20 +1352,9 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Refinery Landscape.jpg",
+    "variants": ["Refinery Portrait.png"],
     "title": "Refinery",
     "collection": "Landscape",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "Structure"
-    ],
-    "note": ""
-  },
-  {
-    "file": "Refinery Portrait.png",
-    "title": "Refinery",
-    "collection": "Portrait",
     "year": "",
     "location": "",
     "featured": false,
