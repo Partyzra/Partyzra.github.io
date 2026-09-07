@@ -421,6 +421,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Wild Mouse.jpg",
+    "variants": ["Wild Mouse2.jpg"],
     "title": "Wild Mouse",
     "collection": "Objects & Details",
     "album": "Lagoon",
