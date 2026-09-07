@@ -749,10 +749,32 @@
 
   const MIN_ZOOM = 1;
   const BUTTON_ZOOM = 2.35;
-  const MAX_ZOOM = 4;
+  const BASE_MAX_ZOOM = 4;
+  const HARD_MAX_ZOOM = 12;
   let zoomScale = MIN_ZOOM;
   let zoomX = 0;
   let zoomY = 0;
+
+  /*
+    High-resolution viewer model
+    ----------------------------
+    The old viewer kept each photograph fitted to the stage with max-width /
+    max-height and then magnified that fitted browser layer with scale(). That
+    is fast, but on some Chromium/GPU combinations it can make fine texture
+    look softer than the original file.
+
+    The upgraded viewer measures the source image, calculates its fitted size,
+    and changes the image element's REAL rendered width/height as you zoom. The
+    transform is now used only for panning. That gives the browser the original
+    file to resample at the requested inspection size instead of enlarging a
+    small composited layer.
+
+    nativeZoom is DPR-aware: at that magnification, one source-image pixel is
+    approximately one physical display pixel. High-resolution photographs can
+    therefore expose their real detail without forcing every image in the grid
+    to load at full size.
+  */
+  const imageMetrics = new WeakMap();
 
   // Pointer state supports both swipe navigation and true two-finger pinch.
   const activePointers = new Map();
@@ -827,28 +849,162 @@
 
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
+  // The usable photo viewport is the stage's inner content box, excluding
+  // its padding. Keeping this geometry in one place makes click-focus, pinch
+  // anchoring, and pan limits all agree about the exact center/edges.
+  const stageViewport = () => {
+    if (!stage) {
+      return {
+        left: 0,
+        top: 0,
+        width: 1,
+        height: 1,
+        centerX: .5,
+        centerY: .5
+      };
+    }
+
+    const rect = stage.getBoundingClientRect();
+    const styles = getComputedStyle(stage);
+    const paddingLeft = parseFloat(styles.paddingLeft || 0);
+    const paddingRight = parseFloat(styles.paddingRight || 0);
+    const paddingTop = parseFloat(styles.paddingTop || 0);
+    const paddingBottom = parseFloat(styles.paddingBottom || 0);
+    const width = Math.max(1, stage.clientWidth - paddingLeft - paddingRight);
+    const height = Math.max(1, stage.clientHeight - paddingTop - paddingBottom);
+    const left = rect.left + paddingLeft;
+    const top = rect.top + paddingTop;
+
+    return {
+      left,
+      top,
+      width,
+      height,
+      centerX: left + width / 2,
+      centerY: top + height / 2
+    };
+  };
+
+  const stageAvailableSize = () => {
+    const viewport = stageViewport();
+    return { width: viewport.width, height: viewport.height };
+  };
+
+  function measureImage(image) {
+    if (!image?.naturalWidth || !image?.naturalHeight) return null;
+
+    const available = stageAvailableSize();
+    const naturalWidth = image.naturalWidth;
+    const naturalHeight = image.naturalHeight;
+
+    // Never upscale the fitted view. Small photographs remain at their source
+    // size; large photographs are reduced only enough to fit the stage.
+    const fitScale = Math.min(
+      1,
+      available.width / naturalWidth,
+      available.height / naturalHeight
+    );
+
+    const fitWidth = Math.max(1, naturalWidth * fitScale);
+    const fitHeight = Math.max(1, naturalHeight * fitScale);
+    const dpr = Math.max(1, window.devicePixelRatio || 1);
+
+    // At nativeZoom, source pixels and physical screen pixels are approximately
+    // 1:1. This is the sharp inspection point the previous transform-only zoom
+    // could not guarantee.
+    const nativeZoom = clamp(1 / Math.max(fitScale * dpr, .0001), MIN_ZOOM, HARD_MAX_ZOOM);
+    const maxZoom = clamp(Math.max(BASE_MAX_ZOOM, nativeZoom), MIN_ZOOM, HARD_MAX_ZOOM);
+
+    return {
+      naturalWidth,
+      naturalHeight,
+      fitWidth,
+      fitHeight,
+      nativeZoom,
+      maxZoom,
+      stageWidth: available.width,
+      stageHeight: available.height,
+      dpr
+    };
+  }
+
+  function positionImageAtViewportCenter(image) {
+    if (!image || !stage) return;
+
+    // The image is absolutely positioned so changing its real width/height
+    // never changes the grid track or shifts the visual center. Anchor it to
+    // the exact center of the stage's usable (unpadded) photo viewport.
+    const viewport = stageViewport();
+    const stageRect = stage.getBoundingClientRect();
+    image.style.left = `${viewport.centerX - stageRect.left}px`;
+    image.style.top = `${viewport.centerY - stageRect.top}px`;
+  }
+
+  function prepareImageLayout(image) {
+    const metrics = measureImage(image);
+    if (!metrics) return null;
+
+    imageMetrics.set(image, metrics);
+    positionImageAtViewportCenter(image);
+    image.style.width = `${metrics.fitWidth}px`;
+    image.style.height = `${metrics.fitHeight}px`;
+    image.style.setProperty('--viewer-pan-x', '0px');
+    image.style.setProperty('--viewer-pan-y', '0px');
+    return metrics;
+  }
+
+  function metricsForImage(image) {
+    if (!image) return null;
+
+    const existing = imageMetrics.get(image);
+    const available = stageAvailableSize();
+    const dpr = Math.max(1, window.devicePixelRatio || 1);
+
+    if (existing
+      && Math.abs(existing.stageWidth - available.width) < .5
+      && Math.abs(existing.stageHeight - available.height) < .5
+      && Math.abs(existing.dpr - dpr) < .01) {
+      return existing;
+    }
+
+    return prepareImageLayout(image);
+  }
+
+  const activeMetrics = () => metricsForImage(activeViewerImage());
+  const maxZoomForActive = () => activeMetrics()?.maxZoom || BASE_MAX_ZOOM;
+  const inspectionZoomForActive = () => {
+    const metrics = activeMetrics();
+
+    // A single click should feel like a deliberate close-up, not an enormous
+    // leap to 1:1 source pixels on a very large photograph. Native-pixel depth
+    // remains available through pinch zoom / +, but the first click stays at
+    // the familiar controlled magnification.
+    return clamp(
+      BUTTON_ZOOM,
+      MIN_ZOOM,
+      metrics?.maxZoom || BASE_MAX_ZOOM
+    );
+  };
+
   function clampPan() {
     const image = activeViewerImage();
-    if (!image || !stage || zoomScale <= MIN_ZOOM) {
+    const metrics = metricsForImage(image);
+    if (!image || !metrics || zoomScale <= MIN_ZOOM) {
       zoomX = 0;
       zoomY = 0;
       return;
     }
 
-    const styles = getComputedStyle(stage);
-    const availableWidth = Math.max(
-      1,
-      stage.clientWidth - parseFloat(styles.paddingLeft || 0) - parseFloat(styles.paddingRight || 0)
-    );
-    const availableHeight = Math.max(
-      1,
-      stage.clientHeight - parseFloat(styles.paddingTop || 0) - parseFloat(styles.paddingBottom || 0)
-    );
+    const viewport = stageViewport();
+    const renderedWidth = metrics.fitWidth * zoomScale;
+    const renderedHeight = metrics.fitHeight * zoomScale;
 
-    const baseWidth = image.offsetWidth || availableWidth;
-    const baseHeight = image.offsetHeight || availableHeight;
-    const maxX = Math.max(0, (baseWidth * zoomScale - availableWidth) / 2);
-    const maxY = Math.max(0, (baseHeight * zoomScale - availableHeight) / 2);
+    // These are the full legal travel distances from the centered position.
+    // At either extreme the corresponding edge of the photograph meets the
+    // edge of the usable viewport, so no portion of a zoomed image is trapped
+    // outside the draggable range.
+    const maxX = Math.max(0, (renderedWidth - viewport.width) / 2);
+    const maxY = Math.max(0, (renderedHeight - viewport.height) / 2);
 
     zoomX = clamp(zoomX, -maxX, maxX);
     zoomY = clamp(zoomY, -maxY, maxY);
@@ -862,19 +1018,32 @@
 
   function applyZoom({ clampPosition = true } = {}) {
     const image = activeViewerImage();
-    if (!image) return;
+    const metrics = metricsForImage(image);
+    if (!image || !metrics) return;
 
-    zoomScale = clamp(zoomScale, MIN_ZOOM, MAX_ZOOM);
+    zoomScale = clamp(zoomScale, MIN_ZOOM, metrics.maxZoom);
     if (clampPosition) clampPan();
+
+    // Resize the actual image element instead of scaling a fitted compositor
+    // layer. The browser therefore resamples directly from the full-resolution
+    // source at the requested inspection size. Transform is reserved for pan.
+    image.style.width = `${metrics.fitWidth * zoomScale}px`;
+    image.style.height = `${metrics.fitHeight * zoomScale}px`;
+
+    // Re-anchor after any viewport/layout change. The CSS transform is now
+    // reserved for centering + pan only; zoom itself remains real image sizing.
+    positionImageAtViewportCenter(image);
 
     if (zoomScale <= MIN_ZOOM + 0.01) {
       zoomScale = MIN_ZOOM;
       zoomX = 0;
       zoomY = 0;
-      image.style.transform = '';
-    } else {
-      image.style.transform = `translate3d(${zoomX}px, ${zoomY}px, 0) scale(${zoomScale})`;
+      image.style.width = `${metrics.fitWidth}px`;
+      image.style.height = `${metrics.fitHeight}px`;
     }
+
+    image.style.setProperty('--viewer-pan-x', `${zoomX}px`);
+    image.style.setProperty('--viewer-pan-y', `${zoomY}px`);
 
     syncZoomUI();
   }
@@ -884,27 +1053,62 @@
     zoomX = 0;
     zoomY = 0;
     images.forEach(image => {
-      if (image) image.style.transform = '';
+      if (!image) return;
+      image.style.setProperty('--viewer-pan-x', '0px');
+      image.style.setProperty('--viewer-pan-y', '0px');
+      if (image.naturalWidth && image.naturalHeight) prepareImageLayout(image);
     });
     syncZoomUI();
   }
 
   function setZoom(nextScale, anchorClientX = null, anchorClientY = null) {
     const previousScale = zoomScale;
-    const rect = stage?.getBoundingClientRect();
+    const viewport = stageViewport();
+    const maxZoom = maxZoomForActive();
+    const clampedNextScale = clamp(nextScale, MIN_ZOOM, maxZoom);
 
-    if (rect && anchorClientX !== null && anchorClientY !== null && previousScale > 0) {
-      const anchorX = anchorClientX - rect.left - rect.width / 2;
-      const anchorY = anchorClientY - rect.top - rect.height / 2;
-      const ratio = nextScale / previousScale;
+    if (anchorClientX !== null && anchorClientY !== null && previousScale > 0) {
+      const anchorX = anchorClientX - viewport.centerX;
+      const anchorY = anchorClientY - viewport.centerY;
+      const ratio = clampedNextScale / previousScale;
 
-      // Keep the part beneath the user's fingers/cursor in roughly the same
-      // screen position as magnification changes.
+      // Keep the part beneath the user's fingers/cursor in the same screen
+      // position as magnification changes.
       zoomX = anchorX - ratio * (anchorX - zoomX);
       zoomY = anchorY - ratio * (anchorY - zoomY);
     }
 
-    zoomScale = clamp(nextScale, MIN_ZOOM, MAX_ZOOM);
+    zoomScale = clampedNextScale;
+    applyZoom();
+  }
+
+  function zoomToClientPoint(nextScale, clientX, clientY) {
+    const image = activeViewerImage();
+    const metrics = metricsForImage(image);
+    if (!image || !metrics) return;
+
+    const imageRect = image.getBoundingClientRect();
+    if (!imageRect.width || !imageRect.height) {
+      setZoom(nextScale, clientX, clientY);
+      return;
+    }
+
+    // Capture the exact source-relative point the visitor clicked BEFORE the
+    // image is resized. This avoids guessing from the stage dimensions and is
+    // reliable for portrait, landscape, and unusually cropped aspect ratios.
+    const imageX = clamp((clientX - imageRect.left) / imageRect.width, 0, 1);
+    const imageY = clamp((clientY - imageRect.top) / imageRect.height, 0, 1);
+    const nextZoom = clamp(nextScale, MIN_ZOOM, metrics.maxZoom);
+    const renderedWidth = metrics.fitWidth * nextZoom;
+    const renderedHeight = metrics.fitHeight * nextZoom;
+
+    zoomScale = nextZoom;
+
+    // Put the clicked point at the center of the viewing area whenever the
+    // image bounds permit it. clampPan() then makes a near-edge click land as
+    // close to center as possible without hiding an unreachable edge.
+    zoomX = -(imageX - .5) * renderedWidth;
+    zoomY = -(imageY - .5) * renderedHeight;
     applyZoom();
   }
 
@@ -1026,6 +1230,8 @@
       if (incoming.decode) await incoming.decode();
     } catch (_) {}
 
+    prepareImageLayout(incoming);
+
     currentIndex = target;
     syncCopy(target);
     renderVariantControls(target);
@@ -1086,6 +1292,8 @@
     try {
       if (incoming.decode) await incoming.decode();
     } catch (_) {}
+
+    prepareImageLayout(incoming);
 
     currentVariantIndex = targetVariant;
     renderVariantControls(currentIndex);
@@ -1172,7 +1380,7 @@
 
     if (event.key === '+' || event.key === '=') {
       event.preventDefault();
-      setZoom(Math.min(MAX_ZOOM, zoomScale + .6));
+      setZoom(Math.min(maxZoomForActive(), zoomScale + .6));
     }
 
     if (event.key === '-') {
@@ -1215,7 +1423,7 @@
   //
   // At 1x: one finger / mouse drag navigates between photographs.
   // Above 1x: one finger / mouse drag pans the enlarged photograph.
-  // Two touch pointers: pinch continuously between 1x and 4x.
+  // Two touch pointers: pinch continuously from fitted view through native detail.
   // ----------------------------------------------------------
 
   stage?.addEventListener('pointerdown', event => {
@@ -1239,9 +1447,9 @@
       pinchStartY = zoomY;
 
       const midpoint = pointerMidpoint();
-      const rect = stage.getBoundingClientRect();
-      pinchAnchorX = midpoint.x - rect.left - rect.width / 2;
-      pinchAnchorY = midpoint.y - rect.top - rect.height / 2;
+      const viewport = stageViewport();
+      pinchAnchorX = midpoint.x - viewport.centerX;
+      pinchAnchorY = midpoint.y - viewport.centerY;
       return;
     }
 
@@ -1275,16 +1483,16 @@
         pinchStartY = zoomY;
 
         const midpoint = pointerMidpoint();
-        const rect = stage.getBoundingClientRect();
-        pinchAnchorX = midpoint.x - rect.left - rect.width / 2;
-        pinchAnchorY = midpoint.y - rect.top - rect.height / 2;
+        const viewport = stageViewport();
+        pinchAnchorX = midpoint.x - viewport.centerX;
+        pinchAnchorY = midpoint.y - viewport.centerY;
       }
 
       const distance = Math.max(pointerDistance(), 1);
       const nextScale = clamp(
         pinchStartScale * (distance / pinchStartDistance),
         MIN_ZOOM,
-        MAX_ZOOM
+        maxZoomForActive()
       );
       const ratio = nextScale / Math.max(pinchStartScale, .001);
 
@@ -1375,11 +1583,17 @@
       return;
     }
 
-    setZoom(BUTTON_ZOOM, event.clientX, event.clientY);
+    zoomToClientPoint(inspectionZoomForActive(), event.clientX, event.clientY);
   });
 
   window.addEventListener('resize', () => {
-    if (viewer.classList.contains('is-open') && zoomScale > MIN_ZOOM) applyZoom();
+    if (!viewer.classList.contains('is-open')) return;
+
+    images.forEach(image => {
+      if (image?.naturalWidth && image?.naturalHeight) prepareImageLayout(image);
+    });
+
+    if (zoomScale > MIN_ZOOM) applyZoom();
   }, { passive: true });
 
   syncZoomUI();

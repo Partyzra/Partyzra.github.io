@@ -410,21 +410,37 @@
   image box and makes the complete source image fit inside the viewport.
 */
 .photo-viewer-image {
-  grid-area: 1 / 1;
+  /*
+    Keep the high-resolution image completely out of the grid sizing flow.
+    If an enlarged image participates in the grid, its oversized intrinsic
+    dimensions can move the grid track and visually shift the photograph away
+    from the click/zoom coordinate. JavaScript anchors left/top to the exact
+    usable-stage center; this transform only centers and pans the image.
+  */
+  position: absolute;
+  left: 50%;
+  top: 50%;
   display: block;
-  width: auto !important;
-  height: auto !important;
-  max-width: 100% !important;
-  max-height: 100% !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  object-fit: contain !important;
-  object-position: center !important;
+
+  /*
+    Native-detail viewer: JavaScript assigns an explicit fitted width/height
+    from the source image's natural dimensions, then grows the actual element
+    as the visitor zooms. Do not re-constrain it with max-width/max-height here
+    or the browser will fall back to magnifying the fitted layer.
+  */
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  min-width: 0;
+  min-height: 0;
+  object-fit: contain;
+  object-position: center;
+  image-rendering: auto;
   opacity: 0;
-  transform: scale(.992);
+  transform: translate(-50%, -50%) translate3d(var(--viewer-pan-x, 0px), var(--viewer-pan-y, 0px), 0);
   transform-origin: center center;
-  transition: opacity .42s ease, transform .42s cubic-bezier(.22,.72,.2,1);
-  will-change: transform, opacity;
+  transition: opacity .42s ease;
   user-select: none;
   -webkit-user-drag: none;
   pointer-events: none;
@@ -433,7 +449,6 @@
 
 .photo-viewer-image.is-active {
   opacity: 1;
-  transform: scale(1);
   pointer-events: auto;
   cursor: zoom-in;
 }
@@ -448,7 +463,8 @@
 
 .photo-viewer-stage.is-zoomed .photo-viewer-image.is-active,
 .photo-viewer-stage.is-panning .photo-viewer-image.is-active {
-  transition: opacity .42s ease, transform .10s linear;
+  /* Panning uses translation only; zoom itself is real element sizing. */
+  transition: opacity .42s ease;
 }
 
 .photo-viewer-nav {

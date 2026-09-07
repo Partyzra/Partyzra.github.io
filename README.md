@@ -1,27 +1,18 @@
-# V4.17.5 — Automatic Photography Albums
+# V4.17.8 — True Click-Focus Native Viewer
 
 Replace only:
 
 - `js/photography-page.js`
+- `css/photography.css`
 
-## What changed
+## Fix
 
-The Photography album navigation now automatically discovers custom album names from `js/photos.js`.
+The V4.17.7 focal-point math was correct, but the enlarged full-resolution image was still a normal CSS-grid item. When its real width/height increased for native-resolution viewing, the oversized image could enlarge the grid track and move the visual image center. That made a correct click coordinate appear to zoom above the clicked point.
 
-For example, any photo with:
+V4.17.8 removes the viewer image from grid sizing with absolute positioning and anchors it to the exact usable-stage center. The image can now grow to high-resolution inspection size without moving that center.
 
-```js
-album: 'American Fork Canyon'
-```
-
-will cause an **American Fork Canyon** tab to appear automatically.
-
-Multiple albums are also supported:
-
-```js
-albums: ['American Fork Canyon', 'Landscapes']
-```
-
-The existing built-in album order is preserved first, and new custom albums are appended in the order they first appear in `photos.js`.
-
-`All` remains automatic and should not be added manually.
+Result:
+- clicked point is the actual zoom focal point
+- high-resolution/native rendering is preserved
+- drag/pan reaches every legal edge of the enlarged photograph
+- fit-to-screen view, variants, arrows, pinch zoom, and albums are unchanged
