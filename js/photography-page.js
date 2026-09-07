@@ -267,6 +267,7 @@
     if (stem === 'horses') return '50% 0%';   // horse at top
     if (stem === 'my mother') return '50% 17%';   // head at top
     if (stem === 'seagull') return '50% 10%';   // people at top
+    if (stem === 'tractor & shed') return '0% 50%';   // to the left
 
   };
 
