@@ -137,17 +137,12 @@
       title: 'Lovely Day, Good As Hell'
     },
     {
-      // Exact filename currently published in the GitHub MusicTracks folder.
-      sources: [
-        'MusicTracks/Pain Killers - Rainbow Kitten Surprise.mp3',
-        'MusicTracks/Painkillers - Rainbow Kitten Surprise.mp3',
-        'MusicTracks/Painkillers - Rainbow Cat Surprise.mp3'
-      ],
-      title: 'Painkillers'
+      sources: ['MusicTracks/When It Lands.mp3'],
+      title: 'When It Lands - RKS'
     },
     {
-      sources: ['MusicTracks/Guitar Solo.wav'],
-      title: 'Unknown Guitar Track'
+      sources: ['MusicTracks/BadassBeat.mp3'],
+      title: 'BadassBeat'
     },
     {
       sources: ['assets/audio/the-drive-back-tom-anello.mp3'],
