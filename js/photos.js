@@ -851,6 +851,7 @@ const PORTFOLIO_PHOTOS = [
     "file": "Possey.jpg",
     "title": "Possey",
     "collection": "Portraits",
+    "album": "Animals",
     "year": "",
     "location": "",
     "featured": false,
