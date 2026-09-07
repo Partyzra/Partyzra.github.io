@@ -1,18 +1,16 @@
-# V4.17.8 — True Click-Focus Native Viewer
+# V4.17.9 — Manual bottom-row Film videos
 
 Replace only:
 
-- `js/photography-page.js`
-- `css/photography.css`
+- `home.html`
+- `js/portfolio.js`
+- `css/style.css`
 
-## Fix
+Changes:
 
-The V4.17.7 focal-point math was correct, but the enlarged full-resolution image was still a normal CSS-grid item. When its real width/height increased for native-resolution viewing, the oversized image could enlarge the grid track and move the visual image center. That made a correct click coordinate appear to zoom above the clicked point.
-
-V4.17.8 removes the viewer image from grid sizing with absolute positioning and anchors it to the exact usable-stage center. The image can now grow to high-resolution inspection size without moving that center.
-
-Result:
-- clicked point is the actual zoom focal point
-- high-resolution/native rendering is preserved
-- drag/pan reaches every legal edge of the enlarged photograph
-- fit-to-screen view, variants, arrows, pinch zoom, and albums are unchanged
+- Forest, Horses, Deer, and Snow keep the existing silent viewport autoplay behavior.
+- Hot Box (bottom-left) and Abandoned (bottom-right) now start paused and never autoplay before a visitor explicitly clicks/taps them.
+- Clicking/tapping either manual clip toggles play/pause. Enter/Space also works when focused.
+- A subtle centered play cue appears while a manual clip is paused and disappears while it is playing.
+- Manual clips still pause when well offscreen. If the visitor had them playing, they resume when brought back near the viewport; if the visitor manually paused them, they stay paused.
+- No Photography files or photo metadata are changed.

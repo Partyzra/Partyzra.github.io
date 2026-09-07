@@ -204,6 +204,44 @@ button { color: inherit; }
 }
 .film-motion-intro.is-video-ready .film-motion-video { opacity: 1; }
 
+/* The bottom-row film studies are intentionally visitor-initiated. */
+.film-motion-intro[data-film-manual] {
+  cursor: pointer;
+}
+.film-motion-intro[data-film-manual]:focus-visible {
+  outline: 1px solid rgba(240, 211, 155, .72);
+  outline-offset: 4px;
+}
+.film-motion-manual-cue {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: clamp(44px, 4.2vw, 64px);
+  height: clamp(44px, 4.2vw, 64px);
+  border: 1px solid rgba(255,255,255,.42);
+  border-radius: 50%;
+  background: rgba(8,10,13,.28);
+  color: rgba(255,255,255,.90);
+  font-size: clamp(.82rem, 1vw, 1rem);
+  line-height: 1;
+  padding-left: 3px;
+  transform: translate(-50%, -50%);
+  backdrop-filter: blur(5px);
+  pointer-events: none;
+  transition: opacity .22s ease, transform .3s var(--ease), background .22s ease;
+}
+.film-motion-intro[data-film-manual]:hover .film-motion-manual-cue {
+  background: rgba(8,10,13,.48);
+  transform: translate(-50%, -50%) scale(1.04);
+}
+.film-motion-intro[data-film-manual].is-video-playing .film-motion-manual-cue {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.9);
+}
+
 .film-feature { display: grid; grid-template-columns: 1.4fr .6fr; gap: 34px; align-items: end; padding-bottom: 74px; border-bottom: 1px solid var(--line); }
 .video-frame { position: relative; aspect-ratio: 16/9; overflow: hidden; background: #000; border: 1px solid var(--line); }
 .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }

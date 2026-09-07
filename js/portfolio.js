@@ -49,8 +49,9 @@
     revealItems.forEach(item => revealObserver.observe(item));
   }
 
-  // Film motion studies: keep each clip dormant until it nears the viewport,
-  // then play silently and pause again when it moves well offscreen.
+  // Film motion studies. Most clips autoplay silently when they near the
+  // viewport. Clips marked data-film-manual stay paused until the visitor
+  // explicitly clicks/taps them, then retain that user's play/pause intent.
   const filmMotionIntros = qsa('[data-film-motion-intro]');
 
   if (filmMotionIntros.length) {
@@ -61,11 +62,14 @@
       const video = qs('video', intro);
       if (!video) return;
 
+      const manual = intro.hasAttribute('data-film-manual');
       const item = {
         intro,
         video,
+        manual,
         loaded: false,
-        nearby: false
+        nearby: false,
+        manualWantsPlay: false
       };
 
       video.muted = true;
@@ -73,34 +77,90 @@
       video.playsInline = true;
 
       item.load = () => {
-        if (item.loaded || reduceMotion) return;
+        if (item.loaded) return;
         item.loaded = true;
+        // Manual clips need a still first frame before the visitor presses play.
+        // Only promote preload when the clip is near the viewport, so the rest
+        // of the homepage remains lightweight.
+        if (manual) video.preload = 'auto';
         video.load();
       };
 
+      item.canPlayNow = () => {
+        if (!item.nearby || document.hidden) return false;
+        if (manual) return item.manualWantsPlay;
+        return !reduceMotion;
+      };
+
       item.play = () => {
-        if (reduceMotion || !item.nearby || document.hidden) return;
+        if (!item.canPlayNow()) return;
         item.load();
         video.play().catch(() => {
-          // If a browser declines autoplay, the frame simply remains still.
+          // If a browser declines playback, the frame simply remains still.
         });
       };
 
-      video.addEventListener('playing', () => {
+      item.syncManualState = () => {
+        if (!manual) return;
+        const playing = !video.paused && !video.ended;
+        intro.classList.toggle('is-video-playing', playing);
+        const label = intro.dataset.filmLabel || 'film';
+        intro.setAttribute('aria-label', `${playing ? 'Pause' : 'Play'} ${label} video`);
+      };
+
+      item.toggleManual = () => {
+        if (!manual) return;
+        item.load();
+        if (!video.paused && !video.ended) {
+          item.manualWantsPlay = false;
+          video.pause();
+        } else {
+          item.manualWantsPlay = true;
+          // A direct user gesture is allowed to start even before the observer
+          // has updated nearby=true (for example after a very fast scroll).
+          item.nearby = true;
+          item.play();
+        }
+      };
+
+      video.addEventListener('loadeddata', () => {
         intro.classList.add('is-video-ready');
       });
+      video.addEventListener('playing', () => {
+        intro.classList.add('is-video-ready', 'is-video-playing');
+        item.syncManualState();
+      });
+      video.addEventListener('pause', () => {
+        intro.classList.remove('is-video-playing');
+        item.syncManualState();
+      });
+
+      if (manual) {
+        intro.addEventListener('click', item.toggleManual);
+        intro.addEventListener('keydown', event => {
+          if (event.key !== 'Enter' && event.key !== ' ') return;
+          event.preventDefault();
+          item.toggleManual();
+        });
+      }
 
       motionItems.push(item);
     });
 
-    if (!reduceMotion && 'IntersectionObserver' in window) {
+    if ('IntersectionObserver' in window) {
       const filmObserver = new IntersectionObserver(entries => {
         entries.forEach(entry => {
           const item = motionItems.find(candidate => candidate.intro === entry.target);
           if (!item) return;
           item.nearby = entry.isIntersecting;
+
           if (item.nearby) {
-            item.play();
+            if (item.manual) {
+              item.load();
+              if (item.manualWantsPlay) item.play();
+            } else if (!reduceMotion) {
+              item.play();
+            }
           } else if (item.loaded) {
             item.video.pause();
           }
@@ -113,15 +173,19 @@
         motionItems.forEach(item => {
           if (document.hidden) {
             item.video.pause();
-          } else if (item.nearby) {
+          } else if (item.nearby && item.canPlayNow()) {
             item.play();
           }
         });
       });
-    } else if (!reduceMotion) {
+    } else {
       motionItems.forEach(item => {
         item.nearby = true;
-        item.play();
+        if (item.manual) {
+          item.load();
+        } else if (!reduceMotion) {
+          item.play();
+        }
       });
     }
   }
