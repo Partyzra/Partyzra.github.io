@@ -978,7 +978,7 @@ const PORTFOLIO_PHOTOS = [
     "file": "Buffalo1.jpg",
     "title": "Buffalo",
     "collection": "Nature",
-    "album": "Antelope Island",
+    "albums": ['Antelope Island', 'Animals'],
     "year": "",
     "location": "",
     "featured": false,
@@ -999,7 +999,7 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": "",
-    "album": "Antelope Island"
+    "albums": ['Antelope Island', 'Animals'],
   },
   {
     "file": "Buffalo3.jpg",
@@ -1012,7 +1012,7 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": "",
-    "album": "Antelope Island"
+    "albums": ['Antelope Island', 'Animals'],
   },
   {
     "file": "Buffalo4.jpg",
@@ -1027,7 +1027,7 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": "",
-    "album": "Antelope Island"
+    "albums": ['Antelope Island', 'Animals'],
   },
   {
     "file": "Buffalo6.jpg",
@@ -1040,7 +1040,7 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": "",
-    "album": "Antelope Island"
+    "albums": ['Antelope Island', 'Animals'],
   },
   {
     "file": "Buffalo7.jpg",
@@ -1053,7 +1053,7 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": "",
-    "album": "Antelope Island"
+    "albums": ['Antelope Island', 'Animals'],
   },
   {
     "file": "Buffalo8.jpg",
@@ -1068,7 +1068,7 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": "",
-    "album": "Antelope Island"
+    "albums": ['Antelope Island', 'Animals'],
   },
   {
     "file": "Buffalo10.jpg",
@@ -1081,7 +1081,7 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": "",
-    "album": "Antelope Island"
+    "albums": ['Antelope Island', 'Animals'],
   },
   {
     "file": "Rocks.jpg",
