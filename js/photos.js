@@ -405,31 +405,6 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Printing Press3.jpg",
-    "title": "Sewing Machine",
-    "collection": "Objects & Details",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "machine"
-    ],
-    "note": ""
-  },
-  {
-    "file": "Printing Press.jpg",
-    "title": "Printing Press",
-    "collection": "Objects & Details",
-    "album": "Lagoon",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "machine"
-    ],
-    "note": ""
-  },
-  {
     "file": "Wild Mouse.jpg",
     "variants": ["Wild Mouse2.jpg"],
     "title": "Wild Mouse",
