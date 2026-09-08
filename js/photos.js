@@ -49,6 +49,16 @@ const PORTFOLIO_PHOTOS = [
     "tags": [],
     "note": ""
   },
+  {
+    "file": "Abandoned3.JPG",
+    "title": "Abandoned",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [],
+    "note": ""
+  },
 {
     "file": "Andrew.JPG",
     "variants": ["Andrew1.jpg"],
