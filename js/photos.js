@@ -483,19 +483,6 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Seagull3.jpg",
-    "title": "Herring Gull",
-    "collection": "Wildlife",
-    "album": "Animals",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "bird"
-    ],
-    "note": ""
-  },
-  {
     "file": "Seagull4.jpg",
     "title": "Herring Gull",
     "collection": "Wildlife",
