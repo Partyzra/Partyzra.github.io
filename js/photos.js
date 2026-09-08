@@ -1656,6 +1656,17 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ]
   },
+{
+    "file": "Ducks on rock.jpg",
+    "title": "Birds",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ]
+  },
   {
     "file": "Bird.jpg",
     "title": "Western Gull",
@@ -1667,6 +1678,17 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     },
+{
+    "file": "Bird1.jpg",
+    "title": "Western Gull",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+  },
   {
     "file": "Seagull1.jpg",
     "title": "Seagull",
