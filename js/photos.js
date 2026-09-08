@@ -437,6 +437,7 @@ const PORTFOLIO_PHOTOS = [
     "file": "Samurai.jpg",
     "title": "Samurai",
     "collection": "Experimental",
+    "album": "Lagoon",
     "year": "",
     "location": "",
     "featured": false,
@@ -449,6 +450,46 @@ const PORTFOLIO_PHOTOS = [
     "file": "Seagull.jpg",
     "title": "Seagull",
     "collection": "Wildlife",
+    "album": "Animals",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "bird"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Seagull2.jpg",
+    "title": "Herring Gull",
+    "collection": "Wildlife",
+    "album": "Animals",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "bird"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Seagull3.jpg",
+    "title": "Herring Gull",
+    "collection": "Wildlife",
+    "album": "Animals",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "bird"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Seagull4.jpg",
+    "title": "Herring Gull",
+    "collection": "Wildlife",
+    "album": "Animals",
     "year": "",
     "location": "",
     "featured": false,
