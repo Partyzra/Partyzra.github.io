@@ -2197,7 +2197,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Firefighters1.jpg",
-    "variants": ["Firefighters.jpg"], ["Firefighters2.jpg"],
+    "variants": ["Firefighters.jpg"] ["Firefighters2.jpg"],
     "title": "Firefighters",
     "collection": "Nature",
      "album": "Ogden",
