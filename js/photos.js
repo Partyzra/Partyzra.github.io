@@ -2196,7 +2196,8 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Firefighters.jpg",
+    "file": "Firefighters1.jpg",
+    "variants": ["Firefighters.jpg"], ["Firefighters2.jpg"],
     "title": "Firefighters",
     "collection": "Nature",
      "album": "Ogden",
