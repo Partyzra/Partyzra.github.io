@@ -2130,7 +2130,21 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Railroad.jpg",
+    "variants": ["Railroad1.jpg"],
     "title": "Railroad",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Bakery.jpg",
+    "title": "Bakery",
     "collection": "Nature",
      "album": "Ogden",
     "year": "",
