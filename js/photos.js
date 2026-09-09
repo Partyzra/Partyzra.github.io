@@ -2112,7 +2112,7 @@ const PORTFOLIO_PHOTOS = [
     "location": "",
     "featured": false,
     "tags": [
-      "nature"
+      "Landscape"
     ],
     "note": ""
   },
@@ -2142,7 +2142,6 @@ const PORTFOLIO_PHOTOS = [
     "tags": [
       "nature"
     ],
-    "note": ""
   },
   {
     "file": "Bakery.jpg",
