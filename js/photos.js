@@ -2184,7 +2184,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Meow-Meow.jpg",
-    "variants": "Meow-Meow1.jpg",
+    "variants": ["Meow-Meow1.jpg"],
     "title": "Meow-Meow",
     "collection": "Nature",
      "album": "Ogden",
