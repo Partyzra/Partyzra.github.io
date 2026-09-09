@@ -2194,5 +2194,18 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": ""
+  },
+  {
+    "file": "Firefighters.jpg",
+    "title": "Firefighters",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   }
 ];
