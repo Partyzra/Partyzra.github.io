@@ -2155,5 +2155,18 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": ""
+  },
+  {
+    "file": "Cowboy.jpg",
+    "title": "Cowboy",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   }
 ];

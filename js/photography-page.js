@@ -272,6 +272,8 @@
 
     if (stem === 'seagull3') return '50% 70%';   // center
 
+    if (stem === 'cowboy') return '70% 50%';   // center
+
   };
 
   const albumNav = qs('[data-album-nav]');
