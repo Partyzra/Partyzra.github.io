@@ -2117,6 +2117,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Mural.jpg",
+    "variants": ["Mural1.jpg"],
     "title": "Mural",
     "collection": "Nature",
      "album": "Ogden",
@@ -2200,6 +2201,19 @@ const PORTFOLIO_PHOTOS = [
     "file": "Firefighters1.jpg",
     "variants": ["Firefighters.jpg", "Firefighters2.jpg"],
     "title": "Firefighters",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Bridge.jpg",
+    "title": "Bridge",
     "collection": "Nature",
      "album": "Ogden",
     "year": "",
