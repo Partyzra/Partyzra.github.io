@@ -2144,6 +2144,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Bakery.jpg",
+    "variants": ["Bakery1.jpg"],
     "title": "Bakery",
     "collection": "Nature",
      "album": "Ogden",
