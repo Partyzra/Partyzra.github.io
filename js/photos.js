@@ -2114,6 +2114,18 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": ""
+  },
+  {
+    "file": "Mural.jpg",
+    "title": "Mural",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   }
-
 ];
