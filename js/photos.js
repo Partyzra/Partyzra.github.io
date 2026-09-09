@@ -97,20 +97,8 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
 {
-    "file": "Cannibal.jpg",
-    "title": "Cannibal",
-    "collection": "Experimental",
-    "album": "Lagoon",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "conceptual"
-    ],
-    "note": ""
-  },
-{
     "file": "Cannibal1.jpg",
+    "variants": ["Cannibal.jpg"],
     "title": "Cannibal",
     "collection": "Experimental",
     "album": "Lagoon",
