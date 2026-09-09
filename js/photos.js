@@ -2060,5 +2060,60 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
    
+  },
+  {
+    "file": "The Pitch.jpg",
+    "title": "The Pitch",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "Barbershop.jpg",
+    "title": "Barbershop",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "Merch.jpg",
+    "title": "Merch",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Ogden City.jpg",
+    "title": "Ogden City",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   }
+
 ];
