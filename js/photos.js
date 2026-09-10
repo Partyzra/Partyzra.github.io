@@ -2276,5 +2276,17 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": ""
+  },
+{
+    "file": "East Layton.jpg",
+    "title": "Highway 89",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   }
 ];
