@@ -272,7 +272,7 @@
 
     if (stem === 'seagull3') return '50% 70%';   // center
 
-    if (stem === 'cowboy') return '50% 0%';   // top
+    if (stem === 'cowboy') return '50% 25%';   // top
     if (stem === 'firefighters1') return '50% 0%';   // top
 
   };
