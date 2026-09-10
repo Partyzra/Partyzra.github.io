@@ -275,6 +275,8 @@
     if (stem === 'cowboy') return '50% 25%';   // top
     if (stem === 'firefighters1') return '50% 0%';   // top
 
+    if (stem === 'gnomes') return '0% 50%';      // to the left
+
   };
 
   const albumNav = qs('[data-album-nav]');
