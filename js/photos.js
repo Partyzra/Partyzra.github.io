@@ -619,6 +619,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Dori is Wednesday.jpg",
+    "variants": ["Wednesday.jpg", "Wednesday1.jpg"],
     "title": "Wednesday",
     "collection": "Experimental",
     "year": "",
