@@ -2256,7 +2256,33 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
 {
+    "file": "Rio Grande.jpg",
+    "title": "Rio Grande",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
     "file": "East Layton.jpg",
+    "title": "Highway 89",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Highway 89.jpg",
+    "variants": ["Highway 891.jpg"],
     "title": "Highway 89",
     "collection": "Nature",
     "year": "",
