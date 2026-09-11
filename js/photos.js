@@ -1772,6 +1772,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Ice Field.jpg",
+    "variants": ["Ice Field1.jpg"],
     "title": "Ice Field",
     "collection": "Landscapes",
     "year": "",
