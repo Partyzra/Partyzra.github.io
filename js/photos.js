@@ -52,7 +52,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Abandoned3.jpg",
     "album": "Ogden",
-    "title": "Abandoned",
+    "title": "Abandoned (2012)",
     "collection": "Places & Structures",
     "year": "",
     "location": "",
