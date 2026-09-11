@@ -2226,19 +2226,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Bridge1.jpg",
-    "title": "Bridge",
-    "collection": "Nature",
-     "album": "Ogden",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": ""
-  },
-{
-    "file": "Bridge2.jpg",
+    "variants": ["Bridge2.jpg", "Hats.jpg"],
     "title": "Bridge",
     "collection": "Nature",
      "album": "Ogden",
@@ -2254,19 +2242,6 @@ const PORTFOLIO_PHOTOS = [
     "file": "Gnome Church.jpg",
     "variants": ["Gnomes.jpg", "Gnomes1.jpg"],
     "title": "Gnome Church",
-    "collection": "Nature",
-     "album": "Ogden",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": ""
-  },
-{
-    "file": "Hats.jpg",
-    "title": "Hats",
     "collection": "Nature",
      "album": "Ogden",
     "year": "",
