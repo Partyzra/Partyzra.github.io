@@ -50,7 +50,8 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Abandoned3.JPG",
+    "file": "Abandoned3.jpg",
+    "album": "Ogden",
     "title": "Abandoned",
     "collection": "Places & Structures",
     "year": "",

@@ -35,7 +35,7 @@
       <span id="outputLabel" class="path">Not selected</span>
     </div>
     <div class="row">
-      <label>Longest edge <input id="maxEdge" type="number" min="600" max="2000" step="100" value="1200"> px</label>
+      <label>Longest edge <input id="maxEdge" type="number" min="600" max="2000" step="100" value="1600"> px</label>
       <label><input id="overwrite" type="checkbox"> Rebuild existing thumbnails</label>
     </div>
     <div class="row">
@@ -43,7 +43,7 @@
       <strong id="status">Choose both folders first.</strong>
     </div>
     <progress id="progress" max="1" value="0"></progress>
-    <p class="small">Recommended: 1200 px. Existing thumbnails are skipped by default, so later you can add a few new photos and run this again.</p>
+    <p class="small">Recommended: 1600 px at high WebP quality. Existing thumbnails are skipped by default, so later you can add a few new photos and run this again.</p>
     <div id="log" aria-live="polite"></div>
   </section>
 </main>
@@ -117,7 +117,7 @@
       ctx.imageSmoothingQuality = 'high';
       ctx.drawImage(bitmap, 0, 0, width, height);
 
-      const blob = await canvasToBlob(canvas, 0.82);
+      const blob = await canvasToBlob(canvas, 0.90);
       const targetName = webpName(file.name);
       const target = await outputDir.getFileHandle(targetName, { create: true });
       const writer = await target.createWritable();
@@ -153,7 +153,7 @@
   runButton.addEventListener('click', async () => {
     if (!sourceDir || !outputDir || running) return;
 
-    const maxEdge = Math.max(600, Math.min(2000, Number(maxEdgeInput.value) || 1200));
+    const maxEdge = Math.max(600, Math.min(2000, Number(maxEdgeInput.value) || 1600));
     maxEdgeInput.value = String(maxEdge);
     const overwrite = overwriteInput.checked;
 
