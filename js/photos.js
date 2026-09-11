@@ -2230,7 +2230,7 @@ const PORTFOLIO_PHOTOS = [
 {
     "file": "Bridge1.jpg",
     "variants": ["Bridge2.jpg", "Hats.jpg"],
-    "title": "Bridge",
+    "title": "Railroad",
     "collection": "Nature",
      "album": "Ogden",
     "year": "",
