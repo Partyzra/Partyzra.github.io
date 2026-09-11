@@ -2252,7 +2252,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Gnome Church.jpg",
-    "variants": ["Gnomes.jpg"],
+    "variants": ["Gnomes.jpg", "Gnomes1.jpg"],
     "title": "Gnome Church",
     "collection": "Nature",
      "album": "Ogden",
