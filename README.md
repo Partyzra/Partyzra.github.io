@@ -1,10 +1,9 @@
-# V4.17.10 — Translucent Photography Viewer
+# V4.17.12 — Sunset-to-Ocean “slowly.”
 
 Replace only:
 
 - `css/photography.css`
 
-Change:
+The “slowly.” accent now starts in the same luminous red used by “Remember.” on the home page, drifts through red/orange sunset hues, then moves smoothly into the existing ocean-blue gradient. The glow color travels with the gradient. The animation runs slowly and alternates so there is no abrupt reset.
 
-- The fullscreen Photography viewer background is now 50% opaque, allowing the Photography page to remain visible behind an expanded photograph.
-- Photo zoom, native-resolution rendering, panning, variants, navigation, and album behavior are unchanged.
+All Photography grid, album, viewer, zoom, translucent viewer background, and loading behavior are unchanged.

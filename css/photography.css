@@ -104,45 +104,92 @@
 }
 
 .photo-hero-accent {
-  /* Fallback blue if animated gradient text is unavailable. */
-  color: #78c8e8;
+  /* Begin with the same luminous red used by “Remember.” on the home page. */
+  color: #a43f3f;
   text-shadow:
-    0 0 8px rgba(119, 205, 238, .30),
-    0 0 22px rgba(71, 151, 205, .18);
+    0 0 14px rgba(190, 72, 68, .34),
+    0 0 34px rgba(138, 47, 47, .20);
 }
 
 @supports ((background-clip: text) or (-webkit-background-clip: text)) {
   .photo-hero-accent {
+    /*
+      A long sunset-to-ocean color strip. Only a small section is visible
+      through the letters at once, so “slowly.” begins in Remember-red,
+      drifts through warmer red/orange hues, then arrives in the existing
+      water palette and continues moving through those ocean tones.
+    */
     background: linear-gradient(
       105deg,
-      #bcecf7 0%,
-      #75c9e8 18%,
-      #3e8fbd 38%,
-      #22577f 52%,
-      #62b7dc 70%,
-      #c8f2f8 86%,
+      #a43f3f 0%,
+      #b84a45 7%,
+      #913536 14%,
+      #c55d45 20%,
+      #d8754c 26%,
+      #e49359 32%,
+      #cf8067 38%,
+      #9f6e79 44%,
+      #6c758b 50%,
+      #4c82a5 56%,
+      #3e8fbd 62%,
+      #75c9e8 68%,
+      #22577f 75%,
+      #62b7dc 83%,
+      #c8f2f8 91%,
       #4a9bc7 100%
     );
-    background-size: 260% 100%;
+    background-size: 520% 100%;
     background-position: 0% 50%;
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
-    animation: photo-water-shimmer 8s ease-in-out infinite alternate;
+    animation:
+      photo-slowly-color-journey 22s ease-in-out infinite alternate,
+      photo-slowly-glow-journey 22s ease-in-out infinite alternate;
   }
 }
 
-@keyframes photo-water-shimmer {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 58% 50%; }
+@keyframes photo-slowly-color-journey {
+  0%   { background-position: 0% 50%; }
+  22%  { background-position: 18% 50%; }
+  42%  { background-position: 42% 50%; }
+  58%  { background-position: 63% 50%; }
+  76%  { background-position: 82% 50%; }
   100% { background-position: 100% 50%; }
+}
+
+@keyframes photo-slowly-glow-journey {
+  0%, 18% {
+    text-shadow:
+      0 0 14px rgba(190, 72, 68, .34),
+      0 0 34px rgba(138, 47, 47, .20);
+  }
+  38% {
+    text-shadow:
+      0 0 12px rgba(223, 119, 72, .28),
+      0 0 30px rgba(177, 77, 54, .17);
+  }
+  58% {
+    text-shadow:
+      0 0 10px rgba(123, 150, 183, .24),
+      0 0 26px rgba(77, 111, 151, .16);
+  }
+  76%, 100% {
+    text-shadow:
+      0 0 8px rgba(119, 205, 238, .30),
+      0 0 22px rgba(71, 151, 205, .18);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .photo-hero-accent {
     animation: none;
-    background-position: 48% 50%;
+    /* Keep the familiar ocean treatment when motion is intentionally reduced. */
+    background-position: 88% 50%;
+    text-shadow:
+      0 0 8px rgba(119, 205, 238, .30),
+      0 0 22px rgba(71, 151, 205, .18);
   }
 }
 
