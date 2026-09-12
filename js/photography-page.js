@@ -277,6 +277,8 @@
 
     if (stem === 'gnomes') return '0% 50%';      // to the left
 
+    if (stem === 'est square') return '50% 94%';        // near bottom
+
   };
 
   const albumNav = qs('[data-album-nav]');

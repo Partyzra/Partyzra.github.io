@@ -2310,19 +2310,6 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Dragonfly.jpg",
-    "title": "Dragonfly",
-    "album": "Layton",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": ""
-  },
-{
-    "file": "Dragonfly.jpg",
     "title": "Commons Park",
     "album": "Layton",
     "collection": "Nature",
@@ -2336,7 +2323,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Clearfield Train.jpg",
-    "title": "Railroad",
+    "title": "Railroad Crossing",
     "album": "Layton",
     "collection": "Nature",
     "year": "",
