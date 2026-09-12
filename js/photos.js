@@ -2297,7 +2297,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Retro Games.jpg",
-    "title": "Retro Games",
+    "title": "Retro Gaming",
     "collection": "Nature",
     "album": "Layton",
     "year": "",
@@ -2336,7 +2336,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Clearfield Train.jpg",
-    "title": "Clearfield Train",
+    "title": "Tracks",
     "album": "Layton",
     "collection": "Nature",
     "year": "",
