@@ -2271,6 +2271,7 @@ const PORTFOLIO_PHOTOS = [
 {
     "file": "East Layton.jpg",
     "title": "Highway 89",
+    "album": "Layton",
     "collection": "Nature",
     "year": "",
     "location": "",
@@ -2284,6 +2285,85 @@ const PORTFOLIO_PHOTOS = [
     "file": "Highway 89.jpg",
     "variants": ["Highway 891.jpg"],
     "title": "Highway 89",
+    "collection": "Nature",
+    "album": "Layton",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Retro Games.jpg",
+    "title": "Retro Games",
+    "collection": "Nature",
+    "album": "Layton",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Dragonfly.jpg",
+    "title": "Dragonfly",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Dragonfly.jpg",
+    "title": "Dragonfly",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Clearfield Train.jpg",
+    "title": "Clearfield Train",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "EST Square.jpg",
+    "title": "EST Square",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Great Harvest.jpg",
+    "title": "Great Harvest",
+    "album": "Layton",
     "collection": "Nature",
     "year": "",
     "location": "",
