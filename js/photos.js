@@ -1469,7 +1469,7 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Path1.JPG",
+    "file": "Road.JPG",
     "title": "Path",
     "collection": "Landscape",
     "year": "",
