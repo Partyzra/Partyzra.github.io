@@ -2323,7 +2323,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Dragonfly.jpg",
-    "title": "Dragonfly",
+    "title": "Commons Park",
     "album": "Layton",
     "collection": "Nature",
     "year": "",
@@ -2336,7 +2336,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Clearfield Train.jpg",
-    "title": "Tracks",
+    "title": "Railroad",
     "album": "Layton",
     "collection": "Nature",
     "year": "",
