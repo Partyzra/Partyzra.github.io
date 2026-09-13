@@ -2229,7 +2229,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Bridge1.jpg",
-    "variants": ["Bridge2.jpg", "Hats.jpg"],
+    "variants": ["Bridge3.jpg"],
     "title": "Railroad",
     "collection": "Nature",
      "album": "Ogden",
@@ -2324,7 +2324,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Clearfield Train.jpg",
-    "variants": ["Layton Train.jpg"],
+    "variants": ["Frontrunner.jpg"],
     "title": "Railroad Crossing",
     "album": "Layton",
     "collection": "Nature",
