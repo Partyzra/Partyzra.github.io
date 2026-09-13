@@ -2187,8 +2187,8 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Meow-Meow.jpg",
-    "variants": ["Meow-Meow1.jpg"],
+    "file": "Cat.jpg",
+    "variants": ["Meow-Meow.jpg", "Meow-Meow1.jpg"],
     "title": "Meow-Meow",
     "collection": "Nature",
      "album": "Ogden",
@@ -2429,7 +2429,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Hemp.jpg",
-    "title": "Hemp Bro",
+    "title": "Hemp",
     "album": "Ogden",
     "collection": "Nature",
     "year": "",
