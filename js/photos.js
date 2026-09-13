@@ -2363,7 +2363,7 @@ const PORTFOLIO_PHOTOS = [
 {
     "file": "Pumpkin Maze.jpg",
     "title": "Great Harvest",
-    "album": "Layton",
+    "album": "Lagoon",
     "collection": "Nature",
     "year": "",
     "location": "",
