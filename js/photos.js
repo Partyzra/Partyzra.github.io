@@ -2444,7 +2444,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Superman.jpg",
-    "variants": ["Batman.jpg"] ["Venom.jpg"] ["Majora's Mask.jpg"],
+    "variants": ["Batman.jpg", "Venom.jpg", "Majora's Mask.jpg"],
     "title": "Superman & Friends",
     "album": "Layton",
     "collection": "Nature",
@@ -2471,6 +2471,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "1142.jpg",
+    "variants": ["Sherma.jpg"],
     "title": "1142",
     "album": "Layton",
     "collection": "Nature",
@@ -2483,21 +2484,8 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
 {
-    "file": "Sherma.jpg",
-    "title": "Sherma",
-    "album": "Layton",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": ""
-  },
-{
     "file": "Veteran Monument.jpg",
-    "title": "Sherma",
+    "title": "Veteran Monument",
     "album": "Layton",
     "collection": "Nature",
     "year": "",
@@ -2509,3 +2497,9 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   }
 ];
+
+// Expose the manifest for pages that need the same archive outside the
+// Photography renderer (for example, the randomized landing hero).
+if (typeof window !== 'undefined') {
+  window.PORTFOLIO_PHOTOS = PORTFOLIO_PHOTOS;
+}

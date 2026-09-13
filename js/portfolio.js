@@ -28,13 +28,16 @@
     }));
   }
 
-  // Landing hero slideshow — Sunset first, then every photograph in the
-  // Photography manifest. The manifest is loaded only on the homepage, and
-  // each next background is preloaded before it fades in.
+  // Landing hero slideshow — every primary photograph in js/photos.js.
+  // home.html loads the manifest first so the hero works both on GitHub Pages
+  // and when the site is opened directly from a local folder. A text-fetch
+  // fallback is retained for compatibility with older copies of home.html.
   const homeHero = qs('.home-page .hero-v3');
   const heroPrimary = homeHero ? qs('.hero-photo', homeHero) : null;
 
-  if (homeHero && heroPrimary && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const reduceHeroMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (homeHero && heroPrimary) {
     const heroAlternate = document.createElement('div');
     heroAlternate.className = 'hero-photo hero-photo--alternate';
     heroAlternate.setAttribute('aria-hidden', 'true');
@@ -53,35 +56,66 @@
       return copy;
     };
 
-    const loadPhotoManifest = () => new Promise(resolve => {
-      if (typeof PORTFOLIO_PHOTOS !== 'undefined') {
-        resolve(PORTFOLIO_PHOTOS);
-        return;
-      }
+    // Pull only each photo object's primary `file` entry. Variants remain
+    // fullscreen-only on Photography and do not become separate hero slides.
+    const filesFromManifest = () => {
+      const manifest = Array.isArray(window.PORTFOLIO_PHOTOS)
+        ? window.PORTFOLIO_PHOTOS
+        : (typeof PORTFOLIO_PHOTOS !== 'undefined' && Array.isArray(PORTFOLIO_PHOTOS)
+          ? PORTFOLIO_PHOTOS
+          : []);
 
-      const existing = document.querySelector('script[data-home-photo-manifest]');
-      if (existing) {
-        existing.addEventListener('load', () => {
-          resolve(typeof PORTFOLIO_PHOTOS !== 'undefined' ? PORTFOLIO_PHOTOS : []);
-        }, { once: true });
-        existing.addEventListener('error', () => resolve([]), { once: true });
-        return;
-      }
+      const seen = new Set();
+      return manifest
+        .map(photo => String(photo?.file || '').trim())
+        .filter(file => {
+          const key = normalize(file);
+          if (!file || seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+    };
 
-      const script = document.createElement('script');
-      script.src = 'js/photos.js';
-      script.dataset.homePhotoManifest = '';
-      script.onload = () => resolve(typeof PORTFOLIO_PHOTOS !== 'undefined' ? PORTFOLIO_PHOTOS : []);
-      script.onerror = () => resolve([]);
-      document.head.appendChild(script);
-    });
+    // Prefer the already-loaded photo manifest. This works on GitHub Pages
+    // and when index.html is opened directly from a local folder, where
+    // browsers commonly block fetch() requests from file:// pages.
+    const readPhotoFiles = async () => {
+      const manifestFiles = filesFromManifest();
+      if (manifestFiles.length) return manifestFiles;
+
+      // Fallback for older copies of home.html that did not load photos.js.
+      try {
+        const response = await fetch('js/photos.js', { cache: 'no-store' });
+        if (!response.ok) throw new Error(`photos.js returned ${response.status}`);
+        const source = await response.text();
+        const files = [];
+        const seen = new Set();
+        const filePattern = /["']?file["']?\s*:\s*(["'])(.*?)\1/g;
+        let match;
+
+        while ((match = filePattern.exec(source))) {
+          const file = String(match[2] || '').trim();
+          const key = normalize(file);
+          if (!file || seen.has(key)) continue;
+          seen.add(key);
+          files.push(file);
+        }
+
+        return files;
+      } catch (error) {
+        console.warn('Landing slideshow could not read js/photos.js:', error);
+        return [];
+      }
+    };
 
     const heroSourceCandidates = file => {
-      const full = `Images/photo-full/${file}`;
-      // The 1600px WebP thumbnails are ideal for a smooth background dissolve:
-      // much lighter than full camera exports, with full-res as a safety fallback.
-      const thumb = `Images/photo-thumbs/${file}.webp`;
-      return normalize(file) === 'sunset.jpg' ? [full] : [thumb, full];
+      const encodedFile = encodeURIComponent(file);
+      // Prefer the 1600px WebP grid copy for fast hero transitions, then fall
+      // back to the full-resolution source if a thumbnail is missing.
+      return [
+        `Images/photo-thumbs/${encodedFile}.webp`,
+        `Images/photo-full/${encodedFile}`
+      ];
     };
 
     const preloadFirstAvailable = candidates => new Promise(resolve => {
@@ -104,18 +138,44 @@
       tryNext();
     });
 
-    const setHeroBackground = (layer, src, file) => {
+    const setHeroBackground = (layer, src) => {
       layer.style.backgroundImage = `url(${JSON.stringify(src)})`;
-      layer.style.backgroundPosition = normalize(file) === 'sunset.jpg' ? 'center 58%' : 'center center';
+      layer.style.backgroundPosition = 'center center';
       layer.style.backgroundSize = 'cover';
       layer.style.backgroundRepeat = 'no-repeat';
     };
 
     let activeLayer = heroPrimary;
     let standbyLayer = heroAlternate;
-    let slides = ['Sunset.jpg'];
-    let slideIndex = 0;
+    let allFiles = [];
+    let queue = [];
+    let currentFile = '';
     let heroTimer = null;
+
+    const refillQueue = () => {
+      queue = shuffled(allFiles);
+
+      // At the boundary between two complete passes, avoid showing the same
+      // photograph twice in a row while still keeping every photo in the pass.
+      if (queue.length > 1 && currentFile && normalize(queue[0]) === normalize(currentFile)) {
+        [queue[0], queue[1]] = [queue[1], queue[0]];
+      }
+    };
+
+    const nextAvailableSlide = async () => {
+      if (!allFiles.length) return null;
+
+      let attempts = 0;
+      while (attempts < allFiles.length) {
+        if (!queue.length) refillQueue();
+        const file = queue.shift();
+        const source = await preloadFirstAvailable(heroSourceCandidates(file));
+        attempts += 1;
+        if (source) return { file, source };
+      }
+
+      return null;
+    };
 
     const scheduleNext = delay => {
       window.clearTimeout(heroTimer);
@@ -123,31 +183,20 @@
     };
 
     const showNextHero = async () => {
-      if (document.hidden || slides.length < 2) {
+      if (document.hidden || allFiles.length < 2) {
         scheduleNext(HERO_HOLD_MS);
         return;
       }
 
-      let attempts = 0;
-      let source = null;
-      let file = null;
-
-      while (!source && attempts < slides.length - 1) {
-        slideIndex = (slideIndex + 1) % slides.length;
-        file = slides[slideIndex];
-        source = await preloadFirstAvailable(heroSourceCandidates(file));
-        attempts += 1;
-      }
-
-      if (!source || !file) {
+      const next = await nextAvailableSlide();
+      if (!next) {
         scheduleNext(HERO_HOLD_MS);
         return;
       }
 
-      setHeroBackground(standbyLayer, source, file);
+      currentFile = next.file;
+      setHeroBackground(standbyLayer, next.source);
 
-      // Give the browser one frame to paint the incoming image at opacity 0,
-      // then perform the long dissolve. The shade/noise layers remain untouched.
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           standbyLayer.classList.remove('is-hero-hidden');
@@ -167,28 +216,25 @@
       }, HERO_FADE_MS);
     };
 
-    loadPhotoManifest().then(photos => {
-      const photoFiles = [];
-      const seen = new Set(['sunset.jpg']);
+    readPhotoFiles().then(async files => {
+      allFiles = files;
+      if (!allFiles.length) return;
 
-      photos.forEach(photo => {
-        const file = String(photo?.file || '').trim();
-        const key = normalize(file);
-        if (!file || seen.has(key)) return;
-        seen.add(key);
-        photoFiles.push(file);
-      });
+      // No photograph is privileged as the opening image. Shuffle the entire
+      // archive and preload the first valid image before beginning the timer.
+      refillQueue();
+      const first = await nextAvailableSlide();
+      if (!first) return;
 
-      if (!photoFiles.length) return;
-
-      // Sunset always opens the landing page. Every other photograph in the
-      // archive gets a fresh shuffled order on each visit.
-      slides = ['Sunset.jpg', ...shuffled(photoFiles)];
-      scheduleNext(HERO_HOLD_MS);
+      currentFile = first.file;
+      setHeroBackground(heroPrimary, first.source);
+      heroPrimary.classList.remove('is-hero-hidden');
+      heroPrimary.classList.add('is-hero-visible');
+      if (!reduceHeroMotion && allFiles.length > 1) scheduleNext(HERO_HOLD_MS);
     });
 
     document.addEventListener('visibilitychange', () => {
-      if (!document.hidden && slides.length > 1) scheduleNext(HERO_HOLD_MS);
+      if (!reduceHeroMotion && !document.hidden && allFiles.length > 1) scheduleNext(HERO_HOLD_MS);
     });
   }
 
