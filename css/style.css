@@ -1,14 +1,14 @@
 :root {
-  --ink: #101722;
-  --ink-2: #101722;
-  --ink-3: #24312d;
+  --ink: #000000;
+  --ink-2: #000000;
+  --ink-3: #000000;
   --paper: #ece8df;
   --paper-2: #dcd5c9;
   --text: #f5f2eb;
   --muted: #999da5;
   --muted-2: #6e737c;
   --line: rgba(255,255,255,.12);
-  --line-dark: rgba(16,23,34,.24);
+  --line-dark: rgba(0,0,0,.24);
   --gold: #e2bb72;
   --gold-2: #f0d39b;
   --serif: "Libre Baskerville", Georgia, serif;
@@ -54,11 +54,11 @@ button { color: inherit; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(to bottom, rgba(16,23,34,.92), rgba(16,23,34,.38), transparent);
+  background: linear-gradient(to bottom, rgba(0,0,0,.92), rgba(0,0,0,.38), transparent);
   border-bottom: 1px solid transparent;
   transition: background .3s ease, border-color .3s ease, backdrop-filter .3s ease;
 }
-.site-header.is-scrolled { background: rgba(16,23,34,.94); border-color: var(--line); backdrop-filter: blur(18px); }
+.site-header.is-scrolled { background: rgba(0,0,0,.94); border-color: var(--line); backdrop-filter: blur(18px); }
 .brand { display: inline-flex; align-items: center; gap: 10px; position: relative; z-index: 4; }
 .brand-mark { display: grid; place-items: center; width: 31px; height: 31px; border: 1px solid rgba(255,255,255,.28); border-radius: 50%; color: var(--gold-2); font-family: var(--serif); font-size: .83rem; }
 .brand-word { font-size: .76rem; font-weight: 600; letter-spacing: .24em; }
@@ -75,7 +75,7 @@ button { color: inherit; }
 .hero-v3 { min-height: 100svh; position: relative; overflow: hidden; display: flex; align-items: flex-end; padding: calc(var(--header-h) + 80px) 0 clamp(52px, 8vw, 100px); isolation: isolate; }
 .hero-photo { position: absolute; inset: 0; z-index: -4; background: url('../Images/photo-full/Sunset.jpg') center 58% / cover no-repeat; transform: scale(1.025); animation: hero-breathe 16s ease-in-out infinite alternate; }
 @keyframes hero-breathe { from { transform: scale(1.025); } to { transform: scale(1.075); } }
-.hero-shade { position: absolute; inset: 0; z-index: -3; background: linear-gradient(90deg, rgba(14,22,19,.95) 0%, rgba(14,22,19,.75) 40%, rgba(14,22,19,.28) 72%, rgba(14,22,19,.30) 100%), linear-gradient(to top, rgba(14,22,19,.75), transparent 46%); }
+.hero-shade { position: absolute; inset: 0; z-index: -3; background: linear-gradient(90deg, rgba(0,0,0,.95) 0%, rgba(0,0,0,.75) 40%, rgba(0,0,0,.28) 72%, rgba(0,0,0,.30) 100%), linear-gradient(to top, rgba(0,0,0,.75), transparent 46%); }
 .hero-noise { position: absolute; inset: 0; z-index: -2; opacity: .12; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.28'/%3E%3C/svg%3E"); mix-blend-mode: soft-light; }
 .hero-content { position: relative; z-index: 2; }
 .hero-eyebrow { margin-bottom: 25px; }
@@ -107,7 +107,7 @@ button { color: inherit; }
 .work-panel { position: relative; overflow: hidden; min-height: 620px; border: 1px solid var(--line); isolation: isolate; }
 .work-panel img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .9s var(--ease), filter .5s ease; }
 .work-panel:hover img { transform: scale(1.035); filter: brightness(.94); }
-.work-panel-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(18,27,24,.90), rgba(18,27,24,.06) 65%); }
+.work-panel-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.90), rgba(0,0,0,.06) 65%); }
 .work-panel-meta { position: absolute; z-index: 2; inset: 24px 26px auto; display: flex; justify-content: space-between; color: rgba(255,255,255,.63); font-size: .66rem; text-transform: uppercase; letter-spacing: .14em; }
 .work-panel-copy { position: absolute; z-index: 2; inset: auto 26px 28px; }
 .work-panel-copy p { margin: 0 0 8px; color: var(--gold-2); font-size: .68rem; text-transform: uppercase; letter-spacing: .16em; }
@@ -166,7 +166,7 @@ button { color: inherit; }
   box-sizing: border-box;
   padding: var(--film-frame-pad);
   margin: 0;
-  background: #101722;
+  background: #000000;
   border: 0;
   box-shadow: 0 22px 58px rgba(0,0,0,.30);
   isolation: isolate;
@@ -188,7 +188,7 @@ button { color: inherit; }
   bottom: var(--film-frame-pad);
   height: clamp(40px, 5vw, 92px);
   pointer-events: none;
-  background: linear-gradient(to bottom, transparent, rgba(16,23,34,.28));
+  background: linear-gradient(to bottom, transparent, rgba(0,0,0,.28));
 }
 .film-motion-video {
   position: absolute;
@@ -223,7 +223,7 @@ button { color: inherit; }
   height: clamp(44px, 4.2vw, 64px);
   border: 1px solid rgba(255,255,255,.42);
   border-radius: 50%;
-  background: rgba(16,23,34,.34);
+  background: rgba(0,0,0,.34);
   color: rgba(255,255,255,.90);
   font-size: clamp(.82rem, 1vw, 1rem);
   line-height: 1;
@@ -234,7 +234,7 @@ button { color: inherit; }
   transition: opacity .22s ease, transform .3s var(--ease), background .22s ease;
 }
 .film-motion-intro[data-film-manual]:hover .film-motion-manual-cue {
-  background: rgba(16,23,34,.58);
+  background: rgba(0,0,0,.58);
   transform: translate(-50%, -50%) scale(1.04);
 }
 .film-motion-intro[data-film-manual].is-video-playing .film-motion-manual-cue {
@@ -243,7 +243,7 @@ button { color: inherit; }
 }
 
 .film-feature { display: grid; grid-template-columns: 1.4fr .6fr; gap: 34px; align-items: end; padding-bottom: 74px; border-bottom: 1px solid var(--line); }
-.video-frame { position: relative; aspect-ratio: 16/9; overflow: hidden; background: #101722; border: 1px solid var(--line); }
+.video-frame { position: relative; aspect-ratio: 16/9; overflow: hidden; background: #000000; border: 1px solid var(--line); }
 .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .film-feature-copy { padding-bottom: 5px; }
 .work-number { display: block; margin-bottom: 18px; color: var(--gold); font-size: .67rem; letter-spacing: .16em; }
@@ -292,7 +292,7 @@ button { color: inherit; }
 .gallery-item { margin: 0 0 12px; break-inside: avoid; overflow: hidden; background: var(--ink-2); }
 .gallery-button { display: block; width: 100%; padding: 0; border: 0; background: transparent; cursor: zoom-in; position: relative; overflow: hidden; text-align: left; }
 .gallery-button img { display: block; width: 100%; height: auto; transition: transform .65s var(--ease), filter .4s ease; }
-.gallery-overlay { position: absolute; inset: 0; display: grid; grid-template-columns: auto 1fr auto; align-items: end; gap: 12px; padding: 14px; background: linear-gradient(to top, rgba(16,23,34,.78), transparent 48%); opacity: 0; transition: opacity .3s ease; }
+.gallery-overlay { position: absolute; inset: 0; display: grid; grid-template-columns: auto 1fr auto; align-items: end; gap: 12px; padding: 14px; background: linear-gradient(to top, rgba(0,0,0,.78), transparent 48%); opacity: 0; transition: opacity .3s ease; }
 .gallery-button:hover .gallery-overlay, .gallery-button:focus-visible .gallery-overlay { opacity: 1; }
 .gallery-button:hover img { transform: scale(1.018); filter: brightness(.92); }
 .gallery-index, .gallery-open { color: var(--gold-2); font-size: .66rem; letter-spacing: .1em; }
@@ -301,7 +301,7 @@ button { color: inherit; }
 .gallery-collection { color: rgba(255,255,255,.54); font-size: .58rem; text-transform: uppercase; letter-spacing: .13em; }
 .gallery-open { font-size: 1rem; }
 
-.lightbox { position: fixed; z-index: 5000; inset: 0; display: grid; grid-template-rows: auto 1fr auto; background: rgba(16,23,34,.985); opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility .3s ease; touch-action: none; }
+.lightbox { position: fixed; z-index: 5000; inset: 0; display: grid; grid-template-rows: auto 1fr auto; background: rgba(0,0,0,.985); opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility .3s ease; touch-action: none; }
 .lightbox.is-open { opacity: 1; visibility: visible; }
 .lightbox-topbar, .lightbox-footer { position: relative; z-index: 6; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 14px clamp(14px, 3vw, 42px); }
 .lightbox-brand { font-size: .61rem; letter-spacing: .18em; color: #7f858e; }
@@ -409,12 +409,12 @@ button { color: inherit; }
   :root { --header-h: 68px; }
   .container-wide { width: min(100% - 30px, 1450px); }
   .nav-toggle { display: block; }
-  .site-nav { position: fixed; inset: 0; z-index: 3; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 12px; padding: 90px 30px 50px; background: rgba(16,23,34,.985); opacity: 0; visibility: hidden; transform: translateY(-10px); transition: opacity .25s ease, visibility .25s ease, transform .25s var(--ease); }
+  .site-nav { position: fixed; inset: 0; z-index: 3; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 12px; padding: 90px 30px 50px; background: rgba(0,0,0,.985); opacity: 0; visibility: hidden; transform: translateY(-10px); transition: opacity .25s ease, visibility .25s ease, transform .25s var(--ease); }
   .site-nav.is-open { opacity: 1; visibility: visible; transform: none; }
   .site-nav a { font-family: var(--serif); font-size: clamp(2.3rem, 9vw, 4.7rem); color: var(--text); line-height: 1.15; letter-spacing: -.04em; }
   .site-nav a::before { display: none; }
   .hero-bottom { grid-template-columns: 1fr; gap: 25px; }
-  .hero-shade { background: linear-gradient(90deg, rgba(14,22,19,.91), rgba(14,22,19,.50)), linear-gradient(to top, rgba(14,22,19,.83), transparent 56%); }
+  .hero-shade { background: linear-gradient(90deg, rgba(0,0,0,.91), rgba(0,0,0,.50)), linear-gradient(to top, rgba(0,0,0,.83), transparent 56%); }
   .photo-hero { min-height: auto; grid-template-columns: 1fr; padding-top: calc(var(--header-h) + 110px); }
   .photo-hero-copy { max-width: 650px; }
   .film-grid { gap: 42px 14px; }
@@ -466,7 +466,7 @@ button { color: inherit; }
   .gallery-status span:last-child { display: none; }
   .masonry-gallery { columns: 2 145px; column-gap: 7px; }
   .gallery-item { margin-bottom: 7px; }
-  .gallery-overlay { opacity: 1; padding: 9px; background: linear-gradient(to top, rgba(16,23,34,.60), transparent 44%); }
+  .gallery-overlay { opacity: 1; padding: 9px; background: linear-gradient(to top, rgba(0,0,0,.60), transparent 44%); }
   .gallery-caption { display: none; }
   .gallery-collection { display: none; }
   .gallery-index { font-size: .56rem; }
@@ -521,8 +521,8 @@ button { color: inherit; }
 .home-page .hero-noise { opacity: .045; }
 .home-page .hero-shade {
   background:
-    linear-gradient(90deg, rgba(14,22,19,.86) 0%, rgba(14,22,19,.58) 42%, rgba(14,22,19,.18) 76%, rgba(14,22,19,.22) 100%),
-    linear-gradient(to top, rgba(14,22,19,.62), transparent 48%);
+    linear-gradient(90deg, rgba(0,0,0,.86) 0%, rgba(0,0,0,.58) 42%, rgba(0,0,0,.18) 76%, rgba(0,0,0,.22) 100%),
+    linear-gradient(to top, rgba(0,0,0,.62), transparent 48%);
 }
 .home-page .hero-eyebrow { margin-bottom: 16px; }
 .home-page .hero-v3 h1 {
@@ -704,7 +704,7 @@ button { color: inherit; }
    from the Landscapes album with a restrained Ken Burns-style drift. */
 .home-page .site-header,
 .home-page .site-header.is-scrolled {
-  background: #101722;
+  background: #000000;
   border-color: var(--line);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -746,10 +746,10 @@ button { color: inherit; }
 
 /* V4.17.18 — Jungle-green homepage fields
    The former light/gray homepage sections now join the site-wide dark jungle
-   blue-black field, using the exact requested #101722 backdrop. */
+   black field, using the exact requested #000000 backdrop. */
 .home-page .photo-slice,
 .home-page .about-section {
-  background: #101722;
+  background: #000000;
   color: #f0eee9;
 }
 
@@ -782,7 +782,7 @@ button { color: inherit; }
 /* V4.17.17 — Hero slideshow now cycles through the full photo archive. */
 
 
-/* V4.17.18 — Site-wide dark midnight blue-black
-   Primary dark surfaces use #101722 (RGB 16, 23, 34). Transparent image
-   overlays are green-tinted so the photography and film still retain contrast
+/* V4.17.18 — Site-wide dark solid black
+   Primary dark surfaces use #000000 (RGB 16, 23, 34). Transparent image
+   overlays are black-tinted so the photography and film still retain contrast
    without falling back to a neutral-black visual field. */

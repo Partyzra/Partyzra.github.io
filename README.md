@@ -1,14 +1,9 @@
-# V4.17.20 — Midnight Blue-Black Site
+# V4.17.21 — Solid Black Site
 
-Replaces the previous Wind Cave `#1F2024` site field with a darker, bluer near-black:
-
-- Hex: `#101722`
-- RGB: `16, 23, 34`
-
-Replace:
+Replace only:
 
 - `css/style.css`
 - `css/photography.css`
 - `css/site-shell.css`
 
-This keeps the same layout and behavior. Only the site-wide dark field and matching translucent overlays were retuned. True-black artwork/detail accents remain untouched.
+All site-wide dark backdrop/surface colors from the recent blue/green palette iterations are now true black (`#000000`). Existing translucent overlays retain their opacity, but use black as the color base. The 50% Photography viewer transparency is preserved.
