@@ -2188,7 +2188,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Cat.jpg",
-    "variants": ["Meow-Meow.jpg", "Meow-Meow1.jpg"],
+    "variants": ["Meow-Meow1.jpg"],
     "title": "Meow-Meow",
     "collection": "Nature",
      "album": "Ogden",
@@ -2311,7 +2311,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Dragonfly.jpg",
-    "title": "Commons Park",
+    "title": "Dragonfly - Commons Park",
     "album": "Layton",
     "collection": "Nature",
     "year": "",
@@ -2324,6 +2324,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Clearfield Train.jpg",
+    "variants": [Layton Train.jpg],
     "title": "Railroad Crossing",
     "album": "Layton",
     "collection": "Nature",
@@ -2336,7 +2337,8 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
 {
-    "file": "EST Square.jpg",
+    "file": "EST Square1.jpg",
+    "variants": ["EST Square.jpg"],
     "title": "EST Square",
     "album": "Layton",
     "collection": "Nature",
@@ -2439,5 +2441,97 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": ""
-  }
+  },
+{
+    "file": "Superman.jpg",
+    "variants": ["Batman.jpg"] ["Venom.jpg"] ["Majora's Mask.jpg"],
+    "title": "Superman & Friends",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Zelda.jpg",
+    "title": "Zelda",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "1142.jpg",
+    "title": "1142",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Sherma.jpg",
+    "title": "Sherma",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Hemp.jpg",
+    "title": "Hemp",
+    "album": "Ogden",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Hemp.jpg",
+    "title": "Hemp",
+    "album": "Ogden",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Hemp.jpg",
+    "title": "Hemp",
+    "album": "Ogden",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
 ];
