@@ -126,16 +126,14 @@
 
   const targetVolume = 1;
   const tracks = [
+   {
+      sources: ['MusicTracks/1234 - Calum Graham.mp3'],
+      title: '1234 - Calum Graham'
+    },
     {
       sources: ['MusicTracks/When It Lands.mp3'],
       title: 'When It Lands - RKS'
     },
-    
-    {
-      sources: ['MusicTracks/1234 - Calum Graham.mp3'],
-      title: '1234 - Calum Graham'
-    },
-    
     {
       // Exact filename currently published in the GitHub MusicTracks folder.
       // Alternate names are kept as fallbacks in case the file is cleaned up later.
@@ -145,15 +143,6 @@
         'MusicTracks/Lovely Day, Good As Hell - Pomplamoose.mp3'
       ],
       title: 'Lovely Day, Good As Hell'
-    },
-
-    {
-      sources: ['MusicTracks/BadassBeat.mp3'],
-      title: 'BadassBeat'
-    },
-    {
-      sources: ['assets/audio/the-drive-back-tom-anello.mp3'],
-      title: 'The Drive Back — Tom Anello'
     }
   ];
 
