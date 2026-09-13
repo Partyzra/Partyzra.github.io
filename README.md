@@ -1,9 +1,7 @@
-# V4.17.12 — Sunset-to-Ocean “slowly.”
+# V4.17.15 — Layered Landing Title Shadow
 
 Replace only:
 
-- `css/photography.css`
+- `css/style.css`
 
-The “slowly.” accent now starts in the same luminous red used by “Remember.” on the home page, drifts through red/orange sunset hues, then moves smoothly into the existing ocean-blue gradient. The glow color travels with the gradient. The animation runs slowly and alternates so there is no abrupt reset.
-
-All Photography grid, album, viewer, zoom, translucent viewer background, and loading behavior are unchanged.
+Adds a soft layered black drop shadow to `Observe. Listen. Remember.` so the title remains legible across the moving/crossfading landing photographs. The existing red glow on `Remember.` is preserved and combined with the same drop shadow.

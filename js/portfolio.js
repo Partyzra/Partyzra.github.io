@@ -28,6 +28,189 @@
     }));
   }
 
+  // Landing hero slideshow — Sunset first, then photographs from the
+  // Photography page's Landscapes album. The photo manifest is loaded only
+  // on the homepage, and each next background is preloaded before it fades in.
+  const homeHero = qs('.home-page .hero-v3');
+  const heroPrimary = homeHero ? qs('.hero-photo', homeHero) : null;
+
+  if (homeHero && heroPrimary && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const heroAlternate = document.createElement('div');
+    heroAlternate.className = 'hero-photo hero-photo--alternate';
+    heroAlternate.setAttribute('aria-hidden', 'true');
+    heroPrimary.after(heroAlternate);
+
+    const HERO_HOLD_MS = 12000;
+    const HERO_FADE_MS = 4000;
+    const normalize = value => String(value || '').trim().toLowerCase();
+    const normalizedTags = photo => (Array.isArray(photo?.tags) ? photo.tags : [])
+      .map(normalize)
+      .filter(Boolean);
+
+    const photoIsLandscape = photo => {
+      const file = normalize(photo?.file);
+      const collection = normalize(photo?.collection);
+      const tags = normalizedTags(photo);
+      const explicitAlbums = [];
+
+      if (typeof photo?.album === 'string') explicitAlbums.push(normalize(photo.album));
+      if (Array.isArray(photo?.albums)) explicitAlbums.push(...photo.albums.map(normalize));
+
+      return explicitAlbums.includes('landscapes')
+        || explicitAlbums.includes('landscape')
+        || collection === 'landscape'
+        || tags.includes('landscape')
+        || /(^|[\s_-])(mountain|field|sunset|cornfield|kauai)([\s_.-]|$)/.test(file);
+    };
+
+    const shuffled = values => {
+      const copy = [...values];
+      for (let i = copy.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    };
+
+    const loadPhotoManifest = () => new Promise(resolve => {
+      if (typeof PORTFOLIO_PHOTOS !== 'undefined') {
+        resolve(PORTFOLIO_PHOTOS);
+        return;
+      }
+
+      const existing = document.querySelector('script[data-home-photo-manifest]');
+      if (existing) {
+        existing.addEventListener('load', () => {
+          resolve(typeof PORTFOLIO_PHOTOS !== 'undefined' ? PORTFOLIO_PHOTOS : []);
+        }, { once: true });
+        existing.addEventListener('error', () => resolve([]), { once: true });
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = 'js/photos.js';
+      script.dataset.homePhotoManifest = '';
+      script.onload = () => resolve(typeof PORTFOLIO_PHOTOS !== 'undefined' ? PORTFOLIO_PHOTOS : []);
+      script.onerror = () => resolve([]);
+      document.head.appendChild(script);
+    });
+
+    const heroSourceCandidates = file => {
+      const full = `Images/photo-full/${file}`;
+      // The 1600px WebP thumbnails are ideal for a smooth background dissolve:
+      // much lighter than full camera exports, with full-res as a safety fallback.
+      const thumb = `Images/photo-thumbs/${file}.webp`;
+      return normalize(file) === 'sunset.jpg' ? [full] : [thumb, full];
+    };
+
+    const preloadFirstAvailable = candidates => new Promise(resolve => {
+      let index = 0;
+
+      const tryNext = () => {
+        if (index >= candidates.length) {
+          resolve(null);
+          return;
+        }
+
+        const src = candidates[index++];
+        const image = new Image();
+        image.decoding = 'async';
+        image.onload = () => resolve(src);
+        image.onerror = tryNext;
+        image.src = src;
+      };
+
+      tryNext();
+    });
+
+    const setHeroBackground = (layer, src, file) => {
+      layer.style.backgroundImage = `url(${JSON.stringify(src)})`;
+      layer.style.backgroundPosition = normalize(file) === 'sunset.jpg' ? 'center 58%' : 'center center';
+      layer.style.backgroundSize = 'cover';
+      layer.style.backgroundRepeat = 'no-repeat';
+    };
+
+    let activeLayer = heroPrimary;
+    let standbyLayer = heroAlternate;
+    let slides = ['Sunset.jpg'];
+    let slideIndex = 0;
+    let heroTimer = null;
+
+    const scheduleNext = delay => {
+      window.clearTimeout(heroTimer);
+      heroTimer = window.setTimeout(showNextHero, delay);
+    };
+
+    const showNextHero = async () => {
+      if (document.hidden || slides.length < 2) {
+        scheduleNext(HERO_HOLD_MS);
+        return;
+      }
+
+      let attempts = 0;
+      let source = null;
+      let file = null;
+
+      while (!source && attempts < slides.length - 1) {
+        slideIndex = (slideIndex + 1) % slides.length;
+        file = slides[slideIndex];
+        source = await preloadFirstAvailable(heroSourceCandidates(file));
+        attempts += 1;
+      }
+
+      if (!source || !file) {
+        scheduleNext(HERO_HOLD_MS);
+        return;
+      }
+
+      setHeroBackground(standbyLayer, source, file);
+
+      // Give the browser one frame to paint the incoming image at opacity 0,
+      // then perform the long dissolve. The shade/noise layers remain untouched.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          standbyLayer.classList.remove('is-hero-hidden');
+          standbyLayer.classList.add('is-hero-visible');
+          activeLayer.classList.remove('is-hero-visible');
+          activeLayer.classList.add('is-hero-hidden');
+        });
+      });
+
+      window.setTimeout(() => {
+        const previousActive = activeLayer;
+        activeLayer = standbyLayer;
+        standbyLayer = previousActive;
+        standbyLayer.classList.remove('is-hero-visible');
+        standbyLayer.classList.add('is-hero-hidden');
+        scheduleNext(HERO_HOLD_MS);
+      }, HERO_FADE_MS);
+    };
+
+    loadPhotoManifest().then(photos => {
+      const landscapeFiles = [];
+      const seen = new Set(['sunset.jpg']);
+
+      photos.forEach(photo => {
+        const file = String(photo?.file || '').trim();
+        const key = normalize(file);
+        if (!file || seen.has(key) || !photoIsLandscape(photo)) return;
+        seen.add(key);
+        landscapeFiles.push(file);
+      });
+
+      if (!landscapeFiles.length) return;
+
+      // Sunset always opens the landing page. The rest of the Landscapes
+      // album gets a fresh order on each visit, matching the archive's spirit.
+      slides = ['Sunset.jpg', ...shuffled(landscapeFiles)];
+      scheduleNext(HERO_HOLD_MS);
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && slides.length > 1) scheduleNext(HERO_HOLD_MS);
+    });
+  }
+
   // Dynamic copyright year. Scope this to the footer only.
   // Photography items also use data-year as metadata, so a global [data-year]
   // selector would replace each gallery button's image/content with the current year.
