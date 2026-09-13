@@ -2494,44 +2494,5 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": ""
-  },
-{
-    "file": "Hemp.jpg",
-    "title": "Hemp",
-    "album": "Ogden",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": ""
-  },
-{
-    "file": "Hemp.jpg",
-    "title": "Hemp",
-    "album": "Ogden",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": ""
-  },
-{
-    "file": "Hemp.jpg",
-    "title": "Hemp",
-    "album": "Ogden",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": ""
-  },
+  }
 ];
