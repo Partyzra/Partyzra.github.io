@@ -28,9 +28,9 @@
     }));
   }
 
-  // Landing hero slideshow — Sunset first, then photographs from the
-  // Photography page's Landscapes album. The photo manifest is loaded only
-  // on the homepage, and each next background is preloaded before it fades in.
+  // Landing hero slideshow — Sunset first, then every photograph in the
+  // Photography manifest. The manifest is loaded only on the homepage, and
+  // each next background is preloaded before it fades in.
   const homeHero = qs('.home-page .hero-v3');
   const heroPrimary = homeHero ? qs('.hero-photo', homeHero) : null;
 
@@ -43,25 +43,6 @@
     const HERO_HOLD_MS = 12000;
     const HERO_FADE_MS = 4000;
     const normalize = value => String(value || '').trim().toLowerCase();
-    const normalizedTags = photo => (Array.isArray(photo?.tags) ? photo.tags : [])
-      .map(normalize)
-      .filter(Boolean);
-
-    const photoIsLandscape = photo => {
-      const file = normalize(photo?.file);
-      const collection = normalize(photo?.collection);
-      const tags = normalizedTags(photo);
-      const explicitAlbums = [];
-
-      if (typeof photo?.album === 'string') explicitAlbums.push(normalize(photo.album));
-      if (Array.isArray(photo?.albums)) explicitAlbums.push(...photo.albums.map(normalize));
-
-      return explicitAlbums.includes('landscapes')
-        || explicitAlbums.includes('landscape')
-        || collection === 'landscape'
-        || tags.includes('landscape')
-        || /(^|[\s_-])(mountain|field|sunset|cornfield|kauai)([\s_.-]|$)/.test(file);
-    };
 
     const shuffled = values => {
       const copy = [...values];
@@ -187,22 +168,22 @@
     };
 
     loadPhotoManifest().then(photos => {
-      const landscapeFiles = [];
+      const photoFiles = [];
       const seen = new Set(['sunset.jpg']);
 
       photos.forEach(photo => {
         const file = String(photo?.file || '').trim();
         const key = normalize(file);
-        if (!file || seen.has(key) || !photoIsLandscape(photo)) return;
+        if (!file || seen.has(key)) return;
         seen.add(key);
-        landscapeFiles.push(file);
+        photoFiles.push(file);
       });
 
-      if (!landscapeFiles.length) return;
+      if (!photoFiles.length) return;
 
-      // Sunset always opens the landing page. The rest of the Landscapes
-      // album gets a fresh order on each visit, matching the archive's spirit.
-      slides = ['Sunset.jpg', ...shuffled(landscapeFiles)];
+      // Sunset always opens the landing page. Every other photograph in the
+      // archive gets a fresh shuffled order on each visit.
+      slides = ['Sunset.jpg', ...shuffled(photoFiles)];
       scheduleNext(HERO_HOLD_MS);
     });
 

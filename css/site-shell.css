@@ -11,7 +11,7 @@ body.site-shell-page {
   height: 100%;
   margin: 0;
   overflow: hidden;
-  background: #090a0b;
+  background: #101722;
 }
 
 .site-shell-frame {
@@ -21,7 +21,7 @@ body.site-shell-page {
   width: 100%;
   height: 100%;
   border: 0;
-  background: #090a0b;
+  background: #101722;
 }
 
 .site-soundtrack-audio {
@@ -39,7 +39,7 @@ body.site-shell-page {
   max-width: min(390px, calc(100vw - 28px));
   border: 1px solid rgba(240,238,233,.14);
   border-radius: 999px;
-  background: rgba(9,10,11,.80);
+  background: rgba(16,23,34,.82);
   box-shadow: 0 14px 45px rgba(0,0,0,.28);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -52,7 +52,7 @@ body.site-shell-page {
 .site-soundtrack-player:focus-within {
   opacity: 1;
   border-color: rgba(240,238,233,.28);
-  background: rgba(14,15,16,.94);
+  background: rgba(31,43,39,.96);
 }
 
 .site-soundtrack-control,
@@ -205,3 +205,6 @@ body.site-shell-page {
     transition: none;
   }
 }
+
+
+/* V4.17.18 — Persistent shell and soundtrack chrome use dark midnight blue-black. */

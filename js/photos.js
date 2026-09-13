@@ -2413,5 +2413,31 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": ""
+  },
+{
+    "file": "Dentis Room2.jpg",
+    "title": "Dentis Room",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Hemp.jpg",
+    "title": "Hemp Bro",
+    "album": "Ogden",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   }
 ];
