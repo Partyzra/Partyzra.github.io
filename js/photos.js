@@ -2324,7 +2324,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Clearfield Train.jpg",
-    "variants": [Layton Train.jpg],
+    "variants": ["Layton Train.jpg"],
     "title": "Railroad Crossing",
     "album": "Layton",
     "collection": "Nature",

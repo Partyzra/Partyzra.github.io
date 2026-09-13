@@ -714,7 +714,7 @@ button { color: inherit; }
   opacity: 1;
   transform-origin: center center;
   transition: opacity 4s cubic-bezier(.4, 0, .2, 1);
-  animation: home-hero-drift-a 18s ease-in-out infinite alternate;
+  animation: home-hero-drift-a 12s ease-in-out infinite alternate;
   will-change: transform, opacity;
 }
 
@@ -727,13 +727,13 @@ button { color: inherit; }
 .home-page .hero-photo.is-hero-hidden { opacity: 0; }
 
 @keyframes home-hero-drift-a {
-  0%   { transform: translate3d(-.35%, -.2%, 0) scale(1.045); }
-  100% { transform: translate3d(.55%, .38%, 0) scale(1.09); }
+  0%   { transform: translate3d(-.7%, -.35%, 0) scale(1.045); }
+  100% { transform: translate3d(.85%, .55%, 0) scale(1.10); }
 }
 
 @keyframes home-hero-drift-b {
-  0%   { transform: translate3d(.45%, -.28%, 0) scale(1.085); }
-  100% { transform: translate3d(-.5%, .32%, 0) scale(1.045); }
+  0%   { transform: translate3d(.8%, -.45%, 0) scale(1.095); }
+  100% { transform: translate3d(-.75%, .5%, 0) scale(1.045); }
 }
 
 @media (prefers-reduced-motion: reduce) {
