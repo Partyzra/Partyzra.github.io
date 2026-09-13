@@ -2494,5 +2494,18 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": ""
+  },
+{
+    "file": "Veteran Monument.jpg",
+    "title": "Sherma",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   }
 ];
