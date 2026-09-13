@@ -2374,5 +2374,31 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": ""
+  },
+{
+    "file": "Straw Maze.jpg",
+    "title": "Scary Crow's Straw Maze",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Smoke Ride.jpg",
+    "title": "Smoke Ride",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   }
 ];
