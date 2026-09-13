@@ -2337,20 +2337,6 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
 {
-    "file": "EST Square1.jpg",
-    "variants": ["EST Square.jpg"],
-    "title": "EST Square",
-    "album": "Layton",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": ""
-  },
-{
     "file": "Great Harvest1.jpg",
     "title": "Great Harvest",
     "variants": ["Great Harvest.jpg"],
