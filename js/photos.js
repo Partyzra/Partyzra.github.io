@@ -2229,7 +2229,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Bridge1.jpg",
-    "variants": ["Bridge2.jpg", "Hats.jpg"],
+    "variants": ["Bridge3.jpg"],
     "title": "Railroad",
     "collection": "Nature",
      "album": "Ogden",
@@ -2378,7 +2378,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Smoke Ride.jpg",
-    "title": "Smoke Ride",
+    "title": "Time Tinker",
     "album": "Lagoon",
     "collection": "Nature",
     "year": "",
@@ -2485,6 +2485,58 @@ const PORTFOLIO_PHOTOS = [
     "file": "Veteran Monument.jpg",
     "title": "Veteran Monument",
     "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "60 Bus.jpg",
+    "title": "The Beatle's Bus",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Water Fountains.jpg",
+    "title": "Water Fountains",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Smoking Station.jpg",
+    "title": "Smoking Station",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Turn of the Century.jpg",
+    "title": "Turn of the Century",
+    "album": "Lagoon",
     "collection": "Nature",
     "year": "",
     "location": "",
