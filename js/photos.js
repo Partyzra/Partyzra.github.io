@@ -2229,7 +2229,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Bridge1.jpg",
-    "variants": ["Bridge3.jpg"],
+    "variants": ["Bridge2.jpg", "Hats.jpg"],
     "title": "Railroad",
     "collection": "Nature",
      "album": "Ogden",
@@ -2324,7 +2324,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Clearfield Train.jpg",
-    "variants": ["Frontrunner.jpg"],
+    "variants": ["Layton Train.jpg"],
     "title": "Railroad Crossing",
     "album": "Layton",
     "collection": "Nature",
@@ -2471,8 +2471,20 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "1142.jpg",
-    "variants": ["Sherma.jpg"],
     "title": "1142",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Sherma.jpg",
+    "title": "Sherma",
     "album": "Layton",
     "collection": "Nature",
     "year": "",

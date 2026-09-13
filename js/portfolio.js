@@ -28,7 +28,7 @@
     }));
   }
 
-  // Landing hero slideshow — every primary photograph in js/photos.js.
+  // Landing hero slideshow — Lagoon album photographs only.
   // home.html loads the manifest first so the hero works both on GitHub Pages
   // and when the site is opened directly from a local folder. A text-fetch
   // fallback is retained for compatibility with older copies of home.html.
@@ -43,8 +43,10 @@
     heroAlternate.setAttribute('aria-hidden', 'true');
     heroPrimary.after(heroAlternate);
 
-    const HERO_HOLD_MS = 12000;
-    const HERO_FADE_MS = 4000;
+    const HERO_CYCLE_MS = 12000;
+    const HERO_FADE_MS = 1800;
+    const HERO_NEXT_DELAY_MS = HERO_CYCLE_MS - HERO_FADE_MS;
+    const HERO_MOTIONS = ['zoom-in', 'zoom-out', 'pan-left', 'pan-right'];
     const normalize = value => String(value || '').trim().toLowerCase();
 
     const shuffled = values => {
@@ -56,7 +58,33 @@
       return copy;
     };
 
-    // Pull only each photo object's primary `file` entry. Variants remain
+    // Match the same Lagoon collection used by the Photography page. Explicit
+    // album metadata wins, while the older virtual-album rules keep legacy
+    // Lagoon photographs (Clock Tower, The Rocket, Carts, etc.) included too.
+    const isLagoonPhoto = photo => {
+      const file = normalize(photo?.file);
+      const tags = (Array.isArray(photo?.tags) ? photo.tags : []).map(normalize);
+      const explicitAlbums = [
+        typeof photo?.album === 'string' ? photo.album : '',
+        ...(Array.isArray(photo?.albums) ? photo.albums : [])
+      ].map(normalize);
+
+      return explicitAlbums.includes('lagoon')
+        || file.includes('lagoon')
+        || file === 'rattlesnake rapids.jpg'
+        || file === 'cannibal.jpg'
+        || file === 'the rocket.jpg'
+        || file === 'samurai.jpg'
+        || file === 'printing press3.jpg'
+        || file === 'peacock.jpg'
+        || file === 'clock tower.jpg'
+        || file === 'performance.jpg'
+        || file === 'performance2.jpg'
+        || file === 'carts.jpg'
+        || tags.includes('coaster');
+    };
+
+    // Pull only each Lagoon photo object's primary `file` entry. Variants stay
     // fullscreen-only on Photography and do not become separate hero slides.
     const filesFromManifest = () => {
       const manifest = Array.isArray(window.PORTFOLIO_PHOTOS)
@@ -67,6 +95,7 @@
 
       const seen = new Set();
       return manifest
+        .filter(isLagoonPhoto)
         .map(photo => String(photo?.file || '').trim())
         .filter(file => {
           const key = normalize(file);
@@ -83,29 +112,11 @@
       const manifestFiles = filesFromManifest();
       if (manifestFiles.length) return manifestFiles;
 
-      // Fallback for older copies of home.html that did not load photos.js.
-      try {
-        const response = await fetch('js/photos.js', { cache: 'no-store' });
-        if (!response.ok) throw new Error(`photos.js returned ${response.status}`);
-        const source = await response.text();
-        const files = [];
-        const seen = new Set();
-        const filePattern = /["']?file["']?\s*:\s*(["'])(.*?)\1/g;
-        let match;
-
-        while ((match = filePattern.exec(source))) {
-          const file = String(match[2] || '').trim();
-          const key = normalize(file);
-          if (!file || seen.has(key)) continue;
-          seen.add(key);
-          files.push(file);
-        }
-
-        return files;
-      } catch (error) {
-        console.warn('Landing slideshow could not read js/photos.js:', error);
-        return [];
-      }
+      // home.html now loads photos.js directly. If an older cached page does
+      // not expose the manifest, do not fall back to the entire archive: that
+      // would violate the Lagoon-only hero. The next refresh will load it.
+      console.warn('Landing slideshow is waiting for the Lagoon photo manifest.');
+      return [];
     };
 
     const heroSourceCandidates = file => {
@@ -143,6 +154,24 @@
       layer.style.backgroundPosition = 'center center';
       layer.style.backgroundSize = 'cover';
       layer.style.backgroundRepeat = 'no-repeat';
+    };
+
+    let lastHeroMotion = '';
+    const nextHeroMotion = () => {
+      const choices = HERO_MOTIONS.filter(motion => motion !== lastHeroMotion);
+      const motion = choices[Math.floor(Math.random() * choices.length)] || HERO_MOTIONS[0];
+      lastHeroMotion = motion;
+      return motion;
+    };
+
+    const startHeroMotion = layer => {
+      layer.dataset.heroMotion = nextHeroMotion();
+
+      // A layer is reused every other slide. Briefly removing animation forces
+      // the one-way motion to restart from its first frame every time.
+      layer.style.animation = 'none';
+      void layer.offsetWidth;
+      layer.style.animation = '';
     };
 
     let activeLayer = heroPrimary;
@@ -184,18 +213,19 @@
 
     const showNextHero = async () => {
       if (document.hidden || allFiles.length < 2) {
-        scheduleNext(HERO_HOLD_MS);
+        scheduleNext(HERO_NEXT_DELAY_MS);
         return;
       }
 
       const next = await nextAvailableSlide();
       if (!next) {
-        scheduleNext(HERO_HOLD_MS);
+        scheduleNext(HERO_NEXT_DELAY_MS);
         return;
       }
 
       currentFile = next.file;
       setHeroBackground(standbyLayer, next.source);
+      startHeroMotion(standbyLayer);
 
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
@@ -212,7 +242,7 @@
         standbyLayer = previousActive;
         standbyLayer.classList.remove('is-hero-visible');
         standbyLayer.classList.add('is-hero-hidden');
-        scheduleNext(HERO_HOLD_MS);
+        scheduleNext(HERO_NEXT_DELAY_MS);
       }, HERO_FADE_MS);
     };
 
@@ -220,21 +250,22 @@
       allFiles = files;
       if (!allFiles.length) return;
 
-      // No photograph is privileged as the opening image. Shuffle the entire
-      // archive and preload the first valid image before beginning the timer.
+      // No Lagoon photograph is privileged as the opening image. Shuffle the
+      // Lagoon pool and preload the first valid image before beginning the timer.
       refillQueue();
       const first = await nextAvailableSlide();
       if (!first) return;
 
       currentFile = first.file;
       setHeroBackground(heroPrimary, first.source);
+      startHeroMotion(heroPrimary);
       heroPrimary.classList.remove('is-hero-hidden');
       heroPrimary.classList.add('is-hero-visible');
-      if (!reduceHeroMotion && allFiles.length > 1) scheduleNext(HERO_HOLD_MS);
+      if (!reduceHeroMotion && allFiles.length > 1) scheduleNext(HERO_NEXT_DELAY_MS);
     });
 
     document.addEventListener('visibilitychange', () => {
-      if (!reduceHeroMotion && !document.hidden && allFiles.length > 1) scheduleNext(HERO_HOLD_MS);
+      if (!reduceHeroMotion && !document.hidden && allFiles.length > 1) scheduleNext(HERO_NEXT_DELAY_MS);
     });
   }
 

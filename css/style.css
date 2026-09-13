@@ -698,10 +698,10 @@ button { color: inherit; }
 }
 
 
-/* V4.17.23 — Solid landing header + full-archive hero dissolve
-   The landing header remains opaque. JavaScript chooses a random first
-   photograph and crossfades through the full Photography archive with the
-   existing Ken Burns-style drift. */
+/* V4.17.25 — Lagoon-only, one-way landing hero motion
+   Each Lagoon photograph gets exactly one motion pass: zoom in, zoom out,
+   drift left, or drift right. Nothing reverses direction before the next
+   photograph dissolves in. */
 .home-page .site-header,
 .home-page .site-header.is-scrolled {
   background: #000000;
@@ -713,27 +713,43 @@ button { color: inherit; }
 .home-page .hero-photo {
   opacity: 1;
   transform-origin: center center;
-  transition: opacity 4s cubic-bezier(.4, 0, .2, 1);
-  animation: home-hero-drift-a 12s ease-in-out infinite alternate;
+  transition: opacity 1.8s cubic-bezier(.4, 0, .2, 1);
+  animation-name: none;
+  animation-duration: 12s;
+  animation-direction: normal;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
   will-change: transform, opacity;
 }
 
-.home-page .hero-photo--alternate {
-  opacity: 0;
-  animation-name: home-hero-drift-b;
-}
-
+.home-page .hero-photo--alternate { opacity: 0; }
 .home-page .hero-photo.is-hero-visible { opacity: 1; }
 .home-page .hero-photo.is-hero-hidden { opacity: 0; }
 
-@keyframes home-hero-drift-a {
-  0%   { transform: translate3d(-.7%, -.35%, 0) scale(1.045); }
-  100% { transform: translate3d(.85%, .55%, 0) scale(1.10); }
+.home-page .hero-photo[data-hero-motion="zoom-in"] { animation-name: home-hero-zoom-in; }
+.home-page .hero-photo[data-hero-motion="zoom-out"] { animation-name: home-hero-zoom-out; }
+.home-page .hero-photo[data-hero-motion="pan-left"] { animation-name: home-hero-pan-left; }
+.home-page .hero-photo[data-hero-motion="pan-right"] { animation-name: home-hero-pan-right; }
+
+@keyframes home-hero-zoom-in {
+  from { transform: translate3d(0, 0, 0) scale(1.035); }
+  to   { transform: translate3d(0, 0, 0) scale(1.115); }
 }
 
-@keyframes home-hero-drift-b {
-  0%   { transform: translate3d(.8%, -.45%, 0) scale(1.095); }
-  100% { transform: translate3d(-.75%, .5%, 0) scale(1.045); }
+@keyframes home-hero-zoom-out {
+  from { transform: translate3d(0, 0, 0) scale(1.115); }
+  to   { transform: translate3d(0, 0, 0) scale(1.035); }
+}
+
+@keyframes home-hero-pan-left {
+  from { transform: translate3d(2.4%, 0, 0) scale(1.105); }
+  to   { transform: translate3d(-2.4%, 0, 0) scale(1.105); }
+}
+
+@keyframes home-hero-pan-right {
+  from { transform: translate3d(-2.4%, 0, 0) scale(1.105); }
+  to   { transform: translate3d(2.4%, 0, 0) scale(1.105); }
 }
 
 @media (prefers-reduced-motion: reduce) {
