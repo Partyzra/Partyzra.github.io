@@ -2297,7 +2297,8 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Retro Games.jpg",
-    "title": "Retro Gaming",
+    "title": "Minus World",
+    "variants": ["Pokemon Machine"],
     "collection": "Nature",
     "album": "Layton",
     "year": "",
