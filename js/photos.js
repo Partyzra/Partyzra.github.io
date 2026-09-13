@@ -2298,7 +2298,7 @@ const PORTFOLIO_PHOTOS = [
 {
     "file": "Retro Games.jpg",
     "title": "Minus World",
-    "variants": ["Pokemon Machine"],
+    "variants": ["Pokemon Machine.jpg"],
     "collection": "Nature",
     "album": "Layton",
     "year": "",
@@ -2349,8 +2349,9 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
 {
-    "file": "Great Harvest.jpg",
+    "file": "Great Harvest1.jpg",
     "title": "Great Harvest",
+    "variants": ["Great Harvest.jpg"],
     "album": "Layton",
     "collection": "Nature",
     "year": "",
@@ -2363,7 +2364,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Pumpkin Maze.jpg",
-    "title": "Great Harvest",
+    "title": "Pumpkin Maze",
     "album": "Lagoon",
     "collection": "Nature",
     "year": "",
