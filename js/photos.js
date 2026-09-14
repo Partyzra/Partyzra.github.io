@@ -2457,20 +2457,8 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "1142.jpg",
+    "variants": ["Sherma.jpg"],
     "title": "1142",
-    "album": "Layton",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": ""
-  },
-{
-    "file": "Sherma.jpg",
-    "title": "Sherma",
     "album": "Layton",
     "collection": "Nature",
     "year": "",
