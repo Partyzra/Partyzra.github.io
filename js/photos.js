@@ -2585,6 +2585,19 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": ""
+  },
+{
+    "file": "Fun House of Fear.jpg",
+    "title": "Fun House of Fear",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   }
 
 ];
