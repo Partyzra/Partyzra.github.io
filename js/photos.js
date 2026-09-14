@@ -1062,19 +1062,6 @@ const PORTFOLIO_PHOTOS = [
     "albums": ['Antelope Island', 'Animals'],
   },
   {
-    "file": "Rocks.jpg",
-    "title": "Rocks",
-    "collection": "Nature",
-    "album": "Antelope Island",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": ""
-  },
-  {
     "file": "Rocks1.jpg",
     "title": "Rocks",
     "collection": "Nature",
@@ -1799,6 +1786,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Rock.jpg",
+    "album": "Layton",
     "title": "Centerpiece",
     "collection": "Landscapes",
     "year": "",
