@@ -2634,21 +2634,7 @@ const PORTFOLIO_PHOTOS = [
 {
     "file": "Great Harvest Neighbor.jpg",
     "variants": ["Great Harvest Neighbor1.jpg"],
-    "title": "Miniature City",
-    "album": "Layton",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": ""
-  },
-{
-    "file": "Duck Meeting.jpg",
-    "variants": ["Duck Meeting.jpg"],
-    "title": "Duck Meeting",
+    "title": "Great Harvest Neighbor",
     "album": "Layton",
     "collection": "Nature",
     "year": "",
