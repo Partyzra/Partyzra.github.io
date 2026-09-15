@@ -2588,6 +2588,20 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": ""
+  },
+{
+    "file": "Cow Dog.jpg",
+    "variants": ["Cow Dog1.jpg"],
+    "title": "Cow Dog",
+    "album": "Ogden",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   }
 
 ];
