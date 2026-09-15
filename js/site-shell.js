@@ -126,14 +126,15 @@
 
   const targetVolume = 1;
   const tracks = [
+    {
+      sources: ['MusicTracks/Outset Island - TPR.mp3'],
+      title: 'Outset Island - TPR'
+    },
    {
       sources: ['MusicTracks/1234 - Calum Graham.mp3'],
       title: '1234 - Calum Graham'
     },
-    {
-      sources: ['MusicTracks/When It Lands.mp3'],
-      title: 'When It Lands - RKS'
-    },
+    
     {
       // Exact filename currently published in the GitHub MusicTracks folder.
       // Alternate names are kept as fallbacks in case the file is cleaned up later.
