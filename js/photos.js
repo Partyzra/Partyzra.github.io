@@ -396,7 +396,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Wild Mouse.jpg",
-    "variants": ["Wild Mouse2.jpg"],
+    "variants": ["Wild Mouse1.jpg"],
     "title": "Wild Mouse",
     "collection": "Objects & Details",
     "album": "Lagoon",
@@ -2702,6 +2702,20 @@ const PORTFOLIO_PHOTOS = [
 {
     "file": "Gramophone.jpg",
     "title": "Gramophone",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Lagoona Beach.jpg",
+    "variants": ["Lagoona Beach1.jpg"],
+    "title": "Lagoona Beach",
     "album": "Lagoon",
     "collection": "Nature",
     "year": "",
