@@ -2433,6 +2433,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Zelda.jpg",
+    "variant": ["Mario Wall.jpg"],
     "title": "Zelda",
     "album": "Layton",
     "collection": "Nature",
