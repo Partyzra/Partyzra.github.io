@@ -2605,6 +2605,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Miniature City.jpg",
+    "variants": ["Mini City.jpg"],
     "title": "Miniature City",
     "album": "Lagoon",
     "collection": "Nature",
