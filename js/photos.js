@@ -2648,7 +2648,7 @@ const PORTFOLIO_PHOTOS = [
 {
     "file": "Duck Meeting.jpg",
     "variants": ["Duck Meeting.jpg"],
-    "title": "Miniature City",
+    "title": "Duck Meeting",
     "album": "Layton",
     "collection": "Nature",
     "year": "",
@@ -2662,7 +2662,7 @@ const PORTFOLIO_PHOTOS = [
 {
     "file": "Duck Meeting1.jpg",
     "variants": ["Duck Meeting.jpg"],
-    "title": "Miniature City",
+    "title": "Duck Meeting",
     "album": "Layton",
     "collection": "Nature",
     "year": "",
@@ -2676,7 +2676,7 @@ const PORTFOLIO_PHOTOS = [
 {
     "file": "Duck Meeting2.jpg",
     "variants": ["Duck Meeting.jpg"],
-    "title": "Miniature City",
+    "title": "Duck Meeting",
     "album": "Layton",
     "collection": "Nature",
     "year": "",
