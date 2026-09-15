@@ -2617,6 +2617,88 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": ""
+  },
+{
+    "file": "Commons Park.jpg",
+    "title": "Commons Park",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Great Harvest Neighbor.jpg",
+    "variants": ["Great Harvest Neighbor1.jpg"],
+    "title": "Miniature City",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Duck Meeting.jpg",
+    "variants": ["Duck Meeting.jpg"],
+    "title": "Miniature City",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Duck Meeting1.jpg",
+    "variants": ["Duck Meeting.jpg"],
+    "title": "Miniature City",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Duck Meeting2.jpg",
+    "variants": ["Duck Meeting.jpg"],
+    "title": "Miniature City",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Crestview Elementary.jpg",
+    "title": "Crestview Elementary",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   }
 
 ];
