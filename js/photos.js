@@ -2327,7 +2327,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Great Harvest1.jpg",
-    "title": "Great Harvest",
+    "title": "Great Harvest Neighbor",
     "variants": ["Great Harvest.jpg"],
     "album": "Layton",
     "collection": "Nature",
