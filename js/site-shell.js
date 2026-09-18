@@ -140,7 +140,7 @@
       sources: [
         'MusicTracks/Painkillers - Rainbow Kitten Surprise.mp3'
       ],
-      title: 'Painkillers - Rainbow Kitten Surprise'
+      title: 'Painkillers - RKS'
     }
   ];
 
