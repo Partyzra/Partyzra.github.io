@@ -134,17 +134,13 @@
       sources: ['MusicTracks/Outset Island - TPR.mp3'],
       title: 'Outset Island - TPR'
     },
-   
-    
     {
       // Exact filename currently published in the GitHub MusicTracks folder.
       // Alternate names are kept as fallbacks in case the file is cleaned up later.
       sources: [
-        'MusicTracks/Lovely Day, Good As Hell Mashup - Pomplamoose .mp3',
-        'MusicTracks/Lovely Day, Good As Hell Mashup - Pomplamoose.mp3',
-        'MusicTracks/Lovely Day, Good As Hell - Pomplamoose.mp3'
+        'MusicTracks/Painkillers - Rainbow Kitten Surprise.mp3'
       ],
-      title: 'Lovely Day, Good As Hell'
+      title: 'Painkillers - Rainbow Kitten Surprise'
     }
   ];
 
