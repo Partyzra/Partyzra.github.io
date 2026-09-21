@@ -292,19 +292,6 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Peace.jpg",
-    "title": "Peace",
-    "collection": "Experimental",
-    "album": "People",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "conceptual"
-    ],
-    "note": ""
-  },
-  {
     "file": "Peacock.jpg",
     "title": "Peacock",
     "collection": "Wildlife",
