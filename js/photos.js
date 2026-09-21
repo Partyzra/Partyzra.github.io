@@ -692,19 +692,6 @@ const PORTFOLIO_PHOTOS = [
     "album": "Hawaii"
   },
   {
-    "file": "Hawaii Mountain.jpg",
-    "title": "Hawaii Mountain",
-    "collection": "Hawaii",
-    "year": "",
-    "location": "Hawaii",
-    "featured": false,
-    "tags": [
-      "landscape"
-    ],
-    "note": "",
-    "album": "Hawaii"
-  },
-  {
     "file": "Hawaii Water Crash.jpg",
     "title": "Hawaii Water Crash",
     "collection": "Hawaii",
