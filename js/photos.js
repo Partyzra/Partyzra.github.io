@@ -1358,8 +1358,8 @@ const PORTFOLIO_PHOTOS = [
     "album": "Hawaii"
   },
   {
-    "file": "Hawaii Lighthouse.jpg",
-    "title": "Lighthouse",
+    "file": "Lighthouse.jpg",
+    "title": "Hawaii Island",
     "collection": "Landscape",
      "album": "Hawaii",
     "year": "",
