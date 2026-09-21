@@ -2379,8 +2379,8 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
 {
-    "file": "Dentis Room2.jpg",
-    "title": "Dentis Room",
+    "file": "Dentist Room2.jpg",
+    "title": "Dentist Room",
     "album": "Lagoon",
     "collection": "Nature",
     "year": "",
