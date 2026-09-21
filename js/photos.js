@@ -889,19 +889,6 @@ const PORTFOLIO_PHOTOS = [
     "note": "",
     "album": "Antelope Island"
   },
-    {
-    "file": "Antelope Island2.jpg",
-    "title": "Antelope Island",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "flora"
-    ],
-    "note": "",
-    "album": "Antelope Island"
-  },
   {
     "file": "Antelope Island3.jpg",
     "title": "Antelope Island",
