@@ -1320,9 +1320,8 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Lighthouse.jpg",
-    "title": "Hawaii Island",
+    "title": "Cali Island",
     "collection": "Landscape",
-     "album": "Hawaii",
     "year": "",
     "location": "",
     "featured": false,
