@@ -331,19 +331,6 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Peacock1.jpg",
-    "title": "Peacock",
-    "collection": "Wildlife",
-    "album": "Lagoon",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "bird"
-    ],
-    "note": ""
-  },
-  {
     "file": "Performance.jpg",
     "title": "Performance",
     "collection": "Performance",
