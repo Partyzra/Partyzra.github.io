@@ -608,6 +608,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Fence.JPG",
     "title": "Fence",
+    "album": "Layton",
     "collection": "Places & Structures",
     "year": "",
     "location": "",
@@ -620,6 +621,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Fence1.JPG",
     "title": "Fence",
+    "album": "Layton",
     "collection": "Places & Structures",
     "year": "",
     "location": "",
@@ -719,6 +721,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Helmets.jpg",
+    "album": "Layton",
     "title": "Helmets",
     "collection": "Objects & Details",
     "year": "",
@@ -1025,6 +1028,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Rocks2.jpg",
     "title": "Rocks",
+    "album": "Antelope Island",
     "collection": "Nature",
     "year": "",
     "location": "",
@@ -1233,6 +1237,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Mountain & Trees.png",
     "title": "Mountain & Trees",
+    "album": "Layton",
     "collection": "Landscape",
     "year": "",
     "location": "",
@@ -1345,6 +1350,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Tractor & Shed.jpg",
+    "album": "Layton",
     "title": "Tractor & Shed",
     "collection": "Landscape",
     "year": "",
@@ -1489,6 +1495,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "View2.jpg",
     "title": "View",
+    "album": "Antelope Island",
     "collection": "Landscape",
     "year": "",
     "location": "",
@@ -1721,6 +1728,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Tractor Field.jpg",
+    "album": "Layton",
     "title": "Tractor Field",
     "collection": "Landscapes",
     "year": "",
