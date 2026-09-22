@@ -1386,18 +1386,6 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Zey Portrait.png",
-    "title": "Zey",
-    "collection": "People",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "people"
-    ],
-    "note": ""
-  },
-  {
     "file": "Path.jpg",
     "title": "Path",
     "collection": "Landscape",
