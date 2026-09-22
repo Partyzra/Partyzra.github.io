@@ -2217,6 +2217,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Highway 89.jpg",
+    "variants": ["East Layton1.jpg"],
     "title": "Highway 89",
     "collection": "Nature",
     "album": "Layton",
