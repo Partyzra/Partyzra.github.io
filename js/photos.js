@@ -2299,6 +2299,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Straw Maze.jpg",
+    "variants": ["Straw Maze1.jpg"],
     "title": "Scary Crow's Straw Maze",
     "album": "Lagoon",
     "collection": "Nature",
