@@ -1704,6 +1704,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Ice Field.jpg",
     "variants": ["Ice Field1.jpg"],
+    "album": "Layton",
     "title": "Ice Field",
     "collection": "Landscapes",
     "year": "",
