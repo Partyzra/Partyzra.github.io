@@ -2016,7 +2016,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Barbershop.jpg",
-    "variants": ["barbershop1.jpg"],
+    "variants": ["Barbershop1.jpg"],
     "title": "Barbershop",
     "collection": "Nature",
      "album": "Ogden",
