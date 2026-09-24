@@ -28,25 +28,20 @@
     }));
   }
 
-  // Landing hero slideshow — Lagoon album photographs only.
-  // home.html loads the manifest first so the hero works both on GitHub Pages
-  // and when the site is opened directly from a local folder. A text-fetch
-  // fallback is retained for compatibility with older copies of home.html.
+  // Landing hero slideshow — Sunset first, then every photograph in the
+  // Photography manifest. The manifest is loaded only on the homepage, and
+  // each next background is preloaded before it fades in.
   const homeHero = qs('.home-page .hero-v3');
   const heroPrimary = homeHero ? qs('.hero-photo', homeHero) : null;
 
-  const reduceHeroMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (homeHero && heroPrimary) {
+  if (homeHero && heroPrimary && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const heroAlternate = document.createElement('div');
     heroAlternate.className = 'hero-photo hero-photo--alternate';
     heroAlternate.setAttribute('aria-hidden', 'true');
     heroPrimary.after(heroAlternate);
 
-    const HERO_CYCLE_MS = 12000;
-    const HERO_FADE_MS = 1800;
-    const HERO_NEXT_DELAY_MS = HERO_CYCLE_MS - HERO_FADE_MS;
-    const HERO_MOTIONS = ['zoom-in', 'zoom-out', 'pan-left', 'pan-right'];
+    const HERO_HOLD_MS = 12000;
+    const HERO_FADE_MS = 4000;
     const normalize = value => String(value || '').trim().toLowerCase();
 
     const shuffled = values => {
@@ -58,75 +53,35 @@
       return copy;
     };
 
-    // Match the same Lagoon collection used by the Photography page. Explicit
-    // album metadata wins, while the older virtual-album rules keep legacy
-    // Lagoon photographs (Clock Tower, The Rocket, Carts, etc.) included too.
-    const isLagoonPhoto = photo => {
-      const file = normalize(photo?.file);
-      const tags = (Array.isArray(photo?.tags) ? photo.tags : []).map(normalize);
-      const explicitAlbums = [
-        typeof photo?.album === 'string' ? photo.album : '',
-        ...(Array.isArray(photo?.albums) ? photo.albums : [])
-      ].map(normalize);
+    const loadPhotoManifest = () => new Promise(resolve => {
+      if (typeof PORTFOLIO_PHOTOS !== 'undefined') {
+        resolve(PORTFOLIO_PHOTOS);
+        return;
+      }
 
-      return explicitAlbums.includes('lagoon')
-        || file.includes('lagoon')
-        || file === 'rattlesnake rapids.jpg'
-        || file === 'cannibal.jpg'
-        || file === 'the rocket.jpg'
-        || file === 'samurai.jpg'
-        || file === 'printing press3.jpg'
-        || file === 'peacock.jpg'
-        || file === 'clock tower.jpg'
-        || file === 'performance.jpg'
-        || file === 'performance2.jpg'
-        || file === 'carts.jpg'
-        || tags.includes('coaster');
-    };
+      const existing = document.querySelector('script[data-home-photo-manifest]');
+      if (existing) {
+        existing.addEventListener('load', () => {
+          resolve(typeof PORTFOLIO_PHOTOS !== 'undefined' ? PORTFOLIO_PHOTOS : []);
+        }, { once: true });
+        existing.addEventListener('error', () => resolve([]), { once: true });
+        return;
+      }
 
-    // Pull only each Lagoon photo object's primary `file` entry. Variants stay
-    // fullscreen-only on Photography and do not become separate hero slides.
-    const filesFromManifest = () => {
-      const manifest = Array.isArray(window.PORTFOLIO_PHOTOS)
-        ? window.PORTFOLIO_PHOTOS
-        : (typeof PORTFOLIO_PHOTOS !== 'undefined' && Array.isArray(PORTFOLIO_PHOTOS)
-          ? PORTFOLIO_PHOTOS
-          : []);
-
-      const seen = new Set();
-      return manifest
-        .filter(isLagoonPhoto)
-        .map(photo => String(photo?.file || '').trim())
-        .filter(file => {
-          const key = normalize(file);
-          if (!file || seen.has(key)) return false;
-          seen.add(key);
-          return true;
-        });
-    };
-
-    // Prefer the already-loaded photo manifest. This works on GitHub Pages
-    // and when index.html is opened directly from a local folder, where
-    // browsers commonly block fetch() requests from file:// pages.
-    const readPhotoFiles = async () => {
-      const manifestFiles = filesFromManifest();
-      if (manifestFiles.length) return manifestFiles;
-
-      // home.html now loads photos.js directly. If an older cached page does
-      // not expose the manifest, do not fall back to the entire archive: that
-      // would violate the Lagoon-only hero. The next refresh will load it.
-      console.warn('Landing slideshow is waiting for the Lagoon photo manifest.');
-      return [];
-    };
+      const script = document.createElement('script');
+      script.src = 'js/photos.js';
+      script.dataset.homePhotoManifest = '';
+      script.onload = () => resolve(typeof PORTFOLIO_PHOTOS !== 'undefined' ? PORTFOLIO_PHOTOS : []);
+      script.onerror = () => resolve([]);
+      document.head.appendChild(script);
+    });
 
     const heroSourceCandidates = file => {
-      const encodedFile = encodeURIComponent(file);
-      // Prefer the 1600px WebP grid copy for fast hero transitions, then fall
-      // back to the full-resolution source if a thumbnail is missing.
-      return [
-        `Images/photo-thumbs/${encodedFile}.webp`,
-        `Images/photo-full/${encodedFile}`
-      ];
+      const full = `Images/photo-full/${file}`;
+      // The 1600px WebP thumbnails are ideal for a smooth background dissolve:
+      // much lighter than full camera exports, with full-res as a safety fallback.
+      const thumb = `Images/photo-thumbs/${file}.webp`;
+      return normalize(file) === 'sunset.jpg' ? [full] : [thumb, full];
     };
 
     const preloadFirstAvailable = candidates => new Promise(resolve => {
@@ -149,62 +104,18 @@
       tryNext();
     });
 
-    const setHeroBackground = (layer, src) => {
+    const setHeroBackground = (layer, src, file) => {
       layer.style.backgroundImage = `url(${JSON.stringify(src)})`;
-      layer.style.backgroundPosition = 'center center';
+      layer.style.backgroundPosition = normalize(file) === 'sunset.jpg' ? 'center 58%' : 'center center';
       layer.style.backgroundSize = 'cover';
       layer.style.backgroundRepeat = 'no-repeat';
     };
 
-    let lastHeroMotion = '';
-    const nextHeroMotion = () => {
-      const choices = HERO_MOTIONS.filter(motion => motion !== lastHeroMotion);
-      const motion = choices[Math.floor(Math.random() * choices.length)] || HERO_MOTIONS[0];
-      lastHeroMotion = motion;
-      return motion;
-    };
-
-    const startHeroMotion = layer => {
-      layer.dataset.heroMotion = nextHeroMotion();
-
-      // A layer is reused every other slide. Briefly removing animation forces
-      // the one-way motion to restart from its first frame every time.
-      layer.style.animation = 'none';
-      void layer.offsetWidth;
-      layer.style.animation = '';
-    };
-
     let activeLayer = heroPrimary;
     let standbyLayer = heroAlternate;
-    let allFiles = [];
-    let queue = [];
-    let currentFile = '';
+    let slides = ['Sunset.jpg'];
+    let slideIndex = 0;
     let heroTimer = null;
-
-    const refillQueue = () => {
-      queue = shuffled(allFiles);
-
-      // At the boundary between two complete passes, avoid showing the same
-      // photograph twice in a row while still keeping every photo in the pass.
-      if (queue.length > 1 && currentFile && normalize(queue[0]) === normalize(currentFile)) {
-        [queue[0], queue[1]] = [queue[1], queue[0]];
-      }
-    };
-
-    const nextAvailableSlide = async () => {
-      if (!allFiles.length) return null;
-
-      let attempts = 0;
-      while (attempts < allFiles.length) {
-        if (!queue.length) refillQueue();
-        const file = queue.shift();
-        const source = await preloadFirstAvailable(heroSourceCandidates(file));
-        attempts += 1;
-        if (source) return { file, source };
-      }
-
-      return null;
-    };
 
     const scheduleNext = delay => {
       window.clearTimeout(heroTimer);
@@ -212,21 +123,31 @@
     };
 
     const showNextHero = async () => {
-      if (document.hidden || allFiles.length < 2) {
-        scheduleNext(HERO_NEXT_DELAY_MS);
+      if (document.hidden || slides.length < 2) {
+        scheduleNext(HERO_HOLD_MS);
         return;
       }
 
-      const next = await nextAvailableSlide();
-      if (!next) {
-        scheduleNext(HERO_NEXT_DELAY_MS);
+      let attempts = 0;
+      let source = null;
+      let file = null;
+
+      while (!source && attempts < slides.length - 1) {
+        slideIndex = (slideIndex + 1) % slides.length;
+        file = slides[slideIndex];
+        source = await preloadFirstAvailable(heroSourceCandidates(file));
+        attempts += 1;
+      }
+
+      if (!source || !file) {
+        scheduleNext(HERO_HOLD_MS);
         return;
       }
 
-      currentFile = next.file;
-      setHeroBackground(standbyLayer, next.source);
-      startHeroMotion(standbyLayer);
+      setHeroBackground(standbyLayer, source, file);
 
+      // Give the browser one frame to paint the incoming image at opacity 0,
+      // then perform the long dissolve. The shade/noise layers remain untouched.
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           standbyLayer.classList.remove('is-hero-hidden');
@@ -242,30 +163,32 @@
         standbyLayer = previousActive;
         standbyLayer.classList.remove('is-hero-visible');
         standbyLayer.classList.add('is-hero-hidden');
-        scheduleNext(HERO_NEXT_DELAY_MS);
+        scheduleNext(HERO_HOLD_MS);
       }, HERO_FADE_MS);
     };
 
-    readPhotoFiles().then(async files => {
-      allFiles = files;
-      if (!allFiles.length) return;
+    loadPhotoManifest().then(photos => {
+      const photoFiles = [];
+      const seen = new Set(['sunset.jpg']);
 
-      // No Lagoon photograph is privileged as the opening image. Shuffle the
-      // Lagoon pool and preload the first valid image before beginning the timer.
-      refillQueue();
-      const first = await nextAvailableSlide();
-      if (!first) return;
+      photos.forEach(photo => {
+        const file = String(photo?.file || '').trim();
+        const key = normalize(file);
+        if (!file || seen.has(key)) return;
+        seen.add(key);
+        photoFiles.push(file);
+      });
 
-      currentFile = first.file;
-      setHeroBackground(heroPrimary, first.source);
-      startHeroMotion(heroPrimary);
-      heroPrimary.classList.remove('is-hero-hidden');
-      heroPrimary.classList.add('is-hero-visible');
-      if (!reduceHeroMotion && allFiles.length > 1) scheduleNext(HERO_NEXT_DELAY_MS);
+      if (!photoFiles.length) return;
+
+      // Sunset always opens the landing page. Every other photograph in the
+      // archive gets a fresh shuffled order on each visit.
+      slides = ['Sunset.jpg', ...shuffled(photoFiles)];
+      scheduleNext(HERO_HOLD_MS);
     });
 
     document.addEventListener('visibilitychange', () => {
-      if (!reduceHeroMotion && !document.hidden && allFiles.length > 1) scheduleNext(HERO_NEXT_DELAY_MS);
+      if (!document.hidden && slides.length > 1) scheduleNext(HERO_HOLD_MS);
     });
   }
 
@@ -290,9 +213,8 @@
     revealItems.forEach(item => revealObserver.observe(item));
   }
 
-  // Film motion studies. Most clips autoplay silently when they near the
-  // viewport. Clips marked data-film-manual stay paused until the visitor
-  // explicitly clicks/taps them, then retain that user's play/pause intent.
+  // Film motion studies. All six clips autoplay silently when they near the
+  // viewport, pause when they move well offscreen, and resume when they return.
   const filmMotionIntros = qsa('[data-film-motion-intro]');
 
   if (filmMotionIntros.length) {
@@ -303,14 +225,27 @@
       const video = qs('video', intro);
       if (!video) return;
 
-      const manual = intro.hasAttribute('data-film-manual');
+      // Older homepage markup marked Hot Box and Abandoned as manual clips.
+      // Normalize those elements at runtime so all six films now behave alike
+      // without requiring home.html to be replaced (which preserves user copy edits).
+      intro.removeAttribute('data-film-manual');
+      intro.removeAttribute('data-film-label');
+      intro.removeAttribute('role');
+      intro.removeAttribute('tabindex');
+      intro.removeAttribute('aria-label');
+      intro.classList.remove('is-video-playing');
+      qs('.film-motion-manual-cue', intro)?.remove();
+
+      const assistiveCopy = qs('.sr-only', intro);
+      if (assistiveCopy) {
+        assistiveCopy.textContent = assistiveCopy.textContent.replace(/\s*Click to play or pause\.?\s*$/i, '').trim();
+      }
+
       const item = {
         intro,
         video,
-        manual,
         loaded: false,
-        nearby: false,
-        manualWantsPlay: false
+        nearby: false
       };
 
       video.muted = true;
@@ -320,48 +255,17 @@
       item.load = () => {
         if (item.loaded) return;
         item.loaded = true;
-        // Manual clips need a still first frame before the visitor presses play.
-        // Only promote preload when the clip is near the viewport, so the rest
-        // of the homepage remains lightweight.
-        if (manual) video.preload = 'auto';
         video.load();
       };
 
-      item.canPlayNow = () => {
-        if (!item.nearby || document.hidden) return false;
-        if (manual) return item.manualWantsPlay;
-        return !reduceMotion;
-      };
+      item.canPlayNow = () => item.nearby && !document.hidden && !reduceMotion;
 
       item.play = () => {
         if (!item.canPlayNow()) return;
         item.load();
         video.play().catch(() => {
-          // If a browser declines playback, the frame simply remains still.
+          // If a browser declines autoplay, the frame simply remains still.
         });
-      };
-
-      item.syncManualState = () => {
-        if (!manual) return;
-        const playing = !video.paused && !video.ended;
-        intro.classList.toggle('is-video-playing', playing);
-        const label = intro.dataset.filmLabel || 'film';
-        intro.setAttribute('aria-label', `${playing ? 'Pause' : 'Play'} ${label} video`);
-      };
-
-      item.toggleManual = () => {
-        if (!manual) return;
-        item.load();
-        if (!video.paused && !video.ended) {
-          item.manualWantsPlay = false;
-          video.pause();
-        } else {
-          item.manualWantsPlay = true;
-          // A direct user gesture is allowed to start even before the observer
-          // has updated nearby=true (for example after a very fast scroll).
-          item.nearby = true;
-          item.play();
-        }
       };
 
       video.addEventListener('loadeddata', () => {
@@ -369,21 +273,10 @@
       });
       video.addEventListener('playing', () => {
         intro.classList.add('is-video-ready', 'is-video-playing');
-        item.syncManualState();
       });
       video.addEventListener('pause', () => {
         intro.classList.remove('is-video-playing');
-        item.syncManualState();
       });
-
-      if (manual) {
-        intro.addEventListener('click', item.toggleManual);
-        intro.addEventListener('keydown', event => {
-          if (event.key !== 'Enter' && event.key !== ' ') return;
-          event.preventDefault();
-          item.toggleManual();
-        });
-      }
 
       motionItems.push(item);
     });
@@ -396,12 +289,7 @@
           item.nearby = entry.isIntersecting;
 
           if (item.nearby) {
-            if (item.manual) {
-              item.load();
-              if (item.manualWantsPlay) item.play();
-            } else if (!reduceMotion) {
-              item.play();
-            }
+            if (!reduceMotion) item.play();
           } else if (item.loaded) {
             item.video.pause();
           }
@@ -422,11 +310,7 @@
     } else {
       motionItems.forEach(item => {
         item.nearby = true;
-        if (item.manual) {
-          item.load();
-        } else if (!reduceMotion) {
-          item.play();
-        }
+        if (!reduceMotion) item.play();
       });
     }
   }
