@@ -28,20 +28,23 @@
     }));
   }
 
-  // Landing hero slideshow — Sunset first, then every photograph in the
-  // Photography manifest. The manifest is loaded only on the homepage, and
-  // each next background is preloaded before it fades in.
+  // Landing hero slideshow — start immediately with a random photograph from
+  // the full Photography archive, then keep cycling through the remaining images.
+  // Each incoming image is preloaded before its crossfade, while the first image
+  // is assigned immediately so the hero never intentionally waits on a hold timer.
   const homeHero = qs('.home-page .hero-v3');
   const heroPrimary = homeHero ? qs('.hero-photo', homeHero) : null;
 
-  if (homeHero && heroPrimary && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (homeHero && heroPrimary) {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const heroAlternate = document.createElement('div');
-    heroAlternate.className = 'hero-photo hero-photo--alternate';
+    heroAlternate.className = 'hero-photo hero-photo--alternate is-hero-hidden';
     heroAlternate.setAttribute('aria-hidden', 'true');
     heroPrimary.after(heroAlternate);
 
     const HERO_HOLD_MS = 12000;
-    const HERO_FADE_MS = 4000;
+    const HERO_FADE_MS = 2000;
+    const HERO_MOTIONS = ['zoom-in', 'zoom-out', 'pan-left', 'pan-right'];
     const normalize = value => String(value || '').trim().toLowerCase();
 
     const shuffled = values => {
@@ -54,15 +57,15 @@
     };
 
     const loadPhotoManifest = () => new Promise(resolve => {
-      if (typeof PORTFOLIO_PHOTOS !== 'undefined') {
-        resolve(PORTFOLIO_PHOTOS);
+      if (Array.isArray(window.PORTFOLIO_PHOTOS)) {
+        resolve(window.PORTFOLIO_PHOTOS);
         return;
       }
 
       const existing = document.querySelector('script[data-home-photo-manifest]');
       if (existing) {
         existing.addEventListener('load', () => {
-          resolve(typeof PORTFOLIO_PHOTOS !== 'undefined' ? PORTFOLIO_PHOTOS : []);
+          resolve(Array.isArray(window.PORTFOLIO_PHOTOS) ? window.PORTFOLIO_PHOTOS : []);
         }, { once: true });
         existing.addEventListener('error', () => resolve([]), { once: true });
         return;
@@ -71,18 +74,15 @@
       const script = document.createElement('script');
       script.src = 'js/photos.js';
       script.dataset.homePhotoManifest = '';
-      script.onload = () => resolve(typeof PORTFOLIO_PHOTOS !== 'undefined' ? PORTFOLIO_PHOTOS : []);
+      script.onload = () => resolve(Array.isArray(window.PORTFOLIO_PHOTOS) ? window.PORTFOLIO_PHOTOS : []);
       script.onerror = () => resolve([]);
       document.head.appendChild(script);
     });
 
-    const heroSourceCandidates = file => {
-      const full = `Images/photo-full/${file}`;
-      // The 1600px WebP thumbnails are ideal for a smooth background dissolve:
-      // much lighter than full camera exports, with full-res as a safety fallback.
-      const thumb = `Images/photo-thumbs/${file}.webp`;
-      return normalize(file) === 'sunset.jpg' ? [full] : [thumb, full];
-    };
+    const heroSourceCandidates = file => [
+      `Images/photo-thumbs/${file}.webp`,
+      `Images/photo-full/${file}`
+    ];
 
     const preloadFirstAvailable = candidates => new Promise(resolve => {
       let index = 0;
@@ -104,50 +104,87 @@
       tryNext();
     });
 
-    const setHeroBackground = (layer, src, file) => {
+    const setHeroBackground = (layer, src) => {
       layer.style.backgroundImage = `url(${JSON.stringify(src)})`;
-      layer.style.backgroundPosition = normalize(file) === 'sunset.jpg' ? 'center 58%' : 'center center';
+      layer.style.backgroundPosition = 'center center';
       layer.style.backgroundSize = 'cover';
       layer.style.backgroundRepeat = 'no-repeat';
     };
 
+    let previousMotion = '';
+
+    const startHeroMotion = layer => {
+      if (reduceMotion) {
+        layer.removeAttribute('data-hero-motion');
+        return;
+      }
+
+      const available = HERO_MOTIONS.filter(motion => motion !== previousMotion);
+      const motion = available[Math.floor(Math.random() * available.length)] || HERO_MOTIONS[0];
+      previousMotion = motion;
+
+      // Removing/re-adding the attribute restarts the one-way CSS animation even
+      // when this DOM layer is reused for a later slide.
+      layer.removeAttribute('data-hero-motion');
+      void layer.offsetWidth;
+      layer.dataset.heroMotion = motion;
+    };
+
     let activeLayer = heroPrimary;
     let standbyLayer = heroAlternate;
-    let slides = ['Sunset.jpg'];
+    let slides = [];
     let slideIndex = 0;
     let heroTimer = null;
+    let transitionTimer = null;
+    let heroRunning = false;
 
     const scheduleNext = delay => {
+      if (reduceMotion || slides.length < 2) return;
       window.clearTimeout(heroTimer);
       heroTimer = window.setTimeout(showNextHero, delay);
     };
 
     const showNextHero = async () => {
-      if (document.hidden || slides.length < 2) {
-        scheduleNext(HERO_HOLD_MS);
+      if (heroRunning || slides.length < 2) return;
+
+      if (document.hidden) {
+        scheduleNext(1000);
         return;
       }
 
+      heroRunning = true;
       let attempts = 0;
       let source = null;
       let file = null;
 
       while (!source && attempts < slides.length - 1) {
         slideIndex = (slideIndex + 1) % slides.length;
+
+        // Give each complete pass a fresh order while preventing an immediate
+        // repeat of the photograph that just finished.
+        if (slideIndex === 0 && slides.length > 2) {
+          const currentFile = slides[slides.length - 1];
+          const reshuffled = shuffled(slides);
+          if (normalize(reshuffled[0]) === normalize(currentFile)) {
+            [reshuffled[0], reshuffled[1]] = [reshuffled[1], reshuffled[0]];
+          }
+          slides = reshuffled;
+        }
+
         file = slides[slideIndex];
         source = await preloadFirstAvailable(heroSourceCandidates(file));
         attempts += 1;
       }
 
       if (!source || !file) {
-        scheduleNext(HERO_HOLD_MS);
+        heroRunning = false;
+        scheduleNext(1200);
         return;
       }
 
-      setHeroBackground(standbyLayer, source, file);
+      setHeroBackground(standbyLayer, source);
+      startHeroMotion(standbyLayer);
 
-      // Give the browser one frame to paint the incoming image at opacity 0,
-      // then perform the long dissolve. The shade/noise layers remain untouched.
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           standbyLayer.classList.remove('is-hero-hidden');
@@ -157,19 +194,23 @@
         });
       });
 
-      window.setTimeout(() => {
+      window.clearTimeout(transitionTimer);
+      transitionTimer = window.setTimeout(() => {
         const previousActive = activeLayer;
         activeLayer = standbyLayer;
         standbyLayer = previousActive;
+
         standbyLayer.classList.remove('is-hero-visible');
         standbyLayer.classList.add('is-hero-hidden');
+
+        heroRunning = false;
         scheduleNext(HERO_HOLD_MS);
       }, HERO_FADE_MS);
     };
 
-    loadPhotoManifest().then(photos => {
+    loadPhotoManifest().then(async photos => {
+      const seen = new Set();
       const photoFiles = [];
-      const seen = new Set(['sunset.jpg']);
 
       photos.forEach(photo => {
         const file = String(photo?.file || '').trim();
@@ -181,14 +222,36 @@
 
       if (!photoFiles.length) return;
 
-      // Sunset always opens the landing page. Every other photograph in the
-      // archive gets a fresh shuffled order on each visit.
-      slides = ['Sunset.jpg', ...shuffled(photoFiles)];
+      // No fixed opening photograph: every load starts from a freshly shuffled
+      // full archive. Assign the lightweight thumbnail immediately so the browser
+      // can begin fetching it without waiting for the first hold interval.
+      slides = shuffled(photoFiles);
+      slideIndex = 0;
+
+      const firstFile = slides[0];
+      const firstCandidates = heroSourceCandidates(firstFile);
+      setHeroBackground(heroPrimary, firstCandidates[0]);
+      heroPrimary.classList.remove('is-hero-hidden');
+      heroPrimary.classList.add('is-hero-visible');
+      startHeroMotion(heroPrimary);
+
+      // Verify the thumbnail and transparently fall back to the full image if a
+      // thumbnail has not been generated yet. This happens while the thumbnail is
+      // already being requested for display, so there is no intentional startup wait.
+      const firstSource = await preloadFirstAvailable(firstCandidates);
+      if (firstSource && firstSource !== firstCandidates[0]) {
+        setHeroBackground(heroPrimary, firstSource);
+      }
+
       scheduleNext(HERO_HOLD_MS);
     });
 
     document.addEventListener('visibilitychange', () => {
-      if (!document.hidden && slides.length > 1) scheduleNext(HERO_HOLD_MS);
+      if (document.hidden) {
+        window.clearTimeout(heroTimer);
+        return;
+      }
+      scheduleNext(1000);
     });
   }
 
