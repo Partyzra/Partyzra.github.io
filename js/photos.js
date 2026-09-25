@@ -194,6 +194,7 @@ const PORTFOLIO_PHOTOS = [
 
 {
     "file": "Gargoyle.jpg",
+    "album": "People",
     "title": "Gargoyle",
     "collection": "Objects & Details",
     "year": "",
