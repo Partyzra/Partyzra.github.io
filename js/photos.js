@@ -832,6 +832,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Rattlesnake Rapids.jpg",
+    "variants": ["Rattlesnake Rapids5.jpg", "Rattlesnake Rapids6.jpg"],
     "title": "Rattlesnake Rapids",
     "collection": "Places & Structures",
     "year": "",
