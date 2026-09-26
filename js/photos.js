@@ -2686,20 +2686,9 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
 {
-    "file": "Construction.jpg",
-    "variants": ["Construction2.jpg"],
-    "title": "Construction",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": ""
-  },
-{
     "file": "Construction1.jpg",
+    "variants": ["Construction.jpg", "Construction2.jpg"],
+    "album": "West Jordan",
     "title": "Construction",
     "collection": "Nature",
     "year": "",
