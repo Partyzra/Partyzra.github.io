@@ -2327,7 +2327,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Merry Horse1.jpg",
-    "variants": "Merry Horse.jpg",
+    "variants": ["Merry Horse.jpg"],
     "title": "Merry Horse",
     "album": "Lagoon",
     "collection": "Nature",
@@ -2341,7 +2341,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Dentist.jpg",
-    "variants": "Dentist1.jpg",
+    "variants": ["Dentist1.jpg"],
     "title": "Dentist",
     "album": "Lagoon",
     "collection": "Nature",
