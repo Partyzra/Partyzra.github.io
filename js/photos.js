@@ -2325,7 +2325,8 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
 {
-    "file": "Merry Horse.jpg",
+    "file": "Merry Horse1.jpg",
+    "variants": "Merry Horse.jpg",
     "title": "Merry Horse",
     "album": "Lagoon",
     "collection": "Nature",
@@ -2338,8 +2339,9 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
 {
-    "file": "Dentist Room2.jpg",
-    "title": "Dentist Room",
+    "file": "Dentist.jpg",
+    "variants": "Dentist1.jpg",
+    "title": "Dentist",
     "album": "Lagoon",
     "collection": "Nature",
     "year": "",
