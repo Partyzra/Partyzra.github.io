@@ -2328,7 +2328,7 @@ const PORTFOLIO_PHOTOS = [
 {
     "file": "Merry Horse1.jpg",
     "variants": ["Merry Horse.jpg"],
-    "title": "Merry Horse",
+    "title": "Entrance",
     "album": "Lagoon",
     "collection": "Nature",
     "year": "",
@@ -2704,7 +2704,8 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Lemon Bundt.jpg",
-    "variants": ["Lemon Bundt1.jpg", "Lemon Bundt2.jpg, Lemon Bundt3.jpg"],
+    "variants": ["Lemon Bundt1.jpg", "Lemon Bundt2.jpg", "Lemon Bundt3.jpg"],
+    "album": "West Jordan",
     "title": "Lemon Bundt",
     "collection": "Nature",
     "year": "",

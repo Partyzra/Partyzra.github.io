@@ -279,6 +279,8 @@
 
     if (stem === 'est square') return '50% 94%';        // near bottom
 
+    if (stem === 'lemon bundt') return '50% 18%';   // flower at top
+
   };
 
   const albumNav = qs('[data-album-nav]');
