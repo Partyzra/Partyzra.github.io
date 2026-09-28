@@ -2701,6 +2701,19 @@ const PORTFOLIO_PHOTOS = [
       "nature"
     ],
     "note": ""
+  },
+{
+    "file": "Lemon Bundt.jpg",
+    "variants": ["Lemon Bundt1.jpg", "Lemon Bundt2.jpg, Lemon Bundt3.jpg"],
+    "title": "Lemon Bundt",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
   }
 
 ];
