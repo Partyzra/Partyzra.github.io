@@ -756,19 +756,8 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "My Father.jpg",
-    "title": "My Father",
-    "collection": "Family",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "portrait"
-    ],
-    "note": ""
-  },
-  {
     "file": "My Father2.jpg",
+    "variants": "My Father.jpg",
     "title": "Norman",
     "collection": "Family",
     "year": "",
