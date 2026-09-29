@@ -2014,6 +2014,21 @@ const PORTFOLIO_PHOTOS = [
    
   },
   {
+    "file": "Baseball.jpg",
+    "variants": ["Baseball1.jpg"],
+    "title": "The Swing",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
     "file": "Barbershop.jpg",
     "variants": ["Barbershop1.jpg"],
     "title": "Barbershop",
@@ -2704,7 +2719,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Lemon Bundt.jpg",
-    "variants": ["Lemon Bundt1.jpg", "Lemon Bundt2.jpg", "Lemon Bundt3.jpg"],
+    "variants": ["Lemon Bundt2.jpg", "Lemon Bundt1.jpg"],
     "album": "West Jordan",
     "title": "Lemon Bundt",
     "collection": "Nature",
