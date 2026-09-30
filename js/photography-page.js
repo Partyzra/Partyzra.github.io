@@ -281,6 +281,8 @@
 
     if (stem === 'lemon bundt') return '50% 16%';   // flower at top
 
+    if (stem === 'minecarts') return '50% 16%';   // top
+
   };
 
   const albumNav = qs('[data-album-nav]');
