@@ -2628,6 +2628,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Crestview Elementary.jpg",
+    "variants": ["Crestview Elementary1.jpg"],
     "title": "Crestview Elementary",
     "album": "Layton",
     "collection": "Nature",
