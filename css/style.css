@@ -73,7 +73,7 @@ button { color: inherit; }
 .nav-toggle.is-open span:nth-of-type(3) { transform: translateY(-4px) rotate(-45deg); }
 
 .hero-v3 { min-height: 100svh; position: relative; overflow: hidden; display: flex; align-items: flex-end; padding: calc(var(--header-h) + 80px) 0 clamp(52px, 8vw, 100px); isolation: isolate; }
-.hero-photo { position: absolute; inset: 0; z-index: -4; background: #000; transform: scale(1.025); animation: hero-breathe 16s ease-in-out infinite alternate; }
+.hero-photo { position: absolute; inset: 0; z-index: -4; background: url('../Images/photo-full/Sunset.jpg') center 58% / cover no-repeat; transform: scale(1.025); animation: hero-breathe 16s ease-in-out infinite alternate; }
 @keyframes hero-breathe { from { transform: scale(1.025); } to { transform: scale(1.075); } }
 .hero-shade { position: absolute; inset: 0; z-index: -3; background: linear-gradient(90deg, rgba(0,0,0,.95) 0%, rgba(0,0,0,.75) 40%, rgba(0,0,0,.28) 72%, rgba(0,0,0,.30) 100%), linear-gradient(to top, rgba(0,0,0,.75), transparent 46%); }
 .hero-noise { position: absolute; inset: 0; z-index: -2; opacity: .12; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.28'/%3E%3C/svg%3E"); mix-blend-mode: soft-light; }
@@ -95,9 +95,26 @@ button { color: inherit; }
 .text-link-dark { color: var(--ink); }
 
 .discipline-strip { overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--ink-2); }
-.discipline-track { width: max-content; display: flex; align-items: center; gap: 22px; padding: 17px 0; color: #737983; font-size: .64rem; letter-spacing: .21em; animation: marquee 30s linear infinite; }
+.discipline-track {
+  --discipline-gap: 22px;
+  width: max-content;
+  display: flex;
+  align-items: center;
+  gap: var(--discipline-gap);
+  padding: 17px 0;
+  color: #737983;
+  font-size: .64rem;
+  letter-spacing: .21em;
+  animation: marquee 60s linear infinite;
+  will-change: transform;
+}
 .discipline-track i { color: var(--gold); font-style: normal; }
-@keyframes marquee { to { transform: translateX(-50%); } }
+/* The HTML contains the discipline sentence twice. Move by exactly one copy
+   (half the track plus half the center gap) so the reset is visually seamless. */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-50% - (var(--discipline-gap) / 2))); }
+}
 
 .work-intro { background: var(--ink); }
 .section-heading { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(320px, .64fr); gap: clamp(50px, 9vw, 150px); align-items: end; margin-bottom: clamp(48px, 6vw, 80px); }
@@ -698,10 +715,10 @@ button { color: inherit; }
 }
 
 
-/* V4.17.25 — Lagoon-only, one-way landing hero motion
-   Each Lagoon photograph gets exactly one motion pass: zoom in, zoom out,
-   drift left, or drift right. Nothing reverses direction before the next
-   photograph dissolves in. */
+/* V4.17.13 — Solid landing header + slow landscape hero dissolve
+   The landing header remains opaque at the top of the page. The existing
+   Sunset hero stays first, while JavaScript crossfades in other photographs
+   from the Landscapes album with a restrained Ken Burns-style drift. */
 .home-page .site-header,
 .home-page .site-header.is-scrolled {
   background: #000000;
@@ -713,43 +730,27 @@ button { color: inherit; }
 .home-page .hero-photo {
   opacity: 1;
   transform-origin: center center;
-  transition: opacity 1.8s cubic-bezier(.4, 0, .2, 1);
-  animation-name: none;
-  animation-duration: 12s;
-  animation-direction: normal;
-  animation-timing-function: linear;
-  animation-iteration-count: 1;
-  animation-fill-mode: both;
+  transition: opacity 4s cubic-bezier(.4, 0, .2, 1);
+  animation: home-hero-drift-a 12s ease-in-out infinite alternate;
   will-change: transform, opacity;
 }
 
-.home-page .hero-photo--alternate { opacity: 0; }
+.home-page .hero-photo--alternate {
+  opacity: 0;
+  animation-name: home-hero-drift-b;
+}
+
 .home-page .hero-photo.is-hero-visible { opacity: 1; }
 .home-page .hero-photo.is-hero-hidden { opacity: 0; }
 
-.home-page .hero-photo[data-hero-motion="zoom-in"] { animation-name: home-hero-zoom-in; }
-.home-page .hero-photo[data-hero-motion="zoom-out"] { animation-name: home-hero-zoom-out; }
-.home-page .hero-photo[data-hero-motion="pan-left"] { animation-name: home-hero-pan-left; }
-.home-page .hero-photo[data-hero-motion="pan-right"] { animation-name: home-hero-pan-right; }
-
-@keyframes home-hero-zoom-in {
-  from { transform: translate3d(0, 0, 0) scale(1.035); }
-  to   { transform: translate3d(0, 0, 0) scale(1.115); }
+@keyframes home-hero-drift-a {
+  0%   { transform: translate3d(-.7%, -.35%, 0) scale(1.045); }
+  100% { transform: translate3d(.85%, .55%, 0) scale(1.10); }
 }
 
-@keyframes home-hero-zoom-out {
-  from { transform: translate3d(0, 0, 0) scale(1.115); }
-  to   { transform: translate3d(0, 0, 0) scale(1.035); }
-}
-
-@keyframes home-hero-pan-left {
-  from { transform: translate3d(2.4%, 0, 0) scale(1.105); }
-  to   { transform: translate3d(-2.4%, 0, 0) scale(1.105); }
-}
-
-@keyframes home-hero-pan-right {
-  from { transform: translate3d(-2.4%, 0, 0) scale(1.105); }
-  to   { transform: translate3d(2.4%, 0, 0) scale(1.105); }
+@keyframes home-hero-drift-b {
+  0%   { transform: translate3d(.8%, -.45%, 0) scale(1.095); }
+  100% { transform: translate3d(-.75%, .5%, 0) scale(1.045); }
 }
 
 @media (prefers-reduced-motion: reduce) {
