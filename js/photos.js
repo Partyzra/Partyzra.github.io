@@ -2749,7 +2749,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York1.jpg",
-    "title": "New York",
+    "title": "Subway",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -2775,7 +2775,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York3.jpg",
-    "title": "New York",
+    "title": "Fruit Stand",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -2788,7 +2788,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York4.jpg",
-    "title": "New York",
+    "title": "Chinatown",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -2801,7 +2801,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York5.jpg",
-    "title": "New York",
+    "title": "Brooklyn Bridge",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -2814,7 +2814,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York6.jpg",
-    "title": "New York",
+    "title": "Downtown",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -2827,7 +2827,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York7.jpg",
-    "title": "New York",
+    "title": "Downtown",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -2853,7 +2853,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York9.jpg",
-    "title": "New York",
+    "title": "Brooklyn Bridge",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -2918,7 +2918,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York14.jpg",
-    "title": "New York",
+    "title": "Charging Stations",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -2931,7 +2931,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York15.jpg",
-    "title": "New York",
+    "title": "Shirts",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -2944,7 +2944,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York16.jpg",
-    "title": "New York",
+    "title": "Jenga",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -2996,7 +2996,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York20.jpg",
-    "title": "New York",
+    "title": "Norm's Pizza Shop",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3009,7 +3009,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York21.jpg",
-    "title": "New York",
+    "title": "Amazon Commercial",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3022,7 +3022,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York22.jpg",
-    "title": "New York",
+    "title": "Central Park",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3035,7 +3035,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York23.jpg",
-    "title": "New York",
+    "title": "Chess Tables",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3049,7 +3049,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "New York25.jpg",
     "variants": ["New York24.jpg"],
-    "title": "New York",
+    "title": "Radio City Music Hall",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3062,7 +3062,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York26.jpg",
-    "title": "New York",
+    "title": "The Tonight Show",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3179,7 +3179,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York35.jpg",
-    "title": "New York",
+    "title": "Chinatown",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3192,7 +3192,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York36.jpg",
-    "title": "New York",
+    "title": "Jules",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3218,7 +3218,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York38.jpg",
-    "title": "New York",
+    "title": "Caution Tape",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3309,7 +3309,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York45.jpg",
-    "title": "New York",
+    "title": "Statue of Liberty",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3439,7 +3439,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York55.jpg",
-    "title": "New York",
+    "title": "Missing Poster",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3465,7 +3465,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York57.jpg",
-    "title": "New York",
+    "title": "Bowery Street",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3478,7 +3478,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York58.jpg",
-    "title": "New York",
+    "title": "Ellis Island",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3517,7 +3517,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York61.jpg",
-    "title": "New York",
+    "title": "Jeremy Allen White",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3556,7 +3556,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York64.jpg",
-    "title": "New York",
+    "title": "Playing Soccer",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3569,7 +3569,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York65.jpg",
-    "title": "New York",
+    "title": "Subway",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3582,7 +3582,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York66.jpg",
-    "title": "New York",
+    "title": "Ferry",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3595,7 +3595,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York67.jpg",
-    "title": "New York",
+    "title": "The Bronx",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3608,7 +3608,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York68.jpg",
-    "title": "New York",
+    "title": "The Bronx",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3621,7 +3621,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York69.jpg",
-    "title": "New York",
+    "title": "Harlem - Bronx Divide",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3634,7 +3634,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York70.jpg",
-    "title": "New York",
+    "title": "New York City",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3647,7 +3647,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York71.jpg",
-    "title": "New York",
+    "title": "Yankee Stadium",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3660,7 +3660,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York72.jpg",
-    "title": "New York",
+    "title": "Hard Rock Cafe",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3673,7 +3673,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York73.jpg",
-    "title": "New York",
+    "title": "The Bronx",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3725,7 +3725,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York77.jpg",
-    "title": "New York",
+    "title": "Messi",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3738,7 +3738,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York78.jpg",
-    "title": "New York",
+    "title": "Financial District",
     "album": "New York",
     "collection": "Nature",
     "year": "",
