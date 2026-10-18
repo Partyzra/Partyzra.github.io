@@ -3735,6 +3735,45 @@ const PORTFOLIO_PHOTOS = [
       "city"
     ],
     "note": ""
+  },
+  {
+    "file": "New York78.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York79.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York80.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
   }
 
 ];
