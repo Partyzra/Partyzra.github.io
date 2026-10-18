@@ -283,6 +283,8 @@
 
     if (stem === 'minecarts') return '50% 16%';   // top
 
+    if (stem === 'new york45') return '50% 0%';   // top
+
   };
 
   const albumNav = qs('[data-album-nav]');
