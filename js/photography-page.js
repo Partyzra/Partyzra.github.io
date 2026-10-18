@@ -283,9 +283,9 @@
 
     if (stem === 'minecarts') return '50% 16%';   // top
 
-    if (stem === 'new york45') return '50% 0%';   // top
+    if (stem === 'new york45') return '50% 3%';   // top
 
-    if (stem === 'new york8') return '50% 100%';   // bottom
+    if (stem === 'new york8') return '50% 80%';   // bottom
 
   };
 
