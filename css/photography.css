@@ -539,6 +539,12 @@
 .photo-viewer-prev { left: 5px; }
 .photo-viewer-next { right: 5px; }
 
+/* The wrapper is layout-transparent on desktop so the existing side-arrow
+   treatment remains unchanged. Mobile turns this into a real row below the image. */
+.photo-viewer-nav-row {
+  display: contents;
+}
+
 .photo-viewer-copy {
   min-width: 0;
 }
@@ -1391,10 +1397,10 @@ video,
    ============================================================ */
 
 /* The cached grid thumbnail is shown immediately while the full-resolution
-   file is resolving. Keep it photographic rather than displaying a blank
-   stage; the tiny blur softens any visible thumbnail compression. */
+   file is resolving. Keep it completely unfiltered: the preview should look
+   exactly like the already-loaded thumbnail, never intentionally blurred. */
 .photo-viewer-image.is-preview {
-  filter: blur(.8px);
+  filter: none;
 }
 
 .photo-viewer-stage::after {
@@ -1424,43 +1430,59 @@ video,
 }
 
 @media (max-width: 700px), (max-width: 900px) and (pointer: coarse) {
-  /* Mobile navigation should be discoverable without knowing the swipe
-     gesture. Keep swipe support, but make these real touch targets prominent. */
-  .photo-viewer-nav {
+  /* Reserve a dedicated strip below the photograph for navigation. This keeps
+     the controls obvious without placing anything over the artwork itself. */
+  .photo-viewer {
+    grid-template-rows: 54px minmax(0, 1fr) 48px 76px;
+  }
+
+  .photo-viewer-nav-row {
+    position: relative;
     z-index: 24;
-    top: 50%;
+    display: flex;
+    grid-row: 3;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    min-height: 48px;
+    padding: 2px max(12px, env(safe-area-inset-right)) 4px max(12px, env(safe-area-inset-left));
+  }
+
+  .photo-viewer-nav {
+    position: static;
+    z-index: auto;
+    top: auto;
+    right: auto;
     bottom: auto;
+    left: auto;
     display: grid;
     place-items: center;
-    width: 54px;
-    height: 54px;
-    border: 1px solid rgba(240, 238, 233, .25);
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 1px solid rgba(240, 238, 233, .22);
     border-radius: 50%;
-    background: rgba(0, 0, 0, .48);
-    color: rgba(255, 255, 255, .94);
-    font-size: 40px;
+    background: rgba(0, 0, 0, .34);
+    color: rgba(255, 255, 255, .90);
+    font-size: 31px;
     line-height: .8;
-    opacity: .96;
-    transform: translateY(-50%);
-    box-shadow: 0 8px 26px rgba(0, 0, 0, .28);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    opacity: .94;
+    transform: none;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     touch-action: manipulation;
   }
 
   .photo-viewer-nav:active {
-    transform: translateY(-50%) scale(.94);
+    transform: scale(.94);
   }
 
-  .photo-viewer-prev {
-    left: max(10px, env(safe-area-inset-left));
-  }
-
-  .photo-viewer-next {
-    right: max(10px, env(safe-area-inset-right));
+  .photo-viewer-footer {
+    grid-row: 4;
   }
 
   .photo-viewer-stage::after {
-    bottom: max(10px, env(safe-area-inset-bottom));
+    bottom: 10px;
   }
 }

@@ -41,3 +41,10 @@ To choose a different poster frame, edit PosterTime for that clip in:
   tools\build-mobile-video-assets.ps1
 Then run the script with -Force from PowerShell, for example:
   .\tools\build-mobile-video-assets.ps1 -Force
+
+MOBILE VIEWER REFINEMENT
+------------------------
+- The thumbnail preview is now shown with no blur/filter while full resolution loads.
+- Previous/Next controls sit in a dedicated row below the photograph on phones, so they never cover the image.
+- Swipe navigation remains enabled.
+
