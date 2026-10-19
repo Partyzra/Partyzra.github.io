@@ -760,6 +760,7 @@
   const indexLabel = qs('[data-viewer-index]', viewer);
   const variantControls = qs('[data-viewer-variants]', viewer);
   const variantButtons = qs('[data-viewer-variant-buttons]', viewer);
+  const detailStatus = qs('[data-viewer-detail-status]', viewer);
 
   let buttons = qsa('.photo-grid-button', grid);
   let currentIndex = 0;
@@ -767,6 +768,8 @@
   let activeLayer = 0;
   let lastFocused = null;
   let transitionLocked = false;
+  let pendingNavigation = 0;
+  let navigationUnlockTimer = 0;
 
   const MIN_ZOOM = 1;
   const BUTTON_ZOOM = 2.35;
@@ -1279,26 +1282,71 @@
 
   let displayRequestId = 0;
 
-  // Keep the small loading badge attached to the upper-right corner of the
-  // photograph rather than the footer, where it can compete with frame/variant
-  // controls. CSS reads these coordinates from the stage element.
-  const positionDetailLoading = (image = activeViewerImage()) => {
-    if (!stage || !image || !image.classList.contains('is-active')) return;
-
-    const stageRect = stage.getBoundingClientRect();
-    const imageRect = image.getBoundingClientRect();
-    if (!stageRect.width || !stageRect.height || !imageRect.width || !imageRect.height) return;
-
-    const x = clamp(imageRect.right - stageRect.left - 8, 78, stageRect.width - 8);
-    const y = clamp(imageRect.top - stageRect.top + 8, 8, stageRect.height - 26);
-    stage.style.setProperty('--detail-loading-x', `${x}px`);
-    stage.style.setProperty('--detail-loading-y', `${y}px`);
-  };
-
   const setDetailLoading = loading => {
     viewer.classList.toggle('is-loading-detail', loading);
-    if (loading) requestAnimationFrame(() => positionDetailLoading());
+    if (detailStatus) detailStatus.setAttribute('aria-hidden', String(!loading));
   };
+
+  // Never reveal a reused viewer layer until the new source assigned to that
+  // layer has actually loaded/decoded. Mobile browsers may otherwise keep
+  // painting the layer's previous pixels for a moment, which looks like the
+  // gallery is cycling backward through recently viewed photographs.
+  async function setImageSourceReady(image, src, alt = '') {
+    if (!image || !src) return false;
+
+    image.classList.remove('is-active');
+    image.alt = alt;
+    image.style.transform = '';
+
+    const absoluteSrc = (() => {
+      try { return new URL(src, document.baseURI).href; } catch (_) { return src; }
+    })();
+
+    if (image.src !== absoluteSrc) image.src = src;
+
+    if (!image.complete || !image.naturalWidth) {
+      const loaded = await new Promise(resolve => {
+        const onLoad = () => { cleanup(); resolve(true); };
+        const onError = () => { cleanup(); resolve(false); };
+        const cleanup = () => {
+          image.removeEventListener('load', onLoad);
+          image.removeEventListener('error', onError);
+        };
+        image.addEventListener('load', onLoad, { once: true });
+        image.addEventListener('error', onError, { once: true });
+
+        // Cover the tiny race where a cached image completes between the
+        // condition above and listener registration.
+        if (image.complete) {
+          cleanup();
+          resolve(Boolean(image.naturalWidth));
+        }
+      });
+      if (!loaded) return false;
+    }
+
+    try {
+      if (image.decode) await image.decode();
+    } catch (_) {
+      // Some browsers reject decode() even though the image is renderable.
+    }
+
+    return Boolean(image.naturalWidth);
+  }
+
+  function releaseNavigationLock(requestId, delay = 0) {
+    window.clearTimeout(navigationUnlockTimer);
+    navigationUnlockTimer = window.setTimeout(() => {
+      if (requestId !== displayRequestId) return;
+      transitionLocked = false;
+
+      if (pendingNavigation) {
+        const direction = pendingNavigation;
+        pendingNavigation = 0;
+        window.setTimeout(() => go(direction), 24);
+      }
+    }, delay);
+  }
 
   function activateLayer(nextLayer, previousImage, animate = true) {
     const nextImage = images[nextLayer];
@@ -1320,68 +1368,55 @@
   }
 
   async function display(index, animate = true) {
-    if (!buttons.length || transitionLocked) return;
+    if (!buttons.length) return;
+    if (transitionLocked && animate) return;
 
-    // Every new photograph starts in the complete fitted view. Zoom is an
-    // inspection state for the current image, not something carried to the next.
     resetZoom();
 
     const requestId = ++displayRequestId;
     const target = wrap(index);
-    currentIndex = target;
-    currentVariantIndex = 0;
-    syncCopy(target);
-    renderVariantControls(target);
-
     const outgoing = images[activeLayer];
     const previewLayer = images.length > 1 ? 1 - activeLayer : activeLayer;
     const previewImage = images[previewLayer];
     const previewSrc = previewSrcAt(target);
 
+    // Start the expensive request immediately, but do not let it control the
+    // visible transition. The cached thumbnail gets the screen first.
+    const fullSrcPromise = resolveFullSrc(target, 0, 'high');
+
     transitionLocked = animate;
     setDetailLoading(true);
 
-    // The grid thumbnail has already been downloaded by the time it can be
-    // tapped. Reuse that cached image immediately so opening/navigation feels
-    // instant on a phone, then replace it with the full-resolution file below.
+    let previewReady = false;
     if (previewImage && previewSrc) {
       previewImage.classList.add('is-preview');
-      previewImage.src = previewSrc;
-      previewImage.alt = titleAt(target);
-      previewImage.style.transform = '';
+      previewReady = await setImageSourceReady(previewImage, previewSrc, titleAt(target));
+    }
 
-      if (previewImage.complete && previewImage.naturalWidth) {
-        prepareImageLayout(previewImage);
-      } else {
-        // The tapped grid <img> is already decoded, so its intrinsic thumbnail
-        // dimensions can size the viewer immediately while this second <img>
-        // element attaches to the same cached resource.
-        preparePreviewLayout(target, previewImage);
-        previewImage.addEventListener('load', () => {
-          if (requestId === displayRequestId) prepareImageLayout(previewImage);
-        }, { once: true });
-      }
+    if (requestId !== displayRequestId) return;
 
+    // Commit the logical gallery position only when the new preview is ready to
+    // be shown. This keeps caption/index/variant state synchronized with what is
+    // actually visible on screen.
+    currentIndex = target;
+    currentVariantIndex = 0;
+    syncCopy(target);
+    renderVariantControls(target);
+
+    if (previewReady && previewImage) {
+      prepareImageLayout(previewImage);
       activateLayer(previewLayer, outgoing, animate);
       activeLayer = previewLayer;
-      requestAnimationFrame(() => positionDetailLoading(previewImage));
     } else {
-      // Never expose the previously viewed photograph while a rare missing
-      // thumbnail falls back to the full-resolution request.
       outgoing?.classList.remove('is-active');
     }
 
-    // Do not make the UI wait for a large file. The small visual transition is
-    // the only navigation lock; network/decode work continues independently.
-    if (animate) {
-      window.setTimeout(() => {
-        if (requestId === displayRequestId) transitionLocked = false;
-      }, 300);
-    } else {
-      transitionLocked = false;
-    }
+    // The navigation pause is intentionally short and tied only to the visual
+    // handoff. Visitors do not have to wait for the full-resolution detail file
+    // before moving to the next photograph.
+    releaseNavigationLock(requestId, animate ? 220 : 0);
 
-    const src = await resolveFullSrc(target, currentVariantIndex, 'high');
+    const src = await fullSrcPromise;
     if (requestId !== displayRequestId) return;
 
     if (!src) {
@@ -1397,15 +1432,14 @@
     fullImage.classList.remove('is-preview');
     fullImage.decoding = 'async';
     try { fullImage.fetchPriority = 'high'; } catch (_) {}
-    fullImage.src = src;
-    fullImage.alt = titleAt(target);
-    fullImage.style.transform = '';
 
-    try {
-      if (fullImage.decode) await fullImage.decode();
-    } catch (_) {}
-
+    const fullReady = await setImageSourceReady(fullImage, src, titleAt(target));
     if (requestId !== displayRequestId) return;
+
+    if (!fullReady) {
+      setDetailLoading(false);
+      return;
+    }
 
     resetZoom();
     prepareImageLayout(fullImage);
@@ -1443,46 +1477,30 @@
     const incomingLayer = images.length > 1 ? 1 - activeLayer : activeLayer;
     const incoming = images[incomingLayer];
 
+    incoming.classList.remove('is-preview');
     incoming.decoding = 'async';
     try { incoming.fetchPriority = 'high'; } catch (_) {}
-    incoming.src = src;
-    incoming.alt = `${titleAt(currentIndex)} — alternate ${targetVariant + 1}`;
-    incoming.style.transform = '';
 
-    try {
-      if (incoming.decode) await incoming.decode();
-    } catch (_) {}
+    const ready = await setImageSourceReady(
+      incoming,
+      src,
+      `${titleAt(currentIndex)} — alternate ${targetVariant + 1}`
+    );
 
     if (requestId !== displayRequestId) return;
-
-    prepareImageLayout(incoming);
-    incoming.classList.remove('is-preview');
-
-    currentVariantIndex = targetVariant;
-    renderVariantControls(currentIndex);
-
-    if (!animate || incoming === outgoing) {
-      outgoing?.classList.remove('is-active');
-      incoming.classList.add('is-active');
-      activeLayer = incomingLayer;
+    if (!ready) {
       setDetailLoading(false);
       transitionLocked = false;
       return;
     }
 
-    incoming.classList.remove('is-active');
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        incoming.classList.add('is-active');
-        outgoing?.classList.remove('is-active');
-      });
-    });
-
+    prepareImageLayout(incoming);
+    currentVariantIndex = targetVariant;
+    renderVariantControls(currentIndex);
+    activateLayer(incomingLayer, outgoing, animate);
     activeLayer = incomingLayer;
     setDetailLoading(false);
-    window.setTimeout(() => {
-      transitionLocked = false;
-    }, 460);
+    releaseNavigationLock(requestId, animate ? 220 : 0);
   }
 
   // ----------------------------------------------------------
@@ -1567,6 +1585,8 @@
 
     lastFocused = button;
     transitionLocked = false;
+    pendingNavigation = 0;
+    window.clearTimeout(navigationUnlockTimer);
     activePointers.clear();
     gestureMode = null;
     resetZoom();
@@ -1589,6 +1609,8 @@
     viewer.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('no-scroll');
     transitionLocked = false;
+    pendingNavigation = 0;
+    window.clearTimeout(navigationUnlockTimer);
     activePointers.clear();
     gestureMode = null;
     resetZoom();
@@ -1598,8 +1620,17 @@
   }
 
   const go = direction => {
+    const step = direction < 0 ? -1 : 1;
+
+    // Preserve one intentional extra tap during the brief handoff instead of
+    // racing multiple layer swaps or silently jumping around recent images.
+    if (transitionLocked) {
+      pendingNavigation = step;
+      return;
+    }
+
     resetZoom();
-    display(currentIndex + direction, true);
+    display(currentIndex + step, true);
   };
 
   grid.addEventListener('click', event => {
@@ -1840,9 +1871,6 @@
     });
 
     if (zoomScale > MIN_ZOOM) applyZoom();
-    if (viewer.classList.contains('is-loading-detail')) {
-      requestAnimationFrame(() => positionDetailLoading());
-    }
   }, { passive: true });
 
   syncZoomUI();

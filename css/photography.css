@@ -1393,51 +1393,56 @@ video,
 }
 
 /* ============================================================
-   V4.18 — Mobile viewer speed + clearer navigation
+   V4.19 — Stable mobile viewer navigation + unobstructed controls
    ============================================================ */
 
 /* The cached grid thumbnail is shown immediately while the full-resolution
-   file is resolving. Keep it completely unfiltered: the preview should look
-   exactly like the already-loaded thumbnail, never intentionally blurred. */
+   file resolves. Never blur or soften the preview. */
 .photo-viewer-image.is-preview {
   filter: none;
 }
 
-.photo-viewer-stage::after {
-  content: 'Loading detail';
-  position: absolute;
-  z-index: 10;
-  /* JavaScript keeps this badge pinned just inside the photograph's upper-right
-     corner, safely away from the footer and alternate-frame controls. */
-  left: var(--detail-loading-x, calc(100% - 12px));
-  top: var(--detail-loading-y, 12px);
-  padding: 5px 7px;
+/* Detail status now lives in the top bar, completely outside the photograph. */
+.photo-viewer-detail-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 4px 7px;
   border: 1px solid rgba(240, 238, 233, .10);
   border-radius: 999px;
-  background: rgba(0, 0, 0, .58);
-  color: rgba(240, 238, 233, .66);
-  font-size: .48rem;
+  background: rgba(0, 0, 0, .42);
+  color: rgba(240, 238, 233, .62);
+  font-size: .46rem;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: .12em;
+  letter-spacing: .11em;
   white-space: nowrap;
   opacity: 0;
-  transform: translate(-100%, -4px);
-  transition: opacity .2s ease, transform .2s ease;
+  transform: translateY(-2px);
+  transition: opacity .18s ease, transform .18s ease;
   pointer-events: none;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
 }
 
-.photo-viewer.is-loading-detail .photo-viewer-stage::after {
+.photo-viewer.is-loading-detail .photo-viewer-detail-status {
   opacity: 1;
-  transform: translate(-100%, 0);
+  transform: translateY(0);
 }
 
 @media (max-width: 700px), (max-width: 900px) and (pointer: coarse) {
-  /* Reserve a dedicated strip below the photograph for navigation. This keeps
-     the controls obvious without placing anything over the artwork itself. */
+  /* Keep four distinct vertical zones: header, photograph, navigation, footer.
+     The nav row sits above the footer/variant controls and never overlays them. */
   .photo-viewer {
-    grid-template-rows: 54px minmax(0, 1fr) 48px 76px;
+    grid-template-rows: 54px minmax(0, 1fr) 46px 116px;
+  }
+
+  .photo-viewer-actions {
+    gap: 7px;
+  }
+
+  .photo-viewer-detail-status {
+    min-height: 22px;
+    padding: 3px 6px;
+    font-size: .43rem;
   }
 
   .photo-viewer-nav-row {
@@ -1445,49 +1450,75 @@ video,
     z-index: 24;
     display: flex;
     grid-row: 3;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    gap: 20px;
-    min-height: 48px;
-    padding: 2px max(12px, env(safe-area-inset-right)) 4px max(12px, env(safe-area-inset-left));
+    gap: 18px;
+    min-height: 46px;
+    padding: 0 max(12px, env(safe-area-inset-right)) 5px max(12px, env(safe-area-inset-left));
   }
 
   .photo-viewer-nav {
     position: static;
     z-index: auto;
-    top: auto;
-    right: auto;
-    bottom: auto;
-    left: auto;
     display: grid;
     place-items: center;
-    width: 42px;
-    height: 42px;
+    width: 38px;
+    height: 38px;
     padding: 0;
-    border: 1px solid rgba(240, 238, 233, .22);
+    border: 1px solid rgba(240, 238, 233, .20);
     border-radius: 50%;
-    background: rgba(0, 0, 0, .34);
-    color: rgba(255, 255, 255, .90);
-    font-size: 31px;
+    background: rgba(0, 0, 0, .26);
+    color: rgba(255, 255, 255, .88);
+    font-size: 28px;
     line-height: .8;
-    opacity: .94;
+    opacity: .92;
     transform: none;
     box-shadow: none;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
     touch-action: manipulation;
   }
 
   .photo-viewer-nav:active {
-    transform: scale(.94);
+    transform: scale(.95);
   }
 
   .photo-viewer-footer {
     grid-row: 4;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-content: start;
+    justify-items: center;
+    gap: 7px;
+    min-height: 116px;
+    padding: 6px 58px max(56px, calc(env(safe-area-inset-bottom) + 50px));
+    text-align: center;
   }
 
-  .photo-viewer-stage::after {
+  /* Keep frame selectors in normal document flow underneath the arrows.
+     This removes the fixed-position collision that caused the two controls to
+     overlap on short phone viewports. */
+  .photo-viewer-variants {
+    position: static;
+    z-index: auto;
+    left: auto;
+    bottom: auto;
+    transform: none;
+    grid-column: 1;
+    justify-self: center;
+    gap: 7px;
     padding: 4px 6px;
-    font-size: .45rem;
+    border: 1px solid rgba(240,238,233,.12);
+    border-radius: 999px;
+    background: rgba(0,0,0,.70);
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .photo-viewer-variant-button {
+    min-width: 38px;
+    height: 34px;
+    padding: 0 8px;
+    font-size: .59rem;
   }
 }
+
