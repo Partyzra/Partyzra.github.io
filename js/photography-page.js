@@ -554,7 +554,7 @@
     This prevents collisions when both .jpg and .png versions exist.
   */
   const saveData = Boolean(navigator.connection?.saveData);
-  const smallScreen = window.matchMedia('(max-width: 700px)').matches;
+  const smallScreen = window.matchMedia('(max-width: 700px), (max-width: 900px) and (pointer: coarse)').matches;
   const eagerCount = saveData ? 2 : (smallScreen ? 4 : 8);
   const observerMargin = saveData ? '300px 0px' : (smallScreen ? '650px 0px' : '1100px 0px');
 
@@ -1171,13 +1171,54 @@
     return candidates[0] || '';
   }
 
+  const previewSrcAt = index => {
+    const item = itemAt(index);
+    if (!item) return '';
+
+    const gridImage = qs('.photo-grid-image', item);
+    return gridImage?.currentSrc
+      || gridImage?.src
+      || item.dataset.thumb
+      || '';
+  };
+
+  const preparePreviewLayout = (index, image) => {
+    const gridImage = qs('.photo-grid-image', itemAt(index));
+    if (!image || !gridImage?.naturalWidth || !gridImage?.naturalHeight) return false;
+
+    const available = stageAvailableSize();
+    const fitScale = Math.min(
+      1,
+      available.width / gridImage.naturalWidth,
+      available.height / gridImage.naturalHeight
+    );
+
+    positionImageAtViewportCenter(image);
+    image.style.width = `${Math.max(1, gridImage.naturalWidth * fitScale)}px`;
+    image.style.height = `${Math.max(1, gridImage.naturalHeight * fitScale)}px`;
+    image.style.setProperty('--viewer-pan-x', '0px');
+    image.style.setProperty('--viewer-pan-y', '0px');
+    return true;
+  };
+
   function preloadAround(index) {
-    [-2, -1, 1, 2].forEach(offset => {
+    // Phones should prioritize the photograph the visitor is actually viewing.
+    // Once it is ready, quietly prepare only the immediate neighbors. Desktop
+    // keeps the wider +/-2 buffer because bandwidth and decode headroom are
+    // typically much better there. Save-Data skips speculative full-res loads.
+    if (saveData) return;
+
+    const offsets = smallScreen ? [-1, 1] : [-2, -1, 1, 2];
+    offsets.forEach(offset => {
       resolveFullSrc(index + offset, 0).catch(() => {});
     });
   }
 
   function preloadVariants(index) {
+    // Alternate frames can be large too. On phones, load them only when the
+    // visitor explicitly asks for one instead of competing with the main image.
+    if (smallScreen || saveData) return;
+
     variantFilesAt(index).forEach((_, variantIndex) => {
       if (variantIndex === 0) return;
       resolveFullSrc(index, variantIndex).catch(() => {});
@@ -1219,6 +1260,31 @@
     variantControls.hidden = false;
   }
 
+  let displayRequestId = 0;
+
+  const setDetailLoading = loading => {
+    viewer.classList.toggle('is-loading-detail', loading);
+  };
+
+  function activateLayer(nextLayer, previousImage, animate = true) {
+    const nextImage = images[nextLayer];
+    if (!nextImage) return;
+
+    nextImage.classList.remove('is-active');
+
+    const reveal = () => {
+      nextImage.classList.add('is-active');
+      if (previousImage && previousImage !== nextImage) previousImage.classList.remove('is-active');
+    };
+
+    if (!animate || nextImage === previousImage) {
+      reveal();
+      return;
+    }
+
+    requestAnimationFrame(() => requestAnimationFrame(reveal));
+  }
+
   async function display(index, animate = true) {
     if (!buttons.length || transitionLocked) return;
 
@@ -1226,59 +1292,92 @@
     // inspection state for the current image, not something carried to the next.
     resetZoom();
 
+    const requestId = ++displayRequestId;
     const target = wrap(index);
-    currentVariantIndex = 0;
-
-    transitionLocked = animate;
-    const src = await resolveFullSrc(target, currentVariantIndex);
-    if (!src) {
-      transitionLocked = false;
-      return;
-    }
-
-    const outgoing = images[activeLayer];
-    const incomingLayer = images.length > 1 ? 1 - activeLayer : activeLayer;
-    const incoming = images[incomingLayer];
-
-    incoming.src = src;
-    incoming.alt = titleAt(target);
-    incoming.style.transform = '';
-
-    try {
-      if (incoming.decode) await incoming.decode();
-    } catch (_) {}
-
-    prepareImageLayout(incoming);
-
     currentIndex = target;
+    currentVariantIndex = 0;
     syncCopy(target);
     renderVariantControls(target);
 
-    if (!animate || incoming === outgoing) {
+    const outgoing = images[activeLayer];
+    const previewLayer = images.length > 1 ? 1 - activeLayer : activeLayer;
+    const previewImage = images[previewLayer];
+    const previewSrc = previewSrcAt(target);
+
+    transitionLocked = animate;
+    setDetailLoading(true);
+
+    // The grid thumbnail has already been downloaded by the time it can be
+    // tapped. Reuse that cached image immediately so opening/navigation feels
+    // instant on a phone, then replace it with the full-resolution file below.
+    if (previewImage && previewSrc) {
+      previewImage.classList.add('is-preview');
+      previewImage.src = previewSrc;
+      previewImage.alt = titleAt(target);
+      previewImage.style.transform = '';
+
+      if (previewImage.complete && previewImage.naturalWidth) {
+        prepareImageLayout(previewImage);
+      } else {
+        // The tapped grid <img> is already decoded, so its intrinsic thumbnail
+        // dimensions can size the viewer immediately while this second <img>
+        // element attaches to the same cached resource.
+        preparePreviewLayout(target, previewImage);
+        previewImage.addEventListener('load', () => {
+          if (requestId === displayRequestId) prepareImageLayout(previewImage);
+        }, { once: true });
+      }
+
+      activateLayer(previewLayer, outgoing, animate);
+      activeLayer = previewLayer;
+    } else {
+      // Never expose the previously viewed photograph while a rare missing
+      // thumbnail falls back to the full-resolution request.
       outgoing?.classList.remove('is-active');
-      incoming.classList.add('is-active');
-      activeLayer = incomingLayer;
-      preloadAround(target);
-      preloadVariants(target);
+    }
+
+    // Do not make the UI wait for a large file. The small visual transition is
+    // the only navigation lock; network/decode work continues independently.
+    if (animate) {
+      window.setTimeout(() => {
+        if (requestId === displayRequestId) transitionLocked = false;
+      }, 300);
+    } else {
+      transitionLocked = false;
+    }
+
+    const src = await resolveFullSrc(target, currentVariantIndex);
+    if (requestId !== displayRequestId) return;
+
+    if (!src) {
+      setDetailLoading(false);
       transitionLocked = false;
       return;
     }
 
-    incoming.classList.remove('is-active');
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        incoming.classList.add('is-active');
-        outgoing?.classList.remove('is-active');
-      });
-    });
+    const currentPreview = images[activeLayer];
+    const fullLayer = images.length > 1 ? 1 - activeLayer : activeLayer;
+    const fullImage = images[fullLayer];
 
-    activeLayer = incomingLayer;
+    fullImage.classList.remove('is-preview');
+    fullImage.src = src;
+    fullImage.alt = titleAt(target);
+    fullImage.style.transform = '';
+
+    try {
+      if (fullImage.decode) await fullImage.decode();
+    } catch (_) {}
+
+    if (requestId !== displayRequestId) return;
+
+    resetZoom();
+    prepareImageLayout(fullImage);
+    activateLayer(fullLayer, currentPreview, true);
+    activeLayer = fullLayer;
+    setDetailLoading(false);
+
     preloadAround(target);
     preloadVariants(target);
-
-    window.setTimeout(() => {
-      transitionLocked = false;
-    }, 460);
   }
 
   async function displayVariant(nextVariantIndex, animate = true) {
@@ -1290,11 +1389,15 @@
     const targetVariant = clamp(nextVariantIndex, 0, files.length - 1);
     if (targetVariant === currentVariantIndex) return;
 
+    const requestId = ++displayRequestId;
     resetZoom();
     transitionLocked = animate;
+    setDetailLoading(true);
 
     const src = await resolveFullSrc(currentIndex, targetVariant);
+    if (requestId !== displayRequestId) return;
     if (!src) {
+      setDetailLoading(false);
       transitionLocked = false;
       return;
     }
@@ -1311,7 +1414,10 @@
       if (incoming.decode) await incoming.decode();
     } catch (_) {}
 
+    if (requestId !== displayRequestId) return;
+
     prepareImageLayout(incoming);
+    incoming.classList.remove('is-preview');
 
     currentVariantIndex = targetVariant;
     renderVariantControls(currentIndex);
@@ -1320,6 +1426,7 @@
       outgoing?.classList.remove('is-active');
       incoming.classList.add('is-active');
       activeLayer = incomingLayer;
+      setDetailLoading(false);
       transitionLocked = false;
       return;
     }
@@ -1333,6 +1440,7 @@
     });
 
     activeLayer = incomingLayer;
+    setDetailLoading(false);
     window.setTimeout(() => {
       transitionLocked = false;
     }, 460);
@@ -1349,14 +1457,21 @@
     activePointers.clear();
     gestureMode = null;
     resetZoom();
-    await display(index, false);
+
+    // display() paints the already-cached thumbnail synchronously before its
+    // first await. Open the overlay immediately afterward so the visitor sees
+    // a photograph at once instead of waiting on the full-resolution request.
+    const displayPromise = display(index, false);
     viewer.classList.add('is-open');
     viewer.setAttribute('aria-hidden', 'false');
     document.body.classList.add('no-scroll');
     closeButton?.focus({ preventScroll: true });
+    await displayPromise;
   }
 
   function closeViewer() {
+    ++displayRequestId;
+    setDetailLoading(false);
     viewer.classList.remove('is-open');
     viewer.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('no-scroll');
@@ -1593,7 +1708,7 @@
   // returns the image to its complete fitted view. The surrounding black
   // stage remains inert.
   stage?.addEventListener('click', event => {
-    if (transitionLocked || suppressClickZoom) return;
+    if (transitionLocked || suppressClickZoom || viewer.classList.contains('is-loading-detail')) return;
     if (!pointIsOnActiveImage(event.clientX, event.clientY)) return;
 
     if (zoomScale > MIN_ZOOM + 0.01) {

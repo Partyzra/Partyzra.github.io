@@ -933,3 +933,18 @@ video,
   -webkit-touch-callout: none;
   user-select: none;
 }
+
+/* V4.18 — Mobile film playback performance.
+   When a lightweight poster exists, show it immediately instead of a black
+   frame while the corresponding MP4 is still preparing. */
+.film-motion-intro.has-video-poster .film-motion-video {
+  opacity: 1;
+}
+
+@media (max-width: 700px), (max-width: 900px) and (pointer: coarse) {
+  .film-motion-video {
+    /* Keep compositing simple on phones; the most-visible clip is the only one
+       allowed to play by portfolio.js. */
+    will-change: opacity;
+  }
+}

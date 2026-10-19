@@ -1385,3 +1385,82 @@ video,
   -webkit-touch-callout: none;
   user-select: none;
 }
+
+/* ============================================================
+   V4.18 — Mobile viewer speed + clearer navigation
+   ============================================================ */
+
+/* The cached grid thumbnail is shown immediately while the full-resolution
+   file is resolving. Keep it photographic rather than displaying a blank
+   stage; the tiny blur softens any visible thumbnail compression. */
+.photo-viewer-image.is-preview {
+  filter: blur(.8px);
+}
+
+.photo-viewer-stage::after {
+  content: 'Loading detail';
+  position: absolute;
+  z-index: 10;
+  left: 50%;
+  bottom: 14px;
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, .54);
+  color: rgba(240, 238, 233, .66);
+  font-size: .52rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  opacity: 0;
+  transform: translate(-50%, 5px);
+  transition: opacity .2s ease, transform .2s ease;
+  pointer-events: none;
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+}
+
+.photo-viewer.is-loading-detail .photo-viewer-stage::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (max-width: 700px), (max-width: 900px) and (pointer: coarse) {
+  /* Mobile navigation should be discoverable without knowing the swipe
+     gesture. Keep swipe support, but make these real touch targets prominent. */
+  .photo-viewer-nav {
+    z-index: 24;
+    top: 50%;
+    bottom: auto;
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    border: 1px solid rgba(240, 238, 233, .25);
+    border-radius: 50%;
+    background: rgba(0, 0, 0, .48);
+    color: rgba(255, 255, 255, .94);
+    font-size: 40px;
+    line-height: .8;
+    opacity: .96;
+    transform: translateY(-50%);
+    box-shadow: 0 8px 26px rgba(0, 0, 0, .28);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    touch-action: manipulation;
+  }
+
+  .photo-viewer-nav:active {
+    transform: translateY(-50%) scale(.94);
+  }
+
+  .photo-viewer-prev {
+    left: max(10px, env(safe-area-inset-left));
+  }
+
+  .photo-viewer-next {
+    right: max(10px, env(safe-area-inset-right));
+  }
+
+  .photo-viewer-stage::after {
+    bottom: max(10px, env(safe-area-inset-bottom));
+  }
+}

@@ -289,21 +289,47 @@
     revealItems.forEach(item => revealObserver.observe(item));
   }
 
-  // Film motion studies. All six clips autoplay silently when they near the
-  // viewport, pause when they move well offscreen, and resume when they return.
+  // Film motion studies. Desktop keeps the existing cinematic behavior, while
+  // phones/tablets allow only the most-visible local clip to decode/play at a
+  // time. This prevents several large MP4s from competing for bandwidth and
+  // hardware decoding while the visitor scrolls through the Film section.
   const filmMotionIntros = qsa('[data-film-motion-intro]');
 
   if (filmMotionIntros.length) {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const mobileMotion = window.matchMedia('(max-width: 700px), (max-width: 900px) and (pointer: coarse)').matches;
+    const saveData = Boolean(navigator.connection?.saveData);
     const motionItems = [];
+    const posterChecks = new Map();
 
-    filmMotionIntros.forEach(intro => {
+    const assetExists = url => {
+      if (!url) return Promise.resolve(false);
+      if (posterChecks.has(url)) return posterChecks.get(url);
+
+      const check = fetch(url, {
+        method: 'HEAD',
+        cache: 'force-cache',
+        credentials: 'same-origin'
+      })
+        .then(response => response.ok)
+        .catch(() => false);
+
+      posterChecks.set(url, check);
+      return check;
+    };
+
+    const viewportVisibility = element => {
+      const rect = element.getBoundingClientRect();
+      const visible = Math.max(0, Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0));
+      return visible / Math.max(rect.height, 1);
+    };
+
+    filmMotionIntros.forEach((intro, index) => {
       const video = qs('video', intro);
       if (!video) return;
 
       // Older homepage markup marked Hot Box and Abandoned as manual clips.
-      // Normalize those elements at runtime so all six films now behave alike
-      // without requiring home.html to be replaced (which preserves user copy edits).
+      // Normalize those elements at runtime so all six films behave alike.
       intro.removeAttribute('data-film-manual');
       intro.removeAttribute('data-film-label');
       intro.removeAttribute('role');
@@ -320,28 +346,84 @@
       const item = {
         intro,
         video,
+        index,
         loaded: false,
-        nearby: false
+        nearby: false,
+        viewportRatio: 0,
+        posterPrepared: Boolean(video.getAttribute('poster')),
+        sourcePrepared: false,
+        sourcePromise: null,
+        loadPromise: null
       };
+
+      if (item.posterPrepared) intro.classList.add('has-video-poster');
 
       video.muted = true;
       video.defaultMuted = true;
       video.playsInline = true;
+      video.preload = 'none';
+
+      item.preparePoster = async () => {
+        if (item.posterPrepared) return;
+        item.posterPrepared = true;
+
+        const poster = video.dataset.posterSrc;
+        if (!poster) return;
+        if (await assetExists(poster)) {
+          video.poster = poster;
+          intro.classList.add('has-video-poster');
+        }
+      };
+
+      item.prepareSource = () => {
+        if (item.sourcePrepared) return Promise.resolve();
+        if (item.sourcePromise) return item.sourcePromise;
+
+        item.sourcePromise = (async () => {
+          // Each mobile <source> is optional. If the generated derivative has
+          // not been committed yet, remove that source before video.load() so
+          // the browser immediately falls back to the existing desktop MP4.
+          if (mobileMotion) {
+            const mobileSource = qs('source[media]', video);
+            const mobileSrc = video.dataset.mobileSrc || mobileSource?.getAttribute('src');
+            if (mobileSource && mobileSrc && !(await assetExists(mobileSrc))) {
+              mobileSource.remove();
+            }
+          }
+
+          item.sourcePrepared = true;
+        })();
+
+        return item.sourcePromise;
+      };
 
       item.load = () => {
-        if (item.loaded) return;
-        item.loaded = true;
-        video.load();
+        if (item.loadPromise) return item.loadPromise;
+
+        item.loadPromise = (async () => {
+          if (item.loaded) return;
+          item.loaded = true;
+          item.preparePoster();
+          await item.prepareSource();
+          video.load();
+        })();
+
+        return item.loadPromise;
       };
 
       item.canPlayNow = () => item.nearby && !document.hidden && !reduceMotion;
 
-      item.play = () => {
+      item.play = async () => {
         if (!item.canPlayNow()) return;
-        item.load();
+        await item.load();
+        if (!item.canPlayNow()) return;
         video.play().catch(() => {
-          // If a browser declines autoplay, the frame simply remains still.
+          // If a browser declines autoplay, the prepared poster/still remains.
         });
+      };
+
+      item.pause = () => {
+        if (!video.paused) video.pause();
       };
 
       video.addEventListener('loadeddata', () => {
@@ -357,6 +439,44 @@
       motionItems.push(item);
     });
 
+    let mobileSyncFrame = 0;
+    let activeMobileItem = null;
+
+    const syncMobilePlayback = () => {
+      mobileSyncFrame = 0;
+      if (!mobileMotion || reduceMotion) return;
+
+      motionItems.forEach(item => {
+        item.viewportRatio = viewportVisibility(item.intro);
+      });
+
+      const nextActive = motionItems
+        .filter(item => item.nearby && item.viewportRatio > 0.08)
+        .sort((a, b) => b.viewportRatio - a.viewportRatio)[0] || null;
+
+      activeMobileItem = nextActive;
+
+      motionItems.forEach(item => {
+        if (item === activeMobileItem && !document.hidden) {
+          item.play();
+        } else {
+          item.pause();
+        }
+      });
+
+      // Once the current clip is established, prepare only the next clip's
+      // poster. Do not start another video download on Save-Data connections.
+      if (activeMobileItem && !saveData) {
+        const next = motionItems[activeMobileItem.index + 1];
+        next?.preparePoster();
+      }
+    };
+
+    const requestMobileSync = () => {
+      if (!mobileMotion || mobileSyncFrame) return;
+      mobileSyncFrame = requestAnimationFrame(syncMobilePlayback);
+    };
+
     if ('IntersectionObserver' in window) {
       const filmObserver = new IntersectionObserver(entries => {
         entries.forEach(entry => {
@@ -364,25 +484,47 @@
           if (!item) return;
           item.nearby = entry.isIntersecting;
 
-          if (item.nearby) {
-            if (!reduceMotion) item.play();
-          } else if (item.loaded) {
-            item.video.pause();
+          if (item.nearby) item.preparePoster();
+
+          if (!mobileMotion) {
+            if (item.nearby) {
+              if (!reduceMotion) item.play();
+            } else {
+              item.pause();
+            }
           }
         });
-      }, { rootMargin: '320px 0px 320px 0px', threshold: 0.01 });
+
+        if (mobileMotion) requestMobileSync();
+      }, {
+        rootMargin: mobileMotion ? '120px 0px 120px 0px' : '320px 0px 320px 0px',
+        threshold: mobileMotion ? [0, .08, .2, .4, .6, .8, 1] : 0.01
+      });
 
       motionItems.forEach(item => filmObserver.observe(item.intro));
 
+      if (mobileMotion) {
+        window.addEventListener('scroll', requestMobileSync, { passive: true });
+        window.addEventListener('resize', requestMobileSync, { passive: true });
+      }
+
       document.addEventListener('visibilitychange', () => {
-        motionItems.forEach(item => {
-          if (document.hidden) {
-            item.video.pause();
-          } else if (item.nearby && item.canPlayNow()) {
-            item.play();
-          }
-        });
+        if (document.hidden) {
+          motionItems.forEach(item => item.pause());
+          return;
+        }
+
+        if (mobileMotion) {
+          requestMobileSync();
+        } else {
+          motionItems.forEach(item => {
+            if (item.nearby && item.canPlayNow()) item.play();
+          });
+        }
       });
+    } else if (mobileMotion) {
+      motionItems.forEach(item => { item.nearby = true; });
+      requestMobileSync();
     } else {
       motionItems.forEach(item => {
         item.nearby = true;
