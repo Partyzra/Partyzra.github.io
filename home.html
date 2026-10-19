@@ -33,7 +33,7 @@
 
   <main>
     <section class="hero-v3" aria-labelledby="hero-title">
-      <div class="hero-photo" aria-hidden="true"></div>
+      <div class="hero-photo is-hero-hidden" aria-hidden="true"></div>
       <div class="hero-shade" aria-hidden="true"></div>
       <div class="hero-noise" aria-hidden="true"></div>
       <div class="hero-content container-wide">
@@ -242,7 +242,7 @@
         </div>
         <div class="contact-action">
           <p>For commissions, collaborations, photography, music, or video work.</p>
-          <a class="button button-light" href="mailto:12rparker@gmail.com">Start a conversation <span>↗</span></a>
+          <button class="button button-light" type="button" data-contact-open>Start a conversation <span>↗</span></button>
         </div>
       </div>
     </section>
@@ -254,6 +254,58 @@
     <a href="#top" data-back-top>Back to top ↑</a>
   </footer>
 
+
+  <dialog class="contact-dialog" data-contact-dialog aria-labelledby="contact-dialog-title">
+    <div class="contact-dialog-shell">
+      <button class="contact-dialog-close" type="button" data-contact-close aria-label="Close contact form">×</button>
+
+      <div class="contact-dialog-heading">
+        <p class="eyebrow">Start a conversation</p>
+        <h2 id="contact-dialog-title">Tell me what you're thinking.</h2>
+        <p>Share a little about the project, collaboration, or idea you have in mind.</p>
+      </div>
+
+      <form
+        class="contact-form"
+        data-contact-form
+        action="https://formsubmit.co/12rparker@gmail.com"
+        method="POST"
+      >
+        <div class="contact-recipient" aria-label="Message recipient">
+          <span>To</span>
+          <strong>12rparker@gmail.com</strong>
+        </div>
+
+        <label class="contact-field">
+          <span>Your email</span>
+          <input type="email" name="email" autocomplete="email" placeholder="you@example.com" required>
+        </label>
+
+        <label class="contact-field">
+          <span>Subject</span>
+          <input type="text" name="_subject" autocomplete="off" placeholder="What would you like to make?" maxlength="140" required>
+        </label>
+
+        <label class="contact-field contact-field-message">
+          <span>Message</span>
+          <textarea name="message" rows="7" placeholder="Tell me about the project, timeline, location, or anything else that would be useful to know." required></textarea>
+        </label>
+
+        <input class="contact-honeypot" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <input type="hidden" name="_template" value="table">
+
+        <div class="contact-form-footer">
+          <p class="contact-form-status" data-contact-status aria-live="polite"></p>
+          <button class="button button-light contact-submit" type="submit" data-contact-submit>
+            <span data-contact-submit-label>Send message</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <script src="js/media-protection.js"></script>
   <script src="js/photos.js"></script>
   <script src="js/portfolio.js"></script>
   <script src="js/shell-navigation.js"></script>

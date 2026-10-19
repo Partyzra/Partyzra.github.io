@@ -1375,3 +1375,13 @@ body.no-scroll {
 
 
 /* V4.17.18 — Photography dark field follows the site-wide #000000 solid black. */
+
+/* Media protection: discourage casual saving/dragging of gallery media. */
+img,
+video,
+.photo-grid-item,
+.photo-viewer-stage {
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+}

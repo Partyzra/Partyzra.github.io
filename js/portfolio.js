@@ -223,25 +223,38 @@
       if (!photoFiles.length) return;
 
       // No fixed opening photograph: every load starts from a freshly shuffled
-      // full archive. Assign the lightweight thumbnail immediately so the browser
-      // can begin fetching it without waiting for the first hold interval.
+      // full archive. Keep the hero visually hidden until the first randomized
+      // photograph has actually loaded; this prevents the legacy Sunset fallback
+      // (or a partially loaded thumbnail) from flashing during startup.
       slides = shuffled(photoFiles);
       slideIndex = 0;
 
-      const firstFile = slides[0];
-      const firstCandidates = heroSourceCandidates(firstFile);
-      setHeroBackground(heroPrimary, firstCandidates[0]);
-      heroPrimary.classList.remove('is-hero-hidden');
-      heroPrimary.classList.add('is-hero-visible');
+      let firstSource = null;
+      let firstFile = null;
+      let firstIndex = 0;
+
+      // Normally the first item succeeds immediately. Walking the shuffled list
+      // also makes startup resilient if a thumbnail/original is ever missing.
+      while (!firstSource && firstIndex < slides.length) {
+        firstFile = slides[firstIndex];
+        firstSource = await preloadFirstAvailable(heroSourceCandidates(firstFile));
+        if (!firstSource) firstIndex += 1;
+      }
+
+      if (!firstSource || !firstFile) return;
+
+      slideIndex = firstIndex;
+      setHeroBackground(heroPrimary, firstSource);
       startHeroMotion(heroPrimary);
 
-      // Verify the thumbnail and transparently fall back to the full image if a
-      // thumbnail has not been generated yet. This happens while the thumbnail is
-      // already being requested for display, so there is no intentional startup wait.
-      const firstSource = await preloadFirstAvailable(firstCandidates);
-      if (firstSource && firstSource !== firstCandidates[0]) {
-        setHeroBackground(heroPrimary, firstSource);
-      }
+      // Give the browser a painted hidden frame before revealing the image. The
+      // existing opacity transition then becomes a true first-load fade-in.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          heroPrimary.classList.remove('is-hero-hidden');
+          heroPrimary.classList.add('is-hero-visible');
+        });
+      });
 
       scheduleNext(HERO_HOLD_MS);
     });
@@ -664,4 +677,113 @@
 
   stage?.addEventListener('pointerup', finishPointer);
   stage?.addEventListener('pointercancel', finishPointer);
+})();
+
+// In-page contact composer. FormSubmit provides the mail delivery layer for the
+// static GitHub Pages site, while AJAX keeps visitors on the portfolio.
+(() => {
+  const dialog = document.querySelector('[data-contact-dialog]');
+  const openButton = document.querySelector('[data-contact-open]');
+  const closeButton = document.querySelector('[data-contact-close]');
+  const form = document.querySelector('[data-contact-form]');
+  const status = document.querySelector('[data-contact-status]');
+  const submitButton = document.querySelector('[data-contact-submit]');
+  const submitLabel = document.querySelector('[data-contact-submit-label]');
+
+  if (!dialog || !openButton || !form) return;
+
+  const endpoint = 'https://formsubmit.co/ajax/12rparker@gmail.com';
+  let lastFocused = null;
+
+  const setStatus = (message = '', state = '') => {
+    if (!status) return;
+    status.textContent = message;
+    status.classList.toggle('is-success', state === 'success');
+    status.classList.toggle('is-error', state === 'error');
+  };
+
+  const setSending = sending => {
+    if (submitButton) submitButton.disabled = sending;
+    if (submitLabel) submitLabel.textContent = sending ? 'Sending…' : 'Send message';
+  };
+
+  const openDialog = () => {
+    lastFocused = document.activeElement;
+    setStatus();
+
+    if (typeof dialog.showModal === 'function') {
+      dialog.showModal();
+    } else {
+      dialog.setAttribute('open', '');
+    }
+
+    window.setTimeout(() => form.querySelector('input[name="email"]')?.focus(), 60);
+  };
+
+  const closeDialog = () => {
+    if (typeof dialog.close === 'function' && dialog.open) {
+      dialog.close();
+    } else {
+      dialog.removeAttribute('open');
+    }
+
+    if (lastFocused && typeof lastFocused.focus === 'function') {
+      lastFocused.focus({ preventScroll: true });
+    }
+  };
+
+  openButton.addEventListener('click', openDialog);
+  closeButton?.addEventListener('click', closeDialog);
+
+  dialog.addEventListener('cancel', event => {
+    event.preventDefault();
+    closeDialog();
+  });
+
+  dialog.addEventListener('click', event => {
+    // Native <dialog> reports backdrop clicks on the dialog element itself.
+    if (event.target === dialog) closeDialog();
+  });
+
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+
+    setSending(true);
+    setStatus('Sending your message…');
+
+    const formData = new FormData(form);
+    const payload = Object.fromEntries(formData.entries());
+    payload._replyto = String(payload.email || '').trim();
+    payload._template = 'table';
+
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || result.success === false) {
+        throw new Error(result.message || 'Unable to send the message right now.');
+      }
+
+      const serverMessage = typeof result.message === 'string' ? result.message : '';
+      if (/activat/i.test(serverMessage)) {
+        setStatus('One-time setup needed: check 12rparker@gmail.com for the FormSubmit activation email.', 'success');
+      } else {
+        form.reset();
+        setStatus('Message sent. Thank you — I’ll be in touch.', 'success');
+      }
+    } catch (error) {
+      console.error('Contact form submission failed:', error);
+      setStatus('The message could not be sent. Please try again, or email 12rparker@gmail.com directly.', 'error');
+    } finally {
+      setSending(false);
+    }
+  });
 })();

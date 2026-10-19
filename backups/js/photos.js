@@ -1,0 +1,3785 @@
+// ============================================================
+// PARTYZRA PHOTOGRAPHY ARCHIVE
+// ============================================================
+// Put image files in: Images/photo-full/
+//
+// file        = exact filename (GitHub Pages is case-sensitive)
+// variants    = optional alternate snapshots shown inside the fullscreen viewer
+//               e.g. ["Portrait1.jpg", "Portrait2.jpg"]
+// title       = public display title
+// collection  = broad subject/category metadata
+// album       = optional named photography folder, e.g. Antelope Island / Hawaii
+// year        = optional
+// location    = optional
+// featured    = retained for future use; the current All view is randomized
+// tags        = optional secondary descriptors
+// note        = optional personal caption/story
+//
+// The gallery itself is rendered by js/photography-page.js.
+// ============================================================
+
+const PORTFOLIO_PHOTOS = [
+    {
+    "file": "Abandoned.jpg",
+    "title": "Abandoned",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [],
+    "note": ""
+  },
+  {
+    "file": "Abandoned1.png",
+    "title": "Abandoned",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [],
+    "note": ""
+  },
+  {
+    "file": "Abandoned2.JPG",
+    "title": "Abandoned",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [],
+    "note": ""
+  },
+  {
+    "file": "Abandoned3.jpg",
+    "album": "Ogden",
+    "title": "Abandoned (2012)",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [],
+    "note": ""
+  },
+{
+    "file": "Andrew.JPG",
+    "variants": ["Andrew1.jpg"],
+    "title": "Andrew",
+    "collection": "Portraits",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
+  },
+{
+    "file": "Barn.jpg",
+    "title": "Barn",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "rural"
+    ],
+    "note": ""
+  },
+{
+    "file": "Barnstreet.jpg",
+    "title": "Barn St",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "rural"
+    ],
+    "note": ""
+  },
+{
+    "file": "Cannibal1.jpg",
+    "variants": ["Cannibal.jpg"],
+    "title": "Cannibal",
+    "collection": "Experimental",
+    "album": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "conceptual"
+    ],
+    "note": ""
+  },
+{
+    "file": "Minecarts.jpg",
+    "title": "Minecarts",
+    "collection": "Objects & Details",
+    "album": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [],
+    "note": ""
+  },
+{
+    "file": "Minecart.jpg",
+    "title": "Minecart",
+    "collection": "Objects & Details",
+    "album": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [],
+    "note": ""
+  },
+{
+    "file": "Carriage.jpg",
+    "title": "Carriage",
+    "collection": "Objects & Details",
+    "album": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [],
+    "note": ""
+  },
+{
+    "file": "Gun.jpg",
+    "title": "Gun & Holster",
+    "collection": "Objects & Details",
+    "album": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [],
+    "note": ""
+  },
+{
+    "file": "Clock Tower.jpg",
+    "title": "Clock Tower",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "architecture"
+    ],
+    "note": ""
+  },
+{
+    "file": "Derick & Tori.JPG",
+    "title": "Derick & Tori",
+    "collection": "Portraits",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
+  },
+{
+    "file": "Flowers.JPG",
+    "title": "Flowers",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "flora"
+    ],
+    "note": ""
+  },
+
+{
+    "file": "Gargoyle.jpg",
+    "album": "People",
+    "title": "Gargoyle",
+    "collection": "Objects & Details",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "architecture",
+      "detail"
+    ],
+    "note": ""
+  },
+{
+    "file": "Grasshopper.jpg",
+    "title": "Grasshopper",
+    "collection": "Wildlife",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "insect"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Grasshopper.png",
+    "title": "Grasshopper",
+    "collection": "Wildlife",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "insect"
+    ],
+    "note": ""
+  },
+  {
+    "file": "In The Rain.jpg",
+    "title": "In The Rain",
+    "collection": "Atmosphere",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "weather"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Lily.jpg",
+    "title": "Lily",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "flora"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Lily2.jpg",
+    "title": "Lily",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "flora"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Night Sky.jpg",
+    "title": "Night Sky",
+    "collection": "Landscape",
+    "album": "Antelope Island",
+    "year": "",
+    "location": "",
+    "featured": true,
+    "tags": [
+      "night"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Open Mouth.jpg",
+    "title": "Open Mouth",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait",
+      "conceptual"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Peacock.jpg",
+    "title": "Peacock",
+    "collection": "Wildlife",
+    "album": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "bird"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Peacock.5.jpg",
+    "title": "Peacock",
+    "collection": "Wildlife",
+    "album": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "bird"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Performance.jpg",
+    "title": "Performance",
+    "collection": "Performance",
+    "album": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": true,
+    "tags": [
+      "live"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Performance2.jpg",
+    "title": "Performance",
+    "collection": "Performance",
+    "album": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": true,
+    "tags": [
+      "live"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Ferris Wheel.jpg",
+    "title": "Ferris Wheel",
+    "collection": "Landscape",
+    "album": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": true,
+    "tags": [
+      "live"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Phoebe.jpg",
+    "title": "Phoebe",
+    "collection": "Portraits",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Wild Mouse.jpg",
+    "variants": ["Wild Mouse1.jpg"],
+    "title": "Wild Mouse",
+    "collection": "Objects & Details",
+    "album": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "machine"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Samurai.jpg",
+    "title": "Samurai",
+    "collection": "Experimental",
+    "album": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "conceptual"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Seagull.jpg",
+    "title": "Seagull",
+    "collection": "Wildlife",
+    "album": "Animals",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "bird"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Seagull2.jpg",
+    "title": "Herring Gull",
+    "collection": "Wildlife",
+    "album": "Animals",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "bird"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Seagull4.jpg",
+    "title": "Herring Gull",
+    "collection": "Wildlife",
+    "album": "Animals",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "bird"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Sean.jpg",
+    "title": "Sean",
+    "collection": "Portraits",
+    "year": "",
+    "location": "",
+    "featured": true,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Sean1.jpg",
+    "title": "Sean",
+    "collection": "Portraits",
+    "ablum": "People",
+    "year": "",
+    "location": "",
+    "featured": true,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Cabbage.jpg",
+    "variants": ["Cabbage1.JPG"],
+    "title": "Cabbage",
+    "collection": "Portraits",
+    "ablum": "People",
+    "year": "",
+    "location": "",
+    "featured": true,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
+  },
+{
+    "file": "Sunset.jpg",
+    "title": "Sunset",
+    "collection": "Landscape",
+    "album": "Antelope Island",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "sunset"
+    ],
+    "note": ""
+  },
+{
+    "file": "Lunar Eclipse.jpg",
+    "title": "Lunar Eclipse",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "night"
+    ],
+    "note": ""
+  },
+  {
+    "file": "The Rocket.jpg",
+    "title": "The Rocket",
+    "collection": "Objects & Details",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [],
+    "note": ""
+  },
+{
+    "file": "Zeboy!.jpg",
+    "title": "Zey",
+    "collection": "Experimental",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Contrast.JPG",
+    "title": "Wood",
+    "collection": "Experimental",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "contrast"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Cornfield.jpg",
+    "title": "Cornfield",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "rural"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Cow Charging.jpg",
+    "title": "Cow Charging",
+    "collection": "Wildlife",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "animal"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Derick.jpg",
+    "title": "Derick",
+    "collection": "Portraits",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Derick2.JPG",
+    "title": "Derick",
+    "collection": "Portraits",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Derick3.jpg",
+    "title": "Still",
+    "collection": "Portraits",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Dori is Wednesday.jpg",
+    "variants": ["Wednesday.jpg", "Wednesday1.jpg"],
+    "title": "Wednesday",
+    "collection": "Experimental",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Fence.JPG",
+    "title": "Fence",
+    "album": "Layton",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "rural"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Fence1.JPG",
+    "title": "Fence",
+    "album": "Layton",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "rural"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Field.jpg",
+    "title": "UT-193",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "rural"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Flowers1.jpg",
+    "title": "Flowers",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "flora"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Friends.JPG",
+    "title": "Friends",
+    "collection": "Portraits",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
+  },
+{
+    "file": "Hawaii Couple.jpg",
+    "title": "Hawaii Couple",
+    "collection": "Hawaii",
+    "year": "",
+    "location": "Hawaii",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": "",
+    "album": "Hawaii"
+  },
+  {
+    "file": "Hawaii Girl.jpg",
+    "title": "Hawaii Girl",
+    "collection": "Hawaii",
+    "year": "",
+    "location": "Hawaii",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": "",
+    "album": "Hawaii"
+  },
+  {
+    "file": "Hawaii Water Crash.jpg",
+    "title": "Hawaii Water Crash",
+    "collection": "Hawaii",
+    "year": "",
+    "location": "Hawaii",
+    "featured": false,
+    "tags": [
+      "ocean"
+    ],
+    "note": "",
+    "album": "Hawaii"
+  },
+  {
+    "file": "Leaf on beach.jpg",
+    "title": "Leaf On Beach",
+    "collection": "Hawaii",
+    "year": "",
+    "location": "Hawaii",
+    "featured": false,
+    "tags": [
+      "ocean"
+    ],
+    "note": "",
+    "album": "Hawaii"
+  },
+  {
+    "file": "Helmets.jpg",
+    "album": "Layton",
+    "title": "Helmets",
+    "collection": "Objects & Details",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [],
+    "note": ""
+  },
+  {
+    "file": "Horses.jpg",
+    "title": "Horses",
+    "collection": "Wildlife",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "animal"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Me.jpg",
+    "title": "Me",
+    "collection": "Portraits",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "self-portrait"
+    ],
+    "note": ""
+  },
+  {
+    "file": "My Father2.jpg",
+    "variants": "My Father.jpg",
+    "title": "Norman",
+    "collection": "Family",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Bullet Bike.jpg",
+    "variants": ["Bullet Bike1.jpg"],
+    "title": "Bullet Bike",
+    "collection": "Family",
+    "album": "People",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
+  },
+  {
+    "file": "My Mother.jpg",
+    "variants": ["My Mother1.jpg"],
+    "title": "My Mother",
+    "collection": "Family",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "portrait"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Night Car.jpg",
+    "title": "Night Car",
+    "collection": "Atmosphere",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "night"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Possey.jpg",
+    "title": "Possey",
+    "collection": "Portraits",
+    "album": "Animals",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Rattlesnake Rapids.jpg",
+    "variants": ["Rattlesnake Rapids5.jpg", "Rattlesnake Rapids6.jpg"],
+    "title": "Rattlesnake Rapids",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [],
+    "note": "",
+    "album": "Lagoon"
+  },
+  {
+    "file": "Antelope Island.jpg",
+    "title": "Antelope Island",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "flora"
+    ],
+    "note": "",
+    "album": "Antelope Island"
+  },
+  {
+    "file": "Antelope Island1.jpg",
+    "title": "Antelope Island",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "flora"
+    ],
+    "note": "",
+    "album": "Antelope Island"
+  },
+  {
+    "file": "Antelope Island3.jpg",
+    "title": "Antelope Island",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "flora"
+    ],
+    "note": "",
+    "album": "Antelope Island"
+  },
+{
+    "file": "Antelope Island4.jpg",
+    "title": "Antelope Island",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "flora"
+    ],
+    "note": "",
+    "album": "Antelope Island"
+  },
+{
+    "file": "Lagoon Water.jpg",
+    "title": "Lagoona Beach",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "coaster"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Homeless.jpg",
+    "title": "Homeless",
+    "collection": "Places & Structures",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
+  },
+{
+    "file": "Buffalo1.jpg",
+    "title": "Buffalo",
+    "collection": "Nature",
+    "albums": ['Antelope Island', 'Animals'],
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Antelope Island"
+  },
+  {
+    "file": "Buffalo3.jpg",
+    "title": "Buffalo",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "albums": ['Antelope Island', 'Animals'],
+  },
+  {
+    "file": "Buffalo4.jpg",
+    "variants": ["Buffalo.jpg"],
+    "variants": ["Buffalo5.jpg"],
+    "title": "Bison",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "albums": ['Antelope Island', 'Animals'],
+  },
+  {
+    "file": "Buffalo6.jpg",
+    "title": "Buffalo",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "albums": ['Antelope Island', 'Animals'],
+  },
+  {
+    "file": "Buffalo7.jpg",
+    "title": "Bison",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "albums": ['Antelope Island', 'Animals'],
+  },
+  {
+    "file": "Buffalo8.jpg",
+    "variants": ["Buffalo9.jpg"],
+    "title": "Bison",
+    "collection": "Nature",
+
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "albums": ['Antelope Island', 'Animals'],
+  },
+  {
+    "file": "Buffalo10.jpg",
+    "title": "Bison",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "albums": ['Antelope Island', 'Animals'],
+  },
+  {
+    "file": "Rocks1.jpg",
+    "title": "Rocks",
+    "collection": "Nature",
+    "album": "Antelope Island",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Rocks2.jpg",
+    "title": "Rocks",
+    "album": "Antelope Island",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Rocks3.jpg",
+    "title": "Rocks",
+    "collection": "Nature",
+    "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Album Cover.png",
+    "title": "Album Cover",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Antelope Drive.jpg",
+    "title": "Antelope Dr",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Antelope Island"
+  },
+  {
+    "file": "Capitol.png",
+    "title": "Capitol",
+    "collection": "landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "landscape"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Car Zoom.JPG",
+    "title": "Car Zoom",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Courthouse.png",
+    "title": "Courthouse",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Door.jpg",
+    "title": "Door",
+    "collection": "people",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
+  },
+{
+    "file": "Jake & Chelsea.png",
+    "title": "Jake & Chelsea",
+    "collection": "People",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Justin.png",
+    "title": "Justin",
+    "collection": "People",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Kauai.jpg",
+    "title": "Kauai",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Hawaii"
+  },
+  {
+    "file": "Lincoln.jpg",
+    "title": "Lincoln",
+    "collection": "People",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Miss Watson.jpg",
+    "title": "Isaac",
+    "collection": "People",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Isaac.jpg",
+    "title": "Isaac",
+    "collection": "People",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Jake.jpg",
+    "title": "Jake",
+    "collection": "People",
+    "album": "People",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Master of Doors.png",
+    "title": "Wednesday",
+    "collection": "People",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Model.png",
+    "title": "Model",
+    "collection": "People",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "people"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Mountain & Trees.png",
+    "title": "Mountain & Trees",
+    "album": "Layton",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "MountainShot.JPG",
+    "title": "Colorado Mountain",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "MountainShot3.jpg",
+    "title": "Colorado Mountain",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Refinery Landscape.jpg",
+    "variants": ["Refinery Portrait.png"],
+    "title": "Refinery",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Structure"
+    ],
+    "note": ""
+  },
+{
+    "file": "Refinery.jpg",
+    "title": "Refinery",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Structure"
+    ],
+    "note": ""
+  },
+{
+    "file": "Relaxing.jpg",
+    "title": "Relaxing",
+    "collection": "Hawaii",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "beach"
+    ],
+    "note": "",
+    "album": "Hawaii"
+  },
+  {
+    "file": "Side of Kauai.jpg",
+    "variants": ["Side of Kauai1.jpg"],
+    "title": "Side of Kauai",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Hawaii"
+  },
+  {
+    "file": "Lighthouse.jpg",
+    "title": "Cali Island",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "Tiger.png",
+    "title": "Tiger",
+    "collection": "nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Tractor & Shed.jpg",
+    "album": "Layton",
+    "title": "Tractor & Shed",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Walking.jpg",
+    "title": "Walking",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Water Crash.jpg",
+    "title": "Water Crash",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Path.jpg",
+    "title": "Path",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Road.JPG",
+    "title": "Path",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Squirrel.JPG",
+    "title": "Squirrel",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Fox.jpg",
+    "title": "Fox",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Fox1.5.jpg",
+    "title": "Fox",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Bird Refuge.jpg",
+    "title": "Bird Refuge",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Fox2.jpg",
+    "title": "Fox",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "View.jpg",
+    "title": "View",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+  },
+  {
+    "file": "View2.jpg",
+    "title": "View",
+    "album": "Antelope Island",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+  },
+{
+    "file": "Fox3.jpg",
+    "title": "Sun Kitty",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+  },
+{
+    "file": "Fox4.jpg",
+    "title": "Distance Kitty",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+  },
+{
+    "file": "Seagull.jpg",
+    "title": "Seagull",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ]
+  },
+{
+    "file": "Ducks on rock.jpg",
+    "title": "Birds",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ]
+  },
+  {
+    "file": "Bird.jpg",
+    "title": "Western Gull",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    },
+{
+    "file": "Bird1.jpg",
+    "title": "Western Gull",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+  },
+  {
+    "file": "Seagull1.jpg",
+    "title": "Seagull",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ]
+  },
+{
+    "file": "Doll.jpg",
+    "title": "Doll",
+    "collection": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Lagoon"
+    ],
+    "album": "Lagoon"
+  },
+{
+    "file": "Doll1.jpg",
+    "title": "Doll",
+    "collection": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Lagoon"
+    ],
+    "album": "Lagoon"
+  },
+{
+    "file": "Guns.jpg",
+    "title": "Guns",
+    "collection": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Lagoon"
+    ],
+    "album": "Lagoon"
+  },
+{
+    "file": "Rattlesnake Rapids1.jpg",
+    "title": "Rattlesnake Rapids",
+    "collection": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Lagoon"
+    ],
+    "album": "Lagoon"
+  },
+{
+    "file": "Rattlesnake Rapids2.jpg",
+    "title": "Rattlesnake Rapids",
+    "collection": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Lagoon"
+    ],
+    "album": "Lagoon"
+  },
+{
+    "file": "Rattlesnake Rapids3.jpg",
+    "title": "Rattlesnake Rapids",
+    "collection": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Lagoon"
+    ],
+    "album": "Lagoon"
+  },
+{
+    "file": "Rattlesnake Rapids4.jpg",
+    "title": "Rattlesnake Rapids",
+    "collection": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Lagoon"
+    ],
+    "album": "Lagoon"
+  },
+{
+    "file": "Stone.jpg",
+    "title": "Shrine",
+    "collection": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Lagoon"
+    ],
+    "album": "Lagoon"
+  },
+{
+    "file": "Zeboy!!!.jpg",
+    "title": "Zey",
+    "collection": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Lagoon"
+    ],
+    "album": "People"
+  },
+{
+    "file": "Coca Cola.jpg",
+    "title": "Coca Cola",
+    "collection": "Landscape",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Landscape"
+    ],
+    "album": "Landscapes"
+  },
+{
+    "file": "Joey.jpg",
+    "title": "Joey",
+    "collection": "People",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "People"
+    ],
+    "album": "People"
+  },
+  {
+    "file": "Ice Field.jpg",
+    "variants": ["Ice Field1.jpg"],
+    "album": "Layton",
+    "title": "Ice Field",
+    "collection": "Landscapes",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "evening"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Tractor Field.jpg",
+    "album": "Layton",
+    "title": "Tractor Field",
+    "collection": "Landscapes",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "sunset"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Rock.jpg",
+    "album": "Layton",
+    "title": "Centerpiece",
+    "collection": "Landscapes",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "sunset"
+    ],
+    "note": ""
+  },
+  {
+    "file": "It's Dinner Time!.jpg",
+    "title": "It's Dinner Time!",
+    "collection": "Objects & Details",
+    "album": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "sunset"
+    ],
+    "note": ""
+  },
+{
+    "file": "Goat2.jpg",
+    "title": "Goat",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Animals"
+  },
+{
+    "file": "Turkey.jpg",
+    "title": "Turkey",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Animals"
+  },
+{
+    "file": "Young Goat.jpg",
+    "title": "Young Goat",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Animals"
+  },
+{
+    "file": "Black Pig.jpg",
+    "title": "Black Pig",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Animals"
+  },
+{
+    "file": "Cow & Calf.jpg",
+    "title": "Cow & Calf",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Animals"
+  },
+{
+    "file": "Cow.jpg",
+    "title": "Cow",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Animals"
+  },
+{
+    "file": "Duck In Water.jpg",
+    "title": "Duck In Water",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": "",
+    "album": "Animals"
+  },
+  {
+    "file": "Trees.jpg",
+    "title": "Trees",
+    "collection": "Landscape",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "American Couple.jpg",
+    "title": "American Couple",
+    "collection": "Landscape",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Halo Mountain.jpg",
+    "title": "Halo Mountain",
+    "collection": "Landscape",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "Reflection.jpg",
+    "title": "Reflection",
+    "collection": "Landscape",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "Best.jpg",
+    "title": "Sunset Mountain",
+    "collection": "Landscape",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "Sunset Mountain.jpg",
+    "title": "Sunset Mountain",
+    "collection": "Landscape",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "Lake.jpg",
+    "title": "Lake",
+    "collection": "Landscape",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "Power Line.jpg",
+    "title": "Power Line",
+    "collection": "Landscape",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "Power Line1.jpg",
+    "title": "Power Clouds",
+    "collection": "Landscape",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "People Coming.jpg",
+    "title": "People Coming",
+    "collection": "Nature",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "Silver Lake.jpg",
+    "title": "Silver Lake",
+    "collection": "Landscape",
+     "album": "American Fork Canyon",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "The Pitch.jpg",
+    "title": "The Pitch",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "Baseball.jpg",
+    "variants": ["Baseball1.jpg"],
+    "title": "The Swing",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "Barbershop.jpg",
+    "variants": ["Barbershop1.jpg"],
+    "title": "Barbershop",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+   
+  },
+  {
+    "file": "Merch.jpg",
+    "title": "Merch",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Ogden City.jpg",
+    "title": "Ogden City",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "Landscape"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Mural.jpg",
+    "variants": ["Mural1.jpg"],
+    "title": "Mural",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Railroad.jpg",
+    "variants": ["Railroad1.jpg"],
+    "title": "Railroad",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+  },
+  {
+    "file": "Bakery.jpg",
+    "variants": ["Bakery1.jpg"],
+    "title": "Bakery",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Cowboy.jpg",
+    "title": "Cowboy",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Shortcut.jpg",
+    "title": "Shortcut",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Cat.jpg",
+    "variants": ["Meow-Meow1.jpg"],
+    "title": "Meow-Meow",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Firefighters1.jpg",
+    "variants": ["Firefighters.jpg", "Firefighters2.jpg"],
+    "title": "Firefighters",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "Bridge.jpg",
+    "title": "Bridge",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Bridge1.jpg",
+    "variants": ["Bridge3.jpg"],
+    "title": "Railroad",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Gnome Church.jpg",
+    "variants": ["Gnomes.jpg", "Gnomes1.jpg"],
+    "title": "Gnome Church",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Rio Grande.jpg",
+    "title": "Rio Grande",
+    "collection": "Nature",
+     "album": "Ogden",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "East Layton.jpg",
+    "variants": ["Highway 891.jpg"],
+    "title": "Highway 89",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Highway 89.jpg",
+    "variants": ["East Layton1.jpg"],
+    "title": "Highway 89",
+    "collection": "Nature",
+    "album": "Layton",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Retro Games.jpg",
+    "title": "Minus World",
+    "variants": ["Pokemon Machine.jpg"],
+    "collection": "Nature",
+    "album": "Layton",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Dragonfly.jpg",
+    "title": "Dragonfly - Commons Park",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Clearfield Train.jpg",
+    "variants": ["Frontrunner.jpg"],
+    "title": "Railroad Crossing",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Great Harvest1.jpg",
+    "title": "Great Harvest Neighbor",
+    "variants": ["Great Harvest.jpg"],
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Pumpkin Maze.jpg",
+    "title": "Pumpkin Maze",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Straw Maze.jpg",
+    "title": "Scary Crow's Straw Maze",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Smoke Ride.jpg",
+    "title": "Time Tinker",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Merry Horse1.jpg",
+    "variants": ["Merry Horse.jpg"],
+    "title": "Entrance",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Dentist.jpg",
+    "variants": ["Dentist1.jpg"],
+    "title": "Dentist",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Hemp.jpg",
+    "title": "Hemp",
+    "album": "Ogden",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Superman.jpg",
+    "variants": ["Batman.jpg", "Venom.jpg", "Majora's Mask.jpg"],
+    "title": "Superman & Friends",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Mario Wall.jpg",
+    "variants": ["Zelda.jpg"],
+    "title": "Minus World",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "1142.jpg",
+    "variants": ["Sherma.jpg"],
+    "title": "1142",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Veteran Monument.jpg",
+    "variants": ["Veteran Monument1.jpg"],
+    "title": "Veteran Monument",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "60 Bus.jpg",
+    "title": "The Beatle's Bus",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Water Fountains.jpg",
+    "title": "Water Fountains",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Smoking Station.jpg",
+    "title": "Smoking Station",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Turn of the Century.jpg",
+    "title": "Turn of the Century",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Refreshment Station.jpg",
+    "title": "Refreshment Station",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Sky Ride.jpg",
+    "title": "Sky Ride",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Top-Down.jpg",
+    "title": "Top-Down",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Trains.jpg",
+    "title": "Model Trains",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Fun House of Fear.jpg",
+    "title": "Fun House of Fear",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Cow Dog.jpg",
+    "variants": ["Cow Dog1.jpg"],
+    "title": "Cow Dog",
+    "album": "Ogden",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Miniature City.jpg",
+    "variants": ["Mini City.jpg"],
+    "title": "Miniature City",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Commons Park.jpg",
+    "title": "Commons Park",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Great Harvest Neighbor.jpg",
+    "variants": ["Great Harvest Neighbor1.jpg"],
+    "title": "Great Harvest Neighbor",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Duck Meeting1.jpg",
+    "variants": ["Duck Meeting.jpg"],
+    "title": "Duck Meeting",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Duck Meeting2.jpg",
+    "variants": ["Duck Meeting.jpg"],
+    "title": "Duck Meeting",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Crestview Elementary.jpg",
+    "variants": ["Crestview Elementary1.jpg"],
+    "title": "Crestview Elementary",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Rattlesnake Rapids Entrance.jpg",
+    "title": "Rapids Entrance",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Gramophone.jpg",
+    "title": "Gramophone",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Lagoona Beach.jpg",
+    "variants": ["Lagoona Beach1.jpg"],
+    "title": "Lagoona Beach",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Snakebite Saloon.jpg",
+    "title": "Snakebite Saloon",
+    "album": "Lagoon",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Construction1.jpg",
+    "variants": ["Construction.jpg", "Construction2.jpg"],
+    "album": "West Jordan",
+    "title": "Construction",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "Lemon Bundt.jpg",
+    "variants": ["Lemon Bundt2.jpg", "Lemon Bundt1.jpg"],
+    "album": "West Jordan",
+    "title": "Lemon Bundt",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+{
+    "file": "West Layton.jpg",
+    "title": "West Layton",
+    "album": "Layton",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "nature"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York1.jpg",
+    "title": "Subway",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York2.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York3.jpg",
+    "title": "Fruit Stand",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York4.jpg",
+    "title": "Chinatown",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York5.jpg",
+    "title": "Brooklyn Bridge",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York6.jpg",
+    "title": "Downtown",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York7.jpg",
+    "title": "Downtown",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York8.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York9.jpg",
+    "title": "Brooklyn Bridge",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York10.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York11.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York12.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York13.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York14.jpg",
+    "title": "Charging Stations",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York15.jpg",
+    "title": "Shirts",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York16.jpg",
+    "title": "Jenga",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York17.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York18.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York19.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York20.jpg",
+    "title": "Norm's Pizza Shop",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York21.jpg",
+    "title": "Amazon Commercial",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York22.jpg",
+    "title": "Central Park",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York23.jpg",
+    "title": "Chess Tables",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York25.jpg",
+    "variants": ["New York24.jpg"],
+    "title": "Radio City Music Hall",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York26.jpg",
+    "title": "The Tonight Show",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York27.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York28.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York29.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York30.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York31.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York32.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York33.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York34.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York35.jpg",
+    "title": "Chinatown",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York36.jpg",
+    "title": "Jules",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York37.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York38.jpg",
+    "title": "Caution Tape",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York39.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York40.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York41.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York42.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York43.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York44.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York45.jpg",
+    "title": "Statue of Liberty",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York46.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York47.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York48.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York49.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York50.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York51.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York52.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York53.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York54.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York55.jpg",
+    "title": "Missing Poster",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York56.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York57.jpg",
+    "title": "Bowery Street",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York58.jpg",
+    "title": "Ellis Island",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York59.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York60.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York61.jpg",
+    "title": "Jeremy Allen White",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York62.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York63.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York64.jpg",
+    "title": "Playing Soccer",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York65.jpg",
+    "title": "Subway",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York66.jpg",
+    "title": "Ferry",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York67.jpg",
+    "title": "The Bronx",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York68.jpg",
+    "title": "The Bronx",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York69.jpg",
+    "title": "Harlem - Bronx Divide",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York70.jpg",
+    "title": "New York City",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York71.jpg",
+    "title": "Yankee Stadium",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York72.jpg",
+    "title": "Hard Rock Cafe",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York73.jpg",
+    "title": "The Bronx",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York74.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York75.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York76.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York77.jpg",
+    "title": "Messi",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York78.jpg",
+    "title": "Financial District",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York79.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York80.jpg",
+    "title": "New York",
+    "album": "New York",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  }
+
+];
+
+// Expose the manifest for pages that need the same archive outside the
+// Photography renderer (for example, the randomized landing hero).
+if (typeof window !== 'undefined') {
+  window.PORTFOLIO_PHOTOS = PORTFOLIO_PHOTOS;
+}

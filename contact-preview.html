@@ -51,31 +51,14 @@
 
     <div class="discipline-strip" aria-hidden="true">
       <div class="discipline-track">
-        <span>STILL IMAGE</span><i>•</i><span>ORIGINAL SOUND</span><i>•</i><span>MOVING IMAGE</span><i>•</i><span>STORY</span><i>•</i><span>LIGHT</span><i>•</i><span>TEXTURE</span><i>•</i><span>MEMORY</span><i>•</i><span>PLACE</span><i>•</i><span>MOMENT</span><i>•</i>
-        <span>STILL IMAGE</span><i>•</i><span>ORIGINAL SOUND</span><i>•</i><span>MOVING IMAGE</span><i>•</i><span>STORY</span><i>•</i><span>LIGHT</span><i>•</i><span>TEXTURE</span><i>•</i><span>MEMORY</span><i>•</i><span>PLACE</span><i>•</i><span>MOMENT</span><i>•</i>
+        <span>STILL IMAGE</span><i>•</i><span>ORIGINAL SOUND</span><i>•</i><span>MOVING IMAGE</span><i>•</i><span>STORY</span><i>•</i><span>LIGHT</span><i>•</i><span>TEXTURE</span><i>•</i><span>MEMORY</span><i>•</i><span>PLACE</span><i>•</i><span>MOMENT</span><i>•</i><span>HUMAN</span><i>•</i>
+        <span>FRAME</span><i>•</i><span>MOTION</span><i>•</i><span>SILENCE</span><i>•</i><span>SHADOW</span><i>•</i><span>COLOR</span><i>•</i><span>SEQUENCE</span><i>•</i><span>PERSPECTIVE</span><i>•</i><span>FOCUS</span><i>•</i><span>PRESENCE</span><i>•</i><span>OBSERVATION</span><i>•</i><span>DETAIL</span><i>•</i><span>ARCHIVE</span><i>•</i><span>TIME</span><i>•</i>
+        <span>NO A.I. WAS USED IN ANY ASPECT OF THIS SITE'S CONTENT</span><i>•</i>
+        <span>STILL IMAGE</span><i>•</i><span>ORIGINAL SOUND</span><i>•</i><span>MOVING IMAGE</span><i>•</i><span>STORY</span><i>•</i><span>LIGHT</span><i>•</i><span>TEXTURE</span><i>•</i><span>MEMORY</span><i>•</i><span>PLACE</span><i>•</i><span>MOMENT</span><i>•</i><span>HUMAN</span><i>•</i>
+        <span>FRAME</span><i>•</i><span>MOTION</span><i>•</i><span>SILENCE</span><i>•</i><span>SHADOW</span><i>•</i><span>COLOR</span><i>•</i><span>SEQUENCE</span><i>•</i><span>PERSPECTIVE</span><i>•</i><span>FOCUS</span><i>•</i><span>PRESENCE</span><i>•</i><span>OBSERVATION</span><i>•</i><span>DETAIL</span><i>•</i><span>ARCHIVE</span><i>•</i><span>TIME</span><i>•</i>
+        <span>NO A.I. WAS USED IN ANY ASPECT OF THIS SITE'S CONTENT</span><i>•</i>
       </div>
     </div>
-
-    <section class="section work-intro" id="work">
-      <div class="section-heading container-wide section-heading--minimal" data-reveal>
-        <div>
-          <p class="eyebrow">Selected disciplines</p>
-          <h2>One practice,<br>three ways in.</h2>
-        </div>
-      </div>
-
-      <div class="work-panels container-wide">
-        <a class="work-panel work-panel-photo" href="photography.html" data-reveal>
-          <img src="Images/photo-full/Night Sky.jpg" alt="Night sky photograph" loading="lazy">
-          <div class="work-panel-shade"></div>
-          <div class="work-panel-copy"><p>Photography</p><h3>Still image.</h3><span class="circle-arrow">↗</span></div>
-        </a>
-        <a class="work-panel work-panel-music" href="music.html" data-reveal>
-          <div class="record-glyph" aria-hidden="true"><div></div><span></span></div>
-          <div class="work-panel-copy"><p>Music</p><h3>Original sound.</h3><span class="circle-arrow">↗</span></div>
-        </a>
-      </div>
-    </section>
 
     <section class="section photo-slice" aria-labelledby="photo-slice-title">
       <div class="photo-slice-head container-wide" data-reveal>
@@ -259,18 +242,70 @@
         </div>
         <div class="contact-action">
           <p>For commissions, collaborations, photography, music, or video work.</p>
-          <a class="button button-light" href="mailto:12rparker@gmail.com">Start a conversation <span>↗</span></a>
+          <button class="button button-light" type="button" data-contact-open>Start a conversation <span>↗</span></button>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <span>© <span data-year></span> Ryan</span>
-    <span class="footer-center">Photography · Music · Film</span>
+    <span> <span ></span> </span>
+    <span class="footer-center">Photography • Music • Film</span>
     <a href="#top" data-back-top>Back to top ↑</a>
   </footer>
 
+
+  <dialog open class="contact-dialog" data-contact-dialog aria-labelledby="contact-dialog-title">
+    <div class="contact-dialog-shell">
+      <button class="contact-dialog-close" type="button" data-contact-close aria-label="Close contact form">×</button>
+
+      <div class="contact-dialog-heading">
+        <p class="eyebrow">Start a conversation</p>
+        <h2 id="contact-dialog-title">Tell me what you're thinking.</h2>
+        <p>Share a little about the project, collaboration, or idea you have in mind.</p>
+      </div>
+
+      <form
+        class="contact-form"
+        data-contact-form
+        action="https://formsubmit.co/12rparker@gmail.com"
+        method="POST"
+      >
+        <div class="contact-recipient" aria-label="Message recipient">
+          <span>To</span>
+          <strong>12rparker@gmail.com</strong>
+        </div>
+
+        <label class="contact-field">
+          <span>Your email</span>
+          <input type="email" name="email" autocomplete="email" placeholder="you@example.com" required>
+        </label>
+
+        <label class="contact-field">
+          <span>Subject</span>
+          <input type="text" name="_subject" autocomplete="off" placeholder="What would you like to make?" maxlength="140" required>
+        </label>
+
+        <label class="contact-field contact-field-message">
+          <span>Message</span>
+          <textarea name="message" rows="7" placeholder="Tell me about the project, timeline, location, or anything else that would be useful to know." required></textarea>
+        </label>
+
+        <input class="contact-honeypot" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <input type="hidden" name="_template" value="table">
+
+        <div class="contact-form-footer">
+          <p class="contact-form-status" data-contact-status aria-live="polite"></p>
+          <button class="button button-light contact-submit" type="submit" data-contact-submit>
+            <span data-contact-submit-label>Send message</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <script src="js/media-protection.js"></script>
   <script src="js/photos.js"></script>
   <script src="js/portfolio.js"></script>
   <script src="js/shell-navigation.js"></script>
