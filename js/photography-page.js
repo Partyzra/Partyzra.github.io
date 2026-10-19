@@ -553,7 +553,10 @@
       Field.png    -> Images/photo-thumbs/Field.png.webp
     This prevents collisions when both .jpg and .png versions exist.
   */
-  const saveData = Boolean(navigator.connection?.saveData);
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const saveData = Boolean(connection?.saveData);
+  const effectiveType = String(connection?.effectiveType || '').toLowerCase();
+  const slowConnection = effectiveType === 'slow-2g' || effectiveType === '2g';
   const smallScreen = window.matchMedia('(max-width: 700px), (max-width: 900px) and (pointer: coarse)').matches;
   const eagerCount = saveData ? 2 : (smallScreen ? 4 : 8);
   const observerMargin = saveData ? '300px 0px' : (smallScreen ? '650px 0px' : '1100px 0px');
@@ -1145,28 +1148,42 @@
     };
   };
 
+  // Full-resolution requests are cached so navigation never deliberately
+  // downloads the same source twice. Keep the Image object as well as its
+  // promise: if a speculative request later becomes the photograph the visitor
+  // actually tapped, we can promote its fetch priority instead of starting over.
   const preloadCache = new Map();
 
-  function preload(src) {
+  function preload(src, priority = 'auto') {
     if (!src) return Promise.resolve(false);
-    if (preloadCache.has(src)) return preloadCache.get(src);
+
+    const cached = preloadCache.get(src);
+    if (cached) {
+      if (priority === 'high' && cached.image) {
+        try { cached.image.fetchPriority = 'high'; } catch (_) {}
+      }
+      return cached.promise;
+    }
+
+    const image = new Image();
+    image.decoding = 'async';
+    try { image.fetchPriority = priority; } catch (_) {}
 
     const promise = new Promise(resolve => {
-      const image = new Image();
       image.onload = () => resolve(true);
       image.onerror = () => resolve(false);
       image.src = src;
       if (image.complete) resolve(Boolean(image.naturalWidth));
     });
 
-    preloadCache.set(src, promise);
+    preloadCache.set(src, { promise, image });
     return promise;
   }
 
-  async function resolveFullSrc(index, variantIndex = 0) {
+  async function resolveFullSrc(index, variantIndex = 0, priority = 'auto') {
     const candidates = srcCandidatesAt(index, variantIndex);
     for (const src of candidates) {
-      if (await preload(src)) return src;
+      if (await preload(src, priority)) return src;
     }
     return candidates[0] || '';
   }
@@ -1210,7 +1227,7 @@
 
     const offsets = smallScreen ? [-1, 1] : [-2, -1, 1, 2];
     offsets.forEach(offset => {
-      resolveFullSrc(index + offset, 0).catch(() => {});
+      resolveFullSrc(index + offset, 0, 'low').catch(() => {});
     });
   }
 
@@ -1221,7 +1238,7 @@
 
     variantFilesAt(index).forEach((_, variantIndex) => {
       if (variantIndex === 0) return;
-      resolveFullSrc(index, variantIndex).catch(() => {});
+      resolveFullSrc(index, variantIndex, 'low').catch(() => {});
     });
   }
 
@@ -1262,8 +1279,25 @@
 
   let displayRequestId = 0;
 
+  // Keep the small loading badge attached to the upper-right corner of the
+  // photograph rather than the footer, where it can compete with frame/variant
+  // controls. CSS reads these coordinates from the stage element.
+  const positionDetailLoading = (image = activeViewerImage()) => {
+    if (!stage || !image || !image.classList.contains('is-active')) return;
+
+    const stageRect = stage.getBoundingClientRect();
+    const imageRect = image.getBoundingClientRect();
+    if (!stageRect.width || !stageRect.height || !imageRect.width || !imageRect.height) return;
+
+    const x = clamp(imageRect.right - stageRect.left - 8, 78, stageRect.width - 8);
+    const y = clamp(imageRect.top - stageRect.top + 8, 8, stageRect.height - 26);
+    stage.style.setProperty('--detail-loading-x', `${x}px`);
+    stage.style.setProperty('--detail-loading-y', `${y}px`);
+  };
+
   const setDetailLoading = loading => {
     viewer.classList.toggle('is-loading-detail', loading);
+    if (loading) requestAnimationFrame(() => positionDetailLoading());
   };
 
   function activateLayer(nextLayer, previousImage, animate = true) {
@@ -1330,6 +1364,7 @@
 
       activateLayer(previewLayer, outgoing, animate);
       activeLayer = previewLayer;
+      requestAnimationFrame(() => positionDetailLoading(previewImage));
     } else {
       // Never expose the previously viewed photograph while a rare missing
       // thumbnail falls back to the full-resolution request.
@@ -1346,7 +1381,7 @@
       transitionLocked = false;
     }
 
-    const src = await resolveFullSrc(target, currentVariantIndex);
+    const src = await resolveFullSrc(target, currentVariantIndex, 'high');
     if (requestId !== displayRequestId) return;
 
     if (!src) {
@@ -1360,6 +1395,8 @@
     const fullImage = images[fullLayer];
 
     fullImage.classList.remove('is-preview');
+    fullImage.decoding = 'async';
+    try { fullImage.fetchPriority = 'high'; } catch (_) {}
     fullImage.src = src;
     fullImage.alt = titleAt(target);
     fullImage.style.transform = '';
@@ -1394,7 +1431,7 @@
     transitionLocked = animate;
     setDetailLoading(true);
 
-    const src = await resolveFullSrc(currentIndex, targetVariant);
+    const src = await resolveFullSrc(currentIndex, targetVariant, 'high');
     if (requestId !== displayRequestId) return;
     if (!src) {
       setDetailLoading(false);
@@ -1406,6 +1443,8 @@
     const incomingLayer = images.length > 1 ? 1 - activeLayer : activeLayer;
     const incoming = images[incomingLayer];
 
+    incoming.decoding = 'async';
+    try { incoming.fetchPriority = 'high'; } catch (_) {}
     incoming.src = src;
     incoming.alt = `${titleAt(currentIndex)} — alternate ${targetVariant + 1}`;
     incoming.style.transform = '';
@@ -1445,6 +1484,80 @@
       transitionLocked = false;
     }, 460);
   }
+
+  // ----------------------------------------------------------
+  // Mobile detail warm-up
+  // ----------------------------------------------------------
+  // A full camera-resolution file can still be large even when the viewer opens
+  // instantly with a thumbnail. On phones, gently prepare only the photograph
+  // the visitor is most likely considering: the tile nearest the center of the
+  // screen after scrolling has paused. Cap this to two images per page session
+  // so we improve perceived speed without turning the gallery into an eager
+  // full-resolution download. Save-Data and very slow connections opt out.
+  const warmedDetailSources = new Set();
+  const MAX_MOBILE_WARMUPS = 2;
+  let mobileWarmTimer = 0;
+
+  const warmFullDetailForButton = (button, priority = 'low') => {
+    if (!smallScreen || saveData || slowConnection || !button) return;
+
+    buttons = qsa('.photo-grid-button', grid);
+    const index = buttons.indexOf(button);
+    if (index < 0) return;
+
+    const sourceKey = srcCandidatesAt(index, 0)[0];
+    if (!sourceKey) return;
+
+    if (!warmedDetailSources.has(sourceKey)) {
+      if (warmedDetailSources.size >= MAX_MOBILE_WARMUPS && priority !== 'high') return;
+      warmedDetailSources.add(sourceKey);
+    }
+
+    resolveFullSrc(index, 0, priority).catch(() => {});
+  };
+
+  const warmLikelyMobileDetail = () => {
+    if (!smallScreen || saveData || slowConnection || viewer.classList.contains('is-open')) return;
+    if (warmedDetailSources.size >= MAX_MOBILE_WARMUPS) return;
+
+    buttons = qsa('.photo-grid-button', grid);
+    const viewportCenter = window.innerHeight / 2;
+    let candidate = null;
+    let bestScore = Infinity;
+
+    buttons.forEach(button => {
+      const rect = button.getBoundingClientRect();
+      if (rect.bottom <= 0 || rect.top >= window.innerHeight || rect.height <= 0) return;
+
+      const visiblePixels = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+      if (visiblePixels / rect.height < .35) return;
+
+      const score = Math.abs((rect.top + rect.bottom) / 2 - viewportCenter);
+      if (score < bestScore) {
+        bestScore = score;
+        candidate = button;
+      }
+    });
+
+    warmFullDetailForButton(candidate, 'low');
+  };
+
+  const scheduleMobileWarmup = () => {
+    if (!smallScreen || saveData || slowConnection) return;
+    window.clearTimeout(mobileWarmTimer);
+    mobileWarmTimer = window.setTimeout(warmLikelyMobileDetail, 650);
+  };
+
+  window.addEventListener('scroll', scheduleMobileWarmup, { passive: true });
+  window.setTimeout(warmLikelyMobileDetail, 1100);
+
+  // Pointer-down happens before click/tap activation. Promote the exact image
+  // under the visitor's finger immediately, buying a little extra network time
+  // and making that request more important than speculative neighbors.
+  grid.addEventListener('pointerdown', event => {
+    const button = event.target.closest('.photo-grid-button');
+    if (button) warmFullDetailForButton(button, 'high');
+  }, { passive: true });
 
   async function openViewer(button) {
     // Re-read the DOM so the viewer follows the current randomized/album order.
@@ -1727,6 +1840,9 @@
     });
 
     if (zoomScale > MIN_ZOOM) applyZoom();
+    if (viewer.classList.contains('is-loading-detail')) {
+      requestAnimationFrame(() => positionDetailLoading());
+    }
   }, { passive: true });
 
   syncZoomUI();

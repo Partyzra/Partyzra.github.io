@@ -1407,26 +1407,30 @@ video,
   content: 'Loading detail';
   position: absolute;
   z-index: 10;
-  left: 50%;
-  bottom: 14px;
-  padding: 6px 9px;
+  /* JavaScript keeps this badge pinned just inside the photograph's upper-right
+     corner, safely away from the footer and alternate-frame controls. */
+  left: var(--detail-loading-x, calc(100% - 12px));
+  top: var(--detail-loading-y, 12px);
+  padding: 5px 7px;
+  border: 1px solid rgba(240, 238, 233, .10);
   border-radius: 999px;
-  background: rgba(0, 0, 0, .54);
+  background: rgba(0, 0, 0, .58);
   color: rgba(240, 238, 233, .66);
-  font-size: .52rem;
+  font-size: .48rem;
   text-transform: uppercase;
-  letter-spacing: .14em;
+  letter-spacing: .12em;
+  white-space: nowrap;
   opacity: 0;
-  transform: translate(-50%, 5px);
+  transform: translate(-100%, -4px);
   transition: opacity .2s ease, transform .2s ease;
   pointer-events: none;
-  backdrop-filter: blur(7px);
-  -webkit-backdrop-filter: blur(7px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .photo-viewer.is-loading-detail .photo-viewer-stage::after {
   opacity: 1;
-  transform: translate(-50%, 0);
+  transform: translate(-100%, 0);
 }
 
 @media (max-width: 700px), (max-width: 900px) and (pointer: coarse) {
@@ -1483,6 +1487,7 @@ video,
   }
 
   .photo-viewer-stage::after {
-    bottom: 10px;
+    padding: 4px 6px;
+    font-size: .45rem;
   }
 }
