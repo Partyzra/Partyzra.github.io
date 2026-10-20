@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark"><title>Partyzra Analytics V2.2 — Demo Preview</title>
+<style>
+:root{color-scheme:dark;--bg:#080909;--panel:#111313;--panel-2:#141615;--stroke:#292a27;--stroke-soft:#222321;--text:#eeeae3;--muted:#9c9b94;--faint:#6f726c;--gold:#e2bb72;--gold-soft:#b6935a;--paper:#dcd8cd}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-system,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}a:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+main{max-width:1260px;margin:auto;padding:42px 28px 80px}
+.mast{display:flex;align-items:center;gap:13px;border-bottom:1px solid var(--stroke);padding-bottom:22px;margin-bottom:36px}
+.brandmark{height:31px;width:31px;border-radius:50%;border:1px solid #71634e;display:grid;place-items:center;color:var(--gold);font:16px Georgia,serif}
+.brandtext{font-size:11px;font-weight:650;letter-spacing:.21em}.edition{margin-left:auto;font-size:10px;color:var(--faint);letter-spacing:.14em;text-transform:uppercase}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:27px}.eyebrow{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin:0 0 9px}.top h1{font:400 clamp(39px,6vw,65px)/.98 Georgia,"Times New Roman",serif;letter-spacing:-.06em;margin:0}.top h1 em{font-style:italic;color:var(--gold)}.top-note{font-size:11px;color:var(--muted);text-align:right;line-height:1.85}.top-note strong{font-weight:500;color:var(--text)}
+.controls{display:flex;gap:16px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:18px}.filters{display:flex;align-items:center;flex-wrap:wrap;gap:5px;padding:4px;border:1px solid var(--stroke);border-radius:8px;background:var(--panel)}.filter{font-size:11px;padding:8px 13px;border-radius:5px;color:var(--muted);white-space:nowrap;transition:background .15s,color .15s}.filter:hover{color:var(--text)}.filter.is-active{background:#302a20;color:var(--gold);font-weight:600}.period{font-size:11px;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-bottom:11px}.card,.panel{background:var(--panel);border:1px solid var(--stroke);border-radius:10px}.card{padding:21px 21px 19px;min-height:142px;display:flex;flex-direction:column}.cardlabel{font-size:10px;text-transform:uppercase;letter-spacing:.16em;color:var(--muted)}.cardvalue{font:400 clamp(35px,4.2vw,52px)/1.2 Georgia,serif;letter-spacing:-.045em;margin-top:11px;font-variant-numeric:tabular-nums}.cardsub{font-size:11px;color:var(--faint);margin-top:auto;padding-top:9px}
+.dashboard-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(280px,1fr);gap:11px}.panel{padding:23px;min-width:0}.panelhead{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;margin-bottom:20px}.panel h2{font-size:11px;font-weight:650;color:var(--text);text-transform:uppercase;letter-spacing:.14em;margin:0}.hint{font-size:10px;color:var(--faint)}
+.chart-legend{display:flex;gap:15px;font-size:10px;color:var(--muted);flex-wrap:wrap}.key{display:flex;gap:7px;align-items:center}.key i{width:8px;height:8px;border-radius:2px;display:block}.key-page{background:var(--paper)}.key-photo{background:var(--gold)}
+.chart-wrap{position:relative;padding-top:11px}.chart-grid{position:absolute;top:11px;left:0;right:0;height:223px;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none}.chart-grid span{border-top:1px dashed var(--stroke-soft);height:1px}
+.chart{display:flex;align-items:stretch;gap:clamp(2px,.5vw,7px);height:253px;position:relative}.chart-column{display:flex;min-width:0;flex:1;flex-direction:column;align-items:stretch}.chart-stack{height:223px;display:flex;flex-direction:column-reverse;justify-content:flex-start;position:relative}.chart-stack span{display:block;min-height:0;width:100%}.stack-page{background:var(--paper);opacity:.84}.stack-photo{background:var(--gold)}.tick{height:25px;display:flex;align-items:flex-end;justify-content:center;font-size:9px;color:var(--faint);white-space:nowrap;overflow:visible}.chart-footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--stroke);padding-top:11px;margin-top:3px;font-size:10px;color:var(--faint)}
+.rank-row{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:13px;align-items:center;padding:11px 0;border-bottom:1px solid var(--stroke-soft)}.rank-row:last-child{border-bottom:none}.rank-num,.rank-value{font-size:11px;font-variant-numeric:tabular-nums}.rank-num{color:var(--faint)}.rank-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--text)}.rank-value{color:var(--paper)}.meter{background:#232524;height:2px;margin-top:8px}.meter span{display:block;background:var(--gold-soft);height:100%;max-width:100%}
+.lower{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:11px}.sources{margin-top:12px}.source-row{display:flex;gap:12px;justify-content:space-between;border-bottom:1px solid var(--stroke-soft);padding:9px 0;font-size:11px}.source-row span{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.source-row strong{font-weight:500;font-variant-numeric:tabular-nums}
+.table-wrap{max-height:470px;overflow:auto}table{width:100%;border-collapse:collapse}th{text-align:left;padding:0 8px 11px 0;color:var(--faint);font-size:10px;font-weight:550;letter-spacing:.1em;text-transform:uppercase}td{padding:12px 9px 12px 0;border-top:1px solid var(--stroke-soft);vertical-align:top;font-size:11px}.date-cell{white-space:nowrap;color:var(--muted)}.event-tag{font-size:10px;color:var(--gold);white-space:nowrap}.activity-name{display:block;max-width:230px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.activity-sub{display:block;max-width:230px;font-size:10px;color:var(--faint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.photo-intro{display:flex;justify-content:space-between;align-items:baseline;gap:14px;margin:30px 0 12px;border-top:1px solid var(--stroke);padding-top:20px}.photo-intro h2{font:400 31px/1.1 Georgia,serif;letter-spacing:-.045em;margin:0}.photo-intro p{font-size:11px;color:var(--faint);margin:0}.photo-intro em{color:var(--gold);font-style:italic}
+.photo-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-bottom:11px}.photo-metric{background:var(--panel);border:1px solid var(--stroke);border-radius:10px;padding:17px 19px}.photo-metric small{display:block;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}.photo-metric strong{display:block;font:400 30px/1.4 Georgia,serif;font-variant-numeric:tabular-nums;margin-top:3px}.photo-metric span{display:block;color:var(--faint);font-size:10px;margin-top:2px}
+.rank-meta{display:block;font-size:10px;color:var(--faint);margin-top:3px}.subject-row{padding:13px 0}.photo-detail{margin-top:11px}.trend-row,.photo-activity-row{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:12px 0;border-bottom:1px solid var(--stroke-soft)}.trend-row:last-child,.photo-activity-row:last-child{border-bottom:none}.trend-info,.photo-activity-info{min-width:0}.trend-info strong,.photo-activity-info strong{display:block;font-size:12px;font-weight:500;overflow-wrap:anywhere}.trend-info span,.photo-activity-info span{display:block;font-size:10px;color:var(--faint);margin-top:4px;overflow-wrap:anywhere}.trend-change{font-size:11px;flex-shrink:0;color:var(--muted);font-variant-numeric:tabular-nums}.trend-change.positive{color:var(--gold)}.trend-change.negative{color:var(--faint)}.photo-activity-row time{font-size:10px;color:var(--muted);white-space:nowrap;flex-shrink:0}
+.empty{font-size:12px;color:var(--faint);padding:8px 0}.privacy{border-top:1px solid var(--stroke);padding-top:18px;margin-top:26px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:10px;line-height:1.8;color:var(--faint)}.privacy p{margin:0}.privacy strong{color:var(--muted);font-weight:500}
+@media(max-width:920px){.dashboard-grid,.lower{grid-template-columns:1fr}.cards,.photo-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.panel{padding:20px}}
+@media(max-width:560px){main{padding:23px 13px 56px}.mast{margin-bottom:28px}.top{display:block}.top-note{text-align:left;margin-top:17px}.controls{align-items:flex-start}.filters{width:100%;justify-content:space-between}.filter{padding:8px 9px}.cards,.photo-metrics{gap:8px}.photo-intro{display:block}.photo-intro p{margin-top:9px}.photo-metric{padding:15px 13px}.photo-activity-row{align-items:flex-start;flex-direction:column;gap:5px}.card{padding:17px 14px;min-height:126px}.panel{padding:16px}.chart-legend{gap:9px}.chart{gap:2px}.tick{font-size:8px}.date-cell{font-size:10px}.table-wrap{overflow-x:auto}.privacy{display:block}}
+</style></head>
+<body><main><aside style="padding:12px 16px;margin-bottom:26px;border:1px solid #71634e;color:#e2bb72;background:#191711;border-radius:6px;font:12px/1.5 system-ui,sans-serif;letter-spacing:.03em;">DESIGN PREVIEW · SAMPLE DATA ONLY — These are fictional events for demonstration, not your live database.</aside>
+  <div class="mast"><div class="brandmark" aria-hidden="true">P</div><div class="brandtext">PARTYZRA</div><span class="edition">Private / Statistics 02.2</span></div>
+  <header class="top"><div><p class="eyebrow">Portfolio intelligence</p><h1>Behind the <em>frames.</em></h1></div>
+    <div class="top-note">TIMEZONE&nbsp; <strong>Mountain · MDT</strong><br>
+      UPDATED&nbsp; <strong>Oct 19, 11:38 PM MDT</strong><br>Refresh to see new activity</div></header>
+  <div class="controls"><nav class="filters" aria-label="Date range"><a class="filter "
+    href="/dashboard?range=today" >Today</a><a class="filter is-active"
+    href="/dashboard?range=7d" aria-current="page">7 Days</a><a class="filter "
+    href="/dashboard?range=30d" >30 Days</a><a class="filter "
+    href="/dashboard?range=all" >All Time</a></nav><div class="period">Oct 13 – Oct 19, 2026</div></div>
+  <section class="cards" aria-label="Traffic summary">
+    <article class="card"><span class="cardlabel">Sessions</span><span class="cardvalue">2</span><span class="cardsub">Anonymous browsing sessions</span></article>
+    <article class="card"><span class="cardlabel">Page views</span><span class="cardvalue">3</span><span class="cardsub">1.5 pages per session</span></article>
+    <article class="card"><span class="cardlabel">Photograph opens</span><span class="cardvalue">5</span><span class="cardsub">4 distinct image files</span></article>
+    <article class="card"><span class="cardlabel">Photo engagement</span><span class="cardvalue">50%</span><span class="cardsub">1 sessions opened a photo</span></article>
+  </section>
+  <div class="dashboard-grid">
+    <section class="panel"><div class="panelhead"><div><h2>Traffic timeline</h2><span class="hint">Daily activity · Mountain Time</span></div><div class="chart-legend"><span class="key"><i class="key-page"></i>Page views</span><span class="key"><i class="key-photo"></i>Photo opens</span></div></div>
+      <div class="chart-wrap" role="group" aria-label="Timeline of page views and photo opens">
+        <div class="chart-grid" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="chart"><div class="chart-column" title="Oct 13, 2026: 0 page views, 0 photo opens" aria-label="Oct 13, 2026: 0 page views, 0 photo opens">
+      <div class="chart-stack"><span class="stack-photo" style="height:0.000%"></span><span class="stack-page" style="height:0.000%"></span></div>
+      <span class="tick">Oct 13</span>
+    </div><div class="chart-column" title="Oct 14, 2026: 0 page views, 0 photo opens" aria-label="Oct 14, 2026: 0 page views, 0 photo opens">
+      <div class="chart-stack"><span class="stack-photo" style="height:0.000%"></span><span class="stack-page" style="height:0.000%"></span></div>
+      <span class="tick">Oct 14</span>
+    </div><div class="chart-column" title="Oct 15, 2026: 0 page views, 0 photo opens" aria-label="Oct 15, 2026: 0 page views, 0 photo opens">
+      <div class="chart-stack"><span class="stack-photo" style="height:0.000%"></span><span class="stack-page" style="height:0.000%"></span></div>
+      <span class="tick">Oct 15</span>
+    </div><div class="chart-column" title="Oct 16, 2026: 0 page views, 0 photo opens" aria-label="Oct 16, 2026: 0 page views, 0 photo opens">
+      <div class="chart-stack"><span class="stack-photo" style="height:0.000%"></span><span class="stack-page" style="height:0.000%"></span></div>
+      <span class="tick">Oct 16</span>
+    </div><div class="chart-column" title="Oct 17, 2026: 0 page views, 0 photo opens" aria-label="Oct 17, 2026: 0 page views, 0 photo opens">
+      <div class="chart-stack"><span class="stack-photo" style="height:0.000%"></span><span class="stack-page" style="height:0.000%"></span></div>
+      <span class="tick">Oct 17</span>
+    </div><div class="chart-column" title="Oct 18, 2026: 1 page views, 0 photo opens" aria-label="Oct 18, 2026: 1 page views, 0 photo opens">
+      <div class="chart-stack"><span class="stack-photo" style="height:0.000%"></span><span class="stack-page" style="height:14.286%"></span></div>
+      <span class="tick">Oct 18</span>
+    </div><div class="chart-column" title="Oct 19, 2026: 2 page views, 5 photo opens" aria-label="Oct 19, 2026: 2 page views, 5 photo opens">
+      <div class="chart-stack"><span class="stack-photo" style="height:71.429%"></span><span class="stack-page" style="height:28.571%"></span></div>
+      <span class="tick">Oct 19</span>
+    </div></div>
+      </div><div class="chart-footer"><span>8 plotted events</span><span>Peak: 7 per day</span></div>
+    </section>
+    <section class="panel"><div class="panelhead"><h2>Pages</h2><span class="hint">Page views</span></div>
+    <div class="rank-row">
+      <span class="rank-num">01</span>
+      <div class="rank-body"><div class="rank-name">Home</div>
+      <div class="meter"><span style="width:100%"></span></div></div>
+      <span class="rank-value">1</span>
+    </div>
+    <div class="rank-row">
+      <span class="rank-num">02</span>
+      <div class="rank-body"><div class="rank-name">Music</div>
+      <div class="meter"><span style="width:100%"></span></div></div>
+      <span class="rank-value">1</span>
+    </div>
+    <div class="rank-row">
+      <span class="rank-num">03</span>
+      <div class="rank-body"><div class="rank-name">Photography</div>
+      <div class="meter"><span style="width:100%"></span></div></div>
+      <span class="rank-value">1</span>
+    </div></section>
+  </div>
+  <div class="photo-intro"><h2>Through the <em>lens.</em></h2><p>Photography insights · Selected date range</p></div>
+  <section class="photo-metrics" aria-label="Photography insights">
+    <article class="photo-metric"><small>Gallery sessions</small><strong>1</strong><span>Sessions viewing Photography</span></article>
+    <article class="photo-metric"><small>Gallery → photo</small><strong>100%</strong><span>1 of 1 gallery sessions opened an image</span></article>
+    <article class="photo-metric"><small>Alternate frames</small><strong>2</strong><span>Opens of secondary frames</span></article>
+    <article class="photo-metric"><small>Opens / photo session</small><strong>5.0</strong><span>Average among sessions that opened photographs</span></article>
+  </section>
+  <div class="lower photo-detail">
+    <section class="panel"><div class="panelhead"><h2>Top photographs</h2><span class="hint">All frames grouped by title</span></div><div class="rank-row subject-row">
+      <span class="rank-num">01</span>
+      <div class="rank-body"><div class="rank-name">Peacock</div>
+        <span class="rank-meta">1 photo-opening session · 2 files</span>
+        <div class="meter"><span style="width:100%"></span></div></div>
+      <span class="rank-value">3</span></div><div class="rank-row subject-row">
+      <span class="rank-num">02</span>
+      <div class="rank-body"><div class="rank-name">Fox at Dusk</div>
+        <span class="rank-meta">1 photo-opening session · 1 file</span>
+        <div class="meter"><span style="width:33%"></span></div></div>
+      <span class="rank-value">1</span></div><div class="rank-row subject-row">
+      <span class="rank-num">03</span>
+      <div class="rank-body"><div class="rank-name">Mountain Light</div>
+        <span class="rank-meta">1 photo-opening session · 1 file</span>
+        <div class="meter"><span style="width:33%"></span></div></div>
+      <span class="rank-value">1</span></div></section>
+    <section class="panel"><div class="panelhead"><h2>Gaining attention</h2><span class="hint">Versus previous 7 days</span></div><div class="trend-row"><div class="trend-info"><strong>Peacock</strong>
+        <span>3 now · 2 before</span></div>
+        <span class="trend-change positive">+1</span></div><div class="trend-row"><div class="trend-info"><strong>Fox at Dusk</strong>
+        <span>1 now · 0 before</span></div>
+        <span class="trend-change positive">New in period</span></div><div class="trend-row"><div class="trend-info"><strong>Mountain Light</strong>
+        <span>1 now · 0 before</span></div>
+        <span class="trend-change positive">New in period</span></div>
+      <p class="hint" style="margin-top:14px">Changes compare photograph opens in equal-length Mountain Time periods. “New in period” means no opens in the previous period—not a new visitor or a newly uploaded photo.</p></section>
+  </div>
+  <div class="lower">
+    <section class="panel"><div class="panelhead"><h2>Individual image files</h2><span class="hint">Alternate frames counted separately</span></div>
+    <div class="rank-row">
+      <span class="rank-num">01</span>
+      <div class="rank-body"><div class="rank-name">Peacock · Frame 02</div>
+      <div class="meter"><span style="width:100%"></span></div></div>
+      <span class="rank-value">2</span>
+    </div>
+    <div class="rank-row">
+      <span class="rank-num">02</span>
+      <div class="rank-body"><div class="rank-name">Fox at Dusk</div>
+      <div class="meter"><span style="width:50%"></span></div></div>
+      <span class="rank-value">1</span>
+    </div>
+    <div class="rank-row">
+      <span class="rank-num">03</span>
+      <div class="rank-body"><div class="rank-name">Peacock</div>
+      <div class="meter"><span style="width:50%"></span></div></div>
+      <span class="rank-value">1</span>
+    </div>
+    <div class="rank-row">
+      <span class="rank-num">04</span>
+      <div class="rank-body"><div class="rank-name">Mountain Light</div>
+      <div class="meter"><span style="width:50%"></span></div></div>
+      <span class="rank-value">1</span>
+    </div></section>
+    <section class="panel"><div class="panelhead"><h2>Latest photo opens</h2><span class="hint">Latest 8 in range</span></div><div class="photo-activity-row">
+      <div class="photo-activity-info"><strong>Fox at Dusk</strong>
+      <span>Fox.jpg</span></div>
+      <time>Oct 19, 8:06 AM MDT</time></div><div class="photo-activity-row">
+      <div class="photo-activity-info"><strong>Mountain Light</strong>
+      <span>Mountain.jpg</span></div>
+      <time>Oct 19, 8:05 AM MDT</time></div><div class="photo-activity-row">
+      <div class="photo-activity-info"><strong>Peacock · Frame 02</strong>
+      <span>Peacock2.jpg</span></div>
+      <time>Oct 19, 8:04 AM MDT</time></div><div class="photo-activity-row">
+      <div class="photo-activity-info"><strong>Peacock · Frame 02</strong>
+      <span>Peacock2.jpg</span></div>
+      <time>Oct 19, 8:03 AM MDT</time></div><div class="photo-activity-row">
+      <div class="photo-activity-info"><strong>Peacock</strong>
+      <span>Peacock.jpg</span></div>
+      <time>Oct 19, 8:02 AM MDT</time></div></section>
+  </div>
+  <div class="lower">
+    <section class="panel"><div class="panelhead"><h2>Recent activity</h2><span class="hint">Latest 20 in range</span></div>
+      <div class="table-wrap"><table><thead><tr><th>Mountain Time</th><th>Event</th><th>Detail</th></tr></thead><tbody><tr><td class="date-cell">Oct 19, 8:06 AM MDT</td>
+      <td><span class="event-tag">Photo opened</span></td>
+      <td><span class="activity-name">Fox at Dusk</span><span class="activity-sub">Fox.jpg</span></td></tr><tr><td class="date-cell">Oct 19, 8:05 AM MDT</td>
+      <td><span class="event-tag">Photo opened</span></td>
+      <td><span class="activity-name">Mountain Light</span><span class="activity-sub">Mountain.jpg</span></td></tr><tr><td class="date-cell">Oct 19, 8:04 AM MDT</td>
+      <td><span class="event-tag">Photo opened</span></td>
+      <td><span class="activity-name">Peacock</span><span class="activity-sub">Peacock2.jpg</span></td></tr><tr><td class="date-cell">Oct 19, 8:03 AM MDT</td>
+      <td><span class="event-tag">Photo opened</span></td>
+      <td><span class="activity-name">Peacock</span><span class="activity-sub">Peacock2.jpg</span></td></tr><tr><td class="date-cell">Oct 19, 8:02 AM MDT</td>
+      <td><span class="event-tag">Photo opened</span></td>
+      <td><span class="activity-name">Peacock</span><span class="activity-sub">Peacock.jpg</span></td></tr><tr><td class="date-cell">Oct 19, 8:01 AM MDT</td>
+      <td><span class="event-tag">Page view</span></td>
+      <td><span class="activity-name">Photography</span><span class="activity-sub">/photography</span></td></tr><tr><td class="date-cell">Oct 19, 8:00 AM MDT</td>
+      <td><span class="event-tag">Page view</span></td>
+      <td><span class="activity-name">Home</span><span class="activity-sub">/home</span></td></tr><tr><td class="date-cell">Oct 18, 10:00 AM MDT</td>
+      <td><span class="event-tag">Page view</span></td>
+      <td><span class="activity-name">Music</span><span class="activity-sub">/music</span></td></tr></tbody></table></div></section>
+  </div>
+  <div class="lower">
+    <section class="panel"><div class="panelhead"><h2>Traffic sources</h2><span class="hint">Referrers from page views</span></div>
+      <div class="sources"><div class="source-row"><span>Direct / unknown</span><strong>3</strong></div></div><p class="hint">Sources depend on referrer information supplied by browsers.</p></section>
+    <section class="panel"><div class="panelhead"><h2>Activity details</h2><span class="hint">Selected period</span></div>
+      <div class="source-row"><span>All recorded events</span><strong>8</strong></div>
+      <div class="source-row"><span>Other tracked interactions</span><strong>0</strong></div>
+      <div class="source-row"><span>Session photo-engagement rate</span><strong>50%</strong></div>
+      <p class="hint" style="margin-top:16px">A session is a temporary, anonymous browser session—not a unique person. One person can create several sessions.</p></section>
+  </div>
+  <footer class="privacy"><p><strong>Private by design.</strong> Counts use existing anonymous session IDs, timestamps, page/photo opens, and referrers.<br>
+    No IP addresses, names, email addresses, precise location, or browser fingerprints are intentionally stored.</p>
+    <p>DATA STORED IN UTC · DISPLAYED IN AMERICA/DENVER<br>PARTYZRA ANALYTICS · V2.2</p></footer>
+</main></body></html>
