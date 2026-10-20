@@ -79,9 +79,10 @@
       document.head.appendChild(script);
     });
 
+    // Homepage backgrounds must stay lightweight. Never fall back to a
+    // camera-original photograph simply because a thumbnail path is missing.
     const heroSourceCandidates = file => [
-      `Images/photo-thumbs/${file}.webp`,
-      `Images/photo-full/${file}`
+      `Images/photo-thumbs/${file}.webp`
     ];
 
     const preloadFirstAvailable = candidates => new Promise(resolve => {
@@ -235,7 +236,8 @@
 
       // Normally the first item succeeds immediately. Walking the shuffled list
       // also makes startup resilient if a thumbnail/original is ever missing.
-      while (!firstSource && firstIndex < slides.length) {
+      // Bound missing-file retries so a bad thumbnail set cannot stall startup.
+      while (!firstSource && firstIndex < Math.min(slides.length, 12)) {
         firstFile = slides[firstIndex];
         firstSource = await preloadFirstAvailable(heroSourceCandidates(firstFile));
         if (!firstSource) firstIndex += 1;
@@ -497,7 +499,8 @@
 
         if (mobileMotion) requestMobileSync();
       }, {
-        rootMargin: mobileMotion ? '120px 0px 120px 0px' : '320px 0px 320px 0px',
+        // Don't start decoding large clips until they're almost visible.
+        rootMargin: mobileMotion ? '60px 0px 60px 0px' : '80px 0px 80px 0px',
         threshold: mobileMotion ? [0, .08, .2, .4, .6, .8, 1] : 0.01
       });
 

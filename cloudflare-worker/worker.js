@@ -53,6 +53,15 @@ async function handleTrack(request, env) {
 
   if (!isAllowed) return new Response('Origin not allowed', { status: 403 });
 
+  // Never store events from the owner's configured public IP address(es).
+  // CF-Connecting-IP is supplied by Cloudflare for incoming client requests.
+  // Only compare it to a Worker secret; do not put the IP in database rows,
+  // GitHub files, logs, or analytics responses. The secret supports a
+  // comma/newline-separated IPv4 and/or IPv6 list.
+  if (isOwnerIp(request, env)) {
+    return withCors(json({ ok: true, excluded: true }, 202), origin);
+  }
+
   const declaredLength = Number(request.headers.get('Content-Length') || 0);
   if (declaredLength > MAX_BODY_BYTES) {
     return withCors(json({ ok: false, error: 'payload_too_large' }, 413), origin);
@@ -96,6 +105,21 @@ async function handleTrack(request, env) {
   }
 
   return withCors(json({ ok: true }, 202), origin);
+}
+
+function normalizeIp(value) {
+  const raw = String(value || '').trim().toLowerCase().replace(/^\[|\]$/g, '');
+  if (!raw.includes(':')) return raw;
+  // URL's IPv6 parser canonicalizes equivalent compressed/expanded forms.
+  try { return new URL(`http://[${raw}]/`).hostname.replace(/^\[|\]$/g, ''); }
+  catch (_) { return raw; }
+}
+
+function isOwnerIp(request, env) {
+  const clientIp = normalizeIp(request.headers.get('CF-Connecting-IP'));
+  const raw = String(env.EXCLUDED_IPS || '').trim();
+  if (!clientIp || !raw) return false;
+  return raw.split(/[,;\s]+/).some(candidate => normalizeIp(candidate) === clientIp);
 }
 
 function getAllowedOrigins(env) {

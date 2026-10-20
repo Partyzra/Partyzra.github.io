@@ -558,6 +558,9 @@
   const effectiveType = String(connection?.effectiveType || '').toLowerCase();
   const slowConnection = effectiveType === 'slow-2g' || effectiveType === '2g';
   const smallScreen = window.matchMedia('(max-width: 700px), (max-width: 900px) and (pointer: coarse)').matches;
+  // Only touch-first phone/tablet browsers use thumbnails in the enlarged viewer.
+  // A narrow desktop window still receives full-resolution photographs.
+  const lightweightViewer = window.matchMedia('(pointer: coarse) and (max-width: 1100px)').matches;
   const eagerCount = saveData ? 2 : (smallScreen ? 3 : 6);
   const observerMargin = saveData ? '250px 0px' : (smallScreen ? '400px 0px' : '600px 0px');
 
@@ -848,20 +851,23 @@
     const item = itemAt(index);
     if (!item) return [];
 
-    // The primary image already carries its resolved candidates on the grid
-    // button. Alternate snapshots are resolved from their filenames so they
-    // receive the same .jpg/.JPG case fallback as every other full-size image.
+    const file = variantFilesAt(index)[variantIndex];
+    if (!file) return [];
+
+    // Phones and touch tablets use the already-generated WebP thumbnail files
+    // for ALL enlarged frames. No full-resolution image is requested on mobile.
+    // Desktop retains the original full-resolution source/case fallbacks.
+    if (lightweightViewer) return thumbnailPathsFor(file);
+
     if (variantIndex === 0) {
       try {
         const parsed = JSON.parse(item.dataset.fullCandidates || '[]');
         if (Array.isArray(parsed) && parsed.length) return parsed.filter(Boolean);
       } catch (_) {}
-
       return item.dataset.full ? [item.dataset.full] : [];
     }
 
-    const variantFile = variantFilesAt(index)[variantIndex];
-    return variantFile ? fullPathsFor(variantFile) : [];
+    return fullPathsFor(file);
   };
 
   const titleAt = index => itemAt(index)?.dataset.title || '';
@@ -1164,6 +1170,8 @@
   // promise: if a speculative request later becomes the photograph the visitor
   // actually tapped, we can promote its fetch priority instead of starting over.
   const preloadCache = new Map();
+  const MAX_PRELOAD_CACHE = 6;  // browser cache still retains fetched files
+
 
   function preload(src, priority = 'auto') {
     if (!src) return Promise.resolve(false);
@@ -1188,6 +1196,12 @@
     });
 
     preloadCache.set(src, { promise, image });
+    // Do not retain Image objects for the entire browsing session. Large
+    // originals can otherwise consume significant decoded-image memory.
+    while (preloadCache.size > MAX_PRELOAD_CACHE) {
+      const oldest = preloadCache.keys().next().value;
+      preloadCache.delete(oldest);
+    }
     return promise;
   }
 
@@ -1233,27 +1247,16 @@
   };
 
   function preloadAround(index) {
-    // Phones should prioritize the photograph the visitor is actually viewing.
-    // Once it is ready, quietly prepare only the immediate neighbors. Desktop
-    // keeps the wider +/-2 buffer because bandwidth and decode headroom are
-    // typically much better there. Save-Data skips speculative full-res loads.
-    if (saveData) return;
-
-    const offsets = smallScreen ? [-1, 1] : [-2, -1, 1, 2];
-    offsets.forEach(offset => {
+    // Never preload full-size images on mobile. On desktop, prepare only the
+    // immediate neighbor to each side once the selected image is loaded.
+    if (saveData || lightweightViewer) return;
+    [-1, 1].forEach(offset => {
       resolveFullSrc(index + offset, 0, 'low').catch(() => {});
     });
   }
 
   function preloadVariants(index) {
-    // Alternate frames can be large too. On phones, load them only when the
-    // visitor explicitly asks for one instead of competing with the main image.
-    if (smallScreen || saveData) return;
-
-    variantFilesAt(index).forEach((_, variantIndex) => {
-      if (variantIndex === 0) return;
-      resolveFullSrc(index, variantIndex, 'low').catch(() => {});
-    });
+    // Alternate frames can be many megabytes each; only load on explicit click.
   }
 
   function syncCopy(index) {
@@ -1393,7 +1396,11 @@
 
     // Start the expensive request immediately, but do not let it control the
     // visible transition. The cached thumbnail gets the screen first.
-    const fullSrcPromise = resolveFullSrc(target, 0, 'high');
+    // Mobile needs only the cached WebP preview; don't launch a full-size
+    // request or trigger a second decode/swap for exactly the same thumbnail.
+    const fullSrcPromise = lightweightViewer
+      ? Promise.resolve('')
+      : resolveFullSrc(target, 0, 'high');
 
     transitionLocked = animate;
     setDetailLoading(true);
@@ -1434,6 +1441,11 @@
     // handoff. Visitors do not have to wait for the full-resolution detail file
     // before moving to the next photograph.
     releaseNavigationLock(requestId, animate ? 220 : 0);
+
+    if (lightweightViewer) {
+      setDetailLoading(false);
+      return;
+    }
 
     const src = await fullSrcPromise;
     if (requestId !== displayRequestId) return;
