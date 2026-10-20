@@ -1522,3 +1522,18 @@ video,
   }
 }
 
+
+/* V2.4: A missing thumbnail must never trigger a huge full-resolution grid download. */
+.photo-grid-button.is-missing-thumbnail { background: #1b1c1e; }
+.photo-grid-preview-missing {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  color: #acaa9f;
+  font-size: 12px;
+  letter-spacing: .07em;
+  text-align: center;
+  pointer-events: none;
+}

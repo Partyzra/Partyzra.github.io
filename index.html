@@ -11,6 +11,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/site-shell.css">
+  <!-- Set browser privacy before the embedded content page starts. -->
+  <script>
+    (function () {
+      var mode = new URLSearchParams(location.search).get('analytics');
+      try {
+        if (mode === 'off') localStorage.setItem('partyzra_analytics_opt_out', '1');
+        if (mode === 'on') localStorage.removeItem('partyzra_analytics_opt_out');
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body class="site-shell-page">
   <iframe class="site-shell-frame" data-site-shell-frame src="home.html" title="Ryan portfolio"></iframe>
@@ -32,6 +42,6 @@
     </button>
   </div>
 
-  <script src="js/site-shell.js"></script>
+  <script src="js/site-shell.js?v=2.4.0"></script>
 </body>
 </html>

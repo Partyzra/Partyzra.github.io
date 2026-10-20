@@ -1,5 +1,5 @@
 /*
-  Partyzra Analytics — V2.3 privacy + low-priority dispatch
+  Partyzra Analytics — V2.4 privacy + low-priority dispatch
 
   This file replaces only js/analytics.js on the GitHub Pages portfolio.
   Cloudflare Worker, dashboard, D1 schema, and analytics-config.js stay unchanged.
@@ -21,6 +21,7 @@
     || location.protocol === 'file:';
   const optOutKey = 'partyzra_analytics_opt_out';
   const sessionKey = 'partyzra_analytics_session';
+  const version = '2.4.0';
 
   // The public shell (index.html, photography.html, music.html) contains an
   // iframe. Look at the shell's query string so the opt-out links work from
@@ -53,6 +54,11 @@
   }
 
   const isOptedOut = () => {
+    // The outer shell decides privacy before it starts loading this iframe.
+    // Honor that decision even when localStorage is unavailable.
+    try {
+      if (window.parent !== window && window.parent.PartyzraPrivacy?.optedOut === true) return true;
+    } catch (_) {}
     if (preference === 'off') return true;
     if (preference === 'on') return false;
     try { return localStorage.getItem(optOutKey) === '1'; }
@@ -172,6 +178,7 @@
   };
 
   window.PortfolioAnalytics = {
+    version,
     get enabled() {
       return enabled && !(isLocal && !config.trackLocal) && !isOptedOut();
     },

@@ -558,8 +558,8 @@
   const effectiveType = String(connection?.effectiveType || '').toLowerCase();
   const slowConnection = effectiveType === 'slow-2g' || effectiveType === '2g';
   const smallScreen = window.matchMedia('(max-width: 700px), (max-width: 900px) and (pointer: coarse)').matches;
-  const eagerCount = saveData ? 2 : (smallScreen ? 4 : 8);
-  const observerMargin = saveData ? '300px 0px' : (smallScreen ? '650px 0px' : '1100px 0px');
+  const eagerCount = saveData ? 2 : (smallScreen ? 3 : 6);
+  const observerMargin = saveData ? '250px 0px' : (smallScreen ? '400px 0px' : '600px 0px');
 
   const loadGridImage = img => {
     if (!img || img.src || !img.dataset.src) return;
@@ -620,8 +620,9 @@
       const thumbCandidates = thumbnailPathsFor(photo.file);
       const fullSrc = fullCandidates[0] || '';
       const thumbSrc = thumbCandidates[0] || '';
-      const gridCandidates = [...thumbCandidates, ...fullCandidates]
-        .filter((value, position, values) => value && values.indexOf(value) === position);
+      // Never fall back to a full camera-resolution image in the scrolling grid.
+      // Missing thumbnails become lightweight placeholders; the full viewer is untouched.
+      const gridCandidates = thumbCandidates;
 
       button.dataset.file = photo.file || '';
       button.dataset.full = fullSrc;
@@ -686,8 +687,15 @@
           return;
         }
 
-        figure.remove();
-        updateCounts();
+        // Preserve the clickable photo, but avoid downloading the huge original
+        // merely to fill a thumbnail tile. Missing thumbs can be regenerated later.
+        img.style.visibility = 'hidden';
+        button.classList.add('is-missing-thumbnail');
+        const note = document.createElement('span');
+        note.className = 'photo-grid-preview-missing';
+        note.textContent = 'Preview unavailable — open to view';
+        button.insertBefore(note, img.nextSibling);
+        markLoaded();
       });
 
       const overlay = document.createElement('span');
@@ -1196,6 +1204,9 @@
     if (!item) return '';
 
     const gridImage = qs('.photo-grid-image', item);
+    if (item.classList.contains('is-missing-thumbnail')) return '';
+    const tileButton = item.matches('.photo-grid-button') ? item : item.querySelector('.photo-grid-button');
+    if (tileButton?.classList.contains('is-missing-thumbnail')) return '';
     return gridImage?.currentSrc
       || gridImage?.src
       || item.dataset.thumb
@@ -1520,79 +1531,9 @@
     releaseNavigationLock(requestId, animate ? 220 : 0);
   }
 
-  // ----------------------------------------------------------
-  // Mobile detail warm-up
-  // ----------------------------------------------------------
-  // A full camera-resolution file can still be large even when the viewer opens
-  // instantly with a thumbnail. On phones, gently prepare only the photograph
-  // the visitor is most likely considering: the tile nearest the center of the
-  // screen after scrolling has paused. Cap this to two images per page session
-  // so we improve perceived speed without turning the gallery into an eager
-  // full-resolution download. Save-Data and very slow connections opt out.
-  const warmedDetailSources = new Set();
-  const MAX_MOBILE_WARMUPS = 2;
-  let mobileWarmTimer = 0;
-
-  const warmFullDetailForButton = (button, priority = 'low') => {
-    if (!smallScreen || saveData || slowConnection || !button) return;
-
-    buttons = qsa('.photo-grid-button', grid);
-    const index = buttons.indexOf(button);
-    if (index < 0) return;
-
-    const sourceKey = srcCandidatesAt(index, 0)[0];
-    if (!sourceKey) return;
-
-    if (!warmedDetailSources.has(sourceKey)) {
-      if (warmedDetailSources.size >= MAX_MOBILE_WARMUPS && priority !== 'high') return;
-      warmedDetailSources.add(sourceKey);
-    }
-
-    resolveFullSrc(index, 0, priority).catch(() => {});
-  };
-
-  const warmLikelyMobileDetail = () => {
-    if (!smallScreen || saveData || slowConnection || viewer.classList.contains('is-open')) return;
-    if (warmedDetailSources.size >= MAX_MOBILE_WARMUPS) return;
-
-    buttons = qsa('.photo-grid-button', grid);
-    const viewportCenter = window.innerHeight / 2;
-    let candidate = null;
-    let bestScore = Infinity;
-
-    buttons.forEach(button => {
-      const rect = button.getBoundingClientRect();
-      if (rect.bottom <= 0 || rect.top >= window.innerHeight || rect.height <= 0) return;
-
-      const visiblePixels = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
-      if (visiblePixels / rect.height < .35) return;
-
-      const score = Math.abs((rect.top + rect.bottom) / 2 - viewportCenter);
-      if (score < bestScore) {
-        bestScore = score;
-        candidate = button;
-      }
-    });
-
-    warmFullDetailForButton(candidate, 'low');
-  };
-
-  const scheduleMobileWarmup = () => {
-    if (!smallScreen || saveData || slowConnection) return;
-    window.clearTimeout(mobileWarmTimer);
-    mobileWarmTimer = window.setTimeout(warmLikelyMobileDetail, 650);
-  };
-
-  window.addEventListener('scroll', scheduleMobileWarmup, { passive: true });
-  window.setTimeout(warmLikelyMobileDetail, 1100);
-
-  // Pointer-down happens before click/tap activation. Promote the exact image
-  // under the visitor's finger immediately, buying a little extra network time
-  // and making that request more important than speculative neighbors.
-  grid.addEventListener('pointerdown', event => {
-    const button = event.target.closest('.photo-grid-button');
-    if (button) warmFullDetailForButton(button, 'high');
-  }, { passive: true });
+  // No background full-resolution preloads while browsing the gallery.
+  // Full-size downloads start only when a visitor actually opens a photograph.
+  // Neighbor preloads remain limited to the *open* full-screen viewer.
 
   async function openViewer(button) {
     // Re-read the DOM so the viewer follows the current randomized/album order.
