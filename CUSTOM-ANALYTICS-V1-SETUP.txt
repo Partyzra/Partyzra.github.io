@@ -1,0 +1,105 @@
+PARTYZRA — CUSTOM ANALYTICS V1
+==============================
+
+Your Worker URL is already configured in the portfolio:
+https://partyzra-analytics.12rparker.workers.dev
+
+VERSION 1 TRACKS
+----------------
+- Anonymous browsing sessions (sessionStorage only)
+- Page views: Home / Photography / Music
+- Individual photograph opens
+- Alternate photo frames as individual photo views
+- UTC timestamp
+- Referrer, where the browser supplies one
+
+It does NOT intentionally store names, contact-form contents, email addresses,
+precise location, IP addresses, or browser fingerprints.
+
+STEP 1 — CREATE THE D1 TABLE
+----------------------------
+Cloudflare Dashboard -> Storage & Databases -> D1 -> partyzra-analytics-db
+-> Console
+
+Paste the entire contents of:
+  cloudflare-worker/schema.sql
+
+Run it once. All statements use IF NOT EXISTS, so rerunning it is safe.
+
+STEP 2 — REPLACE THE WORKER CODE
+--------------------------------
+Cloudflare Dashboard -> Workers & Pages -> partyzra-analytics -> Edit Code
+
+Replace the default Worker code with the entire contents of:
+  cloudflare-worker/worker.js
+
+Deploy it.
+
+Your D1 binding must still be named exactly:
+  DB
+
+STEP 3 — ADD A DASHBOARD PASSWORD
+---------------------------------
+Open the partyzra-analytics Worker settings and add a Secret named:
+  DASHBOARD_PASSWORD
+
+Use a strong password that you do not use elsewhere.
+Do NOT place this password in GitHub or in any portfolio JavaScript file.
+
+The dashboard username defaults to:
+  admin
+
+Optional: add a plain-text environment variable named DASHBOARD_USER if you
+want a different username.
+
+STEP 4 — TEST THE WORKER
+------------------------
+Open:
+  https://partyzra-analytics.12rparker.workers.dev/health
+
+Expected response:
+  {"ok":true,"service":"partyzra-analytics"}
+
+Then open:
+  https://partyzra-analytics.12rparker.workers.dev/dashboard
+
+Your browser should request a username/password.
+Username: admin
+Password: the DASHBOARD_PASSWORD secret you created
+
+An empty dashboard is normal until the live portfolio starts sending events.
+
+STEP 5 — DEPLOY THIS PORTFOLIO VERSION TO GITHUB PAGES
+------------------------------------------------------
+The files js/analytics-config.js and js/analytics.js now use your custom
+Cloudflare Worker. GoatCounter is no longer loaded.
+
+After GitHub Pages finishes publishing, visit the live site, open Photography,
+and view a few photos. Refresh /dashboard and the counts should appear.
+
+DEFAULT ALLOWED SITE ORIGIN
+---------------------------
+The Worker accepts browser analytics events from:
+  https://partyzra.github.io
+
+If you later put the portfolio on a custom domain, add/update a Worker
+environment variable named SITE_ORIGIN. It may contain one origin or a
+comma-separated list, for example:
+  https://example.com,https://www.example.com
+
+TROUBLESHOOTING
+---------------
+- /health says database_unavailable:
+  Verify the D1 binding is named DB.
+
+- /dashboard always says Authentication required:
+  Verify DASHBOARD_PASSWORD exists as a Worker secret, then redeploy if
+  Cloudflare asks you to.
+
+- Dashboard stays empty after visiting the live portfolio:
+  1. Confirm the portfolio is actually at https://partyzra.github.io
+  2. If it uses a different domain, set SITE_ORIGIN to that exact origin.
+  3. Open browser DevTools -> Network and look for POST requests to /track.
+  4. Make sure an ad/privacy extension is not blocking workers.dev.
+
+- Do not paste Cloudflare API tokens or passwords into the public portfolio.

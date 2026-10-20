@@ -1,17 +1,11 @@
 /*
-  Portfolio analytics configuration
-  ---------------------------------
-  1. Create a GoatCounter account at https://www.goatcounter.com/signup
-  2. Choose an account code, e.g. "ryanportfolio"
-  3. Put only that code below (NOT an API key or password).
-
-  Your collection endpoint will become:
-    https://ryanportfolio.goatcounter.com/count
-
-  Leave code blank to disable analytics completely.
+  Partyzra custom analytics configuration
+  --------------------------------------
+  The portfolio sends small anonymous analytics events to the Cloudflare Worker.
+  No Cloudflare password, API token, or database credential belongs in this file.
 */
 window.PORTFOLIO_ANALYTICS_CONFIG = {
-  provider: 'goatcounter',
-  code: 'partyzra',
+  provider: 'partyzra-custom',
+  endpoint: 'https://partyzra-analytics.12rparker.workers.dev/track',
   trackLocal: false
 };
