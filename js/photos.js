@@ -448,7 +448,7 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Sean1.jpg",
+    "file": "sean1.jpg",
     "title": "Sean",
     "collection": "Portraits",
     "ablum": "People",
@@ -1315,7 +1315,7 @@ const PORTFOLIO_PHOTOS = [
     "album": "Hawaii"
   },
   {
-    "file": "Lighthouse.jpg",
+    "file": "lighthouse.jpg",
     "title": "Cali Island",
     "collection": "Landscape",
     "year": "",
@@ -1824,7 +1824,7 @@ const PORTFOLIO_PHOTOS = [
     "album": "Animals"
   },
 {
-    "file": "Duck In Water.jpg",
+    "file": "Duck in water.jpg",
     "title": "Duck In Water",
     "collection": "Nature",
     "year": "",
