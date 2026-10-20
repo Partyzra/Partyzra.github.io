@@ -2736,7 +2736,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York.jpg",
-    "title": "New York",
+    "title": "Grafitti",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -2762,7 +2762,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York2.jpg",
-    "title": "New York",
+    "title": "New Yorkerswed",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -2814,7 +2814,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York6.jpg",
-    "title": "Downtown",
+    "title": "Manhattan",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -2840,7 +2840,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York8.jpg",
-    "title": "New York",
+    "title": "Entrance",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -2866,7 +2866,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York10.jpg",
-    "title": "New York",
+    "title": "Everyone Is A Coder",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -2879,7 +2879,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York11.jpg",
-    "title": "New York",
+    "title": "Headlights",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -2892,7 +2892,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York12.jpg",
-    "title": "New York",
+    "title": "Night Corner",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -2905,7 +2905,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York13.jpg",
-    "title": "New York",
+    "title": "Homeless",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -2957,7 +2957,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York17.jpg",
-    "title": "New York",
+    "title": "American Flag",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -2970,7 +2970,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York18.jpg",
-    "title": "New York",
+    "title": "Skyscraper",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -2983,7 +2983,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York19.jpg",
-    "title": "New York",
+    "title": "Gummy Bear",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3075,7 +3075,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York27.jpg",
-    "title": "New York",
+    "title": "Bar",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3088,7 +3088,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York28.jpg",
-    "title": "New York",
+    "title": "Beckenstein",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3101,7 +3101,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York29.jpg",
-    "title": "New York",
+    "title": "New Yorkers",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3114,7 +3114,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York30.jpg",
-    "title": "New York",
+    "title": "NY Building",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3127,7 +3127,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York31.jpg",
-    "title": "New York",
+    "title": "Ads",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3140,7 +3140,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York32.jpg",
-    "title": "New York",
+    "title": "Chatting",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3153,7 +3153,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York33.jpg",
-    "title": "New York",
+    "title": "Broome St",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3166,7 +3166,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York34.jpg",
-    "title": "New York",
+    "title": "NY Morning",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3205,7 +3205,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York37.jpg",
-    "title": "New York",
+    "title": "Architecture",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3231,7 +3231,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York39.jpg",
-    "title": "New York",
+    "title": "Rainy Day in NY",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3244,7 +3244,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York40.jpg",
-    "title": "New York",
+    "title": "Foley Sq",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3257,7 +3257,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York41.jpg",
-    "title": "New York",
+    "title": "9/11 Memorial",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3270,7 +3270,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York42.jpg",
-    "title": "New York",
+    "title": "9/11 Memorial",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3283,7 +3283,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York43.jpg",
-    "title": "New York",
+    "title": "Wet Brick Road",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3296,7 +3296,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York44.jpg",
-    "title": "New York",
+    "title": "Broadway",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3322,7 +3322,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York46.jpg",
-    "title": "New York",
+    "title": "Buildings in a cloud",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3335,7 +3335,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York47.jpg",
-    "title": "New York",
+    "title": "Buildings in a cloud",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3348,7 +3348,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York48.jpg",
-    "title": "New York",
+    "title": "Thank the rain",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3361,7 +3361,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York49.jpg",
-    "title": "New York",
+    "title": "Battery Park",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3374,7 +3374,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York50.jpg",
-    "title": "New York",
+    "title": "Monopoly Man",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3387,7 +3387,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York51.jpg",
-    "title": "New York",
+    "title": "Mural",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3400,7 +3400,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York52.jpg",
-    "title": "New York",
+    "title": "Night Traffic",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3413,7 +3413,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York53.jpg",
-    "title": "New York",
+    "title": "Grafitti",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3426,7 +3426,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York54.jpg",
-    "title": "New York",
+    "title": "Butcher Block",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3452,7 +3452,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York56.jpg",
-    "title": "New York",
+    "title": "Street Corner",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3491,7 +3491,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York59.jpg",
-    "title": "New York",
+    "title": "Drinks",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3504,7 +3504,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York60.jpg",
-    "title": "New York",
+    "title": "Little Italy",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3529,21 +3529,8 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "New York62.jpg",
-    "title": "New York",
-    "album": "New York",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "city"
-    ],
-    "note": ""
-  },
-  {
     "file": "New York63.jpg",
-    "title": "New York",
+    "title": "415",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3556,7 +3543,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York64.jpg",
-    "title": "Playing Soccer",
+    "title": "Soccer Game",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3686,7 +3673,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York74.jpg",
-    "title": "New York",
+    "title": "Scaffolding",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3699,7 +3686,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York75.jpg",
-    "title": "New York",
+    "title": "Fire Horse",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3712,7 +3699,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York76.jpg",
-    "title": "New York",
+    "title": "Chinatown",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3751,7 +3738,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York79.jpg",
-    "title": "New York",
+    "title": "Time Traveler Boat",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3764,7 +3751,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York80.jpg",
-    "title": "New York",
+    "title": "Essex St",
     "album": "New York",
     "collection": "Nature",
     "year": "",
