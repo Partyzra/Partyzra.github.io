@@ -1,3 +1,16 @@
+/*
+  Partyzra Analytics — V2.3 privacy + low-priority dispatch
+
+  This file replaces only js/analytics.js on the GitHub Pages portfolio.
+  Cloudflare Worker, dashboard, D1 schema, and analytics-config.js stay unchanged.
+
+  Personal browser opt-out (saved in localStorage):
+    https://partyzra.github.io/?analytics=off   STOP tracking this browser
+    https://partyzra.github.io/?analytics=on    RESUME tracking this browser
+
+  This setting is per browser profile, not per IP/device/network. It never
+  needs or stores an IP address, MAC address, or browser fingerprint.
+*/
 (() => {
   'use strict';
 
@@ -6,6 +19,45 @@
   const enabled = config.provider === 'partyzra-custom' && /^https:\/\//i.test(endpoint);
   const isLocal = /^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/i.test(location.hostname)
     || location.protocol === 'file:';
+  const optOutKey = 'partyzra_analytics_opt_out';
+  const sessionKey = 'partyzra_analytics_session';
+
+  // The public shell (index.html, photography.html, music.html) contains an
+  // iframe. Look at the shell's query string so the opt-out links work from
+  // the real visitor-facing URL, even though analytics runs in the iframe.
+  const queryPreference = () => {
+    try {
+      const ownMode = new URLSearchParams(location.search).get('analytics');
+      let shellMode = null;
+      if (window.parent && window.parent !== window
+          && window.parent.location.origin === location.origin) {
+        shellMode = new URLSearchParams(window.parent.location.search).get('analytics');
+      }
+      const mode = String(shellMode || ownMode || '').trim().toLowerCase();
+      return mode === 'off' || mode === 'on' ? mode : null;
+    } catch (_) {
+      return null;
+    }
+  };
+
+  const preference = queryPreference();
+  if (preference) {
+    try {
+      if (preference === 'off') localStorage.setItem(optOutKey, '1');
+      else localStorage.removeItem(optOutKey);
+    } catch (_) {
+      // If browser storage is disabled, the URL preference still applies
+      // while the URL is present. Persistence across future visits cannot
+      // be guaranteed without browser storage.
+    }
+  }
+
+  const isOptedOut = () => {
+    if (preference === 'off') return true;
+    if (preference === 'on') return false;
+    try { return localStorage.getItem(optOutKey) === '1'; }
+    catch (_) { return false; }
+  };
 
   const logicalPage = () => {
     const file = (location.pathname.split('/').pop() || '').toLowerCase();
@@ -18,14 +70,13 @@
   const cleanText = (value, max = 180) => String(value || '').trim().slice(0, max);
 
   const getSessionId = () => {
-    const key = 'partyzra_analytics_session';
     try {
-      let value = sessionStorage.getItem(key);
+      let value = sessionStorage.getItem(sessionKey);
       if (!value) {
         value = (crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`)
           .replace(/[^a-zA-Z0-9-]/g, '')
           .slice(0, 64);
-        sessionStorage.setItem(key, value);
+        sessionStorage.setItem(sessionKey, value);
       }
       return value;
     } catch (_) {
@@ -34,9 +85,7 @@
   };
 
   const externalReferrer = () => {
-    // The visual pages live inside same-origin iframes so the iframe's own
-    // document.referrer is normally just the shell page. Prefer the shell's
-    // incoming referrer when we can read it.
+    // Prefer the outside referrer, not the URL of the site's own shell iframe.
     try {
       if (window.parent && window.parent !== window && window.parent.document) {
         return cleanText(window.parent.document.referrer || document.referrer, 500);
@@ -45,35 +94,88 @@
     return cleanText(document.referrer, 500);
   };
 
-  const sessionId = getSessionId();
+  // Defer the small analytics requests until after image/viewer work has had
+  // a chance to run. Tracking never blocks a photo opening or page navigation.
+  // The existing Worker expects one POST per event, so do not change its API.
+  const pending = [];
+  let delayTimer = null;
+  let idleHandle = null;
+
+  const dispatch = details => {
+    const payload = {
+      ...details,
+      session_id: getSessionId()
+    };
+
+    // text/plain keeps the cross-origin request simple (no CORS preflight).
+    // keepalive allows the browser to finish an in-flight request on navigation.
+    try {
+      fetch(endpoint, {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-store',
+        keepalive: true,
+        headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+        body: JSON.stringify(payload)
+      }).catch(() => {});
+    } catch (_) {}
+  };
+
+  const flush = () => {
+    delayTimer = null;
+    idleHandle = null;
+    if (!enabled || (isLocal && !config.trackLocal) || isOptedOut()) {
+      pending.length = 0;
+      return;
+    }
+    for (const event of pending.splice(0)) dispatch(event);
+  };
+
+  const flushOnExit = () => {
+    if (delayTimer !== null) {
+      clearTimeout(delayTimer);
+      delayTimer = null;
+    }
+    if (idleHandle !== null && typeof window.cancelIdleCallback === 'function') {
+      window.cancelIdleCallback(idleHandle);
+      idleHandle = null;
+    }
+    flush();
+  };
+
+  const schedule = () => {
+    if (delayTimer !== null || idleHandle !== null) return;
+    delayTimer = setTimeout(() => {
+      delayTimer = null;
+      if (typeof window.requestIdleCallback === 'function') {
+        idleHandle = window.requestIdleCallback(flush, { timeout: 1200 });
+      } else {
+        // Fallback for browsers without requestIdleCallback.
+        delayTimer = setTimeout(flush, 0);
+      }
+    }, 300);
+  };
 
   const send = (eventType, { page = '', item = '', label = '' } = {}) => {
-    if (!enabled || (isLocal && !config.trackLocal)) return;
+    if (!enabled || (isLocal && !config.trackLocal) || isOptedOut()) return;
 
-    const payload = {
+    pending.push({
       event_type: cleanText(eventType, 40),
       page: cleanText(page, 180),
       item: cleanText(item, 240),
       label: cleanText(label, 240),
-      referrer: externalReferrer(),
-      session_id: sessionId
-    };
+      referrer: externalReferrer()
+    });
 
-    // text/plain keeps this a simple cross-origin request (no preflight), while
-    // the Worker still parses the body as JSON. keepalive lets a final event
-    // finish even if the visitor navigates immediately afterward.
-    fetch(endpoint, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-store',
-      keepalive: true,
-      headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
-      body: JSON.stringify(payload)
-    }).catch(() => {});
+    if (document.visibilityState === 'hidden') flushOnExit();
+    else schedule();
   };
 
   window.PortfolioAnalytics = {
-    enabled,
+    get enabled() {
+      return enabled && !(isLocal && !config.trackLocal) && !isOptedOut();
+    },
+    get optedOut() { return isOptedOut(); },
 
     trackPhotoView({ file = '', title = '', variantIndex = 0 } = {}) {
       const page = logicalPage();
@@ -97,11 +199,15 @@
     }
   };
 
-  if (!enabled || (isLocal && !config.trackLocal)) return;
+  if (!enabled || (isLocal && !config.trackLocal) || isOptedOut()) return;
+
+  // Flush pending events when leaving an iframe or hiding the page, without
+  // synchronous requests or unload handlers that can hurt navigation speed.
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') flushOnExit();
+  });
+  window.addEventListener('pagehide', flushOnExit);
 
   const page = logicalPage();
-  send('page_view', {
-    page: page.path,
-    label: page.title
-  });
+  send('page_view', { page: page.path, label: page.title });
 })();
