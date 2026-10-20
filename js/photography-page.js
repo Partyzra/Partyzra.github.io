@@ -1403,6 +1403,14 @@
     syncCopy(target);
     renderVariantControls(target);
 
+    // Analytics counts the photograph when it actually becomes the viewer's
+    // committed selection. The later full-resolution swap does not count again.
+    window.PortfolioAnalytics?.trackPhotoView({
+      file: variantFilesAt(target)[0] || itemAt(target)?.dataset.file || '',
+      title: titleAt(target),
+      variantIndex: 0
+    });
+
     if (previewReady && previewImage) {
       prepareImageLayout(previewImage);
       activateLayer(previewLayer, outgoing, animate);
@@ -1497,6 +1505,15 @@
     prepareImageLayout(incoming);
     currentVariantIndex = targetVariant;
     renderVariantControls(currentIndex);
+
+    // Alternate frames are individual photographs too, so record the exact
+    // file/frame selected rather than rolling every variant into the primary.
+    window.PortfolioAnalytics?.trackPhotoView({
+      file: variantFilesAt(currentIndex)[targetVariant] || '',
+      title: titleAt(currentIndex),
+      variantIndex: targetVariant
+    });
+
     activateLayer(incomingLayer, outgoing, animate);
     activeLayer = incomingLayer;
     setDetailLoading(false);

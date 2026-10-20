@@ -1,0 +1,54 @@
+RYAN PORTFOLIO — ANALYTICS SETUP
+================================
+
+This version is wired for GoatCounter analytics.
+
+WHAT IT TRACKS
+--------------
+• Home page views        -> /home
+• Photography page views -> /photography
+• Music page views       -> /music
+• Individual photo opens -> photo/<photo-name>
+• Alternate photo frames are tracked as their own image file/event.
+
+The full-resolution image replacing the thumbnail does NOT generate a second
+view. A photo is counted when it becomes the selected image in the viewer.
+Navigating away and intentionally viewing that photo again counts another view.
+
+SETUP (about one minute)
+------------------------
+1. Go to https://www.goatcounter.com/signup
+2. Create your account and choose an Account name/code.
+   Example: if your dashboard is
+       https://ryanportfolio.goatcounter.com
+   then your code is:
+       ryanportfolio
+3. Open:
+       js/analytics-config.js
+4. Change:
+       code: '',
+   to:
+       code: 'ryanportfolio',
+   using YOUR account code.
+5. Commit/publish the files to GitHub Pages.
+6. Visit your live site, open a few photos, then open your GoatCounter dashboard.
+
+IMPORTANT
+---------
+Do NOT put a GoatCounter API key, password, or any other secret into this repo.
+The account code is public by design and is the only value this site needs.
+
+LOCAL TESTING
+-------------
+Local development views are ignored by default, so working on the site does not
+pollute your real statistics. If you temporarily want localhost to count, set:
+    trackLocal: true
+in js/analytics-config.js, then change it back to false before publishing.
+
+PUBLIC VIEW COUNTERS
+--------------------
+GoatCounter can also expose visitor counts on the public website, but that is
+intentionally NOT enabled in this build. First collect clean analytics privately.
+If you later want a subtle total-site counter and/or per-photo view numbers, those
+can be added after enabling "Allow adding visitor counts on your website" in the
+GoatCounter site settings.
