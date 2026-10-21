@@ -177,36 +177,51 @@
 
   if (!soundtrack || !toggle) return;
 
+  // V2.5 — One persistent player for Ryan's original music only.
+  // The outer shell survives route changes, so this audio continues while the
+  // embedded Home / Photography / Music content is replaced.
   const targetVolume = 1;
   const tracks = [
     {
-      sources: ['MusicTracks/1234 - Calum Graham.mp3'],
-      title: '1234 - Calum Graham'
+      id: 'all-alone',
+      src: 'MusicTracks/All Alone.wav',
+      title: 'All Alone',
+      artist: 'Jonesy'
     },
     {
-      sources: ['MusicTracks/Outset Island - TPR.mp3'],
-      title: 'Outset Island - TPR'
-    },
-    {
-      // Exact filename currently published in the GitHub MusicTracks folder.
-      // Alternate names are kept as fallbacks in case the file is cleaned up later.
-      sources: [
-        'MusicTracks/Painkillers - Rainbow Kitten Surprise.mp3'
-      ],
-      title: 'Painkillers - RKS'
+      id: 'lemon-bundt',
+      src: 'MusicTracks/Lemon Bundt.wav',
+      title: 'Lemon Bundt',
+      artist: 'Jonesy'
     }
   ];
 
   let currentTrackIndex = 0;
-  let currentSourceIndex = 0;
   let fadeFrame = null;
   let changingTrack = false;
+  const subscribers = new Set();
 
   const currentTrack = () => tracks[currentTrackIndex];
-  const currentSources = () => currentTrack().sources || [];
+  const displayTitle = track => `${track.title} — ${track.artist}`;
+
+  const notify = () => {
+    subscribers.forEach(fn => {
+      try { fn(); } catch (_) {}
+    });
+  };
 
   const setTrackTitle = () => {
-    if (title) title.textContent = currentTrack().title;
+    const track = currentTrack();
+    if (title) title.textContent = displayTitle(track);
+    toggle.setAttribute(
+      'aria-label',
+      `${soundtrack.paused || soundtrack.ended ? 'Play' : 'Pause'} ${track.title}`
+    );
+    if (next) {
+      const following = tracks[(currentTrackIndex + 1) % tracks.length];
+      next.setAttribute('aria-label', `Next song: ${following.title}`);
+      next.setAttribute('title', `Next: ${following.title}`);
+    }
   };
 
   const setUI = state => {
@@ -215,14 +230,17 @@
 
     toggle.classList.toggle('is-playing', playing);
     toggle.setAttribute('aria-pressed', String(playing));
-    toggle.setAttribute('aria-label', playing ? 'Pause soundtrack' : 'Play soundtrack');
 
     if (icon) icon.textContent = playing ? 'Ⅱ' : '▶';
-    if (status) status.textContent = playing ? 'Now playing' : (ended ? 'Track ended' : 'Play soundtrack');
+    if (status) status.textContent = playing
+      ? 'Now playing'
+      : (ended ? 'Track ended' : 'Play music');
+
     setTrackTitle();
+    notify();
   };
 
-  const fadeVolume = (from, to, duration = 900) => {
+  const fadeVolume = (from, to, duration = 650) => {
     if (fadeFrame) cancelAnimationFrame(fadeFrame);
     const started = performance.now();
     soundtrack.volume = Math.max(0, Math.min(1, from));
@@ -237,92 +255,95 @@
     fadeFrame = requestAnimationFrame(step);
   };
 
-  const loadSource = sourceIndex => {
-    const sources = currentSources();
-    if (!sources.length) return false;
+  const loadTrack = index => {
+    currentTrackIndex = ((index % tracks.length) + tracks.length) % tracks.length;
+    const track = currentTrack();
 
-    currentSourceIndex = Math.max(0, Math.min(sourceIndex, sources.length - 1));
-    const src = sources[currentSourceIndex];
-
-    if (soundtrack.getAttribute('src') !== src) {
-      soundtrack.src = src;
+    if (soundtrack.getAttribute('src') !== track.src) {
+      soundtrack.src = track.src;
       soundtrack.load();
     }
 
-    return true;
-  };
-
-  const loadTrack = index => {
-    currentTrackIndex = ((index % tracks.length) + tracks.length) % tracks.length;
-    currentSourceIndex = 0;
-    loadSource(0);
     setTrackTitle();
+    notify();
+    return track;
   };
 
-  const playSoundtrack = async ({ gentleFade = true } = {}) => {
-    const sources = currentSources();
-    if (!sources.length) {
+  const findTrackIndex = idOrIndex => {
+    if (typeof idOrIndex === 'number' && Number.isFinite(idOrIndex)) {
+      return ((idOrIndex % tracks.length) + tracks.length) % tracks.length;
+    }
+    const id = String(idOrIndex || '');
+    const found = tracks.findIndex(track => track.id === id);
+    return found >= 0 ? found : currentTrackIndex;
+  };
+
+  const play = async ({ gentleFade = true } = {}) => {
+    try {
+      soundtrack.volume = gentleFade ? 0.12 : targetVolume;
+      await soundtrack.play();
+      if (gentleFade) fadeVolume(0.12, targetVolume);
+      setUI('playing');
+      return true;
+    } catch (_) {
+      soundtrack.volume = targetVolume;
       setUI('paused');
       return false;
     }
-
-    // Try every known filename for this track. This protects the site from
-    // small GitHub filename differences (spaces, wording, or later cleanup).
-    for (let i = currentSourceIndex; i < sources.length; i += 1) {
-      if (i !== currentSourceIndex || soundtrack.getAttribute('src') !== sources[i]) {
-        loadSource(i);
-      }
-
-      try {
-        soundtrack.volume = gentleFade ? 0.12 : targetVolume;
-        await soundtrack.play();
-        if (gentleFade) fadeVolume(0.12, targetVolume);
-        setUI('playing');
-        return true;
-      } catch (_) {
-        soundtrack.pause();
-      }
-    }
-
-    soundtrack.volume = targetVolume;
-    setUI('paused');
-    return false;
   };
 
-  const pauseSoundtrack = () => {
+  const pause = () => {
     if (fadeFrame) cancelAnimationFrame(fadeFrame);
     soundtrack.pause();
     soundtrack.volume = targetVolume;
     setUI('paused');
+  };
+
+  const selectTrack = async (idOrIndex, options = {}) => {
+    const index = findTrackIndex(idOrIndex);
+    const autoplay = options.autoplay === true;
+    const restart = options.restart === true;
+    const gentleFade = options.gentleFade !== false;
+    const sameTrack = index === currentTrackIndex;
+
+    changingTrack = true;
+    if (!sameTrack) {
+      if (fadeFrame) cancelAnimationFrame(fadeFrame);
+      soundtrack.pause();
+      loadTrack(index);
+      soundtrack.currentTime = 0;
+      soundtrack.volume = targetVolume;
+    } else if (restart) {
+      soundtrack.currentTime = 0;
+    }
+    changingTrack = false;
+
+    if (autoplay) return play({ gentleFade });
+    setUI(soundtrack.ended ? 'ended' : 'paused');
+    return true;
+  };
+
+  const nextTrack = async ({ preservePlayback = true } = {}) => {
+    const wasPlaying = !soundtrack.paused && !soundtrack.ended;
+    const shouldPlay = preservePlayback && wasPlaying;
+    return selectTrack(currentTrackIndex + 1, {
+      autoplay: shouldPlay,
+      restart: true,
+      gentleFade: false
+    });
   };
 
   toggle.addEventListener('click', async () => {
     if (!soundtrack.paused && !soundtrack.ended) {
-      pauseSoundtrack();
+      pause();
       return;
     }
-
     if (soundtrack.ended) soundtrack.currentTime = 0;
-    await playSoundtrack();
+    await play();
   });
 
   next?.addEventListener('click', async () => {
-    const wasPlaying = !soundtrack.paused && !soundtrack.ended;
-    changingTrack = true;
-
-    if (fadeFrame) cancelAnimationFrame(fadeFrame);
-    soundtrack.pause();
-    loadTrack(currentTrackIndex + 1);
-    soundtrack.currentTime = 0;
-    soundtrack.volume = targetVolume;
-
-    if (wasPlaying) {
-      await playSoundtrack({ gentleFade: false });
-    } else {
-      setUI('paused');
-    }
-
-    changingTrack = false;
+    await nextTrack({ preservePlayback: true });
   });
 
   soundtrack.addEventListener('play', () => setUI('playing'));
@@ -330,9 +351,36 @@
     if (!soundtrack.ended && !changingTrack) setUI('paused');
   });
   soundtrack.addEventListener('ended', () => setUI('ended'));
+  ['timeupdate', 'loadedmetadata', 'durationchange', 'seeking', 'seeked'].forEach(eventName => {
+    soundtrack.addEventListener(eventName, notify);
+  });
 
-  // The site opens silent, with Lovely Day, Good As Hell selected first.
+  // Expose a small same-origin API so the Music page controls operate this
+  // exact persistent audio element instead of creating a second player.
+  window.__partyzraMusicPlayer = {
+    version: '2.5.0',
+    audio: soundtrack,
+    tracks,
+    get currentTrackIndex() { return currentTrackIndex; },
+    get currentTrack() { return currentTrack(); },
+    get isPlaying() { return !soundtrack.paused && !soundtrack.ended; },
+    play,
+    pause,
+    next: nextTrack,
+    selectTrack,
+    notify,
+    subscribe(fn) {
+      if (typeof fn !== 'function') return () => {};
+      subscribers.add(fn);
+      try { fn(); } catch (_) {}
+      return () => subscribers.delete(fn);
+    }
+  };
+
+  // The site opens silent with All Alone ready to play from every page.
   loadTrack(0);
   soundtrack.volume = targetVolume;
   setUI('paused');
+
+  window.dispatchEvent(new CustomEvent('partyzra:music-player-ready'));
 })();

@@ -208,3 +208,21 @@ body.site-shell-page {
 
 
 /* V4.17.18 — Persistent shell and soundtrack chrome use dark solid black. */
+
+/* V2.5 — With only two original songs in the global player, keep the selected
+   track visible on phones so Next is understandable without visiting Music. */
+@media (max-width: 600px) {
+  .site-soundtrack-copy {
+    display: grid;
+    max-width: min(38vw, 132px);
+  }
+
+  .site-soundtrack-status {
+    display: none;
+  }
+
+  .site-soundtrack-title {
+    font-size: .61rem;
+    color: var(--soundtrack-muted);
+  }
+}
