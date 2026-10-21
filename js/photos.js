@@ -3322,7 +3322,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York46.jpg",
-    "title": "Buildings in a cloud",
+    "title": "City in a Cloud",
     "album": "New York",
     "collection": "Nature",
     "year": "",
@@ -3335,7 +3335,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York47.jpg",
-    "title": "Buildings in a cloud",
+    "title": "City in a Cloud",
     "album": "New York",
     "collection": "Nature",
     "year": "",
