@@ -1,0 +1,24 @@
+PARTYZRA — MUSIC PLAYER / MUSIC-FIRST FIX
+
+What changed
+------------
+1. Removed unresolved Git merge-conflict markers from Lemon Bundt in music-content.html.
+2. Kept the correct data-track-id="lemon-bundt" markup.
+3. The persistent site player is hidden when the site first opens.
+4. No track is preselected or preloaded by the shell on initial entry.
+5. A visitor must go to Music and explicitly start All Alone or Lemon Bundt.
+6. After playback starts, the compact global player becomes visible and the chosen track continues across Home / Photography / Music navigation.
+7. The global player remains available after activation so the visitor can pause/resume or switch between the two original tracks.
+8. All Alone and Lemon Bundt remain the only global tracks.
+
+Main files changed
+------------------
+music-content.html
+index.html
+music.html
+photography.html
+js/site-shell.js
+css/site-shell.css
+css/style.css
+
+Your current analytics worker and photos.js were preserved from the repo you supplied.

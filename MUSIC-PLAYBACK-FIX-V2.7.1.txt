@@ -1,0 +1,16 @@
+PARTYZRA — MUSIC PLAYBACK FIX v2.7.1
+
+Fixes the Music-page Play buttons after the seamless route-handoff update.
+
+Changes:
+- Music page resolves the parent persistent-player API at click time instead of
+  depending on a fragile one-time readiness handshake.
+- Removed the parent player's explicit audio.load() before play(), which can
+  cause mobile browsers to reject playback after a user tap.
+- The parent shell remains the sole playback source when inside the site shell.
+- Music continues seamlessly when navigating from Music to Home/Photography.
+- Compact player remains hidden while on Music and appears off the Music page
+  only after playback has been started.
+- Cache-busted site-shell.js and music-persistence.js to prevent browsers from
+  reusing the broken previous scripts.
+- photos.js and cloudflare-worker/worker.js are unchanged.

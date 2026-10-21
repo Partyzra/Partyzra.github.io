@@ -536,8 +536,11 @@
     }
   }
 
-  // Custom music controls.
-  const trackCards = qsa('[data-track-card]');
+  // Custom music controls. When the Music page is inside the persistent site
+  // shell, music-persistence.js owns these controls and drives the shell audio.
+  // The local <audio> elements remain only for metadata / direct-page fallback.
+  const musicUsesPersistentShell = document.body.classList.contains('music-page') && window.parent !== window;
+  const trackCards = musicUsesPersistentShell ? [] : qsa('[data-track-card]');
   const formatTime = value => {
     if (!Number.isFinite(value)) return '—:—';
     const minutes = Math.floor(value / 60);

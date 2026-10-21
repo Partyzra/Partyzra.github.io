@@ -1,0 +1,18 @@
+Partyzra Music Persistence — route handoff fix
+
+Behavior after this update:
+- The site opens with no compact/global player visible.
+- Music can only be initiated from the full controls on the Music page.
+- Those Music-page controls drive the audio element in the persistent outer shell.
+- While the visitor remains on Music, the compact player stays hidden.
+- Navigating to Home or Photography does not replace/restart the audio. The same shell audio element keeps playing and the compact player appears there.
+- Returning to Music hides the compact player again while playback continues and the full Music-page controls stay synchronized.
+- A retry guard prevents an iframe timing race from accidentally falling back to local page audio.
+
+Changed files:
+- js/site-shell.js
+- js/music-persistence.js
+- js/portfolio.js
+- index.html
+- music.html
+- photography.html
