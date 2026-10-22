@@ -290,6 +290,8 @@
 
      if (stem === 'seagulls') return '50% 50%';   // center
 
+     if (stem === 'new york58') return '20% 50%';   // to the left
+
   };
 
   const albumNav = qs('[data-album-nav]');

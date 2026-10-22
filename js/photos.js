@@ -451,7 +451,7 @@ const PORTFOLIO_PHOTOS = [
     "file": "sean1.jpg",
     "title": "Sean",
     "collection": "Portraits",
-    "ablum": "People",
+    "album": "People",
     "year": "",
     "location": "",
     "featured": true,
@@ -465,7 +465,7 @@ const PORTFOLIO_PHOTOS = [
     "variants": ["Cabbage1.JPG"],
     "title": "Cabbage",
     "collection": "Portraits",
-    "ablum": "People",
+    "album": "People",
     "year": "",
     "location": "",
     "featured": true,
@@ -757,7 +757,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "My Father2.jpg",
-    "variants": "My Father.jpg",
+    "variants": ["My Father.jpg"],
     "title": "Norman",
     "collection": "Family",
     "year": "",
@@ -3762,19 +3762,20 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
-    {
-    "file": "Seagulls.jpg",
-    "title": "Seagulls",
-    "album": "Animals",
-    "collection": "Nature",
-    "year": "",
-    "location": "California",
-    "featured": false,
-    "tags": [
-      "city"
-    ],
-    "note": ""
-  }
+{
+  "file": "Seagulls.jpg",
+  "title": "Seagulls",
+  "album": "People",
+  "albums": ["Animals"],
+  "collection": "Nature",
+  "year": "",
+  "location": "California",
+  "featured": false,
+  "tags": [
+    "city"
+  ],
+  "note": ""
+}
 
 ];
 
