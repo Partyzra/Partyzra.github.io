@@ -3761,6 +3761,19 @@ const PORTFOLIO_PHOTOS = [
       "city"
     ],
     "note": ""
+  },
+    {
+    "file": "Seagulls.jpg",
+    "title": "Seagulls",
+    "album": "Animals",
+    "collection": "Nature",
+    "year": "",
+    "location": "California",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
   }
 
 ];
