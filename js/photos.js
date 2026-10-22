@@ -7,6 +7,7 @@
 // variants    = optional alternate snapshots shown inside the fullscreen viewer
 //               e.g. ["Portrait1.jpg", "Portrait2.jpg"]
 // title       = public display title
+// slug        = optional clean share-link name, e.g. "seagulls" -> #seagulls
 // collection  = broad subject/category metadata
 // album       = optional named photography folder, e.g. Antelope Island / Hawaii
 // year        = optional
@@ -784,7 +785,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "My Mother.jpg",
     "variants": ["My Mother1.jpg"],
-    "title": "My Mother",
+    "title": "Susan",
     "collection": "Family",
     "year": "",
     "location": "",
@@ -1044,7 +1045,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Album Cover.png",
-    "title": "Album Cover",
+    "title": "Justin",
     "collection": "Nature",
     "year": "",
     "location": "",
@@ -3764,7 +3765,8 @@ const PORTFOLIO_PHOTOS = [
   },
 {
   "file": "Seagulls.jpg",
-  "title": "Seagulls",
+  "title": "Mishi & Susan",
+  "slug": "seagulls",
   "album": "People",
   "albums": ["Animals"],
   "collection": "Nature",

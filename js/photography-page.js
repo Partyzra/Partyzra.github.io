@@ -313,6 +313,22 @@
     .map(normalize)
     .filter(Boolean);
 
+  // Share-link slugs. An explicit `slug` in photos.js wins. If a photo has no
+  // explicit slug, its exact filename becomes a safe automatic fallback so
+  // every photograph can still be linked without extra metadata.
+  const slugify = value => String(value || '')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+  const shareSlugFor = photo => {
+    const explicit = slugify(photo?.slug);
+    if (explicit) return explicit;
+    return slugify(photo?.file) || slugify(photo?.title) || 'photo';
+  };
+
   const ALBUM_RULES = [
     {
       name: 'Antelope Island',
@@ -454,10 +470,26 @@
     return [...names];
   };
 
-  const archive = uniquePhotos.map(photo => ({
-    ...photo,
-    __albums: resolveAlbums(photo)
-  }));
+  const usedShareSlugs = new Set();
+  const archive = uniquePhotos.map((photo, photoIndex) => {
+    const baseSlug = shareSlugFor(photo);
+    let shareSlug = baseSlug;
+    let suffix = 2;
+
+    // Slugs must be unique. Explicit duplicates are preserved safely by adding
+    // a numeric suffix rather than letting one direct link open the wrong image.
+    while (usedShareSlugs.has(shareSlug)) {
+      shareSlug = `${baseSlug}-${suffix}`;
+      suffix += 1;
+    }
+    usedShareSlugs.add(shareSlug);
+
+    return {
+      ...photo,
+      __albums: resolveAlbums(photo),
+      __slug: shareSlug || `photo-${photoIndex + 1}`
+    };
+  });
 
   /*
     Fresh shuffle on every page load.
@@ -633,6 +665,7 @@
       const gridCandidates = thumbCandidates;
 
       button.dataset.file = photo.file || '';
+      button.dataset.slug = photo.__slug || '';
       button.dataset.full = fullSrc;
       button.dataset.fullCandidates = JSON.stringify(fullCandidates);
       button.dataset.variants = JSON.stringify(Array.isArray(photo.variants) ? photo.variants.filter(Boolean) : []);
@@ -785,6 +818,51 @@
   const variantButtons = qs('[data-viewer-variant-buttons]', viewer);
   const detailStatus = qs('[data-viewer-detail-status]', viewer);
 
+  // Keep sharing self-contained so no HTML/CSS file needs to change. The button
+  // is inserted beside the existing viewer controls and copies the current
+  // photograph's direct URL without changing the browser address bar.
+  const viewerActions = qs('.photo-viewer-actions', viewer);
+  const shareButton = document.createElement('button');
+  shareButton.type = 'button';
+  shareButton.className = 'photo-viewer-share';
+  shareButton.textContent = 'Copy link';
+  shareButton.setAttribute('aria-label', 'Copy direct link to this photograph');
+  if (viewerActions && closeButton) viewerActions.insertBefore(shareButton, closeButton);
+  else if (viewerActions) viewerActions.appendChild(shareButton);
+
+  if (!document.getElementById('photo-viewer-share-style')) {
+    const shareStyle = document.createElement('style');
+    shareStyle.id = 'photo-viewer-share-style';
+    shareStyle.textContent = `
+      .photo-viewer-share {
+        appearance: none;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        padding: 7px 4px;
+        margin: 0 6px 0 0;
+        font: inherit;
+        font-size: .64rem;
+        letter-spacing: .10em;
+        text-transform: uppercase;
+        opacity: .58;
+        cursor: pointer;
+        transition: opacity .18s ease;
+      }
+      .photo-viewer-share:hover,
+      .photo-viewer-share:focus-visible { opacity: 1; }
+      .photo-viewer-share.is-copied { opacity: .92; }
+      @media (max-width: 620px) {
+        .photo-viewer-share {
+          font-size: .58rem;
+          margin-right: 3px;
+          padding-inline: 2px;
+        }
+      }
+    `;
+    document.head.appendChild(shareStyle);
+  }
+
   let buttons = qsa('.photo-grid-button', grid);
   let currentIndex = 0;
   let currentVariantIndex = 0;
@@ -842,6 +920,66 @@
 
   const wrap = index => (index + buttons.length) % buttons.length;
   const itemAt = index => buttons[wrap(index)];
+
+  const currentShareSlug = () => itemAt(currentIndex)?.dataset.slug || '';
+
+  const shareUrlForSlug = slug => {
+    const url = new URL(window.location.href);
+    url.hash = slug || '';
+    return url.href;
+  };
+
+  const hashSlug = () => {
+    const raw = window.location.hash.replace(/^#/, '');
+    if (!raw) return '';
+    try { return slugify(decodeURIComponent(raw)); } catch (_) { return slugify(raw); }
+  };
+
+  const clearShareHash = () => {
+    if (!window.location.hash) return;
+    const cleanUrl = `${window.location.pathname}${window.location.search}`;
+    window.history.replaceState(window.history.state, '', cleanUrl || window.location.pathname);
+  };
+
+  const copyText = async text => {
+    if (navigator.clipboard?.writeText && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    textarea.style.pointerEvents = 'none';
+    document.body.appendChild(textarea);
+    textarea.select();
+    let copied = false;
+    try { copied = document.execCommand('copy'); } catch (_) {}
+    textarea.remove();
+    return copied;
+  };
+
+  const copyCurrentPhotoLink = async () => {
+    const slug = currentShareSlug();
+    if (!slug) return;
+
+    const originalLabel = 'Copy link';
+    try {
+      const copied = await copyText(shareUrlForSlug(slug));
+      shareButton.textContent = copied ? 'Copied' : 'Copy failed';
+      shareButton.classList.toggle('is-copied', copied);
+    } catch (_) {
+      shareButton.textContent = 'Copy failed';
+      shareButton.classList.remove('is-copied');
+    }
+
+    window.setTimeout(() => {
+      shareButton.textContent = originalLabel;
+      shareButton.classList.remove('is-copied');
+    }, 1500);
+  };
 
   const variantFilesAt = index => {
     const item = itemAt(index);
@@ -1274,6 +1412,7 @@
   function syncCopy(index) {
     if (caption) caption.textContent = titleAt(index);
     if (meta) meta.textContent = metaAt(index);
+    if (shareButton) shareButton.disabled = !itemAt(index)?.dataset.slug;
     if (indexLabel) {
       indexLabel.textContent = `${String(index + 1).padStart(2, '0')} / ${String(buttons.length).padStart(2, '0')}`;
     }
@@ -1587,6 +1726,10 @@
   function closeViewer() {
     ++displayRequestId;
     setDetailLoading(false);
+
+    // Closing a directly linked photograph returns to the ordinary gallery URL.
+    const activeHash = hashSlug();
+    if (activeHash && buttons.some(button => button.dataset.slug === activeHash)) clearShareHash();
     viewer.classList.remove('is-open');
     viewer.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('no-scroll');
@@ -1603,6 +1746,12 @@
 
   const go = direction => {
     const step = direction < 0 ? -1 : 1;
+
+    // A shared URL stays intact while its linked photo is open. Once the visitor
+    // intentionally moves to another photo, clear that hash once and leave the
+    // address bar stable for the rest of normal browsing.
+    const activeHash = hashSlug();
+    if (activeHash && buttons.some(button => button.dataset.slug === activeHash)) clearShareHash();
 
     // Preserve one intentional extra tap during the brief handoff instead of
     // racing multiple layer swaps or silently jumping around recent images.
@@ -1623,6 +1772,29 @@
   closeButton?.addEventListener('click', closeViewer);
   prevButton?.addEventListener('click', () => go(-1));
   nextButton?.addEventListener('click', () => go(1));
+  shareButton?.addEventListener('click', copyCurrentPhotoLink);
+
+  const openPhotoFromHash = () => {
+    const slug = hashSlug();
+    if (!slug) return false;
+
+    // Always search the All archive so a direct link works regardless of which
+    // album the photograph belongs to. The default page load is already All.
+    buttons = qsa('.photo-grid-button', grid);
+    const target = buttons.find(button => button.dataset.slug === slug);
+    if (!target) return false;
+
+    openViewer(target);
+    return true;
+  };
+
+  // Give the initial randomized All grid one paint before opening a direct link.
+  window.requestAnimationFrame(() => openPhotoFromHash());
+
+  // Also support changing/pasting a #slug while the Photography page is open.
+  window.addEventListener('hashchange', () => {
+    if (window.location.hash) openPhotoFromHash();
+  });
 
   variantControls?.addEventListener('click', event => {
     const button = event.target.closest('[data-viewer-variant]');
