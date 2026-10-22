@@ -1,91 +1,102 @@
-PARTYZRA V2.5 — SPEED FIRST + SERVER-SIDE IP EXCLUSION
-====================================================
+PARTYZRA ANALYTICS V2.6 — ALBUM INSIGHTS
+=======================================
 
-Built against the working V2.4 portfolio files and the working V2.2
-Cloudflare Worker. Does NOT replace your images or D1 database.
+Built incrementally on the working V2.5 portfolio / Cloudflare Worker.
+This release adds album selections only. NO database migration.
 
-CHANGES
--------
-• Phone/touch-tablet gallery viewer uses lightweight existing WebP thumbs.
-  Desktop/laptop viewer still opens full camera-resolution originals.
-• No speculative mobile full-resolution preloads.
-• Desktop viewer preloads only +/- 1 neighboring original, no variants.
-• Preload JS cache holds at most six Image objects rather than indefinitely.
-• Home slideshow uses WebP thumbnails only; no huge fallback originals.
-• Missing home thumbnails have a bounded retry count.
-• Film video loads start nearer the screen as you scroll.
-• Cloudflare Worker can exclude IP(s) BEFORE any D1 INSERT.
+WHAT IS INCLUDED
+----------------
+  cloudflare-worker/worker.js         Updated authenticated dashboard; keeps IP exclusion
+  portfolio/js/photography-page.js    Sends ONE event when a visitor changes album tabs
+  portfolio/photography-content.html Updates the JS cache-busting version to v2.6.0
+  dashboard-demo.html                Sample data preview; do NOT deploy this file
+  backup-v2.5/                       Copies of the three pre-update files for rollback
 
-PART A: PORTFOLIO (DO THIS FIRST, TEST SPEED)
----------------------------------------------
-Back up your GitHub repository or make a new branch/commit before copying.
-Copy these FOUR files to the matching locations in your EXISTING repository:
+DASHBOARD: "INSIDE THE COLLECTIONS"
+------------------------------------
+• Named album selections (clicks that change to a named album)
+• Exploring sessions (anonymous sessions that chose any named album)
+• Albums explored (distinct named albums selected)
+• Returns to All (deliberate switches from another album to All)
+• Most explored albums (ranking with selection counts and session counts)
+• Recent album selections (shown in Mountain Time)
+• Recent Activity now labels the new event as "Album selected"
+• Today / 7 Days / 30 Days / All Time filters apply to these metrics.
 
-  portfolio/home.html                 -> home.html
-  portfolio/photography-content.html  -> photography-content.html
-  portfolio/js/portfolio.js           -> js/portfolio.js
-  portfolio/js/photography-page.js    -> js/photography-page.js
+MEASUREMENT DEFINITIONS
+-----------------------
+• The Photography page initially opens on "All". That initial default is
+  already a page view and is NOT recorded as an album selection.
+• A click on a different album tab records a single custom_event:
+      event_type=custom_event
+      page=/photography
+      item=album_select
+      label=<selected album name>
+• Clicking the already-active album again records nothing.
+• Selecting "All" after a named album counts as a return to All,
+  not in the ranking of named albums.
+• One anonymous session may choose several albums and produce several
+  selections. Sessions are NOT unique people or devices.
+• This does not currently associate individual photograph opens with
+  a particular album or track time spent in that album.
+• These metrics start when the V2.6 portfolio code goes live; older
+  events cannot be retroactively assigned album selections.
 
-IMPORTANT: Only replace these four files. Keep all other site files,
-including existing js/analytics.js (V2.4), js/site-shell.js, thumbnails,
-images, CSS, music, and videos exactly as they are.
+INSTALL — CLOUDFLARE WORKER
+---------------------------
+1. Back up the current live Worker source before changing it.
+2. Workers & Pages > partyzra-analytics > Edit Code.
+3. Replace the contents of your editable worker.js with
+   cloudflare-worker/worker.js from this package.
+4. Deploy.
+5. DO NOT delete or change the existing bindings and secrets:
+      DB / partyzra-analytics-db
+      DASHBOARD_PASSWORD
+      EXCLUDED_IPS (private IP exclusions)
+   Other configured variables can stay as they are.
+6. Your existing /health, /track, /dashboard and Basic Auth keep working.
 
-Commit and Push origin using GitHub Desktop. After GitHub Pages publishes,
-close old site tabs and hard-refresh (Ctrl+Shift+R) to fetch the new JS.
-Test Home, All album, a mobile fullscreen photo, and desktop fullscreen.
-On phone the fullscreen photo is less detailed when deeply zoomed; this is
-an intentional tradeoff for speed. Photos without working WebP thumbnails
-still need their thumbnails regenerated to display on phone.
+INSTALL — GITHUB PAGES
+----------------------
+1. Commit/backup your currently working portfolio repository first.
+2. Copy ONLY these two files into matching locations:
+      portfolio/js/photography-page.js  -> js/photography-page.js
+      portfolio/photography-content.html -> photography-content.html
+3. Do NOT replace js/analytics.js, photos.js, images, thumbnails, home.html,
+   portfolio.js, CSS, film or music files. Performance optimizations stay intact.
+4. Commit and Push origin with GitHub Desktop.
+5. After deployment, close old site tabs and hard refresh Ctrl+Shift+R.
 
-PART B: WORKER (INDEPENDENT OF PART A)
--------------------------------------
-1) Save/back up your live Cloudflare worker.js before editing.
-2) Open Workers & Pages > partyzra-analytics > Edit Code.
-3) Replace worker.js with cloudflare-worker/worker.js and Deploy.
-4) In that SAME Worker's Settings > Variables and Secrets add a SECRET:
-      Name: EXCLUDED_IPS
-      Value: your own public IPv4 and, if used, IPv6 addresses
-   Separate multiple addresses with commas. Do NOT type them in GitHub.
-5) Save/deploy the secret setting if Cloudflare requests it.
-6) Keep existing DB binding and DASHBOARD_PASSWORD secret untouched.
-
-To find your public IP privately, use your browser to open a reputable
-'what is my IP' site. Do NOT send the address to anyone or paste it here.
-If the site shows separate IPv4 and IPv6 addresses, include BOTH.
-If you use a VPN or your ISP changes your IP, update EXCLUDED_IPS.
-Everyone sharing an excluded public IP (e.g. home Wi-Fi) is also excluded.
-
-VERIFY IP EXCLUSION
--------------------
-• From home Wi-Fi, load the site and open images.
-• Developer Tools > Network > track: requests may still appear, since the
-  browser is unaware of your IP; the server accepts them WITHOUT a D1 write.
-• Request response for excluded IP: {"ok":true,"excluded":true} (202).
-  A standard tracked request responds {"ok":true} (202).
-• Dashboard counts should stay unchanged for your actions, but other live
-  visitors could simultaneously change counts.
-• Disable your existing personal-browser tracking separately if desired with
-  https://partyzra.github.io/?analytics=off (suppresses requests entirely).
-
-PRIVACY
--------
-Excluded IPs are compared to CF-Connecting-IP in the Worker during each
-incoming event, without writing an IP to D1 or returning the address.
-GitHub Pages and Cloudflare may separately process network-level IP data.
-Previously stored events are not automatically deleted; the D1 schema has
-no IP column to identify your historical events reliably.
+VERIFY
+------
+• Visit /health and ensure it still responds OK.
+• Visit /dashboard and click Today, 7 Days, 30 Days, All Time.
+• Scroll to "Inside the collections". Before non-excluded visitors click tabs,
+  the values can correctly show zero, including when you test from your own IP.
+• When a NON-excluded visitor clicks Lagoon, Hawaii, Animals, etc., a
+  /track event will be accepted and the album ranking will update upon
+  dashboard refresh. The event is queued asynchronously by existing analytics.
+• Your excluded home IP should continue producing {"ok":true,"excluded":true}
+  to any /track request that reaches the Worker. A browser opt-out may prevent
+  the request from being sent entirely. Don't remove your exclusion to test.
 
 ROLLBACK
 --------
-• Portfolio: restore the preceding commit's four files and push.
-• Worker: restore your saved previous Worker code. The D1 database stays.
-• Removing EXCLUDED_IPS switches off IP filtering (no schema change).
+• Worker: restore your saved pre-install version, or backup-v2.5/worker.js.
+• Portfolio: restore the two previous files in backup-v2.5/ and push.
+• No schema/data rollback is required. Any new custom_event rows harmlessly
+  remain in the existing D1 database if you roll back.
 
-LIMITATIONS
------------
-The uploaded portfolio source did NOT include the Images/ and video/ assets.
-We cannot verify thumbnail coverage/file sizes or live network timings.
-This release reduces known expensive request paths, but may not resolve
-all delays if files are missing, oversized, miscached, or host/network bound.
-If slowness persists: Chrome DevTools > Network > Disable cache, sort by
-Size and Time, export HAR with sensitive data removed or send a screenshot.
+PRIVACY & PERFORMANCE
+---------------------
+The Worker still checks EXCLUDED_IPS *before* reading the payload or writing
+anything to D1. No visitor IP, MAC, exact location, browser fingerprint, email
+or name is stored by this analytics feature. Cloudflare/GitHub Pages may still
+process network traffic under their own infrastructure policies.
+
+Album events use the current asynchronous analytics queue. Switching tabs does
+not fetch new full-resolution photos for analytics, call D1 from the browser,
+or wait for a Worker response. The site loading optimizations of V2.5 remain.
+
+Files are generated against the supplied V2.5 release; if you've hand-edited
+those particular files since V2.5, compare changes before overwriting.

@@ -740,9 +740,16 @@
     const button = event.target.closest('[data-album]');
     if (!button) return;
 
-    activeAlbum = button.dataset.album || 'All';
+    const selectedAlbum = button.dataset.album || 'All';
+    // Count actual tab changes only, not repeat clicks or the default All load.
+    if (selectedAlbum === activeAlbum) return;
+    activeAlbum = selectedAlbum;
     renderAlbumNav();
     renderGrid();
+
+    // Existing low-priority analytics queue; no image requests or synchronous work.
+    // The Worker records it as a custom_event (item=album_select, label=album name).
+    window.PortfolioAnalytics?.trackEvent('album_select', activeAlbum);
 
     // Keep album changes anchored near the start of the gallery on phones.
     if (window.matchMedia('(max-width: 700px)').matches) {
@@ -1381,34 +1388,6 @@
     requestAnimationFrame(() => requestAnimationFrame(reveal));
   }
 
-  // Detail upgrades should never cross-fade. Keep the cached thumbnail fully
-  // opaque until the decoded full-resolution layer is ready, then swap the two
-  // layers without an opacity transition. This prevents the reused hidden layer
-  // (which may still contain a previous/next photo) from flashing through.
-  function activateDetailLayer(nextLayer, previousImage) {
-    const nextImage = images[nextLayer];
-    if (!nextImage) return;
-
-    const participants = [nextImage, previousImage].filter(Boolean);
-    participants.forEach(image => image.classList.add('is-static-detail-swap'));
-
-    // Make the ready full-resolution layer opaque first. Keeping the preview
-    // active at this point guarantees there is never a transparent frame.
-    nextImage.classList.add('is-active');
-
-    // On the next paint step, remove the preview. Both layers have transitions
-    // disabled for this handoff, so the viewer remains visually static.
-    requestAnimationFrame(() => {
-      if (previousImage && previousImage !== nextImage) {
-        previousImage.classList.remove('is-active');
-      }
-
-      requestAnimationFrame(() => {
-        participants.forEach(image => image.classList.remove('is-static-detail-swap'));
-      });
-    });
-  }
-
   async function display(index, animate = true) {
     if (!buttons.length) return;
     if (transitionLocked && animate) return;
@@ -1502,7 +1481,7 @@
 
     resetZoom();
     prepareImageLayout(fullImage);
-    activateDetailLayer(fullLayer, currentPreview);
+    activateLayer(fullLayer, currentPreview, true);
     activeLayer = fullLayer;
     setDetailLoading(false);
 
