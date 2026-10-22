@@ -1381,6 +1381,34 @@
     requestAnimationFrame(() => requestAnimationFrame(reveal));
   }
 
+  // Detail upgrades should never cross-fade. Keep the cached thumbnail fully
+  // opaque until the decoded full-resolution layer is ready, then swap the two
+  // layers without an opacity transition. This prevents the reused hidden layer
+  // (which may still contain a previous/next photo) from flashing through.
+  function activateDetailLayer(nextLayer, previousImage) {
+    const nextImage = images[nextLayer];
+    if (!nextImage) return;
+
+    const participants = [nextImage, previousImage].filter(Boolean);
+    participants.forEach(image => image.classList.add('is-static-detail-swap'));
+
+    // Make the ready full-resolution layer opaque first. Keeping the preview
+    // active at this point guarantees there is never a transparent frame.
+    nextImage.classList.add('is-active');
+
+    // On the next paint step, remove the preview. Both layers have transitions
+    // disabled for this handoff, so the viewer remains visually static.
+    requestAnimationFrame(() => {
+      if (previousImage && previousImage !== nextImage) {
+        previousImage.classList.remove('is-active');
+      }
+
+      requestAnimationFrame(() => {
+        participants.forEach(image => image.classList.remove('is-static-detail-swap'));
+      });
+    });
+  }
+
   async function display(index, animate = true) {
     if (!buttons.length) return;
     if (transitionLocked && animate) return;
@@ -1474,7 +1502,7 @@
 
     resetZoom();
     prepareImageLayout(fullImage);
-    activateLayer(fullLayer, currentPreview, true);
+    activateDetailLayer(fullLayer, currentPreview);
     activeLayer = fullLayer;
     setDetailLoading(false);
 

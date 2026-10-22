@@ -1537,3 +1537,15 @@ video,
   text-align: center;
   pointer-events: none;
 }
+
+
+/* ============================================================
+   V4.20 — Static preview-to-detail handoff
+   ============================================================ */
+
+/* When the cached thumbnail is being replaced by the decoded full-resolution
+   file, do not fade either viewer layer. This keeps the photograph visually
+   solid and prevents the reusable neighboring layer from flashing through. */
+.photo-viewer-image.is-static-detail-swap {
+  transition: none !important;
+}
