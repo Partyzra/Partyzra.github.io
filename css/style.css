@@ -1050,17 +1050,17 @@ video,
 
 @media (max-width: 860px) {
   .music-list-head {
-    grid-template-columns: 50px 92px 1fr;
+    grid-template-columns: 50px 84px 1fr;
   }
   .music-list-head span:last-child {
     display: none;
   }
   .track-card {
-    grid-template-columns: 50px 92px 1fr;
+    grid-template-columns: 50px 84px 1fr;
     gap: 16px;
   }
   .track-art-wrap {
-    width: 82px;
+    width: 74px;
   }
   .track-control {
     grid-column: 2 / -1;
@@ -1070,13 +1070,13 @@ video,
 
 @media (max-width: 620px) {
   .track-card {
-    grid-template-columns: 32px 82px minmax(0, 1fr);
+    grid-template-columns: 32px 74px minmax(0, 1fr);
     gap: 12px;
     min-height: 0;
     padding: 22px 0 26px;
   }
   .track-art-wrap {
-    width: 76px;
+    width: 68px;
     align-self: start;
   }
   .track-copy h2 {
