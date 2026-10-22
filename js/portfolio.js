@@ -302,24 +302,6 @@
     const mobileMotion = window.matchMedia('(max-width: 700px), (max-width: 900px) and (pointer: coarse)').matches;
     const saveData = Boolean(navigator.connection?.saveData);
     const motionItems = [];
-    const posterChecks = new Map();
-
-    const assetExists = url => {
-      if (!url) return Promise.resolve(false);
-      if (posterChecks.has(url)) return posterChecks.get(url);
-
-      const check = fetch(url, {
-        method: 'HEAD',
-        cache: 'force-cache',
-        credentials: 'same-origin'
-      })
-        .then(response => response.ok)
-        .catch(() => false);
-
-      posterChecks.set(url, check);
-      return check;
-    };
-
     const viewportVisibility = element => {
       const rect = element.getBoundingClientRect();
       const visible = Math.max(0, Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0));
@@ -353,8 +335,6 @@
         nearby: false,
         viewportRatio: 0,
         posterPrepared: Boolean(video.getAttribute('poster')),
-        sourcePrepared: false,
-        sourcePromise: null,
         loadPromise: null
       };
 
@@ -365,50 +345,28 @@
       video.playsInline = true;
       video.preload = 'none';
 
-      item.preparePoster = async () => {
+      item.preparePoster = () => {
         if (item.posterPrepared) return;
         item.posterPrepared = true;
 
         const poster = video.dataset.posterSrc;
         if (!poster) return;
-        if (await assetExists(poster)) {
-          video.poster = poster;
-          intro.classList.add('has-video-poster');
-        }
-      };
-
-      item.prepareSource = () => {
-        if (item.sourcePrepared) return Promise.resolve();
-        if (item.sourcePromise) return item.sourcePromise;
-
-        item.sourcePromise = (async () => {
-          // Each mobile <source> is optional. If the generated derivative has
-          // not been committed yet, remove that source before video.load() so
-          // the browser immediately falls back to the existing desktop MP4.
-          if (mobileMotion) {
-            const mobileSource = qs('source[media]', video);
-            const mobileSrc = video.dataset.mobileSrc || mobileSource?.getAttribute('src');
-            if (mobileSource && mobileSrc && !(await assetExists(mobileSrc))) {
-              mobileSource.remove();
-            }
-          }
-
-          item.sourcePrepared = true;
-        })();
-
-        return item.sourcePromise;
+        video.poster = poster;
+        intro.classList.add('has-video-poster');
       };
 
       item.load = () => {
         if (item.loadPromise) return item.loadPromise;
 
-        item.loadPromise = (async () => {
+        item.loadPromise = Promise.resolve().then(() => {
           if (item.loaded) return;
           item.loaded = true;
           item.preparePoster();
-          await item.prepareSource();
+          // The <source media> element chooses the lightweight mobile encode on
+          // phones and the original high-quality file on larger screens. No
+          // HEAD/preflight request is needed before the actual media request.
           video.load();
-        })();
+        });
 
         return item.loadPromise;
       };
@@ -452,9 +410,22 @@
         item.viewportRatio = viewportVisibility(item.intro);
       });
 
-      const nextActive = motionItems
-        .filter(item => item.nearby && item.viewportRatio > 0.08)
-        .sort((a, b) => b.viewportRatio - a.viewportRatio)[0] || null;
+      const candidates = motionItems
+        .filter(item => item.nearby && item.viewportRatio > 0.18)
+        .sort((a, b) => b.viewportRatio - a.viewportRatio);
+
+      let nextActive = candidates[0] || null;
+
+      // Avoid rapid A/B/A switching when two stacked clips are almost equally
+      // visible during a slow scroll. Keep the current clip until the incoming
+      // clip is clearly more visible, then hand playback over once.
+      if (activeMobileItem && activeMobileItem.nearby && activeMobileItem.viewportRatio > 0.12) {
+        const challenger = nextActive;
+        if (!challenger || challenger === activeMobileItem ||
+            challenger.viewportRatio < activeMobileItem.viewportRatio + 0.12) {
+          nextActive = activeMobileItem;
+        }
+      }
 
       activeMobileItem = nextActive;
 
@@ -500,8 +471,8 @@
         if (mobileMotion) requestMobileSync();
       }, {
         // Don't start decoding large clips until they're almost visible.
-        rootMargin: mobileMotion ? '60px 0px 60px 0px' : '80px 0px 80px 0px',
-        threshold: mobileMotion ? [0, .08, .2, .4, .6, .8, 1] : 0.01
+        rootMargin: mobileMotion ? '0px' : '80px 0px 80px 0px',
+        threshold: mobileMotion ? [0, .12, .18, .3, .5, .7, .9, 1] : 0.01
       });
 
       motionItems.forEach(item => filmObserver.observe(item.intro));
