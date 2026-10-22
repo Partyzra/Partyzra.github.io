@@ -1,102 +1,66 @@
-PARTYZRA ANALYTICS V2.6 — ALBUM INSIGHTS
-=======================================
+PARTYZRA ANALYTICS V2.7 — RECENT ACTIVITY HISTORY
+=================================================
 
-Built incrementally on the working V2.5 portfolio / Cloudflare Worker.
-This release adds album selections only. NO database migration.
+This is a small, dashboard-only update on top of the working V2.6
+Album Insights Worker. It does NOT alter the tracking endpoint, analytics
+collection, database schema, personal IP exclusions, or the GitHub Pages site.
 
-WHAT IS INCLUDED
-----------------
-  cloudflare-worker/worker.js         Updated authenticated dashboard; keeps IP exclusion
-  portfolio/js/photography-page.js    Sends ONE event when a visitor changes album tabs
-  portfolio/photography-content.html Updates the JS cache-busting version to v2.6.0
-  dashboard-demo.html                Sample data preview; do NOT deploy this file
-  backup-v2.5/                       Copies of the three pre-update files for rollback
+WHAT CHANGED
+------------
+- Recent Activity can show 20 (default), 50, 100, or 250 rows per page.
+- Older / Newer links let you browse back through ALL saved records within
+  the selected date filter, in chronological order (newest first).
+- A label shows which rows are displayed: e.g. 101–200 of 527 events.
+- The entire Recent Activity panel is wider for easier browsing.
+- Links retain the chosen date filter and event-count selection.
+- No new JavaScript, client-side requests, endpoints, database tables,
+  indexes, or new analytics tracking events are added.
 
-DASHBOARD: "INSIDE THE COLLECTIONS"
-------------------------------------
-• Named album selections (clicks that change to a named album)
-• Exploring sessions (anonymous sessions that chose any named album)
-• Albums explored (distinct named albums selected)
-• Returns to All (deliberate switches from another album to All)
-• Most explored albums (ranking with selection counts and session counts)
-• Recent album selections (shown in Mountain Time)
-• Recent Activity now labels the new event as "Album selected"
-• Today / 7 Days / 30 Days / All Time filters apply to these metrics.
-
-MEASUREMENT DEFINITIONS
------------------------
-• The Photography page initially opens on "All". That initial default is
-  already a page view and is NOT recorded as an album selection.
-• A click on a different album tab records a single custom_event:
-      event_type=custom_event
-      page=/photography
-      item=album_select
-      label=<selected album name>
-• Clicking the already-active album again records nothing.
-• Selecting "All" after a named album counts as a return to All,
-  not in the ranking of named albums.
-• One anonymous session may choose several albums and produce several
-  selections. Sessions are NOT unique people or devices.
-• This does not currently associate individual photograph opens with
-  a particular album or track time spent in that album.
-• These metrics start when the V2.6 portfolio code goes live; older
-  events cannot be retroactively assigned album selections.
-
-INSTALL — CLOUDFLARE WORKER
----------------------------
-1. Back up the current live Worker source before changing it.
-2. Workers & Pages > partyzra-analytics > Edit Code.
-3. Replace the contents of your editable worker.js with
-   cloudflare-worker/worker.js from this package.
+INSTALL — ONLY CLOUDFLARE
+-------------------------
+1. In Cloudflare, open Workers & Pages > partyzra-analytics > Edit Code.
+2. Back up your currently deployed Worker code.
+3. Open the existing editable worker.js and replace all of its contents
+   with cloudflare-worker/worker.js from this package.
 4. Deploy.
-5. DO NOT delete or change the existing bindings and secrets:
-      DB / partyzra-analytics-db
-      DASHBOARD_PASSWORD
-      EXCLUDED_IPS (private IP exclusions)
-   Other configured variables can stay as they are.
-6. Your existing /health, /track, /dashboard and Basic Auth keep working.
+5. Visit https://partyzra-analytics.12rparker.workers.dev/dashboard
+   and refresh the dashboard. Scroll to Recent Activity.
 
-INSTALL — GITHUB PAGES
-----------------------
-1. Commit/backup your currently working portfolio repository first.
-2. Copy ONLY these two files into matching locations:
-      portfolio/js/photography-page.js  -> js/photography-page.js
-      portfolio/photography-content.html -> photography-content.html
-3. Do NOT replace js/analytics.js, photos.js, images, thumbnails, home.html,
-   portfolio.js, CSS, film or music files. Performance optimizations stay intact.
-4. Commit and Push origin with GitHub Desktop.
-5. After deployment, close old site tabs and hard refresh Ctrl+Shift+R.
+KEEP EXISTING SETTINGS AS THEY ARE
+----------------------------------
+- D1 binding DB, connected to partyzra-analytics-db
+- Private DASHBOARD_PASSWORD secret
+- Private EXCLUDED_IPS secret
+- Any SITE_ORIGIN / DASHBOARD_USER settings already configured
 
-VERIFY
-------
-• Visit /health and ensure it still responds OK.
-• Visit /dashboard and click Today, 7 Days, 30 Days, All Time.
-• Scroll to "Inside the collections". Before non-excluded visitors click tabs,
-  the values can correctly show zero, including when you test from your own IP.
-• When a NON-excluded visitor clicks Lagoon, Hawaii, Animals, etc., a
-  /track event will be accepted and the album ranking will update upon
-  dashboard refresh. The event is queued asynchronously by existing analytics.
-• Your excluded home IP should continue producing {"ok":true,"excluded":true}
-  to any /track request that reaches the Worker. A browser opt-out may prevent
-  the request from being sent entirely. Don't remove your exclusion to test.
+DO NOT edit or redeploy your GitHub Pages portfolio for this update.
+DO NOT change the D1 schema or delete old events.
+
+USING THE HISTORY
+-----------------
+- Select 100 or 250 to see more rows on one page.
+- Select Older to browse farther back; Newer to return toward recent events.
+- All Time includes every event currently stored in D1, and paging works
+  through that entire range. You can page beyond 250 events.
+- The Recent Activity table is scrollable inside its section to avoid a
+  very long dashboard. Navigation is below the scrollable table.
+- Date filter changes return to page 1 of the newly selected period.
+- If you see fewer rows than requested, that is all the data stored in the
+  selected period or you have reached the final page.
+- Existing IP exclusions remain active, so excluded events are not stored
+  and cannot appear in the history.
 
 ROLLBACK
 --------
-• Worker: restore your saved pre-install version, or backup-v2.5/worker.js.
-• Portfolio: restore the two previous files in backup-v2.5/ and push.
-• No schema/data rollback is required. Any new custom_event rows harmlessly
-  remain in the existing D1 database if you roll back.
+If needed, restore your pre-upgrade Worker, or use
+backup-v2.6/worker.js in this package. No database rollback is needed.
 
-PRIVACY & PERFORMANCE
----------------------
-The Worker still checks EXCLUDED_IPS *before* reading the payload or writing
-anything to D1. No visitor IP, MAC, exact location, browser fingerprint, email
-or name is stored by this analytics feature. Cloudflare/GitHub Pages may still
-process network traffic under their own infrastructure policies.
+NOTES
+-----
+This interface reads previously stored data. It does not recover events that
+were never recorded, or events correctly excluded by privacy settings.
+Large All Time histories use database pagination to avoid fetching the entire
+history into the dashboard at once. The Worker remains protected by Basic Auth.
 
-Album events use the current asynchronous analytics queue. Switching tabs does
-not fetch new full-resolution photos for analytics, call D1 from the browser,
-or wait for a Worker response. The site loading optimizations of V2.5 remain.
-
-Files are generated against the supplied V2.5 release; if you've hand-edited
-those particular files since V2.5, compare changes before overwriting.
+The included dashboard-demo.html has simulated data generated in local tests;
+it does not display your real events. Do not deploy that file.

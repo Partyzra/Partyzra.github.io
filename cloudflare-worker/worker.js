@@ -187,13 +187,14 @@ function authRequired() {
   });
 }
 
-// Dashboard v2.6: the event pipeline, IP exclusion and database schema above are unchanged.
+// Dashboard v2.7: the event pipeline, IP exclusion and database schema above are unchanged.
 // Display-time boundaries are America/Denver; stored timestamps stay UTC.
 const DASHBOARD_TZ = 'America/Denver';
 // One subject can have multiple alternate files. The current tracker labels these
 // as 'Title — Frame 02', so strip only that suffix when grouping subjects.
 const PHOTO_SUBJECT_SQL = `COALESCE(NULLIF(TRIM(CASE WHEN instr(label, ' — Frame ') > 0
   THEN substr(label, 1, instr(label, ' — Frame ') - 1) ELSE label END), ''), item, 'Untitled')`;
+const ACTIVITY_SIZES = [20, 50, 100, 250];
 const RANGE_OPTIONS = [
   { id: 'today', label: 'Today' },
   { id: '7d', label: '7 Days' },
@@ -205,6 +206,12 @@ async function renderDashboard(env, url) {
   try {
     const chosen = RANGE_OPTIONS.some(r => r.id === url.searchParams.get('range'))
       ? url.searchParams.get('range') : '30d';
+    // Whitelist row counts and bound page numbers; never interpolate user input into SQL.
+    const sizeParam = Number(url.searchParams.get('activity_size'));
+    const activitySize = ACTIVITY_SIZES.includes(sizeParam) ? sizeParam : 20;
+    const requestedPageParam = url.searchParams.get('activity_page') || '1';
+    const requestedPage = /^\d{1,8}$/.test(requestedPageParam)
+      ? Math.max(1, Number(requestedPageParam)) : 1;
     const first = await queryRows(env, 'SELECT MIN(created_at) AS first_event FROM events');
     const range = makeDashboardRange(chosen, first[0]?.first_event || null, new Date());
     const filter = range.startUtc
@@ -212,7 +219,7 @@ async function renderDashboard(env, url) {
       : { sql: '', args: [] };
 
     const comparison = previousRange(range, chosen);
-    const [totalsRows, pages, photos, daily, recent, sources, subjects, galleryFunnel, recentPhotos, trends, albumTotals, namedAlbums, recentAlbums] = await Promise.all([
+    const [totalsRows, pages, photos, daily, sources, subjects, galleryFunnel, recentPhotos, trends, albumTotals, namedAlbums, recentAlbums] = await Promise.all([
       queryRows(env, `
         SELECT COUNT(*) AS total_events,
           COUNT(DISTINCT session_id) AS sessions,
@@ -236,11 +243,6 @@ async function renderDashboard(env, url) {
         GROUP BY item ORDER BY views DESC, item ASC LIMIT 12
       `, ...filter.args),
       queryChart(env, range.bins),
-      queryRows(env, `
-        SELECT event_type, page, item, label, created_at
-        FROM events WHERE 1=1 ${filter.sql}
-        ORDER BY created_at DESC, id DESC LIMIT 20
-      `, ...filter.args),
       queryRows(env, `
         SELECT referrer, COUNT(*) AS views FROM events
         WHERE event_type = 'page_view' ${filter.sql}
@@ -312,8 +314,22 @@ async function renderDashboard(env, url) {
       `, ...filter.args)
     ]);
 
+    // Page only the Recent Activity feed, never the main metrics or other panels.
+    // Reuse the period total computed above to avoid a duplicate COUNT query.
+    const totalActivity = Number(totalsRows[0]?.total_events || 0);
+    const activityPageCount = Math.max(1, Math.ceil(totalActivity / activitySize));
+    const activityPage = Math.min(requestedPage, activityPageCount);
+    const activityOffset = (activityPage - 1) * activitySize;
+    const recent = await queryRows(env, `
+      SELECT event_type, page, item, label, created_at
+      FROM events WHERE 1=1 ${filter.sql}
+      ORDER BY created_at DESC, id DESC LIMIT ? OFFSET ?
+    `, ...filter.args, activitySize, activityOffset);
+
     return new Response(dashboardHtml({
       chosen, range, totals: totalsRows[0] || {}, pages, photos, daily, recent,
+      activity: { size: activitySize, page: activityPage, pageCount: activityPageCount,
+        total: totalActivity, offset: activityOffset },
       subjects, galleryFunnel: galleryFunnel[0] || {}, recentPhotos, trends, comparison,
       albumTotals: albumTotals[0] || {}, namedAlbums, recentAlbums,
       sources: summarizeSources(sources)
@@ -533,7 +549,7 @@ function summarizeSources(rows) {
   return [...totals].sort((a, b) => b[1] - a[1]).slice(0, 6);
 }
 
-function dashboardHtml({ chosen, range, totals, pages, photos, daily, recent, sources,
+function dashboardHtml({ chosen, range, totals, pages, photos, daily, recent, activity, sources,
   subjects, galleryFunnel, recentPhotos, trends, comparison, albumTotals, namedAlbums, recentAlbums }) {
   const number = value => Number(value || 0).toLocaleString('en-US');
   const count = key => Number(totals[key] || 0);
@@ -550,7 +566,7 @@ function dashboardHtml({ chosen, range, totals, pages, photos, daily, recent, so
   const chartScale = Math.max(1, maxBar);
   const legend = '<span class="key"><i class="key-page"></i>Page views</span><span class="key"><i class="key-photo"></i>Photo opens</span>';
   const nav = RANGE_OPTIONS.map(option => `<a class="filter ${option.id === chosen ? 'is-active' : ''}"
-    href="/dashboard?range=${option.id}" ${option.id === chosen ? 'aria-current="page"' : ''}>${option.label}</a>`).join('');
+    href="/dashboard?range=${option.id}&activity_size=${activity.size}" ${option.id === chosen ? 'aria-current="page"' : ''}>${option.label}</a>`).join('');
 
   const dailyBars = daily.map((d, index) => {
     const pages = Number(d.page_views || 0);
@@ -617,6 +633,18 @@ function dashboardHtml({ chosen, range, totals, pages, photos, daily, recent, so
     '<p class="empty">No album changes recorded in this period yet.</p>';
   const pageRows = ranked(pages, row => prettyPage(row.page), 'No page views in this period.');
   const sourceRows = sources.length ? sources.map(([name, views]) => `<div class="source-row"><span>${escapeHtml(name)}</span><strong>${number(views)}</strong></div>`).join('') : '<p class="empty">No referrers for this period.</p>';
+  const activityLink = (page, size = activity.size) =>
+    `/dashboard?range=${chosen}&activity_size=${size}&activity_page=${page}#recent-activity`;
+  const firstActivity = activity.total ? activity.offset + 1 : 0;
+  const lastActivity = Math.min(activity.offset + activity.size, activity.total);
+  const activitySizes = ACTIVITY_SIZES.map(size =>
+    `<a href="${activityLink(1, size)}" class="activity-size${activity.size === size ? ' selected' : ''}"
+      ${activity.size === size ? 'aria-current="page"' : ''}>${size}</a>`).join('');
+  const activityPager = `<nav class="activity-pager" aria-label="Recent activity pages">
+    ${activity.page > 1 ? `<a class="activity-page-link" href="${activityLink(activity.page - 1)}">← Newer</a>` : '<span class="activity-disabled">← Newer</span>'}
+    <span>Page ${number(activity.page)} of ${number(activity.pageCount)}</span>
+    ${activity.page < activity.pageCount ? `<a class="activity-page-link" href="${activityLink(activity.page + 1)}">Older →</a>` : '<span class="activity-disabled">Older →</span>'}
+  </nav>`;
   const activityRows = recent.length ? recent.map(row => {
     const isAlbum = row.event_type === 'custom_event' && row.item === 'album_select';
     const name = row.event_type === 'page_view' ? 'Page view' : row.event_type === 'photo_view'
@@ -651,8 +679,8 @@ main{max-width:1260px;margin:auto;padding:42px 28px 80px}
 .chart-wrap{position:relative;padding-top:11px}.chart-grid{position:absolute;top:11px;left:0;right:0;height:223px;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none}.chart-grid span{border-top:1px dashed var(--stroke-soft);height:1px}
 .chart{display:flex;align-items:stretch;gap:clamp(2px,.5vw,7px);height:253px;position:relative}.chart-column{display:flex;min-width:0;flex:1;flex-direction:column;align-items:stretch}.chart-stack{height:223px;display:flex;flex-direction:column-reverse;justify-content:flex-start;position:relative}.chart-stack span{display:block;min-height:0;width:100%}.stack-page{background:var(--paper);opacity:.84}.stack-photo{background:var(--gold)}.tick{height:25px;display:flex;align-items:flex-end;justify-content:center;font-size:9px;color:var(--faint);white-space:nowrap;overflow:visible}.chart-footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--stroke);padding-top:11px;margin-top:3px;font-size:10px;color:var(--faint)}
 .rank-row{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:13px;align-items:center;padding:11px 0;border-bottom:1px solid var(--stroke-soft)}.rank-row:last-child{border-bottom:none}.rank-num,.rank-value{font-size:11px;font-variant-numeric:tabular-nums}.rank-num{color:var(--faint)}.rank-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--text)}.rank-value{color:var(--paper)}.meter{background:#232524;height:2px;margin-top:8px}.meter span{display:block;background:var(--gold-soft);height:100%;max-width:100%}
-.lower{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:11px}.sources{margin-top:12px}.source-row{display:flex;gap:12px;justify-content:space-between;border-bottom:1px solid var(--stroke-soft);padding:9px 0;font-size:11px}.source-row span{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.source-row strong{font-weight:500;font-variant-numeric:tabular-nums}
-.table-wrap{max-height:470px;overflow:auto}table{width:100%;border-collapse:collapse}th{text-align:left;padding:0 8px 11px 0;color:var(--faint);font-size:10px;font-weight:550;letter-spacing:.1em;text-transform:uppercase}td{padding:12px 9px 12px 0;border-top:1px solid var(--stroke-soft);vertical-align:top;font-size:11px}.date-cell{white-space:nowrap;color:var(--muted)}.event-tag{font-size:10px;color:var(--gold);white-space:nowrap}.activity-name{display:block;max-width:230px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.activity-sub{display:block;max-width:230px;font-size:10px;color:var(--faint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lower{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:11px}.lower.activity-section{display:block}.sources{margin-top:12px}.source-row{display:flex;gap:12px;justify-content:space-between;border-bottom:1px solid var(--stroke-soft);padding:9px 0;font-size:11px}.source-row span{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.source-row strong{font-weight:500;font-variant-numeric:tabular-nums}
+.table-wrap{max-height:470px;overflow:auto}.activity-controls{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:-4px 0 16px}.activity-count{font-size:11px;color:var(--muted)}.activity-sizes{display:flex;gap:4px;align-items:center;font-size:11px;color:var(--faint)}.activity-size{font-size:11px;padding:5px 8px;border:1px solid var(--stroke);border-radius:5px;color:var(--muted)}.activity-size:hover,.activity-size.selected{color:var(--gold);border-color:#6c593c;background:#28251f}.activity-pager{display:flex;align-items:center;justify-content:center;gap:18px;border-top:1px solid var(--stroke-soft);padding:15px 0 0;margin-top:8px;font-size:11px;color:var(--muted)}.activity-page-link{color:var(--gold)}.activity-page-link:hover{text-decoration:underline}.activity-disabled{opacity:.35}#recent-activity{scroll-margin-top:18px}table{width:100%;border-collapse:collapse}th{text-align:left;padding:0 8px 11px 0;color:var(--faint);font-size:10px;font-weight:550;letter-spacing:.1em;text-transform:uppercase}td{padding:12px 9px 12px 0;border-top:1px solid var(--stroke-soft);vertical-align:top;font-size:11px}.date-cell{white-space:nowrap;color:var(--muted)}.event-tag{font-size:10px;color:var(--gold);white-space:nowrap}.activity-name{display:block;max-width:230px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.activity-sub{display:block;max-width:230px;font-size:10px;color:var(--faint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .photo-intro{display:flex;justify-content:space-between;align-items:baseline;gap:14px;margin:30px 0 12px;border-top:1px solid var(--stroke);padding-top:20px}.photo-intro h2{font:400 31px/1.1 Georgia,serif;letter-spacing:-.045em;margin:0}.photo-intro p{font-size:11px;color:var(--faint);margin:0}.photo-intro em{color:var(--gold);font-style:italic}
 .photo-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-bottom:11px}.photo-metric{background:var(--panel);border:1px solid var(--stroke);border-radius:10px;padding:17px 19px}.photo-metric small{display:block;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}.photo-metric strong{display:block;font:400 30px/1.4 Georgia,serif;font-variant-numeric:tabular-nums;margin-top:3px}.photo-metric span{display:block;color:var(--faint);font-size:10px;margin-top:2px}
 .rank-meta{display:block;font-size:10px;color:var(--faint);margin-top:3px}.subject-row{padding:13px 0}.photo-detail{margin-top:11px}.trend-row,.photo-activity-row{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:12px 0;border-bottom:1px solid var(--stroke-soft)}.trend-row:last-child,.photo-activity-row:last-child{border-bottom:none}.trend-info,.photo-activity-info{min-width:0}.trend-info strong,.photo-activity-info strong{display:block;font-size:12px;font-weight:500;overflow-wrap:anywhere}.trend-info span,.photo-activity-info span{display:block;font-size:10px;color:var(--faint);margin-top:4px;overflow-wrap:anywhere}.trend-change{font-size:11px;flex-shrink:0;color:var(--muted);font-variant-numeric:tabular-nums}.trend-change.positive{color:var(--gold)}.trend-change.negative{color:var(--faint)}.photo-activity-row time{font-size:10px;color:var(--muted);white-space:nowrap;flex-shrink:0}
@@ -661,7 +689,7 @@ main{max-width:1260px;margin:auto;padding:42px 28px 80px}
 @media(max-width:560px){main{padding:23px 13px 56px}.mast{margin-bottom:28px}.top{display:block}.top-note{text-align:left;margin-top:17px}.controls{align-items:flex-start}.filters{width:100%;justify-content:space-between}.filter{padding:8px 9px}.cards,.photo-metrics{gap:8px}.photo-intro{display:block}.photo-intro p{margin-top:9px}.photo-metric{padding:15px 13px}.photo-activity-row{align-items:flex-start;flex-direction:column;gap:5px}.card{padding:17px 14px;min-height:126px}.panel{padding:16px}.chart-legend{gap:9px}.chart{gap:2px}.tick{font-size:8px}.date-cell{font-size:10px}.table-wrap{overflow-x:auto}.privacy{display:block}}
 </style></head>
 <body><main>
-  <div class="mast"><div class="brandmark" aria-hidden="true">P</div><div class="brandtext">PARTYZRA</div><span class="edition">Private / Statistics 02.6</span></div>
+  <div class="mast"><div class="brandmark" aria-hidden="true">P</div><div class="brandtext">PARTYZRA</div><span class="edition">Private / Statistics 02.7</span></div>
   <header class="top"><div><p class="eyebrow">Portfolio intelligence</p><h1>Behind the <em>frames.</em></h1></div>
     <div class="top-note">TIMEZONE&nbsp; <strong>Mountain · ${escapeHtml(currentZoneAbbreviation())}</strong><br>
       UPDATED&nbsp; <strong>${escapeHtml(updated)}</strong><br>Refresh to see new activity</div></header>
@@ -709,9 +737,14 @@ main{max-width:1260px;margin:auto;padding:42px 28px 80px}
     <section class="panel"><div class="panelhead"><h2>Latest album selections</h2><span class="hint">Latest 10 in range · Mountain Time</span></div>${recentAlbumRows}</section>
   </div>
   <p class="album-note">Album Analytics starts collecting data after this portfolio update is published. The default “All” gallery load is already counted as a photography page view, so only deliberate tab changes count as album selections. This does not measure time spent within an album or associate individual photo opens with an album.</p>
-  <div class="lower">
-    <section class="panel"><div class="panelhead"><h2>Recent activity</h2><span class="hint">Latest 20 in range</span></div>
-      <div class="table-wrap"><table><thead><tr><th>Mountain Time</th><th>Event</th><th>Detail</th></tr></thead><tbody>${activityRows}</tbody></table></div></section>
+  <div class="lower activity-section">
+    <section class="panel" id="recent-activity"><div class="panelhead"><h2>Recent activity</h2><span class="hint">Mountain Time · Selected date range</span></div>
+      <div class="activity-controls">
+        <span class="activity-count">Showing ${number(firstActivity)}–${number(lastActivity)} of ${number(activity.total)} events</span>
+        <nav class="activity-sizes" aria-label="Events per page">Show ${activitySizes}</nav>
+      </div>
+      <div class="table-wrap"><table><thead><tr><th>Mountain Time</th><th>Event</th><th>Detail</th></tr></thead><tbody>${activityRows}</tbody></table></div>
+      ${activityPager}</section>
   </div>
   <div class="lower">
     <section class="panel"><div class="panelhead"><h2>Traffic sources</h2><span class="hint">Referrers from page views</span></div>
@@ -724,7 +757,7 @@ main{max-width:1260px;margin:auto;padding:42px 28px 80px}
   </div>
   <footer class="privacy"><p><strong>Private by design.</strong> Counts use existing anonymous session IDs, timestamps, page/photo opens, and referrers.<br>
     No IP addresses, names, email addresses, precise location, or browser fingerprints are intentionally stored.</p>
-    <p>DATA STORED IN UTC · DISPLAYED IN AMERICA/DENVER<br>PARTYZRA ANALYTICS · V2.6</p></footer>
+    <p>DATA STORED IN UTC · DISPLAYED IN AMERICA/DENVER<br>PARTYZRA ANALYTICS · V2.7</p></footer>
 </main></body></html>`;
 }
 
