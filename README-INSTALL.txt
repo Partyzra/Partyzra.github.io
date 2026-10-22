@@ -1,91 +1,66 @@
-PARTYZRA V2.5 — SPEED FIRST + SERVER-SIDE IP EXCLUSION
-====================================================
+PARTYZRA ANALYTICS V2.7 — RECENT ACTIVITY HISTORY
+=================================================
 
-Built against the working V2.4 portfolio files and the working V2.2
-Cloudflare Worker. Does NOT replace your images or D1 database.
+This is a small, dashboard-only update on top of the working V2.6
+Album Insights Worker. It does NOT alter the tracking endpoint, analytics
+collection, database schema, personal IP exclusions, or the GitHub Pages site.
 
-CHANGES
--------
-• Phone/touch-tablet gallery viewer uses lightweight existing WebP thumbs.
-  Desktop/laptop viewer still opens full camera-resolution originals.
-• No speculative mobile full-resolution preloads.
-• Desktop viewer preloads only +/- 1 neighboring original, no variants.
-• Preload JS cache holds at most six Image objects rather than indefinitely.
-• Home slideshow uses WebP thumbnails only; no huge fallback originals.
-• Missing home thumbnails have a bounded retry count.
-• Film video loads start nearer the screen as you scroll.
-• Cloudflare Worker can exclude IP(s) BEFORE any D1 INSERT.
+WHAT CHANGED
+------------
+- Recent Activity can show 20 (default), 50, 100, or 250 rows per page.
+- Older / Newer links let you browse back through ALL saved records within
+  the selected date filter, in chronological order (newest first).
+- A label shows which rows are displayed: e.g. 101–200 of 527 events.
+- The entire Recent Activity panel is wider for easier browsing.
+- Links retain the chosen date filter and event-count selection.
+- No new JavaScript, client-side requests, endpoints, database tables,
+  indexes, or new analytics tracking events are added.
 
-PART A: PORTFOLIO (DO THIS FIRST, TEST SPEED)
----------------------------------------------
-Back up your GitHub repository or make a new branch/commit before copying.
-Copy these FOUR files to the matching locations in your EXISTING repository:
+INSTALL — ONLY CLOUDFLARE
+-------------------------
+1. In Cloudflare, open Workers & Pages > partyzra-analytics > Edit Code.
+2. Back up your currently deployed Worker code.
+3. Open the existing editable worker.js and replace all of its contents
+   with cloudflare-worker/worker.js from this package.
+4. Deploy.
+5. Visit https://partyzra-analytics.12rparker.workers.dev/dashboard
+   and refresh the dashboard. Scroll to Recent Activity.
 
-  portfolio/home.html                 -> home.html
-  portfolio/photography-content.html  -> photography-content.html
-  portfolio/js/portfolio.js           -> js/portfolio.js
-  portfolio/js/photography-page.js    -> js/photography-page.js
+KEEP EXISTING SETTINGS AS THEY ARE
+----------------------------------
+- D1 binding DB, connected to partyzra-analytics-db
+- Private DASHBOARD_PASSWORD secret
+- Private EXCLUDED_IPS secret
+- Any SITE_ORIGIN / DASHBOARD_USER settings already configured
 
-IMPORTANT: Only replace these four files. Keep all other site files,
-including existing js/analytics.js (V2.4), js/site-shell.js, thumbnails,
-images, CSS, music, and videos exactly as they are.
+DO NOT edit or redeploy your GitHub Pages portfolio for this update.
+DO NOT change the D1 schema or delete old events.
 
-Commit and Push origin using GitHub Desktop. After GitHub Pages publishes,
-close old site tabs and hard-refresh (Ctrl+Shift+R) to fetch the new JS.
-Test Home, All album, a mobile fullscreen photo, and desktop fullscreen.
-On phone the fullscreen photo is less detailed when deeply zoomed; this is
-an intentional tradeoff for speed. Photos without working WebP thumbnails
-still need their thumbnails regenerated to display on phone.
-
-PART B: WORKER (INDEPENDENT OF PART A)
--------------------------------------
-1) Save/back up your live Cloudflare worker.js before editing.
-2) Open Workers & Pages > partyzra-analytics > Edit Code.
-3) Replace worker.js with cloudflare-worker/worker.js and Deploy.
-4) In that SAME Worker's Settings > Variables and Secrets add a SECRET:
-      Name: EXCLUDED_IPS
-      Value: your own public IPv4 and, if used, IPv6 addresses
-   Separate multiple addresses with commas. Do NOT type them in GitHub.
-5) Save/deploy the secret setting if Cloudflare requests it.
-6) Keep existing DB binding and DASHBOARD_PASSWORD secret untouched.
-
-To find your public IP privately, use your browser to open a reputable
-'what is my IP' site. Do NOT send the address to anyone or paste it here.
-If the site shows separate IPv4 and IPv6 addresses, include BOTH.
-If you use a VPN or your ISP changes your IP, update EXCLUDED_IPS.
-Everyone sharing an excluded public IP (e.g. home Wi-Fi) is also excluded.
-
-VERIFY IP EXCLUSION
--------------------
-• From home Wi-Fi, load the site and open images.
-• Developer Tools > Network > track: requests may still appear, since the
-  browser is unaware of your IP; the server accepts them WITHOUT a D1 write.
-• Request response for excluded IP: {"ok":true,"excluded":true} (202).
-  A standard tracked request responds {"ok":true} (202).
-• Dashboard counts should stay unchanged for your actions, but other live
-  visitors could simultaneously change counts.
-• Disable your existing personal-browser tracking separately if desired with
-  https://partyzra.github.io/?analytics=off (suppresses requests entirely).
-
-PRIVACY
--------
-Excluded IPs are compared to CF-Connecting-IP in the Worker during each
-incoming event, without writing an IP to D1 or returning the address.
-GitHub Pages and Cloudflare may separately process network-level IP data.
-Previously stored events are not automatically deleted; the D1 schema has
-no IP column to identify your historical events reliably.
+USING THE HISTORY
+-----------------
+- Select 100 or 250 to see more rows on one page.
+- Select Older to browse farther back; Newer to return toward recent events.
+- All Time includes every event currently stored in D1, and paging works
+  through that entire range. You can page beyond 250 events.
+- The Recent Activity table is scrollable inside its section to avoid a
+  very long dashboard. Navigation is below the scrollable table.
+- Date filter changes return to page 1 of the newly selected period.
+- If you see fewer rows than requested, that is all the data stored in the
+  selected period or you have reached the final page.
+- Existing IP exclusions remain active, so excluded events are not stored
+  and cannot appear in the history.
 
 ROLLBACK
 --------
-• Portfolio: restore the preceding commit's four files and push.
-• Worker: restore your saved previous Worker code. The D1 database stays.
-• Removing EXCLUDED_IPS switches off IP filtering (no schema change).
+If needed, restore your pre-upgrade Worker, or use
+backup-v2.6/worker.js in this package. No database rollback is needed.
 
-LIMITATIONS
------------
-The uploaded portfolio source did NOT include the Images/ and video/ assets.
-We cannot verify thumbnail coverage/file sizes or live network timings.
-This release reduces known expensive request paths, but may not resolve
-all delays if files are missing, oversized, miscached, or host/network bound.
-If slowness persists: Chrome DevTools > Network > Disable cache, sort by
-Size and Time, export HAR with sensitive data removed or send a screenshot.
+NOTES
+-----
+This interface reads previously stored data. It does not recover events that
+were never recorded, or events correctly excluded by privacy settings.
+Large All Time histories use database pagination to avoid fetching the entire
+history into the dashboard at once. The Worker remains protected by Basic Auth.
+
+The included dashboard-demo.html has simulated data generated in local tests;
+it does not display your real events. Do not deploy that file.

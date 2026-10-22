@@ -43,13 +43,23 @@ body.site-shell-page {
   box-shadow: 0 14px 45px rgba(0,0,0,.28);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  opacity: .80;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(8px) scale(.985);
   font-family: "DM Sans", system-ui, sans-serif;
-  transition: opacity .2s ease, border-color .2s ease, background .2s ease;
+  transition: opacity .2s ease, transform .2s ease, visibility .2s ease, border-color .2s ease, background .2s ease;
 }
 
-.site-soundtrack-player:hover,
-.site-soundtrack-player:focus-within {
+.site-soundtrack-player.is-available {
+  opacity: .80;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+}
+
+.site-soundtrack-player.is-available:hover,
+.site-soundtrack-player.is-available:focus-within {
   opacity: 1;
   border-color: rgba(240,238,233,.28);
   background: rgba(0,0,0,.96);
@@ -208,3 +218,29 @@ body.site-shell-page {
 
 
 /* V4.17.18 — Persistent shell and soundtrack chrome use dark solid black. */
+
+/* V2.5 — With only two original songs in the global player, keep the selected
+   track visible on phones so Next is understandable without visiting Music. */
+@media (max-width: 600px) {
+  .site-soundtrack-copy {
+    display: grid;
+    max-width: min(38vw, 132px);
+  }
+
+  .site-soundtrack-status {
+    display: none;
+  }
+
+  .site-soundtrack-title {
+    font-size: .61rem;
+    color: var(--soundtrack-muted);
+  }
+}
+
+/* V2.8 — Keep the Music iframe mounted after playback starts so its local
+   audio can continue seamlessly while Home / Photography are shown. */
+.site-shell-frame.is-shell-hidden {
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+}

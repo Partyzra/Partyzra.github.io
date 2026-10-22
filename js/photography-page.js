@@ -740,9 +740,16 @@
     const button = event.target.closest('[data-album]');
     if (!button) return;
 
-    activeAlbum = button.dataset.album || 'All';
+    const selectedAlbum = button.dataset.album || 'All';
+    // Count actual tab changes only, not repeat clicks or the default All load.
+    if (selectedAlbum === activeAlbum) return;
+    activeAlbum = selectedAlbum;
     renderAlbumNav();
     renderGrid();
+
+    // Existing low-priority analytics queue; no image requests or synchronous work.
+    // The Worker records it as a custom_event (item=album_select, label=album name).
+    window.PortfolioAnalytics?.trackEvent('album_select', activeAlbum);
 
     // Keep album changes anchored near the start of the gallery on phones.
     if (window.matchMedia('(max-width: 700px)').matches) {
