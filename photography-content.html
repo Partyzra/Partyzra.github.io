@@ -12,6 +12,189 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/photography.css?v=2.4.0">
+  <style>
+    /*
+      Photography title — sequential focus reveal.
+
+      All three words begin present but soft and out of focus.
+      They resolve gently in sequence:
+      Take -> a -> look.
+
+      There is no mask, wipe, vertical edge, or horizontal movement.
+    */
+
+    .photo-page .photo-hero-title h1 {
+      opacity: 1;
+      filter: none;
+      transform: none;
+      animation: none !important;
+    }
+
+    .photo-page .photo-title-phrase {
+      display: inline-block;
+      transform-origin: 50% 42%;
+      animation: photo-title-gentle-float 18.8s ease-in-out 5.7s infinite;
+      will-change: transform;
+    }
+
+    .photo-page .photo-focus-word {
+      display: inline-block;
+      opacity: .10;
+      filter: blur(8px);
+      transform: none;
+      will-change: opacity, filter;
+    }
+
+    /*
+      The delays overlap slightly so the title feels like one calm progression
+      rather than three isolated events.
+    */
+    .photo-page .photo-focus-word--take {
+      animation: photo-focus-resolve 2.85s cubic-bezier(.22, .68, .24, 1) .18s forwards;
+    }
+
+    .photo-page .photo-focus-word--a {
+      animation: photo-focus-resolve 2.75s cubic-bezier(.22, .68, .24, 1) 1.42s forwards;
+    }
+
+    .photo-page .photo-focus-word--look {
+      animation: photo-focus-resolve 2.95s cubic-bezier(.22, .68, .24, 1) 2.72s forwards;
+    }
+
+    @keyframes photo-focus-resolve {
+      from {
+        opacity: .10;
+        filter: blur(8px);
+      }
+
+      to {
+        opacity: 1;
+        filter: blur(0);
+      }
+    }
+
+    /*
+      After the reveal completes, the whole phrase has one tiny suspended
+      movement. The phrase moves together, not word-by-word.
+    */
+    @keyframes photo-title-gentle-float {
+      0%, 100% {
+        transform: rotate(0deg) translateY(0);
+      }
+
+      30% {
+        transform: rotate(-.24deg) translateY(-.60px);
+      }
+
+      59% {
+        transform: rotate(.21deg) translateY(.28px);
+      }
+
+      81% {
+        transform: rotate(-.09deg) translateY(-.20px);
+      }
+    }
+
+    /*
+      LOOK begins as cool silver / steel.
+      This base stays silver while the word itself resolves into focus.
+    */
+    .photo-page .photo-hero-accent {
+      position: relative;
+      display: inline-block;
+
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+
+      background:
+        linear-gradient(
+          105deg,
+          #8f9aa1 0%,
+          #dbe2e6 22%,
+          #f4f7f8 38%,
+          #aab5bc 53%,
+          #e5ebee 71%,
+          #9aa5ac 100%
+        );
+      background-size: 180% 100%;
+      background-position: 12% 50%;
+      -webkit-background-clip: text;
+      background-clip: text;
+
+      animation: none !important;
+    }
+
+    /*
+      Once LOOK is largely in focus, the color treatment slowly fades over
+      the silver base, then continues its existing red -> blue -> yellow drift.
+    */
+    .photo-page .photo-hero-accent::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+
+      background:
+        linear-gradient(
+          105deg,
+          #8f151c 0%,
+          #d92d34 15%,
+          #ff6651 27%,
+          #436fbd 43%,
+          #79a8dc 56%,
+          #d5a42c 73%,
+          #ffe28a 87%,
+          #bd7f1d 100%
+        );
+      background-size: 300% 100%;
+      background-position: 0% 50%;
+      -webkit-background-clip: text;
+      background-clip: text;
+
+      opacity: 0;
+
+      animation:
+        photo-look-color-emerge 5.0s ease 4.65s forwards,
+        photo-look-color-drift 22s ease-in-out 5.0s infinite alternate;
+      will-change: opacity, background-position;
+    }
+
+    @keyframes photo-look-color-emerge {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes photo-look-color-drift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 18% 50%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .photo-page .photo-title-phrase,
+      .photo-page .photo-focus-word,
+      .photo-page .photo-hero-accent::after {
+        animation: none !important;
+      }
+
+      .photo-page .photo-title-phrase {
+        transform: none;
+      }
+
+      .photo-page .photo-focus-word {
+        opacity: 1;
+        filter: none;
+      }
+
+      .photo-page .photo-hero-accent::after {
+        opacity: 1;
+        background-position: 50% 50%;
+      }
+    }
+  </style>
 </head>
 <body class="photo-page photo-page-editorial">
   <header class="site-header" data-site-header>
@@ -35,7 +218,13 @@
     <section class="photo-hero-editorial container-wide">
       <div class="photo-hero-title">
         <p class="eyebrow">Photography / Archive</p>
-        <h1>Look <span class="photo-hero-accent">slowly.</span></h1>
+        <h1 aria-label="Take a look">
+          <span class="photo-title-phrase" aria-hidden="true">
+            <span class="photo-focus-word photo-focus-word--take">Take</span>
+            <span class="photo-focus-word photo-focus-word--a">a</span>
+            <span class="photo-focus-word photo-focus-word--look"><span class="photo-hero-accent" data-text="look">look</span></span>
+          </span>
+        </h1>
       </div>
       <div class="photo-hero-copy">
         <p><p>Fragments of people, places, and memory.</p></p>
