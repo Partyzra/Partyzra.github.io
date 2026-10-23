@@ -29,7 +29,7 @@
   }
 
   // Landing hero slideshow — start immediately with a random photograph from
-  // the full Photography archive, then keep cycling through the remaining images.
+  // the selected Photography hero pool, then keep cycling through the remaining images.
   // Each incoming image is preloaded before its crossfade, while the first image
   // is assigned immediately so the hero never intentionally waits on a hold timer.
   const homeHero = qs('.home-page .hero-v3');
@@ -213,7 +213,15 @@
       const seen = new Set();
       const photoFiles = [];
 
-      photos.forEach(photo => {
+      // Optional homepage curation:
+      // Add `hero: true` to any entry in js/photos.js that you specifically
+      // want in the landing-page rotation. As soon as at least one photo is
+      // marked, the hero uses only marked photos. With no marks, the current
+      // full-archive rotation remains unchanged.
+      const curatedHeroPhotos = photos.filter(photo => photo?.hero === true);
+      const heroPhotos = curatedHeroPhotos.length ? curatedHeroPhotos : photos;
+
+      heroPhotos.forEach(photo => {
         const file = String(photo?.file || '').trim();
         const key = normalize(file);
         if (!file || seen.has(key)) return;
@@ -224,7 +232,7 @@
       if (!photoFiles.length) return;
 
       // No fixed opening photograph: every load starts from a freshly shuffled
-      // full archive. Keep the hero visually hidden until the first randomized
+      // hero pool. Keep the hero visually hidden until the first randomized
       // photograph has actually loaded; this prevents the legacy Sunset fallback
       // (or a partially loaded thumbnail) from flashing during startup.
       slides = shuffled(photoFiles);

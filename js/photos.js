@@ -37,6 +37,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [],
     "note": ""
   },
@@ -483,6 +484,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "sunset"
     ],
@@ -495,6 +497,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "night"
     ],
@@ -828,6 +831,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [],
     "note": "",
     "album": "Lagoon"
@@ -1012,6 +1016,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "nature"
     ],
@@ -1075,6 +1080,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "landscape"
     ],
@@ -1209,6 +1215,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "people"
     ],
@@ -1234,6 +1241,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "nature"
     ],
@@ -1271,6 +1279,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "Structure"
     ],
@@ -1664,6 +1673,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "Lagoon"
     ],
@@ -1941,6 +1951,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "nature"
     ],
@@ -2082,6 +2093,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "nature"
     ],
@@ -2121,6 +2133,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "nature"
     ],
@@ -2203,6 +2216,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "nature"
     ],
@@ -2299,6 +2313,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "nature"
     ],
@@ -2312,6 +2327,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "nature"
     ],
@@ -2325,6 +2341,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "nature"
     ],
@@ -2448,6 +2465,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "nature"
     ],
@@ -2461,6 +2479,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "nature"
     ],
@@ -2474,6 +2493,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "nature"
     ],
@@ -2730,6 +2750,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "nature"
     ],
@@ -2756,6 +2777,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "city"
     ],
@@ -2763,12 +2785,13 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York2.jpg",
-    "title": "New Yorkerswed",
+    "title": "New Yorkers",
     "album": "New York",
     "collection": "Nature",
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "city"
     ],
@@ -2782,6 +2805,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "city"
     ],
@@ -2834,6 +2858,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "city"
     ],
@@ -2925,6 +2950,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "city"
     ],
@@ -3056,6 +3082,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "city"
     ],
@@ -3147,6 +3174,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "city"
     ],
@@ -3342,6 +3370,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "city"
     ],
@@ -3498,6 +3527,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "city"
     ],
@@ -3524,6 +3554,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "city"
     ],
@@ -3550,6 +3581,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "city"
     ],
@@ -3576,6 +3608,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "city"
     ],
@@ -3589,6 +3622,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "city"
     ],
@@ -3615,6 +3649,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "city"
     ],
@@ -3654,6 +3689,7 @@ const PORTFOLIO_PHOTOS = [
     "year": "",
     "location": "",
     "featured": false,
+    "hero": true,
     "tags": [
       "city"
     ],
@@ -3773,11 +3809,25 @@ const PORTFOLIO_PHOTOS = [
   "year": "",
   "location": "California",
   "featured": false,
+  "hero": true,
   "tags": [
     "city"
   ],
   "note": ""
-}
+},
+  {
+    "file": "Tidal Wave.jpg",
+    "title": "Tidal Wave",
+    "collection": "Ride",
+    "album": "Lagoon",
+    "year": "",
+    "location": "",
+    "featured": true,
+    "tags": [
+      "live"
+    ],
+    "note": ""
+  }
 
 ];
 

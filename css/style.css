@@ -1104,3 +1104,277 @@ video,
     display: none;
   }
 }
+
+
+/* V4.17.20 — Observe / Listen / Reminisce landing sequence
+   Slower staggered reveals, a wider hero canvas, and a stepped left-to-right
+   text composition while the existing moving-photo hero remains unchanged. */
+.home-page .hero-v3 {
+  align-items: center;
+}
+
+.home-page .hero-content.container-wide {
+  /* The normal site container tops out at 1450px and recenters on very wide
+     screens. Let the hero use the viewport instead so Observe can live much
+     closer to the left edge. */
+  width: calc(100% - clamp(40px, 4vw, 72px));
+  margin-left: clamp(20px, 2vw, 36px);
+  margin-right: auto;
+  padding-top: clamp(28px, 5vh, 70px);
+}
+
+.home-page .hero-sequence {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(10px, 1.35vw, 22px);
+  width: min(100%, 980px);
+  max-width: none;
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: normal;
+  text-shadow: none;
+}
+
+.home-page .hero-sequence-line {
+  display: grid;
+  grid-template-columns: auto clamp(34px, 5vw, 74px) auto;
+  align-items: baseline;
+  column-gap: clamp(14px, 2vw, 28px);
+  width: fit-content;
+  max-width: 100%;
+  color: #f3f1ec;
+  opacity: 0;
+  transform: translateY(22px);
+  filter: blur(4px);
+  animation: home-hero-sequence-in 2.2s cubic-bezier(.22, 1, .36, 1) forwards;
+  transition: opacity .25s ease;
+}
+
+.home-page .hero-sequence-line--observe {
+  margin-left: 0;
+  animation-delay: .30s;
+}
+.home-page .hero-sequence-line--listen {
+  margin-left: clamp(28px, 4vw, 76px);
+  animation-delay: 1.65s;
+}
+.home-page .hero-sequence-line--reminisce {
+  margin-left: clamp(58px, 8vw, 150px);
+  animation-delay: 3s;
+}
+
+.home-page .hero-sequence-line:hover {
+  opacity: .76 !important;
+}
+
+.home-page .hero-sequence-word {
+  display: block;
+  font-size: clamp(3.9rem, 7.35vw, 7.9rem);
+  line-height: .87;
+  letter-spacing: -.06em;
+  text-shadow:
+    0 2px 4px rgba(0,0,0,.78),
+    0 8px 22px rgba(0,0,0,.58),
+    0 20px 52px rgba(0,0,0,.34);
+}
+
+.home-page .hero-sequence-line--observe .hero-sequence-word {
+  color: rgba(214, 216, 216, .64);
+}
+
+.home-page .hero-sequence-rule {
+  align-self: center;
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: rgba(245,242,235,.28);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: home-hero-rule-in 1.15s cubic-bezier(.22, 1, .36, 1) forwards;
+}
+
+.home-page .hero-sequence-line--observe .hero-sequence-rule { animation-delay: 1.08s; }
+.home-page .hero-sequence-line--listen .hero-sequence-rule { animation-delay: 2.43s; }
+.home-page .hero-sequence-line--reminisce .hero-sequence-rule { animation-delay: 3.78s; }
+
+.home-page .hero-sequence-discipline {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: rgba(245,242,235,.58);
+  font-family: var(--sans);
+  font-size: clamp(.65rem, .78vw, .78rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.home-page .hero-sequence-discipline > span {
+  display: inline-block;
+  font-size: .88em;
+  transition: transform .3s var(--ease);
+}
+
+.home-page .hero-sequence-line:hover .hero-sequence-discipline > span {
+  transform: translateX(4px);
+}
+
+.home-page .hero-sequence-line--reminisce:hover .hero-sequence-discipline > span {
+  transform: translateY(3px);
+}
+
+@keyframes home-hero-sequence-in {
+  0% {
+    opacity: 0;
+    transform: translateY(22px);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes home-hero-rule-in {
+  from { transform: scaleX(0); opacity: 0; }
+  to { transform: scaleX(1); opacity: 1; }
+}
+
+@media (max-width: 860px) {
+  .home-page .hero-content.container-wide {
+    width: calc(100% - 30px);
+    margin-inline: 15px;
+  }
+
+  .home-page .hero-sequence {
+    gap: 16px;
+  }
+
+  .home-page .hero-sequence-line--listen {
+    margin-left: clamp(20px, 5vw, 42px);
+  }
+
+  .home-page .hero-sequence-line--reminisce {
+    margin-left: clamp(40px, 10vw, 84px);
+  }
+
+  .home-page .hero-sequence-line {
+    grid-template-columns: auto minmax(24px, 7vw) auto;
+    column-gap: 13px;
+  }
+
+  .home-page .hero-sequence-word {
+    font-size: clamp(3.55rem, 13vw, 6rem);
+  }
+}
+
+@media (max-width: 620px) {
+  .home-page .hero-v3 {
+    align-items: center;
+  }
+
+  .home-page .hero-content.container-wide {
+    width: calc(100% - 24px);
+    margin-inline: 12px;
+    padding-top: 36px;
+  }
+
+  .home-page .hero-sequence {
+    gap: 20px;
+  }
+
+  .home-page .hero-sequence-line {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .home-page .hero-sequence-line--listen {
+    margin-left: 18px;
+  }
+
+  .home-page .hero-sequence-line--reminisce {
+    margin-left: 36px;
+  }
+
+  .home-page .hero-sequence-word {
+    font-size: clamp(3.25rem, 15.5vw, 5.15rem);
+  }
+
+  .home-page .hero-sequence-rule {
+    display: none;
+  }
+
+  .home-page .hero-sequence-discipline {
+    padding-left: 3px;
+    font-size: .61rem;
+    letter-spacing: .2em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page .hero-sequence-line,
+  .home-page .hero-sequence-rule {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    animation: none !important;
+  }
+}
+
+
+/* V4.17.21 — Wider Observe / Listen / Reminisce composition
+   Give each thought more horizontal and vertical breathing room so the three
+   lines occupy the hero as separate moments rather than one stacked title. */
+@media (min-width: 861px) {
+  .home-page .hero-sequence {
+    width: 100%;
+    gap: clamp(34px, 5.4vh, 76px);
+  }
+
+  .home-page .hero-sequence-line--observe {
+    margin-left: 0;
+  }
+
+  .home-page .hero-sequence-line--listen {
+    margin-left: clamp(105px, 12vw, 235px);
+  }
+
+  .home-page .hero-sequence-line--reminisce {
+    margin-left: clamp(220px, 24vw, 470px);
+  }
+}
+
+@media (min-width: 621px) and (max-width: 860px) {
+  .home-page .hero-sequence {
+    gap: clamp(28px, 4.8vh, 52px);
+  }
+
+  .home-page .hero-sequence-line--listen {
+    margin-left: clamp(54px, 9vw, 92px);
+  }
+
+  .home-page .hero-sequence-line--reminisce {
+    margin-left: clamp(112px, 18vw, 184px);
+  }
+}
+
+@media (max-width: 620px) {
+  .home-page .hero-sequence {
+    gap: clamp(28px, 4.5vh, 44px);
+  }
+
+  .home-page .hero-sequence-line--listen {
+    margin-left: clamp(24px, 9vw, 48px);
+  }
+
+  .home-page .hero-sequence-line--reminisce {
+    margin-left: clamp(48px, 18vw, 96px);
+  }
+}
