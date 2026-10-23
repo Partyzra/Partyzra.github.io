@@ -1172,7 +1172,7 @@ video,
 
 .home-page .hero-sequence-word {
   display: block;
-  font-size: clamp(3.9rem, 7.35vw, 7.9rem);
+  font-size: clamp(4.3rem, 8.1vw, 8.7rem);
   line-height: .87;
   letter-spacing: -.06em;
   text-shadow:
@@ -1271,7 +1271,7 @@ video,
   }
 
   .home-page .hero-sequence-word {
-    font-size: clamp(3.55rem, 13vw, 6rem);
+    font-size: clamp(3.9rem, 14.3vw, 6.6rem);
   }
 }
 
@@ -1304,7 +1304,7 @@ video,
   }
 
   .home-page .hero-sequence-word {
-    font-size: clamp(3.25rem, 15.5vw, 5.15rem);
+    font-size: clamp(3.6rem, 17vw, 5.65rem);
   }
 
   .home-page .hero-sequence-rule {

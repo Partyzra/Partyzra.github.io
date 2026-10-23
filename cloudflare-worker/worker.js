@@ -187,7 +187,7 @@ function authRequired() {
   });
 }
 
-// Dashboard v2.8: adds live Worker/D1 infrastructure health; event pipeline, IP exclusion and database schema are unchanged.
+// Dashboard v2.8.1: Recent Activity moved below traffic summary; existing V2.8 health, event pipeline, IP exclusion, and schema unchanged.
 // Display-time boundaries are America/Denver; stored timestamps stay UTC.
 const DASHBOARD_TZ = 'America/Denver';
 // One subject can have multiple alternate files. The current tracker labels these
@@ -751,7 +751,7 @@ main{max-width:1260px;margin:auto;padding:42px 28px 80px}
 @media(max-width:560px){main{padding:23px 13px 56px}.mast{margin-bottom:28px}.top{display:block}.top-note{text-align:left;margin-top:17px}.controls{align-items:flex-start}.filters{width:100%;justify-content:space-between}.filter{padding:8px 9px}.cards,.photo-metrics,.infra-metrics{gap:8px}.photo-intro,.infra-intro{display:block}.photo-intro p,.infra-intro p{margin-top:9px}.health-pill{margin-top:14px}.photo-metric{padding:15px 13px}.photo-activity-row{align-items:flex-start;flex-direction:column;gap:5px}.card{padding:17px 14px;min-height:126px}.panel{padding:16px}.chart-legend{gap:9px}.chart{gap:2px}.tick{font-size:8px}.date-cell{font-size:10px}.table-wrap{overflow-x:auto}.privacy{display:block}}
 </style></head>
 <body><main>
-  <div class="mast"><div class="brandmark" aria-hidden="true">P</div><div class="brandtext">PARTYZRA</div><span class="edition">Private / Statistics 02.8</span></div>
+  <div class="mast"><div class="brandmark" aria-hidden="true">P</div><div class="brandtext">PARTYZRA</div><span class="edition">Private / Statistics 02.8.1</span></div>
   <header class="top"><div><p class="eyebrow">Portfolio intelligence</p><h1>Behind the <em>frames.</em></h1></div>
     <div class="top-note">TIMEZONE&nbsp; <strong>Mountain · ${escapeHtml(currentZoneAbbreviation())}</strong><br>
       UPDATED&nbsp; <strong>${escapeHtml(updated)}</strong><br>Refresh to see new activity</div></header>
@@ -762,6 +762,15 @@ main{max-width:1260px;margin:auto;padding:42px 28px 80px}
     <article class="card"><span class="cardlabel">Photograph opens</span><span class="cardvalue">${number(count('photo_views'))}</span><span class="cardsub">${number(count('distinct_photos'))} distinct image files</span></article>
     <article class="card"><span class="cardlabel">Photo engagement</span><span class="cardvalue">${engagement}%</span><span class="cardsub">${number(count('photo_sessions'))} sessions opened a photo</span></article>
   </section>
+  <div class="lower activity-section">
+    <section class="panel" id="recent-activity"><div class="panelhead"><h2>Recent activity</h2><span class="hint">Mountain Time · Selected date range</span></div>
+      <div class="activity-controls">
+        <span class="activity-count">Showing ${number(firstActivity)}–${number(lastActivity)} of ${number(activity.total)} events</span>
+        <nav class="activity-sizes" aria-label="Events per page">Show ${activitySizes}</nav>
+      </div>
+      <div class="table-wrap"><table><thead><tr><th>Mountain Time</th><th>Event</th><th>Detail</th></tr></thead><tbody>${activityRows}</tbody></table></div>
+      ${activityPager}</section>
+  </div>
   <div class="infra-intro"><div><h2>Infrastructure <em>health.</em></h2><p>Live Worker + D1 checks · independent of the selected analytics range</p></div>
     <span class="health-pill ${infraHealthy ? '' : 'issue'}"><i class="health-dot" aria-hidden="true"></i>${escapeHtml(infraStatus)}</span></div>
   <section class="infra-metrics" aria-label="Infrastructure health summary">
@@ -822,15 +831,6 @@ main{max-width:1260px;margin:auto;padding:42px 28px 80px}
     <section class="panel"><div class="panelhead"><h2>Latest album selections</h2><span class="hint">Latest 10 in range · Mountain Time</span></div>${recentAlbumRows}</section>
   </div>
   <p class="album-note">Album Analytics starts collecting data after this portfolio update is published. The default “All” gallery load is already counted as a photography page view, so only deliberate tab changes count as album selections. This does not measure time spent within an album or associate individual photo opens with an album.</p>
-  <div class="lower activity-section">
-    <section class="panel" id="recent-activity"><div class="panelhead"><h2>Recent activity</h2><span class="hint">Mountain Time · Selected date range</span></div>
-      <div class="activity-controls">
-        <span class="activity-count">Showing ${number(firstActivity)}–${number(lastActivity)} of ${number(activity.total)} events</span>
-        <nav class="activity-sizes" aria-label="Events per page">Show ${activitySizes}</nav>
-      </div>
-      <div class="table-wrap"><table><thead><tr><th>Mountain Time</th><th>Event</th><th>Detail</th></tr></thead><tbody>${activityRows}</tbody></table></div>
-      ${activityPager}</section>
-  </div>
   <div class="lower">
     <section class="panel"><div class="panelhead"><h2>Traffic sources</h2><span class="hint">Referrers from page views</span></div>
       <div class="sources">${sourceRows}</div><p class="hint">Sources depend on referrer information supplied by browsers.</p></section>
@@ -842,7 +842,7 @@ main{max-width:1260px;margin:auto;padding:42px 28px 80px}
   </div>
   <footer class="privacy"><p><strong>Private by design.</strong> Counts use existing anonymous session IDs, timestamps, page/photo opens, and referrers.<br>
     No IP addresses, names, email addresses, precise location, or browser fingerprints are intentionally stored.</p>
-    <p>DATA STORED IN UTC · DISPLAYED IN AMERICA/DENVER<br>PARTYZRA ANALYTICS · V2.8</p></footer>
+    <p>DATA STORED IN UTC · DISPLAYED IN AMERICA/DENVER<br>PARTYZRA ANALYTICS · V2.8.1</p></footer>
 </main></body></html>`;
 }
 
