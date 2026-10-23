@@ -1106,7 +1106,7 @@ video,
 }
 
 
-/* V4.17.20 — Observe / Listen / Reminisce landing sequence
+/* V4.17.20 — Observe / Listen / Record landing sequence
    Slower staggered reveals, a wider hero canvas, and a stepped left-to-right
    text composition while the existing moving-photo hero remains unchanged. */
 .home-page .hero-v3 {
@@ -1161,7 +1161,7 @@ video,
   margin-left: clamp(28px, 4vw, 76px);
   animation-delay: 1.65s;
 }
-.home-page .hero-sequence-line--reminisce {
+.home-page .hero-sequence-line--record {
   margin-left: clamp(58px, 8vw, 150px);
   animation-delay: 3s;
 }
@@ -1198,7 +1198,7 @@ video,
 
 .home-page .hero-sequence-line--observe .hero-sequence-rule { animation-delay: 1.08s; }
 .home-page .hero-sequence-line--listen .hero-sequence-rule { animation-delay: 2.43s; }
-.home-page .hero-sequence-line--reminisce .hero-sequence-rule { animation-delay: 3.78s; }
+.home-page .hero-sequence-line--record .hero-sequence-rule { animation-delay: 3.78s; }
 
 .home-page .hero-sequence-discipline {
   align-self: center;
@@ -1225,7 +1225,7 @@ video,
   transform: translateX(4px);
 }
 
-.home-page .hero-sequence-line--reminisce:hover .hero-sequence-discipline > span {
+.home-page .hero-sequence-line--record:hover .hero-sequence-discipline > span {
   transform: translateY(3px);
 }
 
@@ -1261,7 +1261,7 @@ video,
     margin-left: clamp(20px, 5vw, 42px);
   }
 
-  .home-page .hero-sequence-line--reminisce {
+  .home-page .hero-sequence-line--record {
     margin-left: clamp(40px, 10vw, 84px);
   }
 
@@ -1299,7 +1299,7 @@ video,
     margin-left: 18px;
   }
 
-  .home-page .hero-sequence-line--reminisce {
+  .home-page .hero-sequence-line--record {
     margin-left: 36px;
   }
 
@@ -1329,7 +1329,7 @@ video,
 }
 
 
-/* V4.17.21 — Wider Observe / Listen / Reminisce composition
+/* V4.17.21 — Wider Observe / Listen / Record composition
    Give each thought more horizontal and vertical breathing room so the three
    lines occupy the hero as separate moments rather than one stacked title. */
 @media (min-width: 861px) {
@@ -1346,7 +1346,7 @@ video,
     margin-left: clamp(105px, 12vw, 235px);
   }
 
-  .home-page .hero-sequence-line--reminisce {
+  .home-page .hero-sequence-line--record {
     margin-left: clamp(220px, 24vw, 470px);
   }
 }
@@ -1360,7 +1360,7 @@ video,
     margin-left: clamp(54px, 9vw, 92px);
   }
 
-  .home-page .hero-sequence-line--reminisce {
+  .home-page .hero-sequence-line--record {
     margin-left: clamp(112px, 18vw, 184px);
   }
 }
@@ -1374,7 +1374,7 @@ video,
     margin-left: clamp(24px, 9vw, 48px);
   }
 
-  .home-page .hero-sequence-line--reminisce {
+  .home-page .hero-sequence-line--record {
     margin-left: clamp(48px, 18vw, 96px);
   }
 }
@@ -1410,7 +1410,7 @@ video,
   animation-delay: 1.65s, 4s;
 }
 
-.home-page .hero-sequence-line--reminisce {
+.home-page .hero-sequence-line--record {
   --hero-float-x: 5px;
   --hero-float-y: -5px;
   --hero-float-duration: 8.9s;
@@ -1462,8 +1462,8 @@ video,
     0 22px 54px rgba(0,0,0,.32);
 }
 
-/* REMINISCE — original dark red treatment */
-.home-page .hero-sequence-line--reminisce .hero-sequence-word {
+/* RECORD — original dark red treatment */
+.home-page .hero-sequence-line--record .hero-sequence-word {
   color: #a43f3f;
   text-shadow:
     0 -1px 0 rgba(255,184,178,.08),
@@ -1482,7 +1482,7 @@ video,
 .home-page .hero-sequence-line--listen .hero-sequence-discipline {
   color: rgba(240,211,155,.70);
 }
-.home-page .hero-sequence-line--reminisce .hero-sequence-discipline {
+.home-page .hero-sequence-line--record .hero-sequence-discipline {
   color: rgba(177,78,74,.76);
 }
 
@@ -1492,7 +1492,7 @@ video,
 .home-page .hero-sequence-line--listen .hero-sequence-rule {
   background: rgba(240,211,155,.28);
 }
-.home-page .hero-sequence-line--reminisce .hero-sequence-rule {
+.home-page .hero-sequence-line--record .hero-sequence-rule {
   background: rgba(164,63,63,.34);
 }
 
@@ -1526,7 +1526,7 @@ video,
   color: #e8c56e;
 }
 
-.home-page .hero-sequence-line--reminisce .hero-sequence-word {
+.home-page .hero-sequence-line--record .hero-sequence-word {
   color: #c92d2d;
 }
 
@@ -1585,9 +1585,9 @@ video,
       0 24px 58px rgba(0,0,0,.30);
   }
 
-  /* REMINISCE — deep crimson base with orange/yellow heat traveling
+  /* RECORD — deep crimson base with orange/yellow heat traveling
      through the letters, like embers pulsing beneath the surface. */
-  .home-page .hero-sequence-line--reminisce .hero-sequence-word {
+  .home-page .hero-sequence-line--record .hero-sequence-word {
     color: transparent;
     -webkit-text-fill-color: transparent;
     background:
@@ -1660,7 +1660,7 @@ video,
 .home-page .hero-sequence-line--listen .hero-sequence-discipline {
   color: rgba(238,198,103,.82);
 }
-.home-page .hero-sequence-line--reminisce .hero-sequence-discipline {
+.home-page .hero-sequence-line--record .hero-sequence-discipline {
   color: rgba(226,66,55,.82);
 }
 
@@ -1670,7 +1670,7 @@ video,
 .home-page .hero-sequence-line--listen .hero-sequence-rule {
   background: rgba(234,191,89,.38);
 }
-.home-page .hero-sequence-line--reminisce .hero-sequence-rule {
+.home-page .hero-sequence-line--record .hero-sequence-rule {
   background: rgba(218,54,45,.44);
 }
 
@@ -1761,8 +1761,8 @@ video,
   animation-delay: 1.65s, 4s;
 }
 
-/* REMINISCE — darker warm wire; the word's fire animation remains intact. */
-.home-page .hero-sequence-line--reminisce {
+/* RECORD — darker warm wire; the word's fire animation remains intact. */
+.home-page .hero-sequence-line--record {
   --cord-color: rgba(183, 72, 62, .42);
   --hang-origin-x: 47%;
   --hang-angle-a: -.66deg;
@@ -1837,7 +1837,7 @@ video,
 .home-page .hero-sequence-line--listen {
   animation-delay: 1.65s;
 }
-.home-page .hero-sequence-line--reminisce {
+.home-page .hero-sequence-line--record {
   animation-delay: 3s;
 }
 
@@ -1893,7 +1893,7 @@ video,
   animation-delay: 0s, 4s;
 }
 
-.home-page .hero-sequence-line--reminisce .hero-sequence-word {
+.home-page .hero-sequence-line--record .hero-sequence-word {
   --hang-tilt-left: -.88deg;
   --hang-tilt-right: .76deg;
   --hang-yaw-left: -1.18deg;
@@ -2000,7 +2000,7 @@ video,
   animation-delay: 1.54s;
 }
 
-.home-page .hero-sequence-line--reminisce {
+.home-page .hero-sequence-line--record {
   animation-delay: 2.84s;
 }
 
@@ -2074,8 +2074,8 @@ video,
   animation-fill-mode: none, both;
 }
 
-/* Reminisce: most expressive, with slightly more tilt / side-down character. */
-.home-page .hero-sequence-line--reminisce .hero-sequence-word {
+/* Record: most expressive, with slightly more tilt / side-down character. */
+.home-page .hero-sequence-line--record .hero-sequence-word {
   --hang-tilt-left: -1.42deg;
   --hang-tilt-right: 1.24deg;
   --hang-yaw-left: -1.36deg;
@@ -2204,7 +2204,7 @@ video,
   animation-fill-mode: none, both;
 }
 
-.home-page .hero-sequence-line--reminisce .hero-sequence-word {
+.home-page .hero-sequence-line--record .hero-sequence-word {
   animation:
     home-hero-fire-flow 6.2s ease-in-out infinite,
     home-hero-fire-glow 3.1s ease-in-out infinite,
@@ -2307,7 +2307,7 @@ video,
   animation-fill-mode: none, both;
 }
 
-.home-page .hero-sequence-line--reminisce .hero-sequence-word {
+.home-page .hero-sequence-line--record .hero-sequence-word {
   --hang-duration: 14.1s;
   --hang-tilt-left: -1.48deg;
   --hang-tilt-right: 1.34deg;
@@ -2399,7 +2399,7 @@ video,
   animation-delay: 1.38s;
 }
 
-.home-page .hero-sequence-line--reminisce {
+.home-page .hero-sequence-line--record {
   animation-delay: 2.56s;
 }
 
@@ -2443,7 +2443,7 @@ video,
   animation-delay: 0s, 1.38s;
 }
 
-.home-page .hero-sequence-line--reminisce .hero-sequence-word {
+.home-page .hero-sequence-line--record .hero-sequence-word {
   animation:
     home-hero-fire-flow 6.2s ease-in-out infinite,
     home-hero-fire-glow 3.1s ease-in-out infinite,
@@ -2507,3 +2507,68 @@ video,
     background-position: 50% 50% !important;
   }
 }
+
+/* V4.17.30 — Observe / Listen / Record
+   Keep Record's initial fiery shimmer, then settle into a much slower,
+   calmer highlight cycle so its ongoing movement matches the other words. */
+
+.home-page .hero-sequence-line--record .hero-sequence-word {
+  animation:
+    home-hero-fire-flow 6.2s ease-in-out 1 both,
+    home-hero-record-slow-flow 13.8s ease-in-out 6.2s infinite,
+    home-hero-fire-glow 3.1s ease-in-out 1 both,
+    home-hero-record-slow-glow 9.8s ease-in-out 3.1s infinite,
+    home-hero-subtle-motion 14.8s ease-in-out infinite;
+
+  animation-delay:
+    0s,
+    6.2s,
+    0s,
+    3.1s,
+    2.56s;
+
+  animation-fill-mode:
+    both,
+    none,
+    both,
+    none,
+    both;
+}
+
+@keyframes home-hero-record-slow-flow {
+  0%, 100% { background-position: 14% 50%; }
+  36% { background-position: 72% 50%; }
+  64% { background-position: 100% 50%; }
+  84% { background-position: 48% 50%; }
+}
+
+@keyframes home-hero-record-slow-glow {
+  0%, 100% {
+    text-shadow:
+      0 -1px 0 rgba(255,173,132,.08),
+      0 0 10px rgba(214,36,28,.30),
+      0 0 24px rgba(165,20,20,.22),
+      0 2px 4px rgba(0,0,0,.80),
+      0 10px 26px rgba(0,0,0,.56),
+      0 24px 58px rgba(0,0,0,.34);
+  }
+
+  50% {
+    text-shadow:
+      0 -1px 0 rgba(255,217,154,.15),
+      0 0 14px rgba(255,72,34,.48),
+      0 0 30px rgba(235,50,28,.34),
+      0 0 54px rgba(183,26,21,.20),
+      0 2px 4px rgba(0,0,0,.78),
+      0 10px 26px rgba(0,0,0,.54),
+      0 24px 58px rgba(0,0,0,.32);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page .hero-sequence-line--record .hero-sequence-word {
+    animation: none !important;
+    background-position: 50% 50% !important;
+  }
+}
+
