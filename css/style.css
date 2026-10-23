@@ -1378,3 +1378,1132 @@ video,
     margin-left: clamp(48px, 18vw, 96px);
   }
 }
+
+
+/* V4.17.22 — Original hero palette + subtle floating dimension
+   Preserve the three established colors while giving each complete pairing
+   a very slow, independent hover after its entrance reveal. */
+.home-page .hero-sequence-line {
+  --hero-float-x: 3px;
+  --hero-float-y: -6px;
+  --hero-float-duration: 9.6s;
+
+  animation:
+    home-hero-sequence-in 2.2s cubic-bezier(.22, 1, .36, 1) forwards,
+    home-hero-float var(--hero-float-duration) ease-in-out infinite;
+  will-change: transform, translate;
+}
+
+/* Start the floating movement only after each line has largely finished
+   its own fade/blur reveal. */
+.home-page .hero-sequence-line--observe {
+  --hero-float-x: 3px;
+  --hero-float-y: -6px;
+  --hero-float-duration: 9.4s;
+  animation-delay: .30s, 2.65s;
+}
+
+.home-page .hero-sequence-line--listen {
+  --hero-float-x: -4px;
+  --hero-float-y: -7px;
+  --hero-float-duration: 10.6s;
+  animation-delay: 1.65s, 4s;
+}
+
+.home-page .hero-sequence-line--reminisce {
+  --hero-float-x: 5px;
+  --hero-float-y: -5px;
+  --hero-float-duration: 8.9s;
+  animation-delay: 3s, 5.35s;
+}
+
+@keyframes home-hero-float {
+  0%, 100% {
+    translate: 0 0;
+  }
+  35% {
+    translate:
+      calc(var(--hero-float-x) * -.45)
+      calc(var(--hero-float-y) * .55);
+  }
+  65% {
+    translate:
+      var(--hero-float-x)
+      var(--hero-float-y);
+  }
+}
+
+/* Main words: original palette, now with restrained highlight/shadow depth.
+   The stroke is intentionally extremely fine — it adds edge texture rather
+   than making the type look outlined. */
+.home-page .hero-sequence-word {
+  -webkit-text-stroke: .22px rgba(255,255,255,.055);
+  text-rendering: geometricPrecision;
+}
+
+/* OBSERVE — soft gray */
+.home-page .hero-sequence-line--observe .hero-sequence-word {
+  color: rgba(214, 216, 216, .64);
+  text-shadow:
+    0 -1px 0 rgba(255,255,255,.10),
+    0 2px 3px rgba(0,0,0,.72),
+    0 9px 24px rgba(0,0,0,.52),
+    0 22px 54px rgba(0,0,0,.32);
+}
+
+/* LISTEN — original warm tan / gold */
+.home-page .hero-sequence-line--listen .hero-sequence-word {
+  color: var(--gold-2);
+  text-shadow:
+    0 -1px 0 rgba(255,247,226,.15),
+    0 0 16px rgba(226,187,114,.13),
+    0 2px 4px rgba(0,0,0,.76),
+    0 9px 24px rgba(0,0,0,.54),
+    0 22px 54px rgba(0,0,0,.32);
+}
+
+/* REMINISCE — original dark red treatment */
+.home-page .hero-sequence-line--reminisce .hero-sequence-word {
+  color: #a43f3f;
+  text-shadow:
+    0 -1px 0 rgba(255,184,178,.08),
+    0 0 14px rgba(190,72,68,.34),
+    0 0 34px rgba(138,47,47,.20),
+    0 2px 4px rgba(0,0,0,.78),
+    0 8px 22px rgba(0,0,0,.58),
+    0 20px 52px rgba(0,0,0,.36);
+}
+
+/* Carry a quieter version of each color through the connecting rule and
+   discipline label so Photography / Music / Film feel intentionally paired. */
+.home-page .hero-sequence-line--observe .hero-sequence-discipline {
+  color: rgba(214,216,216,.54);
+}
+.home-page .hero-sequence-line--listen .hero-sequence-discipline {
+  color: rgba(240,211,155,.70);
+}
+.home-page .hero-sequence-line--reminisce .hero-sequence-discipline {
+  color: rgba(177,78,74,.76);
+}
+
+.home-page .hero-sequence-line--observe .hero-sequence-rule {
+  background: rgba(214,216,216,.22);
+}
+.home-page .hero-sequence-line--listen .hero-sequence-rule {
+  background: rgba(240,211,155,.28);
+}
+.home-page .hero-sequence-line--reminisce .hero-sequence-rule {
+  background: rgba(164,63,63,.34);
+}
+
+.home-page .hero-sequence-discipline {
+  text-shadow:
+    0 2px 5px rgba(0,0,0,.72),
+    0 7px 18px rgba(0,0,0,.32);
+}
+
+/* Respect reduced-motion preferences: reveal immediately and do not float. */
+@media (prefers-reduced-motion: reduce) {
+  .home-page .hero-sequence-line {
+    opacity: 1;
+    transform: none;
+    translate: none;
+    filter: none;
+    animation: none !important;
+  }
+}
+
+
+/* V4.17.23 — Steel / shimmer / ember material pass */
+
+/* Fallback colors first, so the words remain readable in browsers that
+   do not support clipped text gradients. */
+.home-page .hero-sequence-line--observe .hero-sequence-word {
+  color: #cfd7dc;
+}
+
+.home-page .hero-sequence-line--listen .hero-sequence-word {
+  color: #e8c56e;
+}
+
+.home-page .hero-sequence-line--reminisce .hero-sequence-word {
+  color: #c92d2d;
+}
+
+/* Metallic / illuminated text treatment where supported. */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  /* OBSERVE — brighter, cooler steel with a faint brushed-metal shift. */
+  .home-page .hero-sequence-line--observe .hero-sequence-word {
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    background:
+      linear-gradient(
+        105deg,
+        #8f9aa1 0%,
+        #dbe2e6 22%,
+        #f4f7f8 38%,
+        #aab5bc 53%,
+        #e5ebee 71%,
+        #9aa5ac 100%
+      );
+    background-size: 180% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: home-hero-steel-drift 10s ease-in-out infinite;
+    text-shadow:
+      0 -1px 0 rgba(255,255,255,.18),
+      0 2px 4px rgba(0,0,0,.76),
+      0 10px 26px rgba(0,0,0,.52),
+      0 24px 58px rgba(0,0,0,.30);
+  }
+
+  /* LISTEN — warm metallic gold with a restrained shimmer passing through. */
+  .home-page .hero-sequence-line--listen .hero-sequence-word {
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    background:
+      linear-gradient(
+        110deg,
+        #8c5f22 0%,
+        #c9953d 20%,
+        #f1cf78 37%,
+        #fff0b7 47%,
+        #d7a94d 57%,
+        #f4d98a 74%,
+        #9b6b28 100%
+      );
+    background-size: 240% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: home-hero-gold-shimmer 7.5s ease-in-out infinite;
+    text-shadow:
+      0 -1px 0 rgba(255,246,207,.18),
+      0 0 14px rgba(238,190,92,.20),
+      0 0 30px rgba(208,145,49,.12),
+      0 2px 4px rgba(0,0,0,.76),
+      0 10px 26px rgba(0,0,0,.50),
+      0 24px 58px rgba(0,0,0,.30);
+  }
+
+  /* REMINISCE — deep crimson base with orange/yellow heat traveling
+     through the letters, like embers pulsing beneath the surface. */
+  .home-page .hero-sequence-line--reminisce .hero-sequence-word {
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    background:
+      linear-gradient(
+        105deg,
+        #5b070a 0%,
+        #8f0f13 14%,
+        #c51d22 29%,
+        #ff3a21 40%,
+        #ff8b2e 47%,
+        #ffd06a 50%,
+        #ff5a24 54%,
+        #c7191f 66%,
+        #8b0d12 82%,
+        #4a0508 100%
+      );
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation:
+      home-hero-fire-flow 6.2s ease-in-out infinite,
+      home-hero-fire-glow 3.1s ease-in-out infinite;
+  }
+}
+
+@keyframes home-hero-steel-drift {
+  0%, 100% { background-position: 10% 50%; }
+  50%      { background-position: 90% 50%; }
+}
+
+@keyframes home-hero-gold-shimmer {
+  0%, 18%  { background-position: 0% 50%; }
+  52%      { background-position: 100% 50%; }
+  82%,100% { background-position: 28% 50%; }
+}
+
+@keyframes home-hero-fire-flow {
+  0%       { background-position: 0% 50%; }
+  45%      { background-position: 88% 50%; }
+  70%      { background-position: 100% 50%; }
+  100%     { background-position: 14% 50%; }
+}
+
+@keyframes home-hero-fire-glow {
+  0%, 100% {
+    text-shadow:
+      0 -1px 0 rgba(255,173,132,.08),
+      0 0 10px rgba(214,36,28,.30),
+      0 0 24px rgba(165,20,20,.22),
+      0 2px 4px rgba(0,0,0,.80),
+      0 10px 26px rgba(0,0,0,.56),
+      0 24px 58px rgba(0,0,0,.34);
+  }
+  50% {
+    text-shadow:
+      0 -1px 0 rgba(255,217,154,.15),
+      0 0 14px rgba(255,72,34,.48),
+      0 0 30px rgba(235,50,28,.34),
+      0 0 54px rgba(183,26,21,.20),
+      0 2px 4px rgba(0,0,0,.78),
+      0 10px 26px rgba(0,0,0,.54),
+      0 24px 58px rgba(0,0,0,.32);
+  }
+}
+
+/* Pairing accents follow the stronger material palette. */
+.home-page .hero-sequence-line--observe .hero-sequence-discipline {
+  color: rgba(208,220,226,.66);
+}
+.home-page .hero-sequence-line--listen .hero-sequence-discipline {
+  color: rgba(238,198,103,.82);
+}
+.home-page .hero-sequence-line--reminisce .hero-sequence-discipline {
+  color: rgba(226,66,55,.82);
+}
+
+.home-page .hero-sequence-line--observe .hero-sequence-rule {
+  background: rgba(205,219,226,.30);
+}
+.home-page .hero-sequence-line--listen .hero-sequence-rule {
+  background: rgba(234,191,89,.38);
+}
+.home-page .hero-sequence-line--reminisce .hero-sequence-rule {
+  background: rgba(218,54,45,.44);
+}
+
+/* Reduced-motion users keep the material/color treatment, but without
+   shimmer, fire-flow, pulsing glow, or floating movement. */
+@media (prefers-reduced-motion: reduce) {
+  .home-page .hero-sequence-word {
+    animation: none !important;
+    background-position: 50% 50% !important;
+  }
+}
+
+
+/* V4.17.24 — Suspended / dangling hero typography
+   Replace the previous free-floating drift with a very slow pendulum sway.
+   Each phrase hangs from two subtle cords above the lettering. */
+
+.home-page .hero-sequence-line {
+  --cord-height: clamp(72px, 10vh, 118px);
+  --cord-color: rgba(220, 224, 226, .34);
+  --hang-origin-x: 42%;
+  --hang-angle-a: -.55deg;
+  --hang-angle-b: .72deg;
+  --hang-duration: 9.8s;
+
+  position: relative;
+  rotate: 0deg;
+  transform-origin: var(--hang-origin-x) calc(0px - var(--cord-height));
+
+  /* Keep the existing slow entrance, but replace the old hover/floating motion. */
+  animation:
+    home-hero-sequence-in 2.2s cubic-bezier(.22, 1, .36, 1) forwards,
+    home-hero-dangle var(--hang-duration) ease-in-out infinite;
+
+  will-change: transform, rotate, opacity, filter;
+}
+
+/* Two fine suspension cords. They fade into the background toward the top,
+   so they feel like thread/wire instead of strong graphic lines. */
+.home-page .hero-sequence-line::before,
+.home-page .hero-sequence-line::after {
+  content: "";
+  position: absolute;
+  bottom: calc(100% + 7px);
+  width: 1px;
+  height: var(--cord-height);
+  pointer-events: none;
+  opacity: .72;
+  background:
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      color-mix(in srgb, var(--cord-color) 30%, transparent) 14%,
+      var(--cord-color) 48%,
+      color-mix(in srgb, var(--cord-color) 86%, white 14%) 100%
+    );
+  box-shadow:
+    0 0 1px rgba(255,255,255,.10),
+    0 0 5px rgba(0,0,0,.20);
+}
+
+.home-page .hero-sequence-line::before {
+  left: 19%;
+}
+
+.home-page .hero-sequence-line::after {
+  left: 61%;
+  opacity: .52;
+}
+
+/* OBSERVE — cool steel wire, very restrained sway. */
+.home-page .hero-sequence-line--observe {
+  --cord-color: rgba(202, 215, 222, .38);
+  --hang-origin-x: 40%;
+  --hang-angle-a: -.48deg;
+  --hang-angle-b: .62deg;
+  --hang-duration: 10.8s;
+  animation-delay: .30s, 2.65s;
+}
+
+/* LISTEN — a slightly warmer thread and a different pendulum rhythm. */
+.home-page .hero-sequence-line--listen {
+  --cord-color: rgba(232, 198, 112, .40);
+  --hang-origin-x: 45%;
+  --hang-angle-a: .56deg;
+  --hang-angle-b: -.70deg;
+  --hang-duration: 12.2s;
+  animation-delay: 1.65s, 4s;
+}
+
+/* REMINISCE — darker warm wire; the word's fire animation remains intact. */
+.home-page .hero-sequence-line--reminisce {
+  --cord-color: rgba(183, 72, 62, .42);
+  --hang-origin-x: 47%;
+  --hang-angle-a: -.66deg;
+  --hang-angle-b: .82deg;
+  --hang-duration: 10.1s;
+  animation-delay: 3s, 5.35s;
+}
+
+/* Slow pendulum movement: primarily rotation, with no free-space drifting. */
+@keyframes home-hero-dangle {
+  0%, 100% {
+    rotate: var(--hang-angle-a);
+  }
+  46% {
+    rotate: var(--hang-angle-b);
+  }
+  58% {
+    rotate: calc(var(--hang-angle-b) * .70);
+  }
+}
+
+/* Slightly shorter cords on smaller screens so the suspension still fits
+   without crowding the mobile header. */
+@media (max-width: 860px) {
+  .home-page .hero-sequence-line {
+    --cord-height: clamp(54px, 7.5vh, 82px);
+  }
+}
+
+@media (max-width: 620px) {
+  .home-page .hero-sequence-line {
+    --cord-height: clamp(42px, 6vh, 62px);
+  }
+
+  .home-page .hero-sequence-line::before {
+    left: 24%;
+  }
+
+  .home-page .hero-sequence-line::after {
+    left: 68%;
+  }
+}
+
+/* Reduced motion: keep the cords/material treatment, but stop the swinging. */
+@media (prefers-reduced-motion: reduce) {
+  .home-page .hero-sequence-line {
+    opacity: 1;
+    transform: none;
+    rotate: 0deg;
+    filter: none;
+    animation: none !important;
+  }
+}
+
+
+/* V4.17.25 — Invisible single-point suspension
+   No visible cord. The large word itself behaves as though it hangs from one
+   unseen point directly above its center. The supporting discipline text
+   remains calmer, which keeps the motion nuanced and cinematic. */
+
+/* Stop swaying the complete row from V6. Keep only the slow entrance reveal. */
+.home-page .hero-sequence-line {
+  rotate: 0deg;
+  transform-origin: center center;
+  animation: home-hero-sequence-in 2.2s cubic-bezier(.22, 1, .36, 1) forwards;
+  will-change: transform, opacity, filter;
+}
+
+.home-page .hero-sequence-line--observe {
+  animation-delay: .30s;
+}
+.home-page .hero-sequence-line--listen {
+  animation-delay: 1.65s;
+}
+.home-page .hero-sequence-line--reminisce {
+  animation-delay: 3s;
+}
+
+/* The "string" is purely implied now. Nothing is drawn on screen. */
+.home-page .hero-sequence-line::before,
+.home-page .hero-sequence-line::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* One invisible suspension point above the exact middle of each main word. */
+.home-page .hero-sequence-word {
+  --hang-point-distance: clamp(52px, 7vh, 88px);
+  --hang-tilt-left: -.62deg;
+  --hang-tilt-right: .72deg;
+  --hang-yaw-left: -1.05deg;
+  --hang-yaw-right: .92deg;
+  --hang-lift: -1.5px;
+  --hang-duration: 12s;
+
+  transform-origin: 50% calc(var(--hang-point-distance) * -1);
+  transform-style: preserve-3d;
+  will-change: transform, background-position, text-shadow;
+}
+
+/* Each word has slightly different "weight" and timing so the movement feels
+   found/analog rather than perfectly looped. */
+.home-page .hero-sequence-line--observe .hero-sequence-word {
+  --hang-tilt-left: -.48deg;
+  --hang-tilt-right: .58deg;
+  --hang-yaw-left: -.82deg;
+  --hang-yaw-right: .74deg;
+  --hang-lift: -1px;
+  --hang-duration: 13.4s;
+
+  animation:
+    home-hero-steel-drift 10s ease-in-out infinite,
+    home-hero-single-point-hang var(--hang-duration) cubic-bezier(.42, 0, .58, 1) infinite;
+  animation-delay: 0s, 2.65s;
+}
+
+.home-page .hero-sequence-line--listen .hero-sequence-word {
+  --hang-tilt-left: -.72deg;
+  --hang-tilt-right: .86deg;
+  --hang-yaw-left: -1.12deg;
+  --hang-yaw-right: 1.02deg;
+  --hang-lift: -1.8px;
+  --hang-duration: 14.8s;
+
+  animation:
+    home-hero-gold-shimmer 7.5s ease-in-out infinite,
+    home-hero-single-point-hang var(--hang-duration) cubic-bezier(.44, .02, .56, .98) infinite;
+  animation-delay: 0s, 4s;
+}
+
+.home-page .hero-sequence-line--reminisce .hero-sequence-word {
+  --hang-tilt-left: -.88deg;
+  --hang-tilt-right: .76deg;
+  --hang-yaw-left: -1.18deg;
+  --hang-yaw-right: 1.28deg;
+  --hang-lift: -2px;
+  --hang-duration: 12.7s;
+
+  animation:
+    home-hero-fire-flow 6.2s ease-in-out infinite,
+    home-hero-fire-glow 3.1s ease-in-out infinite,
+    home-hero-single-point-hang var(--hang-duration) cubic-bezier(.45, .01, .55, .99) infinite;
+  animation-delay: 0s, 0s, 5.35s;
+}
+
+/* Asymmetrical, slow movement:
+   - Z rotation lets either side dip.
+   - tiny Y rotation gives a faint right/left "turn" in space.
+   - the uneven intermediate points make the loop feel less mechanical. */
+@keyframes home-hero-single-point-hang {
+  0%, 100% {
+    transform:
+      perspective(1100px)
+      rotateY(var(--hang-yaw-left))
+      rotateZ(var(--hang-tilt-left))
+      translateY(0);
+  }
+
+  27% {
+    transform:
+      perspective(1100px)
+      rotateY(calc(var(--hang-yaw-left) * -.28))
+      rotateZ(calc(var(--hang-tilt-left) * .22))
+      translateY(calc(var(--hang-lift) * .35));
+  }
+
+  54% {
+    transform:
+      perspective(1100px)
+      rotateY(var(--hang-yaw-right))
+      rotateZ(var(--hang-tilt-right))
+      translateY(var(--hang-lift));
+  }
+
+  78% {
+    transform:
+      perspective(1100px)
+      rotateY(calc(var(--hang-yaw-right) * -.18))
+      rotateZ(calc(var(--hang-tilt-right) * .30))
+      translateY(calc(var(--hang-lift) * .22));
+  }
+}
+
+/* Slightly closer invisible pivot on smaller screens. */
+@media (max-width: 860px) {
+  .home-page .hero-sequence-word {
+    --hang-point-distance: clamp(40px, 5.5vh, 62px);
+  }
+}
+
+@media (max-width: 620px) {
+  .home-page .hero-sequence-word {
+    --hang-point-distance: clamp(30px, 4.5vh, 48px);
+  }
+}
+
+/* Reduced motion preserves all colors/materials but removes hanging motion. */
+@media (prefers-reduced-motion: reduce) {
+  .home-page .hero-sequence-line {
+    opacity: 1;
+    transform: none;
+    rotate: 0deg;
+    filter: none;
+    animation: none !important;
+  }
+
+  .home-page .hero-sequence-word {
+    transform: none !important;
+    animation: none !important;
+    background-position: 50% 50% !important;
+  }
+}
+
+
+/* V4.17.26 — Gentle drop-in + seamless dangling
+   The whole phrase now drops from above and fades into view, then the large
+   word settles into a slightly more expressive hanging sway. The visible
+   strings remain absent; only the motion implies suspension. */
+
+/* Replace the previous entrance animation on the line with a softer vertical
+   drop from above. No snap, no hook-in-place motion. */
+.home-page .hero-sequence-line {
+  opacity: 0;
+  transform: translate3d(0, -84px, 0);
+  filter: blur(7px);
+  animation: home-hero-hang-drop 2.45s cubic-bezier(.18, .82, .30, 1) forwards;
+  will-change: transform, opacity, filter;
+}
+
+.home-page .hero-sequence-line--observe {
+  animation-delay: .24s;
+}
+
+.home-page .hero-sequence-line--listen {
+  animation-delay: 1.54s;
+}
+
+.home-page .hero-sequence-line--reminisce {
+  animation-delay: 2.84s;
+}
+
+@keyframes home-hero-hang-drop {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -96px, 0);
+    filter: blur(9px);
+  }
+  30% {
+    opacity: .42;
+  }
+  72% {
+    opacity: 1;
+    transform: translate3d(0, -10px, 0);
+    filter: blur(1px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+}
+
+/* Make the actual hanging motion a little more expressive and more seamless.
+   Start from a neutral resting position so the swing eases in instead of
+   snapping on after the fade/drop completes. */
+.home-page .hero-sequence-word {
+  --hang-point-distance: clamp(54px, 7.2vh, 92px);
+  --hang-tilt-left: -1.15deg;
+  --hang-tilt-right: 1.28deg;
+  --hang-yaw-left: -1.18deg;
+  --hang-yaw-right: 1.08deg;
+  --hang-lift: -2.1px;
+  --hang-duration: 14s;
+
+  transform-origin: 50% calc(var(--hang-point-distance) * -1);
+  transform-style: preserve-3d;
+  will-change: transform, background-position, text-shadow;
+}
+
+/* Observe: a bit heavier and slower, very memory-like. */
+.home-page .hero-sequence-line--observe .hero-sequence-word {
+  --hang-tilt-left: -0.92deg;
+  --hang-tilt-right: 1.06deg;
+  --hang-yaw-left: -0.90deg;
+  --hang-yaw-right: 0.84deg;
+  --hang-lift: -1.4px;
+  --hang-duration: 15.8s;
+
+  animation:
+    home-hero-steel-drift 10s ease-in-out infinite,
+    home-hero-dangle-sway var(--hang-duration) cubic-bezier(.42, 0, .58, 1) infinite;
+  animation-delay: 0s, 2.62s;
+  animation-fill-mode: none, both;
+}
+
+/* Listen: slightly livelier sway, still soft. */
+.home-page .hero-sequence-line--listen .hero-sequence-word {
+  --hang-tilt-left: -1.22deg;
+  --hang-tilt-right: 1.38deg;
+  --hang-yaw-left: -1.28deg;
+  --hang-yaw-right: 1.16deg;
+  --hang-lift: -2px;
+  --hang-duration: 14.4s;
+
+  animation:
+    home-hero-gold-shimmer 7.5s ease-in-out infinite,
+    home-hero-dangle-sway var(--hang-duration) cubic-bezier(.44, .02, .56, .98) infinite;
+  animation-delay: 0s, 3.92s;
+  animation-fill-mode: none, both;
+}
+
+/* Reminisce: most expressive, with slightly more tilt / side-down character. */
+.home-page .hero-sequence-line--reminisce .hero-sequence-word {
+  --hang-tilt-left: -1.42deg;
+  --hang-tilt-right: 1.24deg;
+  --hang-yaw-left: -1.36deg;
+  --hang-yaw-right: 1.44deg;
+  --hang-lift: -2.5px;
+  --hang-duration: 13.2s;
+
+  animation:
+    home-hero-fire-flow 6.2s ease-in-out infinite,
+    home-hero-fire-glow 3.1s ease-in-out infinite,
+    home-hero-dangle-sway var(--hang-duration) cubic-bezier(.45, .01, .55, .99) infinite;
+  animation-delay: 0s, 0s, 5.22s;
+  animation-fill-mode: none, none, both;
+}
+
+/* Seamless hanging motion:
+   - 0% starts at rest
+   - it stays near rest briefly, then slowly begins to tilt
+   - it drifts across, overshoots lightly, and returns toward rest
+   - 100% returns to rest, so the loop does not jerk */
+@keyframes home-hero-dangle-sway {
+  0%, 14%, 100% {
+    transform:
+      perspective(1100px)
+      rotateY(0deg)
+      rotateZ(0deg)
+      translateY(0);
+  }
+
+  34% {
+    transform:
+      perspective(1100px)
+      rotateY(var(--hang-yaw-left))
+      rotateZ(var(--hang-tilt-left))
+      translateY(calc(var(--hang-lift) * .42));
+  }
+
+  58% {
+    transform:
+      perspective(1100px)
+      rotateY(var(--hang-yaw-right))
+      rotateZ(var(--hang-tilt-right))
+      translateY(var(--hang-lift));
+  }
+
+  76% {
+    transform:
+      perspective(1100px)
+      rotateY(calc(var(--hang-yaw-right) * -.28))
+      rotateZ(calc(var(--hang-tilt-right) * -.18))
+      translateY(calc(var(--hang-lift) * .22));
+  }
+
+  90% {
+    transform:
+      perspective(1100px)
+      rotateY(calc(var(--hang-yaw-left) * .20))
+      rotateZ(calc(var(--hang-tilt-left) * .14))
+      translateY(calc(var(--hang-lift) * .12));
+  }
+}
+
+@media (max-width: 860px) {
+  .home-page .hero-sequence-line {
+    transform: translate3d(0, -66px, 0);
+  }
+
+  .home-page .hero-sequence-word {
+    --hang-point-distance: clamp(42px, 5.8vh, 66px);
+  }
+}
+
+@media (max-width: 620px) {
+  .home-page .hero-sequence-line {
+    transform: translate3d(0, -52px, 0);
+    filter: blur(5px);
+  }
+
+  .home-page .hero-sequence-word {
+    --hang-point-distance: clamp(32px, 4.8vh, 50px);
+  }
+}
+
+/* Reduced motion: preserve the look, remove drop and dangling movement. */
+@media (prefers-reduced-motion: reduce) {
+  .home-page .hero-sequence-line {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    animation: none !important;
+  }
+
+  .home-page .hero-sequence-word {
+    transform: none !important;
+    animation: none !important;
+    background-position: 50% 50% !important;
+  }
+}
+
+
+/* V4.17.27 — Remove secondary post-drop shift
+   The entrance still drops from above, but the hanging motion now takes over
+   without adding any vertical translation or visible second "drop". */
+
+.home-page .hero-sequence-word {
+  /* Keep the implied suspension point, but reduce the lever slightly so the
+     first rotation does not pull the word downward along a noticeable arc. */
+  --hang-point-distance: clamp(42px, 5.6vh, 72px);
+}
+
+/* Align the start of each dangle AFTER its parent line has fully completed
+   the drop, with a brief resting beat before the first tilt begins. */
+.home-page .hero-sequence-line--observe .hero-sequence-word {
+  animation:
+    home-hero-steel-drift 10s ease-in-out infinite,
+    home-hero-dangle-sway-v9 var(--hang-duration) ease-in-out infinite;
+  animation-delay: 0s, 3.02s;
+  animation-fill-mode: none, both;
+}
+
+.home-page .hero-sequence-line--listen .hero-sequence-word {
+  animation:
+    home-hero-gold-shimmer 7.5s ease-in-out infinite,
+    home-hero-dangle-sway-v9 var(--hang-duration) ease-in-out infinite;
+  animation-delay: 0s, 4.32s;
+  animation-fill-mode: none, both;
+}
+
+.home-page .hero-sequence-line--reminisce .hero-sequence-word {
+  animation:
+    home-hero-fire-flow 6.2s ease-in-out infinite,
+    home-hero-fire-glow 3.1s ease-in-out infinite,
+    home-hero-dangle-sway-v9 var(--hang-duration) ease-in-out infinite;
+  animation-delay: 0s, 0s, 5.62s;
+  animation-fill-mode: none, none, both;
+}
+
+/* No translateY at any point.  The word settles once and stays anchored there;
+   only rotation changes, so there is no second downward movement. */
+@keyframes home-hero-dangle-sway-v9 {
+  0%, 18%, 100% {
+    transform:
+      perspective(1100px)
+      rotateY(0deg)
+      rotateZ(0deg);
+  }
+
+  37% {
+    transform:
+      perspective(1100px)
+      rotateY(var(--hang-yaw-left))
+      rotateZ(var(--hang-tilt-left));
+  }
+
+  61% {
+    transform:
+      perspective(1100px)
+      rotateY(var(--hang-yaw-right))
+      rotateZ(var(--hang-tilt-right));
+  }
+
+  79% {
+    transform:
+      perspective(1100px)
+      rotateY(calc(var(--hang-yaw-right) * -.24))
+      rotateZ(calc(var(--hang-tilt-right) * -.16));
+  }
+
+  91% {
+    transform:
+      perspective(1100px)
+      rotateY(calc(var(--hang-yaw-left) * .14))
+      rotateZ(calc(var(--hang-tilt-left) * .10));
+  }
+}
+
+@media (max-width: 860px) {
+  .home-page .hero-sequence-word {
+    --hang-point-distance: clamp(34px, 4.8vh, 54px);
+  }
+}
+
+@media (max-width: 620px) {
+  .home-page .hero-sequence-word {
+    --hang-point-distance: clamp(26px, 4vh, 42px);
+  }
+}
+
+
+/* V4.17.28 — Remove the animation handoff entirely
+   The dangling motion now begins at the SAME TIME as the drop.
+   There is no second animation activation after the word has landed. */
+
+/* A closer implied pivot keeps the movement suspended without producing
+   a noticeable vertical arc. Use pure 2D rotation to avoid the tiny
+   perspective/compositing shift that could appear when 3D transforms began. */
+.home-page .hero-sequence-word {
+  --hang-point-distance: clamp(24px, 3.4vh, 44px);
+  transform-origin: 50% calc(var(--hang-point-distance) * -1);
+  transform: rotate(0deg);
+  transform-style: flat;
+  will-change: transform, background-position, text-shadow;
+}
+
+/* Start the sway with the phrase's drop — NOT after it.
+   By the time the parent finishes descending, the word is already inside the
+   same continuous swing cycle, so there is no post-landing jump or handoff. */
+.home-page .hero-sequence-line--observe .hero-sequence-word {
+  --hang-duration: 16.8s;
+  --hang-tilt-left: -1.05deg;
+  --hang-tilt-right: 1.16deg;
+
+  animation:
+    home-hero-steel-drift 10s ease-in-out infinite,
+    home-hero-continuous-dangle var(--hang-duration) ease-in-out infinite;
+  animation-delay: 0s, .24s;
+  animation-fill-mode: none, both;
+}
+
+.home-page .hero-sequence-line--listen .hero-sequence-word {
+  --hang-duration: 15.2s;
+  --hang-tilt-left: -1.30deg;
+  --hang-tilt-right: 1.42deg;
+
+  animation:
+    home-hero-gold-shimmer 7.5s ease-in-out infinite,
+    home-hero-continuous-dangle var(--hang-duration) ease-in-out infinite;
+  animation-delay: 0s, 1.54s;
+  animation-fill-mode: none, both;
+}
+
+.home-page .hero-sequence-line--reminisce .hero-sequence-word {
+  --hang-duration: 14.1s;
+  --hang-tilt-left: -1.48deg;
+  --hang-tilt-right: 1.34deg;
+
+  animation:
+    home-hero-fire-flow 6.2s ease-in-out infinite,
+    home-hero-fire-glow 3.1s ease-in-out infinite,
+    home-hero-continuous-dangle var(--hang-duration) ease-in-out infinite;
+  animation-delay: 0s, 0s, 2.84s;
+  animation-fill-mode: none, none, both;
+}
+
+/* Pure rotation around the implied single suspension point.
+   0% and 100% are identical, so the loop itself is seamless too. */
+@keyframes home-hero-continuous-dangle {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+
+  24% {
+    transform: rotate(var(--hang-tilt-left));
+  }
+
+  49% {
+    transform: rotate(calc(var(--hang-tilt-left) * -.18));
+  }
+
+  68% {
+    transform: rotate(var(--hang-tilt-right));
+  }
+
+  84% {
+    transform: rotate(calc(var(--hang-tilt-right) * -.24));
+  }
+
+  94% {
+    transform: rotate(calc(var(--hang-tilt-left) * .10));
+  }
+}
+
+@media (max-width: 860px) {
+  .home-page .hero-sequence-word {
+    --hang-point-distance: clamp(20px, 2.8vh, 34px);
+  }
+}
+
+@media (max-width: 620px) {
+  .home-page .hero-sequence-word {
+    --hang-point-distance: clamp(16px, 2.4vh, 28px);
+  }
+}
+
+/* Reduced motion keeps the material treatment but removes both entrance
+   and dangling movement. */
+@media (prefers-reduced-motion: reduce) {
+  .home-page .hero-sequence-line {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    animation: none !important;
+  }
+
+  .home-page .hero-sequence-word {
+    transform: none !important;
+    animation: none !important;
+    background-position: 50% 50% !important;
+  }
+}
+
+
+/* V4.17.29 — Left-to-right sequential reveal
+   Replace the hanging/drop entrance with a calm horizontal fade-in.
+   Each phrase arrives one after another, then keeps only a very subtle motion. */
+
+.home-page .hero-sequence-line {
+  opacity: 0;
+  transform: translate3d(-58px, 0, 0);
+  filter: blur(5px);
+  rotate: 0deg;
+  animation: home-hero-left-reveal 2.15s cubic-bezier(.20, .78, .28, 1) forwards;
+  will-change: transform, opacity, filter;
+}
+
+.home-page .hero-sequence-line--observe {
+  animation-delay: .20s;
+}
+
+.home-page .hero-sequence-line--listen {
+  animation-delay: 1.38s;
+}
+
+.home-page .hero-sequence-line--reminisce {
+  animation-delay: 2.56s;
+}
+
+@keyframes home-hero-left-reveal {
+  0% {
+    opacity: 0;
+    transform: translate3d(-58px, 0, 0);
+    filter: blur(5px);
+  }
+
+  42% {
+    opacity: .55;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+}
+
+/* Remove the former implied hanging/suspension behavior. */
+.home-page .hero-sequence-word {
+  transform-origin: 50% 55%;
+  transform-style: flat;
+}
+
+/* Subtle after-motion only: tiny rotation and lateral breathing.
+   It starts immediately, so there is no visible "handoff" after the reveal. */
+.home-page .hero-sequence-line--observe .hero-sequence-word {
+  animation:
+    home-hero-steel-drift 10s ease-in-out infinite,
+    home-hero-subtle-motion 13.8s ease-in-out infinite;
+  animation-delay: 0s, .20s;
+}
+
+.home-page .hero-sequence-line--listen .hero-sequence-word {
+  animation:
+    home-hero-gold-shimmer 7.5s ease-in-out infinite,
+    home-hero-subtle-motion 15.1s ease-in-out infinite;
+  animation-delay: 0s, 1.38s;
+}
+
+.home-page .hero-sequence-line--reminisce .hero-sequence-word {
+  animation:
+    home-hero-fire-flow 6.2s ease-in-out infinite,
+    home-hero-fire-glow 3.1s ease-in-out infinite,
+    home-hero-subtle-motion 14.3s ease-in-out infinite;
+  animation-delay: 0s, 0s, 2.56s;
+}
+
+@keyframes home-hero-subtle-motion {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  32% {
+    transform: translate3d(2px, -1px, 0) rotate(.28deg);
+  }
+
+  62% {
+    transform: translate3d(-1.5px, 1px, 0) rotate(-.24deg);
+  }
+
+  82% {
+    transform: translate3d(1px, 0, 0) rotate(.10deg);
+  }
+}
+
+@media (max-width: 620px) {
+  .home-page .hero-sequence-line {
+    transform: translate3d(-36px, 0, 0);
+  }
+
+  @keyframes home-hero-left-reveal {
+    0% {
+      opacity: 0;
+      transform: translate3d(-36px, 0, 0);
+      filter: blur(4px);
+    }
+
+    42% {
+      opacity: .55;
+    }
+
+    100% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      filter: blur(0);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page .hero-sequence-line {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    animation: none !important;
+  }
+
+  .home-page .hero-sequence-word {
+    transform: none !important;
+    animation: none !important;
+    background-position: 50% 50% !important;
+  }
+}
