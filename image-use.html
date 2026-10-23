@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Image use and licensing information for Ryan's photography and creative work.">
+  <meta name="theme-color" content="#0a0b0d">
+  <title>Image Use — Ryan</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .usage-page{background:#0a0b0d;color:#eceae5;min-height:100vh}
+    .usage-shell{width:min(920px,calc(100% - 40px));margin:0 auto;padding:clamp(42px,8vw,86px) 0 72px}
+    .usage-top{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:22px;border-bottom:1px solid rgba(255,255,255,.12)}
+    .usage-brand{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:#e8e5de}
+    .usage-back{font-size:.72rem;letter-spacing:.08em;color:#92979e}
+    .usage-back:hover{color:#f0eee9}
+    .usage-hero{padding:clamp(58px,10vw,118px) 0 48px;border-bottom:1px solid rgba(255,255,255,.12)}
+    .usage-kicker{margin:0 0 14px;font-size:.67rem;letter-spacing:.18em;text-transform:uppercase;color:#9b7a49}
+    .usage-hero h1{margin:0;font-family:"Libre Baskerville",Georgia,serif;font-size:clamp(3rem,8vw,6.6rem);font-weight:400;line-height:.94;letter-spacing:-.055em}
+    .usage-hero h1 em{font-weight:400;color:#c7a66f}
+    .usage-intro{max-width:650px;margin:32px 0 0;color:#aaa9a4;font-size:clamp(1rem,1.5vw,1.12rem);line-height:1.75}
+    .usage-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(34px,8vw,90px);padding:50px 0 36px}
+    .usage-block{padding-top:18px;border-top:1px solid rgba(255,255,255,.1)}
+    .usage-block h2{margin:0 0 16px;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;font-weight:600}
+    .usage-block p{margin:0 0 15px;color:#969a9e;line-height:1.75}
+    .usage-block strong{color:#e8e5df;font-weight:500}
+    .usage-contact{margin-top:8px;padding:26px 0;border-top:1px solid rgba(255,255,255,.12);border-bottom:1px solid rgba(255,255,255,.12);display:flex;justify-content:space-between;gap:30px;align-items:center}
+    .usage-contact p{margin:0;color:#999da2}
+    .usage-contact a{color:#e8e5df;border-bottom:1px solid #686b6e;padding-bottom:3px}
+    .usage-contact a:hover{border-color:#e8e5df}
+    .usage-note{margin:28px 0 0;font-size:.72rem;line-height:1.7;color:#686d73}
+    @media(max-width:680px){.usage-grid{grid-template-columns:1fr}.usage-contact{display:block}.usage-contact a{display:inline-block;margin-top:14px}.usage-top{align-items:flex-start}}
+  </style>
+</head>
+<body class="usage-page">
+  <main class="usage-shell">
+    <div class="usage-top">
+      <span class="usage-brand">RYAN / PORTFOLIO</span>
+      <a class="usage-back" href="index.html">Return to portfolio ↗</a>
+    </div>
+
+    <section class="usage-hero">
+      <p class="usage-kicker">Image use / Licensing</p>
+      <h1>Share the link.<br><em>Ask before use.</em></h1>
+      <p class="usage-intro">You are welcome to share links to this site or directly to individual photographs. For uses that reproduce the work itself, please ask first.</p>
+    </section>
+
+    <section class="usage-grid" aria-label="Usage guidelines">
+      <div class="usage-block">
+        <h2>Photography</h2>
+        <p><strong>Direct links are welcome.</strong> Sharing a page or an individual photograph by its Partyzra link is encouraged.</p>
+        <p>Please request permission before copying, reposting, publishing, printing, distributing, modifying, or using photographs in commercial or editorial work.</p>
+      </div>
+
+      <div class="usage-block">
+        <h2>Film / Music / Other work</h2>
+        <p>Original film, music, and other creative work by Ryan is not licensed for reuse unless permission is given in writing or a project states otherwise.</p>
+        <p>For commissions, editorial use, licensing, prints, collaborations, or another use you have in mind, get in touch.</p>
+      </div>
+    </section>
+
+    <div class="usage-contact">
+      <p>Permissions & licensing</p>
+      <a href="mailto:12rparker@gmail.com">12rparker@gmail.com</a>
+    </div>
+
+    <p class="usage-note">Unless otherwise noted, original work by Ryan displayed on this site is © <span data-year></span> Ryan. All rights reserved. Project-specific credits and third-party rights remain with their respective owners.</p>
+  </main>
+  <script>document.querySelectorAll('[data-year]').forEach(function(el){el.textContent=new Date().getFullYear();});</script>
+</body>
+</html>

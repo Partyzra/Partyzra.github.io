@@ -343,6 +343,8 @@ button { color: inherit; }
 
 .site-footer { min-height: 104px; padding: 30px clamp(20px,4vw,64px); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 20px; border-top: 1px solid var(--line); color: #747982; font-size: .72rem; letter-spacing: .06em; }
 .site-footer .footer-center { text-align: center; }
+.site-footer .footer-left { justify-self: start; color: #747982; white-space: nowrap; }
+.site-footer .footer-left a { justify-self: auto; color: #8d9299; }
 .site-footer a { justify-self: end; color: #a5a9af; transition: color .2s ease; }
 .site-footer a:hover { color: var(--text); }
 
@@ -527,6 +529,7 @@ button { color: inherit; }
   .film-motion-intro { width: 100%; }
   .film-motion-video { object-position: center 52%; }
   .site-footer { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 7px; min-height: 120px; }
+  .site-footer .footer-left { justify-self: center; }
   .site-footer a { justify-self: center; }
   .photo-hero h1 { font-size: clamp(4.6rem, 22vw, 7.8rem); }
   .photo-meta-line { flex-direction: column; gap: 5px; }

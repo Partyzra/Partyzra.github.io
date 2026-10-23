@@ -187,7 +187,7 @@ function authRequired() {
   });
 }
 
-// Dashboard v2.7: the event pipeline, IP exclusion and database schema above are unchanged.
+// Dashboard v2.8: adds live Worker/D1 infrastructure health; event pipeline, IP exclusion and database schema are unchanged.
 // Display-time boundaries are America/Denver; stored timestamps stay UTC.
 const DASHBOARD_TZ = 'America/Denver';
 // One subject can have multiple alternate files. The current tracker labels these
@@ -201,6 +201,44 @@ const RANGE_OPTIONS = [
   { id: '30d', label: '30 Days' },
   { id: 'all', label: 'All Time' }
 ];
+
+async function getInfrastructureHealth(env) {
+  const probeStarted = performance.now();
+  const probe = await env.DB.prepare('SELECT 1 AS ok').run();
+  const probeWallMs = Math.max(0, performance.now() - probeStarted);
+
+  const stats = await env.DB.prepare(`
+    SELECT COUNT(*) AS total_events,
+      MIN(created_at) AS oldest_event,
+      MAX(created_at) AS newest_event,
+      SUM(CASE WHEN created_at >= datetime('now', '-24 hours') THEN 1 ELSE 0 END) AS events_24h,
+      SUM(CASE WHEN created_at >= datetime('now', '-1 hour') THEN 1 ELSE 0 END) AS events_1h
+    FROM events
+  `).run();
+
+  const row = stats.results?.[0] || {};
+  const meta = stats.meta || probe.meta || {};
+  const probeOk = probe.success !== false && Number(probe.results?.[0]?.ok || 0) === 1;
+
+  return {
+    workerOk: true,
+    databaseOk: probeOk && stats.success !== false,
+    probeDurationMs: Number(probe.meta?.duration ?? probeWallMs),
+    databaseSizeBytes: Number(meta.size_after || 0),
+    servedByRegion: clean(meta.served_by_region || probe.meta?.served_by_region || '', 80),
+    servedByPrimary: typeof meta.served_by_primary === 'boolean' ? meta.served_by_primary : null,
+    totalEvents: Number(row.total_events || 0),
+    events24h: Number(row.events_24h || 0),
+    events1h: Number(row.events_1h || 0),
+    oldestEvent: row.oldest_event || null,
+    newestEvent: row.newest_event || null,
+    dashboardAuthConfigured: Boolean(String(env.DASHBOARD_PASSWORD || '').trim()),
+    ownerExclusionConfigured: Boolean(String(env.EXCLUDED_IPS || '').trim()),
+    originLockConfigured: getAllowedOrigins(env).size > 0,
+    allowedOriginCount: getAllowedOrigins(env).size,
+    maxBodyBytes: MAX_BODY_BYTES
+  };
+}
 
 async function renderDashboard(env, url) {
   try {
@@ -219,7 +257,7 @@ async function renderDashboard(env, url) {
       : { sql: '', args: [] };
 
     const comparison = previousRange(range, chosen);
-    const [totalsRows, pages, photos, daily, sources, subjects, galleryFunnel, recentPhotos, trends, albumTotals, namedAlbums, recentAlbums] = await Promise.all([
+    const [totalsRows, pages, photos, daily, sources, subjects, galleryFunnel, recentPhotos, trends, albumTotals, namedAlbums, recentAlbums, infrastructure] = await Promise.all([
       queryRows(env, `
         SELECT COUNT(*) AS total_events,
           COUNT(DISTINCT session_id) AS sessions,
@@ -311,7 +349,8 @@ async function renderDashboard(env, url) {
         WHERE event_type = 'custom_event' AND item = 'album_select'
           AND page = '/photography' AND label IS NOT NULL AND label <> '' ${filter.sql}
         ORDER BY created_at DESC, id DESC LIMIT 10
-      `, ...filter.args)
+      `, ...filter.args),
+      getInfrastructureHealth(env)
     ]);
 
     // Page only the Recent Activity feed, never the main metrics or other panels.
@@ -331,7 +370,7 @@ async function renderDashboard(env, url) {
       activity: { size: activitySize, page: activityPage, pageCount: activityPageCount,
         total: totalActivity, offset: activityOffset },
       subjects, galleryFunnel: galleryFunnel[0] || {}, recentPhotos, trends, comparison,
-      albumTotals: albumTotals[0] || {}, namedAlbums, recentAlbums,
+      albumTotals: albumTotals[0] || {}, namedAlbums, recentAlbums, infrastructure,
       sources: summarizeSources(sources)
     }), {
       headers: {
@@ -550,9 +589,32 @@ function summarizeSources(rows) {
 }
 
 function dashboardHtml({ chosen, range, totals, pages, photos, daily, recent, activity, sources,
-  subjects, galleryFunnel, recentPhotos, trends, comparison, albumTotals, namedAlbums, recentAlbums }) {
+  subjects, galleryFunnel, recentPhotos, trends, comparison, albumTotals, namedAlbums, recentAlbums, infrastructure }) {
   const number = value => Number(value || 0).toLocaleString('en-US');
   const count = key => Number(totals[key] || 0);
+  const infra = infrastructure || {};
+  const infraHealthy = Boolean(infra.workerOk && infra.databaseOk);
+  const infraStatus = infraHealthy ? 'All systems normal' : 'Issue detected';
+  const bytes = value => {
+    const amount = Number(value || 0);
+    if (!amount) return '—';
+    const units = ['B', 'KB', 'MB', 'GB'];
+    let scaled = amount;
+    let unit = 0;
+    while (scaled >= 1024 && unit < units.length - 1) { scaled /= 1024; unit += 1; }
+    return `${scaled >= 100 || unit === 0 ? scaled.toFixed(0) : scaled.toFixed(1)} ${units[unit]}`;
+  };
+  const relativeEventAge = value => {
+    const date = parseDatabaseTime(value);
+    if (!date) return 'No events yet';
+    const seconds = Math.max(0, Math.round((Date.now() - date.getTime()) / 1000));
+    if (seconds < 60) return `${seconds}s ago`;
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}m ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 48) return `${hours}h ago`;
+    return `${Math.floor(hours / 24)}d ago`;
+  };
   const sessions = count('sessions');
   const sessionDepth = sessions ? (count('page_views') / sessions).toFixed(1) : '0.0';
   const engagement = sessions ? Math.round(count('photo_sessions') / sessions * 100) : 0;
@@ -684,12 +746,12 @@ main{max-width:1260px;margin:auto;padding:42px 28px 80px}
 .photo-intro{display:flex;justify-content:space-between;align-items:baseline;gap:14px;margin:30px 0 12px;border-top:1px solid var(--stroke);padding-top:20px}.photo-intro h2{font:400 31px/1.1 Georgia,serif;letter-spacing:-.045em;margin:0}.photo-intro p{font-size:11px;color:var(--faint);margin:0}.photo-intro em{color:var(--gold);font-style:italic}
 .photo-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-bottom:11px}.photo-metric{background:var(--panel);border:1px solid var(--stroke);border-radius:10px;padding:17px 19px}.photo-metric small{display:block;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}.photo-metric strong{display:block;font:400 30px/1.4 Georgia,serif;font-variant-numeric:tabular-nums;margin-top:3px}.photo-metric span{display:block;color:var(--faint);font-size:10px;margin-top:2px}
 .rank-meta{display:block;font-size:10px;color:var(--faint);margin-top:3px}.subject-row{padding:13px 0}.photo-detail{margin-top:11px}.trend-row,.photo-activity-row{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:12px 0;border-bottom:1px solid var(--stroke-soft)}.trend-row:last-child,.photo-activity-row:last-child{border-bottom:none}.trend-info,.photo-activity-info{min-width:0}.trend-info strong,.photo-activity-info strong{display:block;font-size:12px;font-weight:500;overflow-wrap:anywhere}.trend-info span,.photo-activity-info span{display:block;font-size:10px;color:var(--faint);margin-top:4px;overflow-wrap:anywhere}.trend-change{font-size:11px;flex-shrink:0;color:var(--muted);font-variant-numeric:tabular-nums}.trend-change.positive{color:var(--gold)}.trend-change.negative{color:var(--faint)}.photo-activity-row time{font-size:10px;color:var(--muted);white-space:nowrap;flex-shrink:0}
-.album-intro{margin-top:33px}.album-note{font-size:10px;line-height:1.7;color:var(--faint);margin:13px 1px 4px}.empty{font-size:12px;color:var(--faint);padding:8px 0}.privacy{border-top:1px solid var(--stroke);padding-top:18px;margin-top:26px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:10px;line-height:1.8;color:var(--faint)}.privacy p{margin:0}.privacy strong{color:var(--muted);font-weight:500}
-@media(max-width:920px){.dashboard-grid,.lower{grid-template-columns:1fr}.cards,.photo-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.panel{padding:20px}}
-@media(max-width:560px){main{padding:23px 13px 56px}.mast{margin-bottom:28px}.top{display:block}.top-note{text-align:left;margin-top:17px}.controls{align-items:flex-start}.filters{width:100%;justify-content:space-between}.filter{padding:8px 9px}.cards,.photo-metrics{gap:8px}.photo-intro{display:block}.photo-intro p{margin-top:9px}.photo-metric{padding:15px 13px}.photo-activity-row{align-items:flex-start;flex-direction:column;gap:5px}.card{padding:17px 14px;min-height:126px}.panel{padding:16px}.chart-legend{gap:9px}.chart{gap:2px}.tick{font-size:8px}.date-cell{font-size:10px}.table-wrap{overflow-x:auto}.privacy{display:block}}
+.infra-intro{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;margin:34px 0 12px;border-top:1px solid var(--stroke);padding-top:22px}.infra-intro h2{font:400 31px/1.1 Georgia,serif;letter-spacing:-.045em;margin:0}.infra-intro h2 em{color:var(--gold);font-style:italic}.infra-intro p{font-size:11px;color:var(--faint);margin:7px 0 0}.health-pill{display:inline-flex;align-items:center;gap:8px;border:1px solid #4b533f;background:#171b15;border-radius:999px;padding:8px 12px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#c8d4b8;white-space:nowrap}.health-pill.issue{border-color:#684642;background:#1d1514;color:#dfaaa2}.health-dot{width:7px;height:7px;border-radius:50%;background:#9db477;box-shadow:0 0 0 4px rgba(157,180,119,.08)}.health-pill.issue .health-dot{background:#d17f72;box-shadow:0 0 0 4px rgba(209,127,114,.08)}.infra-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-bottom:11px}.infra-metric{background:var(--panel);border:1px solid var(--stroke);border-radius:10px;padding:17px 19px}.infra-metric small{display:block;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}.infra-metric strong{display:block;font:400 25px/1.4 Georgia,serif;margin-top:4px;font-variant-numeric:tabular-nums}.infra-metric span{display:block;color:var(--faint);font-size:10px;margin-top:2px}.status-ok{color:#c8d4b8}.infra-check{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--stroke-soft);font-size:11px}.infra-check:last-child{border-bottom:none}.infra-check span{color:var(--muted)}.infra-check strong{font-weight:500;color:var(--text);text-align:right}.infra-note{font-size:10px;line-height:1.7;color:var(--faint);margin:13px 1px 4px}.album-intro{margin-top:33px}.album-note{font-size:10px;line-height:1.7;color:var(--faint);margin:13px 1px 4px}.empty{font-size:12px;color:var(--faint);padding:8px 0}.privacy{border-top:1px solid var(--stroke);padding-top:18px;margin-top:26px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:10px;line-height:1.8;color:var(--faint)}.privacy p{margin:0}.privacy strong{color:var(--muted);font-weight:500}
+@media(max-width:920px){.dashboard-grid,.lower{grid-template-columns:1fr}.cards,.photo-metrics,.infra-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.panel{padding:20px}}
+@media(max-width:560px){main{padding:23px 13px 56px}.mast{margin-bottom:28px}.top{display:block}.top-note{text-align:left;margin-top:17px}.controls{align-items:flex-start}.filters{width:100%;justify-content:space-between}.filter{padding:8px 9px}.cards,.photo-metrics,.infra-metrics{gap:8px}.photo-intro,.infra-intro{display:block}.photo-intro p,.infra-intro p{margin-top:9px}.health-pill{margin-top:14px}.photo-metric{padding:15px 13px}.photo-activity-row{align-items:flex-start;flex-direction:column;gap:5px}.card{padding:17px 14px;min-height:126px}.panel{padding:16px}.chart-legend{gap:9px}.chart{gap:2px}.tick{font-size:8px}.date-cell{font-size:10px}.table-wrap{overflow-x:auto}.privacy{display:block}}
 </style></head>
 <body><main>
-  <div class="mast"><div class="brandmark" aria-hidden="true">P</div><div class="brandtext">PARTYZRA</div><span class="edition">Private / Statistics 02.7</span></div>
+  <div class="mast"><div class="brandmark" aria-hidden="true">P</div><div class="brandtext">PARTYZRA</div><span class="edition">Private / Statistics 02.8</span></div>
   <header class="top"><div><p class="eyebrow">Portfolio intelligence</p><h1>Behind the <em>frames.</em></h1></div>
     <div class="top-note">TIMEZONE&nbsp; <strong>Mountain · ${escapeHtml(currentZoneAbbreviation())}</strong><br>
       UPDATED&nbsp; <strong>${escapeHtml(updated)}</strong><br>Refresh to see new activity</div></header>
@@ -700,6 +762,29 @@ main{max-width:1260px;margin:auto;padding:42px 28px 80px}
     <article class="card"><span class="cardlabel">Photograph opens</span><span class="cardvalue">${number(count('photo_views'))}</span><span class="cardsub">${number(count('distinct_photos'))} distinct image files</span></article>
     <article class="card"><span class="cardlabel">Photo engagement</span><span class="cardvalue">${engagement}%</span><span class="cardsub">${number(count('photo_sessions'))} sessions opened a photo</span></article>
   </section>
+  <div class="infra-intro"><div><h2>Infrastructure <em>health.</em></h2><p>Live Worker + D1 checks · independent of the selected analytics range</p></div>
+    <span class="health-pill ${infraHealthy ? '' : 'issue'}"><i class="health-dot" aria-hidden="true"></i>${escapeHtml(infraStatus)}</span></div>
+  <section class="infra-metrics" aria-label="Infrastructure health summary">
+    <article class="infra-metric"><small>Analytics Worker</small><strong class="${infra.workerOk ? 'status-ok' : ''}">${infra.workerOk ? 'Operational' : 'Issue'}</strong><span>This dashboard request reached the Worker</span></article>
+    <article class="infra-metric"><small>D1 Database</small><strong class="${infra.databaseOk ? 'status-ok' : ''}">${infra.databaseOk ? 'Operational' : 'Issue'}</strong><span>Live SELECT probe · ${Number(infra.probeDurationMs || 0).toFixed(2)} ms</span></article>
+    <article class="infra-metric"><small>Last event</small><strong>${escapeHtml(relativeEventAge(infra.newestEvent))}</strong><span>${infra.newestEvent ? escapeHtml(formatMountain(infra.newestEvent)) : 'No analytics events recorded yet'}</span></article>
+    <article class="infra-metric"><small>D1 Size</small><strong>${escapeHtml(bytes(infra.databaseSizeBytes))}</strong><span>${number(infra.totalEvents)} stored analytics events</span></article>
+  </section>
+  <div class="lower infra-detail">
+    <section class="panel"><div class="panelhead"><h2>Service checks</h2><span class="hint">Current configuration</span></div>
+      <div class="infra-check"><span>Dashboard authentication</span><strong>${infra.dashboardAuthConfigured ? 'Active' : 'Not configured'}</strong></div>
+      <div class="infra-check"><span>Tracking origin lock</span><strong>${infra.originLockConfigured ? `Active · ${number(infra.allowedOriginCount)} allowed` : 'Not configured'}</strong></div>
+      <div class="infra-check"><span>Owner traffic exclusion</span><strong>${infra.ownerExclusionConfigured ? 'Configured' : 'Not configured'}</strong></div>
+      <div class="infra-check"><span>Maximum event payload</span><strong>${number(infra.maxBodyBytes)} bytes</strong></div>
+    </section>
+    <section class="panel"><div class="panelhead"><h2>Data health</h2><span class="hint">All-time system state</span></div>
+      <div class="infra-check"><span>Events received · last hour</span><strong>${number(infra.events1h)}</strong></div>
+      <div class="infra-check"><span>Events received · last 24 hours</span><strong>${number(infra.events24h)}</strong></div>
+      <div class="infra-check"><span>Oldest stored event</span><strong>${infra.oldestEvent ? escapeHtml(formatMountain(infra.oldestEvent)) : '—'}</strong></div>
+      <div class="infra-check"><span>D1 execution region</span><strong>${escapeHtml(infra.servedByRegion || 'Not reported')}</strong></div>
+    </section>
+  </div>
+  <p class="infra-note">Health values above come directly from this Worker and its D1 binding. Cloudflare account-level Worker request/error/CPU history is intentionally not fetched here yet; adding that later would require a restricted Cloudflare Analytics API token stored as a Worker secret.</p>
   <div class="dashboard-grid">
     <section class="panel"><div class="panelhead"><div><h2>Traffic timeline</h2><span class="hint">${escapeHtml(range.frequency)} activity · Mountain Time</span></div><div class="chart-legend">${legend}</div></div>
       <div class="chart-wrap" role="group" aria-label="Timeline of page views and photo opens">
@@ -757,7 +842,7 @@ main{max-width:1260px;margin:auto;padding:42px 28px 80px}
   </div>
   <footer class="privacy"><p><strong>Private by design.</strong> Counts use existing anonymous session IDs, timestamps, page/photo opens, and referrers.<br>
     No IP addresses, names, email addresses, precise location, or browser fingerprints are intentionally stored.</p>
-    <p>DATA STORED IN UTC · DISPLAYED IN AMERICA/DENVER<br>PARTYZRA ANALYTICS · V2.7</p></footer>
+    <p>DATA STORED IN UTC · DISPLAYED IN AMERICA/DENVER<br>PARTYZRA ANALYTICS · V2.8</p></footer>
 </main></body></html>`;
 }
 
