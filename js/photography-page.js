@@ -827,22 +827,8 @@
   shareButton.setAttribute('aria-label', 'Copy direct link to this photograph');
   shareButton.setAttribute('title', 'Copy link');
   shareButton.innerHTML = `
-    <svg class="photo-viewer-share-icon" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-      <path d="M5.0 26.8
-               C4.0 26.8 3.4 25.7 3.8 24.8
-               C5.0 22.0 6.7 19.4 8.9 17.4
-               C11.7 14.7 15.0 13.0 18.9 12.1
-               C18.8 10.0 18.7 8.0 18.8 5.8
-               C18.8 4.8 20.0 4.3 20.7 5.0
-               L29.8 13.9
-               C30.3 14.4 30.3 15.3 29.8 15.8
-               L20.7 24.8
-               C20.0 25.5 18.8 25.0 18.8 24.0
-               C18.7 22.1 18.8 20.2 18.9 18.4
-               C16.0 19.2 13.5 20.6 11.4 22.5
-               C9.8 23.9 8.5 25.6 7.5 27.6
-               C7.2 28.2 6.6 28.5 5.9 28.0
-               C5.6 27.9 5.2 27.4 5.0 26.8 Z" />
+    <svg class="photo-viewer-share-icon" viewBox="0 0 375 345" aria-hidden="true" focusable="false">
+      <path d="M 256 11 L 235 19 L 233 74 L 158 75 L 98 86 L 57 106 L 28 137 L 13 177 L 11 234 L 28 286 L 55 329 L 65 324 L 62 262 L 69 227 L 103 186 L 153 171 L 233 169 L 234 221 L 253 233 L 360 128 L 358 112 Z" />
     </svg>
   `;
   viewer.appendChild(shareButton);
@@ -884,7 +870,7 @@
         width: 25px;
         height: 25px;
         fill: currentColor;
-        transform: rotate(0deg);
+        transform: none;
         transform-origin: center;
       }
 
