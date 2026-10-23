@@ -1,20 +1,16 @@
-PARTYZRA PHOTOGRAPHY — HOMEPAGE-STYLE FADE V6
+PARTYZRA PHOTOGRAPHY — SHARE ARROW V4
 
-Replace only:
+Replace:
   photography-content.html
+  js/photography-page.js
 
-What changed:
-- Removed the V5 mask/sweep reveal completely.
-- "Take a look" is now treated as ONE visual phrase.
-- Its entrance matches the homepage hero language:
-    • fades in gently from transparent
-    • begins softly blurred
-    • resolves into full clarity
-    • uses the same 2.15 second timing/cubic-bezier feel
-    • has the same subtle leftward starting offset as the homepage words
-- After appearing, the entire phrase has one slow, tiny floating motion,
-  modeled on the homepage hero text.
-- No individual word or letter animations remain.
-- "look" keeps its red -> blue -> yellow moving gradient.
-- "Fragments of people, places, and memory." is untouched.
-- Gallery, albums, viewer, analytics and Photography JavaScript are untouched.
+Changes:
+- Restores the filled V2 share arrow shape you preferred.
+- Keeps the same size and bottom-right placement.
+- Clicking the icon still copies the same deep/direct photo link.
+- On successful copy, a tiny "link copied" label appears near the arrow.
+- The label fades away after about 1.35 seconds.
+- The arrow still gives its brief warm-gold copied highlight.
+- Close button, loading detail, navigation, gallery, title, and viewer behavior are unchanged.
+
+photography-content.html bumps the JS cache version from 2.9.1 to 2.9.2.
