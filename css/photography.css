@@ -1549,3 +1549,97 @@ video,
 .photo-viewer-image.is-static-detail-swap {
   transition: none !important;
 }
+
+
+/* ------------------------------------------------------------
+   Subtle red grid energy — Option A
+   A pair of occasional, low-intensity signals travel only through
+   the existing black gutters between photographs.
+   ------------------------------------------------------------ */
+
+.photo-grid {
+  position: relative;
+  isolation: isolate;
+}
+
+/* The energy layer never receives input and never changes grid geometry. */
+.photo-grid-energy {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Short, soft-ended signals rather than full neon lines. */
+.photo-grid-energy-pulse {
+  position: absolute;
+  display: block;
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+}
+
+.photo-grid-energy-pulse--horizontal {
+  left: 0;
+  width: clamp(82px, 9vw, 150px);
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(90, 8, 13, .04) 12%,
+    rgba(116, 11, 18, .22) 32%,
+    rgba(158, 18, 25, .52) 49%,
+    rgba(205, 31, 36, .72) 52%,
+    rgba(142, 14, 22, .38) 66%,
+    rgba(91, 8, 14, .08) 84%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 3px rgba(174, 22, 29, .24),
+    0 0 8px rgba(127, 12, 19, .12);
+}
+
+.photo-grid-energy-pulse--vertical {
+  top: 0;
+  width: 2px;
+  height: clamp(64px, 8vw, 112px);
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(90, 8, 13, .04) 12%,
+    rgba(116, 11, 18, .22) 32%,
+    rgba(158, 18, 25, .52) 49%,
+    rgba(205, 31, 36, .72) 52%,
+    rgba(142, 14, 22, .38) 66%,
+    rgba(91, 8, 14, .08) 84%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 3px rgba(174, 22, 29, .24),
+    0 0 8px rgba(127, 12, 19, .12);
+}
+
+/* Keep the effect even quieter on touch/mobile layouts. */
+@media (max-width: 700px) {
+  .photo-grid-energy-pulse {
+    filter: saturate(.9) brightness(.86);
+  }
+
+  .photo-grid-energy-pulse--horizontal {
+    height: 1px;
+  }
+
+  .photo-grid-energy-pulse--vertical {
+    width: 1px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-grid-energy {
+    display: none;
+  }
+}

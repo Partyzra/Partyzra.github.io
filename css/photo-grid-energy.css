@@ -1,0 +1,141 @@
+
+/* Partyzra Photography — Neural Grid Energy v2
+   Standalone effect. It does not alter the photographs or grid layout. */
+
+/* Hide the older Option-A overlay if those files are still installed. */
+.photo-grid-energy {
+  display: none !important;
+}
+
+.photo-grid {
+  position: relative;
+  isolation: isolate;
+}
+
+.photo-grid-neural-energy {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Every live signal is clipped to an actual black grid gutter. */
+.photo-grid-neural-channel {
+  position: absolute;
+  overflow: hidden;
+  pointer-events: none;
+  contain: strict;
+}
+
+.photo-grid-neural-pulse {
+  --energy-core: rgba(215, 33, 42, .86);
+  --energy-mid: rgba(155, 16, 25, .50);
+  --energy-low: rgba(89, 7, 14, .10);
+
+  position: absolute;
+  display: block;
+  opacity: 0;
+  border-radius: 999px;
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+}
+
+/* The pseudo-element adds a sparse, dusty/static wake around the beam. */
+.photo-grid-neural-pulse::after {
+  content: "";
+  position: absolute;
+  inset: -4px -14px;
+  pointer-events: none;
+  opacity: .34;
+  filter: blur(.15px);
+  background:
+    radial-gradient(circle at 14% 34%, rgba(205,29,38,.50) 0 0.65px, transparent .9px),
+    radial-gradient(circle at 27% 70%, rgba(151,16,25,.42) 0 0.55px, transparent .85px),
+    radial-gradient(circle at 39% 22%, rgba(226,43,48,.32) 0 0.6px, transparent .9px),
+    radial-gradient(circle at 53% 63%, rgba(126,10,18,.34) 0 0.5px, transparent .8px),
+    radial-gradient(circle at 68% 37%, rgba(218,35,42,.26) 0 0.55px, transparent .85px),
+    radial-gradient(circle at 82% 74%, rgba(118,8,17,.25) 0 0.55px, transparent .8px);
+}
+
+.photo-grid-neural-pulse.is-horizontal {
+  top: 50%;
+  width: var(--pulse-length, 132px);
+  height: var(--pulse-thickness, 1.5px);
+  transform: translateY(-50%);
+  box-shadow:
+    0 0 3px rgba(190, 24, 32, .30),
+    0 0 8px rgba(125, 10, 18, .14);
+}
+
+.photo-grid-neural-pulse.is-vertical {
+  left: 50%;
+  width: var(--pulse-thickness, 1.5px);
+  height: var(--pulse-length, 112px);
+  transform: translateX(-50%);
+  box-shadow:
+    0 0 3px rgba(190, 24, 32, .30),
+    0 0 8px rgba(125, 10, 18, .14);
+}
+
+/* Tail sits behind the leading core, depending on direction. */
+.photo-grid-neural-pulse.is-horizontal.dir-forward {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--energy-low) 18%,
+    var(--energy-mid) 61%,
+    var(--energy-core) 82%,
+    rgba(238, 59, 62, .74) 88%,
+    transparent 100%
+  );
+}
+
+.photo-grid-neural-pulse.is-horizontal.dir-reverse {
+  background: linear-gradient(
+    270deg,
+    transparent 0%,
+    var(--energy-low) 18%,
+    var(--energy-mid) 61%,
+    var(--energy-core) 82%,
+    rgba(238, 59, 62, .74) 88%,
+    transparent 100%
+  );
+}
+
+.photo-grid-neural-pulse.is-vertical.dir-forward {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    var(--energy-low) 18%,
+    var(--energy-mid) 61%,
+    var(--energy-core) 82%,
+    rgba(238, 59, 62, .74) 88%,
+    transparent 100%
+  );
+}
+
+.photo-grid-neural-pulse.is-vertical.dir-reverse {
+  background: linear-gradient(
+    0deg,
+    transparent 0%,
+    var(--energy-low) 18%,
+    var(--energy-mid) 61%,
+    var(--energy-core) 82%,
+    rgba(238, 59, 62, .74) 88%,
+    transparent 100%
+  );
+}
+
+@media (max-width: 700px) {
+  .photo-grid-neural-pulse {
+    --energy-core: rgba(205, 30, 38, .70);
+    --energy-mid: rgba(145, 14, 23, .40);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-grid-neural-energy {
+    display: none !important;
+  }
+}

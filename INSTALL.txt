@@ -1,0 +1,55 @@
+PARTYZRA — NEURAL GRID ENERGY V2
+
+WHY THIS VERSION
+The first Option-A patch depended on the Photography gallery renderer itself.
+This version is intentionally standalone. It watches #photoGrid and measures
+the real black gutters after the photographs exist.
+
+INSTALL
+
+1) Add this line in photography-content.html AFTER the existing photography.css:
+   <link rel="stylesheet" href="css/photo-grid-energy.css?v=1.0.0">
+
+2) Add this line AFTER the existing photography-page.js script:
+   <script src="js/photo-grid-energy.js?v=1.0.0"></script>
+
+3) Copy:
+   css/photo-grid-energy.css
+   js/photo-grid-energy.js
+
+No edits to photography-page.js are required for this version.
+
+If the earlier Option-A files are still installed:
+- That is okay.
+- This stylesheet hides the old .photo-grid-energy overlay.
+- The new system uses .photo-grid-neural-energy instead.
+
+WHAT IT DOES
+- Measures the actual black gaps between photographs.
+- Vertical signals are mathematically centered in the gutter.
+- Horizontal signals are centered the same way.
+- Signals can travel:
+    left -> right
+    right -> left
+    top -> bottom
+    bottom -> top
+- Usually one signal exists.
+- Sometimes two overlap.
+- Rarely three appear.
+- Each signal forms out of black and dissolves while still moving.
+- Each has a faint grain/static wake.
+- Pulses are clipped inside the gutter, so glow cannot spill across photographs.
+- The first signal appears after about 0.9 seconds so local testing is obvious.
+- Later timing becomes irregular.
+- Reduced-motion disables the effect.
+
+QUICK LOCAL CHECK
+Open the Photography page, wait 1-2 seconds, and look in the black grid gaps.
+
+In DevTools Console, this should return an element:
+  document.querySelector('.photo-grid-neural-energy')
+
+And this should return true:
+  !!document.querySelector('#photoGrid .photo-grid-item')
+
+If the first expression returns null, photo-grid-energy.js is not being loaded.

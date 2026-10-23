@@ -272,7 +272,7 @@
 
     if (stem === 'seagull3') return '50% 70%';   // center
 
-    if (stem === 'cowboy') return '50% 28%';   // top
+    if (stem === 'cowboy') return '50% 25%';   // top
     if (stem === 'firefighters1') return '50% 0%';   // top
 
     if (stem === 'gnomes') return '0% 50%';      // to the left
@@ -291,8 +291,6 @@
      if (stem === 'seagulls') return '50% 50%';   // center
 
      if (stem === 'new york58') return '20% 50%';   // to the left
-
-     if (stem === 'new york19') return '50% 39%';   // top
 
   };
 
@@ -2031,3 +2029,493 @@
 
   syncZoomUI();
 })();
+
+/* ========================================================================
+   PARTYZRA — PHOTOGRAPHY GRID SIGNAL SYSTEM v3
+   Self-contained: this block injects its own CSS and runs from the already
+   loaded photography-page.js, so there are no extra CSS/JS files to wire up.
+   ======================================================================== */
+(() => {
+  'use strict';
+
+  const grid = document.querySelector('#photoGrid');
+  if (!grid) return;
+
+  /* Hide any earlier experimental overlays if their files are still present. */
+  const style = document.createElement('style');
+  style.id = 'partyzra-grid-signal-styles-v3';
+  style.textContent = `
+    .photo-grid-energy,
+    .photo-grid-neural-energy {
+      display: none !important;
+    }
+
+    #photoGrid {
+      position: relative;
+      isolation: isolate;
+    }
+
+    .photo-grid-signal-system {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .photo-grid-signal-channel {
+      position: absolute;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .photo-grid-signal {
+      --signal-core: rgba(236, 42, 49, .94);
+      --signal-hot: rgba(255, 76, 74, .82);
+      --signal-mid: rgba(177, 18, 29, .62);
+      --signal-low: rgba(93, 7, 15, .10);
+      position: absolute;
+      display: block;
+      opacity: 0;
+      border-radius: 999px;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      will-change: transform, opacity;
+    }
+
+    .photo-grid-signal::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      opacity: .55;
+      filter: blur(.12px);
+      background:
+        radial-gradient(circle at 8% 45%, rgba(237,44,51,.72) 0 .55px, transparent .95px),
+        radial-gradient(circle at 18% 20%, rgba(134,11,20,.48) 0 .48px, transparent .85px),
+        radial-gradient(circle at 29% 72%, rgba(216,31,40,.58) 0 .52px, transparent .9px),
+        radial-gradient(circle at 43% 34%, rgba(110,8,17,.38) 0 .48px, transparent .82px),
+        radial-gradient(circle at 56% 78%, rgba(232,39,46,.43) 0 .52px, transparent .9px),
+        radial-gradient(circle at 71% 24%, rgba(125,9,18,.34) 0 .48px, transparent .84px),
+        radial-gradient(circle at 87% 58%, rgba(208,27,37,.32) 0 .52px, transparent .9px);
+    }
+
+    .photo-grid-signal.is-horizontal {
+      top: 50%;
+      height: var(--signal-thickness, 2px);
+      width: var(--signal-length, 138px);
+      margin-top: calc(var(--signal-thickness, 2px) / -2);
+      box-shadow:
+        0 0 3px rgba(222, 31, 40, .42),
+        0 0 9px rgba(145, 10, 20, .22);
+    }
+
+    .photo-grid-signal.is-horizontal::after {
+      inset: -4px -24px;
+    }
+
+    .photo-grid-signal.is-vertical {
+      left: 50%;
+      width: var(--signal-thickness, 2px);
+      height: var(--signal-length, 112px);
+      margin-left: calc(var(--signal-thickness, 2px) / -2);
+      box-shadow:
+        0 0 3px rgba(222, 31, 40, .42),
+        0 0 9px rgba(145, 10, 20, .22);
+    }
+
+    .photo-grid-signal.is-vertical::after {
+      inset: -24px -4px;
+    }
+
+    .photo-grid-signal.is-horizontal.dir-forward {
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--signal-low) 15%,
+        var(--signal-mid) 58%,
+        var(--signal-core) 79%,
+        var(--signal-hot) 87%,
+        transparent 100%
+      );
+    }
+
+    .photo-grid-signal.is-horizontal.dir-reverse {
+      background: linear-gradient(
+        270deg,
+        transparent 0%,
+        var(--signal-low) 15%,
+        var(--signal-mid) 58%,
+        var(--signal-core) 79%,
+        var(--signal-hot) 87%,
+        transparent 100%
+      );
+    }
+
+    .photo-grid-signal.is-vertical.dir-forward {
+      background: linear-gradient(
+        180deg,
+        transparent 0%,
+        var(--signal-low) 15%,
+        var(--signal-mid) 58%,
+        var(--signal-core) 79%,
+        var(--signal-hot) 87%,
+        transparent 100%
+      );
+    }
+
+    .photo-grid-signal.is-vertical.dir-reverse {
+      background: linear-gradient(
+        0deg,
+        transparent 0%,
+        var(--signal-low) 15%,
+        var(--signal-mid) 58%,
+        var(--signal-core) 79%,
+        var(--signal-hot) 87%,
+        transparent 100%
+      );
+    }
+
+    @media (max-width: 700px) {
+      .photo-grid-signal {
+        --signal-core: rgba(226, 36, 44, .84);
+        --signal-hot: rgba(247, 63, 62, .70);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .photo-grid-signal-system {
+        display: none !important;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const MAX_ACTIVE = 3;
+
+  let layer = null;
+  let activeSignals = 0;
+  let nextTimer = 0;
+  let resizeTimer = 0;
+  let started = false;
+
+  const randomBetween = (min, max) => min + Math.random() * (max - min);
+  const choose = items => items[Math.floor(Math.random() * items.length)];
+
+  function ensureLayer() {
+    if (layer?.isConnected) return layer;
+
+    grid.querySelectorAll('.photo-grid-signal-system').forEach(node => node.remove());
+
+    layer = document.createElement('span');
+    layer.className = 'photo-grid-signal-system';
+    layer.setAttribute('aria-hidden', 'true');
+    grid.appendChild(layer);
+
+    document.documentElement.dataset.photoGridEnergy = 'active';
+    return layer;
+  }
+
+  function measureGrid() {
+    const items = [...grid.querySelectorAll('.photo-grid-item')];
+    if (items.length < 2) return null;
+
+    const gridRect = grid.getBoundingClientRect();
+    if (gridRect.width < 40 || gridRect.height < 40) return null;
+
+    const rects = items.map(item => {
+      const rect = item.getBoundingClientRect();
+      return {
+        left: rect.left - gridRect.left,
+        right: rect.right - gridRect.left,
+        top: rect.top - gridRect.top,
+        bottom: rect.bottom - gridRect.top
+      };
+    });
+
+    const rows = [];
+    rects
+      .slice()
+      .sort((a, b) => a.top - b.top || a.left - b.left)
+      .forEach(rect => {
+        let row = rows.find(candidate => Math.abs(candidate.top - rect.top) < 3);
+        if (!row) {
+          row = { top: rect.top, bottom: rect.bottom, items: [] };
+          rows.push(row);
+        }
+
+        row.items.push(rect);
+        row.bottom = Math.max(row.bottom, rect.bottom);
+      });
+
+    rows.forEach(row => row.items.sort((a, b) => a.left - b.left));
+    rows.sort((a, b) => a.top - b.top);
+
+    const horizontal = [];
+    for (let index = 0; index < rows.length - 1; index += 1) {
+      const current = rows[index];
+      const next = rows[index + 1];
+      const gap = next.top - current.bottom;
+
+      if (gap >= 3) {
+        horizontal.push({
+          left: 0,
+          top: current.bottom,
+          width: gridRect.width,
+          height: gap
+        });
+      }
+    }
+
+    const verticalCandidates = [];
+    rows.forEach(row => {
+      for (let index = 0; index < row.items.length - 1; index += 1) {
+        const current = row.items[index];
+        const next = row.items[index + 1];
+        const gap = next.left - current.right;
+
+        if (gap >= 3) {
+          verticalCandidates.push({
+            center: current.right + gap / 2,
+            width: gap
+          });
+        }
+      }
+    });
+
+    const verticalMerged = [];
+    verticalCandidates.forEach(candidate => {
+      let existing = verticalMerged.find(
+        item => Math.abs(item.center - candidate.center) < 3
+      );
+
+      if (!existing) {
+        existing = { ...candidate };
+        verticalMerged.push(existing);
+      } else {
+        existing.center = (existing.center + candidate.center) / 2;
+        existing.width = Math.min(existing.width, candidate.width);
+      }
+    });
+
+    const vertical = verticalMerged.map(item => ({
+      left: item.center - item.width / 2,
+      top: 0,
+      width: item.width,
+      height: gridRect.height
+    }));
+
+    return {
+      width: gridRect.width,
+      height: gridRect.height,
+      horizontal,
+      vertical
+    };
+  }
+
+  function makeChannel(rect) {
+    const channel = document.createElement('span');
+    channel.className = 'photo-grid-signal-channel';
+    channel.style.left = `${rect.left}px`;
+    channel.style.top = `${rect.top}px`;
+    channel.style.width = `${rect.width}px`;
+    channel.style.height = `${rect.height}px`;
+    ensureLayer().appendChild(channel);
+    return channel;
+  }
+
+  function spawnSignal(forceOrientation = null) {
+    if (reduceMotion.matches || activeSignals >= MAX_ACTIVE) return;
+
+    const geometry = measureGrid();
+    if (!geometry) return;
+
+    const available = [];
+    if (geometry.horizontal.length) available.push('horizontal');
+    if (geometry.vertical.length) available.push('vertical');
+    if (!available.length) return;
+
+    let orientation = forceOrientation;
+    if (!available.includes(orientation)) orientation = choose(available);
+
+    const channels = orientation === 'horizontal'
+      ? geometry.horizontal
+      : geometry.vertical;
+
+    const rect = choose(channels);
+    if (!rect) return;
+
+    const channel = makeChannel(rect);
+    const signal = document.createElement('span');
+
+    const forward = Math.random() >= 0.5;
+    const longSignal = Math.random() < .26;
+
+    signal.className =
+      `photo-grid-signal is-${orientation} ${forward ? 'dir-forward' : 'dir-reverse'}`;
+
+    const length = orientation === 'horizontal'
+      ? randomBetween(longSignal ? 155 : 92, longSignal ? 235 : 158)
+      : randomBetween(longSignal ? 128 : 76, longSignal ? 198 : 128);
+
+    const gutterSize = orientation === 'horizontal' ? rect.height : rect.width;
+
+    /* Keep the pulse centered in the gutter. Never hug either edge. */
+    const thickness = Math.max(
+      1.4,
+      Math.min(longSignal ? 2.35 : 2.0, gutterSize * .34)
+    );
+
+    signal.style.setProperty('--signal-length', `${length}px`);
+    signal.style.setProperty('--signal-thickness', `${thickness}px`);
+    signal.style.filter = `brightness(${randomBetween(.84, 1.08)})`;
+
+    channel.appendChild(signal);
+    activeSignals += 1;
+
+    const travel = orientation === 'horizontal' ? rect.width : rect.height;
+    const start = -length - 14;
+    const end = travel + length + 14;
+    const from = forward ? start : end;
+    const to = forward ? end : start;
+
+    /*
+      Appear into existence while already moving, peak briefly, then dissolve
+      before reaching the opposite edge. This avoids a "bar entering a track"
+      look and gives it more of a solitary signal-in-space quality.
+    */
+    const frames = orientation === 'horizontal'
+      ? [
+          { transform: `translate3d(${from}px,0,0) scaleX(.58)`, opacity: 0 },
+          { transform: `translate3d(${from + (to-from)*.08}px,0,0) scaleX(.74)`, opacity: .12, offset: .08 },
+          { transform: `translate3d(${from + (to-from)*.20}px,0,0) scaleX(.96)`, opacity: .72, offset: .20 },
+          { opacity: .96, offset: .40 },
+          { opacity: .80, offset: .64 },
+          { transform: `translate3d(${from + (to-from)*.86}px,0,0) scaleX(.88)`, opacity: .26, offset: .86 },
+          { transform: `translate3d(${to}px,0,0) scaleX(.60)`, opacity: 0 }
+        ]
+      : [
+          { transform: `translate3d(0,${from}px,0) scaleY(.58)`, opacity: 0 },
+          { transform: `translate3d(0,${from + (to-from)*.08}px,0) scaleY(.74)`, opacity: .12, offset: .08 },
+          { transform: `translate3d(0,${from + (to-from)*.20}px,0) scaleY(.96)`, opacity: .72, offset: .20 },
+          { opacity: .96, offset: .40 },
+          { opacity: .80, offset: .64 },
+          { transform: `translate3d(0,${from + (to-from)*.86}px,0) scaleY(.88)`, opacity: .26, offset: .86 },
+          { transform: `translate3d(0,${to}px,0) scaleY(.60)`, opacity: 0 }
+        ];
+
+    const duration = orientation === 'horizontal'
+      ? randomBetween(3900, 6500)
+      : randomBetween(4700, 7600);
+
+    let animation;
+    try {
+      animation = signal.animate(frames, {
+        duration,
+        easing: 'linear',
+        fill: 'none'
+      });
+    } catch (_) {
+      /* Very old browser fallback: make failure visible rather than silent. */
+      signal.style.opacity = '.9';
+      window.setTimeout(() => {
+        channel.remove();
+        activeSignals = Math.max(0, activeSignals - 1);
+      }, 1200);
+      return;
+    }
+
+    animation.finished
+      .catch(() => {})
+      .finally(() => {
+        channel.remove();
+        activeSignals = Math.max(0, activeSignals - 1);
+      });
+  }
+
+  function scheduleNext(initial = false) {
+    window.clearTimeout(nextTimer);
+    if (!started || reduceMotion.matches) return;
+
+    const delay = initial ? 450 : randomBetween(1450, 4100);
+
+    nextTimer = window.setTimeout(() => {
+      spawnSignal();
+
+      /* Sometimes another signal appears nearby in time; rarely a third. */
+      if (Math.random() < .40) {
+        window.setTimeout(() => spawnSignal(), randomBetween(220, 900));
+      }
+
+      if (Math.random() < .11) {
+        window.setTimeout(() => spawnSignal(), randomBetween(760, 1650));
+      }
+
+      scheduleNext(false);
+    }, delay);
+  }
+
+  function start() {
+    if (started || reduceMotion.matches) return;
+    if (!measureGrid()) return;
+
+    started = true;
+    ensureLayer();
+
+    /*
+      Two unmistakable first passes prove the feature is alive locally:
+      one horizontal, then one vertical. After that, behavior is irregular.
+    */
+    window.setTimeout(() => spawnSignal('horizontal'), 250);
+    window.setTimeout(() => spawnSignal('vertical'), 900);
+    scheduleNext(true);
+  }
+
+  function stop() {
+    started = false;
+    window.clearTimeout(nextTimer);
+    nextTimer = 0;
+    layer?.replaceChildren();
+    activeSignals = 0;
+  }
+
+  function rebuild() {
+    stop();
+    layer?.remove();
+    layer = null;
+
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(start);
+    });
+  }
+
+  /*
+    Album changes call grid.replaceChildren(), which removes our overlay.
+    This observer quietly reattaches the system after any gallery rebuild.
+  */
+  const gridObserver = new MutationObserver(() => {
+    if (!grid.querySelector('.photo-grid-item')) return;
+
+    if (!layer?.isConnected) {
+      started = false;
+      window.requestAnimationFrame(start);
+    }
+  });
+
+  gridObserver.observe(grid, { childList: true });
+
+  window.addEventListener('resize', () => {
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(rebuild, 180);
+  }, { passive: true });
+
+  reduceMotion.addEventListener?.('change', () => {
+    if (reduceMotion.matches) stop();
+    else rebuild();
+  });
+
+  if (grid.querySelector('.photo-grid-item')) {
+    start();
+  }
+})();
+

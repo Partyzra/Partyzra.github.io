@@ -1,37 +1,11 @@
-PARTYZRA CONTACT EMAIL PATCH
+PARTYZRA PHOTOGRAPHY — NEURAL GRID V3 COMPLETE
 
-WHAT IT DOES
-------------
-Adds this directly beneath the existing "Start a conversation" button:
+Replace these two files in your repo:
 
-Prefer email? 12rparker@gmail.com
+1) photography-content.html
+2) js/photography-page.js
 
-The email address is visible and clickable.
+The HTML file already references:
+  js/photography-page.js?v=2.8.0
 
-SAFE PATCHING
--------------
-This patch edits your CURRENT files in place instead of replacing them, so it
-will not overwrite newer music, video, analytics, or photography changes.
-
-It creates timestamped backups of:
-- home.html
-- css/style.css
-
-HOW TO USE
-----------
-1. Copy both patch files into the ROOT of your current Partyzra repo:
-   - APPLY-CONTACT-EMAIL-PATCH.bat
-   - apply-contact-email-patch.ps1
-
-2. Double-click APPLY-CONTACT-EMAIL-PATCH.bat
-
-3. When it says PATCH COMPLETE, open the site locally or publish as normal.
-
-4. You can delete the two patch files afterward if you want.
-
-FILES MODIFIED
---------------
-- home.html
-- css/style.css
-
-No other files are touched.
+No additional energy CSS or JS files are required for this version.
