@@ -2905,6 +2905,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York11.jpg",
+    "variants": ["Ghost Leg.jpg"],
     "title": "Headlights",
     "album": "New York",
     "collection": "City",
@@ -3838,19 +3839,6 @@ const PORTFOLIO_PHOTOS = [
     "featured": true,
     "tags": [
       "live"
-    ],
-    "note": ""
-  },
-    {
-    "file": "Ghost Leg.jpg",
-    "title": "Ghost Leg",
-    "album": "New York",
-    "collection": "City",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "city"
     ],
     "note": ""
   },
