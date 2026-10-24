@@ -1005,7 +1005,10 @@
   const currentShareSlug = () => itemAt(currentIndex)?.dataset.slug || '';
 
   const shareUrlForSlug = slug => {
-    const url = new URL(window.location.href);
+    // The Photography viewer runs inside photography-content.html, but shared
+    // links should point to the public shell page. The outer photography.html
+    // forwards its hash into this iframe so the matching photo opens directly.
+    const url = new URL('photography.html', window.location.href);
     url.hash = slug || '';
     return url.href;
   };
@@ -1017,9 +1020,24 @@
   };
 
   const clearShareHash = () => {
-    if (!window.location.hash) return;
-    const cleanUrl = `${window.location.pathname}${window.location.search}`;
-    window.history.replaceState(window.history.state, '', cleanUrl || window.location.pathname);
+    if (window.location.hash) {
+      const cleanUrl = `${window.location.pathname}${window.location.search}`;
+      window.history.replaceState(window.history.state, '', cleanUrl || window.location.pathname);
+    }
+
+    // When this viewer was opened through the public photography.html shell,
+    // clear that outer #slug too once the visitor closes or navigates away from
+    // the originally linked photograph. Same-origin access is expected here.
+    try {
+      if (window.parent && window.parent !== window && window.parent.location.hash) {
+        const parentCleanUrl = `${window.parent.location.pathname}${window.parent.location.search}`;
+        window.parent.history.replaceState(
+          window.parent.history.state,
+          '',
+          parentCleanUrl || window.parent.location.pathname
+        );
+      }
+    } catch (_) {}
   };
 
   const copyText = async text => {

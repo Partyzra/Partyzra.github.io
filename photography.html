@@ -42,6 +42,29 @@
     </button>
   </div>
 
+  <script>
+    // Deep-link handoff: the public shell owns the shareable URL while the
+    // actual photo viewer lives inside photography-content.html.
+    (function () {
+      var frame = document.querySelector('[data-site-shell-frame]');
+      if (!frame) return;
+
+      function contentUrlForCurrentHash() {
+        return 'photography-content.html' + (location.hash || '');
+      }
+
+      function syncHashIntoFrame() {
+        var wanted = contentUrlForCurrentHash();
+        var current = frame.getAttribute('src') || '';
+        if (current !== wanted) frame.setAttribute('src', wanted);
+      }
+
+      // Apply before the embedded viewer initializes, then keep pasted/changed
+      // hashes in sync while the shell page remains open.
+      syncHashIntoFrame();
+      window.addEventListener('hashchange', syncHashIntoFrame);
+    })();
+  </script>
   <script src="js/site-shell.js?v=2.8.0"></script>
 </body>
 </html>
