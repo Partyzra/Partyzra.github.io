@@ -3853,6 +3853,19 @@ const PORTFOLIO_PHOTOS = [
       "city"
     ],
     "note": ""
+  },
+    {
+    "file": "Date Night.jpg",
+    "title": "Date Night",
+    "album": "New York",
+    "collection": "City",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
   }
 
 

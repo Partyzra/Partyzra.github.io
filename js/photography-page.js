@@ -470,6 +470,35 @@
     return [...names];
   };
 
+  /*
+    "Latest" is a virtual album containing the entire archive newest-first.
+
+    photos.js does not currently require a date field, so we support several
+    sensible names if you choose to add them later:
+      created, createdAt, date, dateCreated, dateTaken
+
+    ISO values such as "2026-10-24" or "2026-10-24T14:30:00" are ideal.
+    Photos without a usable date remain in Latest and fall back to their
+    manifest position, with newer additions to photos.js appearing first.
+  */
+  const photoCreatedTime = photo => {
+    const candidates = [
+      photo?.created,
+      photo?.createdAt,
+      photo?.date,
+      photo?.dateCreated,
+      photo?.dateTaken
+    ];
+
+    for (const value of candidates) {
+      if (value === null || value === undefined || String(value).trim() === '') continue;
+      const parsed = Date.parse(String(value).trim());
+      if (Number.isFinite(parsed)) return parsed;
+    }
+
+    return null;
+  };
+
   const usedShareSlugs = new Set();
   const archive = uniquePhotos.map((photo, photoIndex) => {
     const baseSlug = shareSlugFor(photo);
@@ -487,7 +516,9 @@
     return {
       ...photo,
       __albums: resolveAlbums(photo),
-      __slug: shareSlug || `photo-${photoIndex + 1}`
+      __slug: shareSlug || `photo-${photoIndex + 1}`,
+      __createdTime: photoCreatedTime(photo),
+      __manifestIndex: photoIndex
     };
   });
 
@@ -515,6 +546,21 @@
 
   const randomizedArchive = shuffle(archive);
 
+  const latestArchive = [...archive].sort((a, b) => {
+    const aHasDate = Number.isFinite(a.__createdTime);
+    const bHasDate = Number.isFinite(b.__createdTime);
+
+    // True creation dates always sort ahead of undated entries.
+    if (aHasDate && bHasDate && a.__createdTime !== b.__createdTime) {
+      return b.__createdTime - a.__createdTime;
+    }
+    if (aHasDate !== bHasDate) return aHasDate ? -1 : 1;
+
+    // Stable fallback for the current manifest, which has no creation-date
+    // field yet: later additions in photos.js appear first.
+    return b.__manifestIndex - a.__manifestIndex;
+  });
+
   // Open the Photography archive on the master All collection by default.
   // Named albums remain available from the collection tabs.
   let activeAlbum = 'All';
@@ -529,7 +575,7 @@
   const addAlbumName = name => {
     const cleanName = String(name || '').trim();
     const key = normalize(cleanName);
-    if (!cleanName || key === 'all' || albumNameKeys.has(key)) return;
+    if (!cleanName || key === 'all' || key === 'latest' || albumNameKeys.has(key)) return;
 
     albumNameKeys.add(key);
     albumNames.push(cleanName);
@@ -547,8 +593,10 @@
     }
   });
 
-  const photosForActiveAlbum = () =>
-    randomizedArchive.filter(photo => photo.__albums.includes(activeAlbum));
+  const photosForActiveAlbum = () => {
+    if (activeAlbum === 'Latest') return latestArchive;
+    return randomizedArchive.filter(photo => photo.__albums.includes(activeAlbum));
+  };
 
   function updateCounts() {
     const count = qsa('.photo-grid-button', grid).length;
@@ -556,13 +604,17 @@
 
     if (photoCount) photoCount.textContent = `${total} photographs`;
     if (galleryStatus) galleryStatus.textContent = `${count} photograph${count === 1 ? '' : 's'}`;
-    if (albumHeading) albumHeading.textContent = activeAlbum === 'All' ? 'All photographs' : activeAlbum;
+    if (albumHeading) {
+      albumHeading.textContent = activeAlbum === 'All'
+        ? 'All photographs'
+        : (activeAlbum === 'Latest' ? 'Latest photographs' : activeAlbum);
+    }
   }
 
   function renderAlbumNav() {
     if (!albumNav) return;
 
-    const names = ['All', ...albumNames];
+    const names = ['All', 'Latest', ...albumNames];
     const fragment = document.createDocumentFragment();
 
     names.forEach(name => {
