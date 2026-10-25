@@ -3325,19 +3325,6 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "New York44.jpg",
-    "title": "Broadway",
-    "album": "New York",
-    "collection": "City",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "city"
-    ],
-    "note": ""
-  },
-  {
     "file": "New York45.jpg",
     "title": "Statue of Liberty",
     "album": "New York",
@@ -3845,6 +3832,20 @@ const PORTFOLIO_PHOTOS = [
     {
     "file": "Date Night.jpg",
     "title": "Date Night",
+    "album": "New York",
+    "collection": "City",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York44.jpg",
+    "variants": ["New York44.1.jpg"],
+    "title": "Broadway",
     "album": "New York",
     "collection": "City",
     "year": "",
