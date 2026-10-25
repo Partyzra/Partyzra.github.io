@@ -33,7 +33,7 @@
     .photo-page .photo-title-phrase {
       display: inline-block;
       transform-origin: 50% 42%;
-      animation: photo-title-gentle-float 18.8s ease-in-out 5.7s infinite;
+      animation: photo-title-gentle-float 18.8s ease-in-out 2.85s infinite;
       will-change: transform;
     }
 
@@ -50,15 +50,15 @@
       rather than three isolated events.
     */
     .photo-page .photo-focus-word--take {
-      animation: photo-focus-resolve 2.85s cubic-bezier(.22, .68, .24, 1) .18s forwards;
+      animation: photo-focus-resolve 1.425s cubic-bezier(.22, .68, .24, 1) .09s forwards;
     }
 
     .photo-page .photo-focus-word--a {
-      animation: photo-focus-resolve 2.75s cubic-bezier(.22, .68, .24, 1) 1.42s forwards;
+      animation: photo-focus-resolve 1.375s cubic-bezier(.22, .68, .24, 1) .71s forwards;
     }
 
     .photo-page .photo-focus-word--look {
-      animation: photo-focus-resolve 2.95s cubic-bezier(.22, .68, .24, 1) 2.72s forwards;
+      animation: photo-focus-resolve 1.475s cubic-bezier(.22, .68, .24, 1) 1.36s forwards;
     }
 
     @keyframes photo-focus-resolve {
@@ -157,8 +157,8 @@
       opacity: 0;
 
       animation:
-        photo-look-color-emerge 5.0s ease 4.65s forwards,
-        photo-look-color-drift 22s ease-in-out 5.0s infinite alternate;
+        photo-look-color-emerge 2.5s ease 2.325s forwards,
+        photo-look-color-drift 22s ease-in-out 2.5s infinite alternate;
       will-change: opacity, background-position;
     }
 

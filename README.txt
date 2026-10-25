@@ -1,42 +1,20 @@
-PARTYZRA PHOTOGRAPHY — LATEST ALBUM V7
+PARTYZRA PHOTOGRAPHY — FASTER "TAKE A LOOK" INTRO V8
 
-Replace:
+Replace only:
   photography-content.html
-  js/photography-page.js
 
-photography.html is included unchanged from the prior deep-link patch for continuity.
+Change:
+- Speeds the entire "Take -> a -> look" intro sequence up by approximately 50%.
+- Each word still begins blurred/soft and resolves into focus in the same order.
+- The silver -> red/blue/yellow transition on "look" also begins and resolves
+  proportionally sooner, so the full intro keeps the same rhythm.
+- The long-term gradient drift remains slow at 22 seconds.
+- The subtle floating motion itself remains the same speed; it simply begins
+  sooner after the faster reveal.
 
-NEW:
-- Adds a virtual album/tab named "Latest" immediately after "All".
-- Latest always contains the entire photo archive.
-- All keeps its existing randomized-on-page-load behavior.
-- Normal named albums keep their existing behavior.
-- Latest is sorted newest first.
-
-DATE BEHAVIOR:
-The current photos.js manifest does not contain a true per-photo creation date.
-Latest therefore supports these fields whenever they exist:
-  "created"
-  "createdAt"
-  "date"
-  "dateCreated"
-  "dateTaken"
-
-Recommended format:
-  "created": "2026-10-24"
-
-If a photo has a valid date, Latest sorts it by that date, newest first.
-Photos without a date are still included; they fall back to newest-added-to-
-photos.js first (reverse manifest position).
-
-Example:
-{
-  "file": "Seagulls.jpg",
-  "title": "Mishi & Susan",
-  "slug": "seagulls",
-  "created": "2026-10-20",
-  ...
-}
-
-No photos.js change is required for the tab itself to appear.
-The script cache version is bumped to 2.9.4.
+Preserved:
+- Latest album
+- direct/deep photo share links
+- share icon + "link copied"
+- gallery/viewer behavior
+- all other Photography page styling
