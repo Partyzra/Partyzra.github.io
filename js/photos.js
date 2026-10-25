@@ -1495,7 +1495,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Fox3.jpg",
-    "title": "Sun Kitty",
+    "title": "Bliss",
     "collection": "Nature",
     "year": "",
     "location": "",
@@ -1506,7 +1506,7 @@ const PORTFOLIO_PHOTOS = [
   },
 {
     "file": "Fox4.jpg",
-    "title": "Distance Kitty",
+    "title": "Distance",
     "collection": "Nature",
     "year": "",
     "location": "",
