@@ -3819,6 +3819,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Tidal Wave.jpg",
     "title": "Tidal Wave",
+    "slug": "tidalwave",
     "collection": "Ride",
     "album": "Lagoon",
     "year": "",
@@ -3832,6 +3833,7 @@ const PORTFOLIO_PHOTOS = [
     {
     "file": "Date Night.jpg",
     "title": "Date Night",
+    "slug": "datenight",
     "album": "New York",
     "collection": "City",
     "year": "",
@@ -3846,6 +3848,7 @@ const PORTFOLIO_PHOTOS = [
     "file": "New York44.jpg",
     "variants": ["New York44.1.jpg"],
     "title": "Times Square",
+    "slug": "timessquare",
     "album": "New York",
     "collection": "City",
     "year": "",
