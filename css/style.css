@@ -2572,3 +2572,98 @@ video,
   }
 }
 
+/* V4.17.31 — Homepage shortcut to the newest photography.
+   A quiet fourth cue beneath the main Observe / Listen / Watch sequence. */
+.home-page .hero-latest-link {
+  position: absolute;
+  z-index: 3;
+  left: clamp(20px, 2vw, 36px);
+  bottom: clamp(20px, 2.6vw, 34px);
+  display: grid;
+  grid-template-columns: auto clamp(24px, 3vw, 42px) auto;
+  align-items: center;
+  column-gap: 10px;
+  width: fit-content;
+  color: rgba(243, 241, 236, .52);
+  font-size: .62rem;
+  font-weight: 500;
+  letter-spacing: .16em;
+  line-height: 1;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translate3d(-18px, 0, 0);
+  filter: blur(2px);
+  animation: home-hero-latest-link-in 1.15s cubic-bezier(.20, .78, .28, 1) 3.72s forwards;
+  transition: color .22s ease, opacity .22s ease;
+}
+
+.home-page .hero-latest-link-rule {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  opacity: .42;
+  transform-origin: left center;
+  transition: opacity .22s ease, transform .3s cubic-bezier(.22, 1, .36, 1);
+}
+
+.home-page .hero-latest-link-arrow {
+  display: inline-block;
+  font-size: .72rem;
+  letter-spacing: 0;
+  transition: transform .3s cubic-bezier(.22, 1, .36, 1);
+}
+
+.home-page .hero-latest-link:hover,
+.home-page .hero-latest-link:focus-visible {
+  color: rgba(255,255,255,.94);
+}
+
+.home-page .hero-latest-link:hover .hero-latest-link-rule,
+.home-page .hero-latest-link:focus-visible .hero-latest-link-rule {
+  opacity: .82;
+  transform: scaleX(1.08);
+}
+
+.home-page .hero-latest-link:hover .hero-latest-link-arrow,
+.home-page .hero-latest-link:focus-visible .hero-latest-link-arrow {
+  transform: translate3d(2px, -2px, 0);
+}
+
+.home-page .hero-latest-link:focus-visible {
+  outline: 1px solid rgba(255,255,255,.42);
+  outline-offset: 7px;
+}
+
+@keyframes home-hero-latest-link-in {
+  from {
+    opacity: 0;
+    transform: translate3d(-18px, 0, 0);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+}
+
+@media (max-width: 620px) {
+  .home-page .hero-latest-link {
+    left: 20px;
+    bottom: 18px;
+    grid-template-columns: auto 24px auto;
+    column-gap: 8px;
+    font-size: .57rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page .hero-latest-link {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    animation: none;
+  }
+}
+

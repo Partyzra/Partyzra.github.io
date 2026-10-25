@@ -563,9 +563,15 @@
     return b.__manifestIndex - a.__manifestIndex;
   });
 
-  // Open the Photography archive on the master All collection by default.
-  // Named albums remain available from the collection tabs.
-  let activeAlbum = 'All';
+  // Open the Photography archive on All by default. A reserved #latest
+  // deep link opens the virtual Latest album; ordinary #photo-slug hashes
+  // still start on All so the direct-photo viewer can find every photograph.
+  const initialHashKey = (() => {
+    const raw = window.location.hash.replace(/^#/, '');
+    if (!raw) return '';
+    try { return slugify(decodeURIComponent(raw)); } catch (_) { return slugify(raw); }
+  })();
+  let activeAlbum = initialHashKey === 'latest' ? 'Latest' : 'All';
 
   // Keep the existing curated album order, then automatically append any
   // custom album names declared directly in photos.js. This means a new entry
@@ -2029,12 +2035,30 @@
     return true;
   };
 
-  // Give the initial randomized All grid one paint before opening a direct link.
-  window.requestAnimationFrame(() => openPhotoFromHash());
+  // Give the initial grid one paint before opening a direct-photo link.
+  // #latest is an album route, not a photograph slug, so it intentionally
+  // leaves the viewer closed and shows the newest-first grid instead.
+  window.requestAnimationFrame(() => {
+    if (hashSlug() !== 'latest') openPhotoFromHash();
+  });
 
-  // Also support changing/pasting a #slug while the Photography page is open.
+  // Also support changing/pasting a hash while the Photography page is open.
+  // Reserve #latest for the virtual album; every other hash keeps the existing
+  // direct-photo behavior (for example #seagulls).
   window.addEventListener('hashchange', () => {
-    if (window.location.hash) openPhotoFromHash();
+    const slug = hashSlug();
+    if (!slug) return;
+
+    if (slug === 'latest') {
+      if (activeAlbum !== 'Latest') {
+        activeAlbum = 'Latest';
+        renderAlbumNav();
+        renderGrid();
+      }
+      return;
+    }
+
+    openPhotoFromHash();
   });
 
   variantControls?.addEventListener('click', event => {

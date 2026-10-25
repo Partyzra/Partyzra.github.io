@@ -1,20 +1,23 @@
-PARTYZRA PHOTOGRAPHY — FASTER "TAKE A LOOK" INTRO V8
+PARTYZRA — LATEST WORK HOMEPAGE LINK V1
 
-Replace only:
+Based directly on the uploaded up-to-date repository.
+
+Replace:
+  home.html
+  css/style.css
   photography-content.html
+  js/photography-page.js
 
-Change:
-- Speeds the entire "Take -> a -> look" intro sequence up by approximately 50%.
-- Each word still begins blurred/soft and resolves into focus in the same order.
-- The silver -> red/blue/yellow transition on "look" also begins and resolves
-  proportionally sooner, so the full intro keeps the same rhythm.
-- The long-term gradient drift remains slow at 22 seconds.
-- The subtle floating motion itself remains the same speed; it simply begins
-  sooner after the faster reveal.
+WHAT IT DOES
+- Adds a small "Latest work ↗" link at the lower-left of the homepage hero.
+- Styling intentionally echoes the Observe / Listen / Watch hero language:
+  restrained uppercase text, a fine connecting rule, and a subtle arrow.
+- It reveals after the three main hero words, rather than competing with them.
+- The link points to: photography.html#latest
+- Photography now reserves #latest as an album deep link.
+- Opening that URL activates the existing Latest album (newest-first).
+- Existing photo deep links such as photography.html#seagulls are unchanged.
 
-Preserved:
-- Latest album
-- direct/deep photo share links
-- share icon + "link copied"
-- gallery/viewer behavior
-- all other Photography page styling
+CACHE BUMPS
+- home.html: css/style.css?v=4.17.31
+- photography-content.html: photography-page.js?v=2.9.5
