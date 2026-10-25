@@ -3845,7 +3845,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "New York44.jpg",
     "variants": ["New York44.1.jpg"],
-    "title": "Broadway",
+    "title": "Times Square",
     "album": "New York",
     "collection": "City",
     "year": "",
