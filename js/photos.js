@@ -3858,6 +3858,21 @@ const PORTFOLIO_PHOTOS = [
       "city"
     ],
     "note": ""
+  },
+  {
+    "file": "New York82.jpg",
+    "variants": ["New York82.jpg"],
+    "title": "Times Square",
+    "slug": "timessquare",
+    "album": "New York",
+    "collection": "City",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
   }
 
 
