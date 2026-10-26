@@ -3931,7 +3931,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York87.jpg",
-    "title": "Peering Over Edge",
+    "title": "Peeking Over",
     "slug": "edge",
     "album": "New York",
     "collection": "City",
