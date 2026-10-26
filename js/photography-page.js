@@ -294,7 +294,9 @@
 
      if (stem === 'new york81') return '50% 11%';   // top
 
-     if (stem === 'new york19') return '50% 39%';   // 
+     if (stem === 'new york19') return '50% 39%';   // near center
+
+     if (stem === 'new york82') return '50% 29%';   // top
 
   };
 

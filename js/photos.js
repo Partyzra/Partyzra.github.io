@@ -3861,9 +3861,78 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York82.jpg",
-    "variants": ["New York82.jpg"],
     "title": "Skyline",
     "slug": "skyline",
+    "album": "New York",
+    "collection": "City",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York83.jpg",
+    "title": "'Normal' Building",
+    "slug": "normalbuilding",
+    "album": "New York",
+    "collection": "City",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York84.jpg",
+    "title": "Dock",
+    "slug": "dock",
+    "album": "New York",
+    "collection": "City",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York85.jpg",
+    "title": "The Bronx",
+    "slug": "thebronx",
+    "album": "New York",
+    "collection": "City",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York86.jpg",
+    "title": "Out of Order",
+    "slug": "outoforder",
+    "album": "New York",
+    "collection": "City",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York87.jpg",
+    "title": "Peering Over Edge",
+    "slug": "edge",
     "album": "New York",
     "collection": "City",
     "year": "",
