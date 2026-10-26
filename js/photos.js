@@ -3862,8 +3862,8 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "New York82.jpg",
     "variants": ["New York82.jpg"],
-    "title": "Times Square",
-    "slug": "timessquare",
+    "title": "Skyline",
+    "slug": "skyline",
     "album": "New York",
     "collection": "City",
     "year": "",
