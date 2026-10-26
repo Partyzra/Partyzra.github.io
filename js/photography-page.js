@@ -298,6 +298,8 @@
 
      if (stem === 'new york82') return '50% 29%';   // top
 
+     if (stem === 'new york86') return '50% 26%';   // top
+
   };
 
   const albumNav = qs('[data-album-nav]');
