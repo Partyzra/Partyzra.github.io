@@ -612,7 +612,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Fence.JPG",
-    "title": "Fence",
+    "title": "Striped Fence",
     "album": "Layton",
     "collection": "Places & Structures",
     "year": "",
