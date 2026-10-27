@@ -3942,6 +3942,20 @@ const PORTFOLIO_PHOTOS = [
       "city"
     ],
     "note": ""
+  },
+  {
+    "file": "Plants VS Zombies.jpg",
+    "title": "Plants VS Zombies",
+    "slug": "plantsvszombies",
+    "album": "Layton",
+    "collection": "City",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
   }
 
 
