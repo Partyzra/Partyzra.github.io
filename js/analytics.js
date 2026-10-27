@@ -1,5 +1,5 @@
 /*
-  Partyzra Analytics — V2.4 privacy + low-priority dispatch
+  Partyzra Analytics — V2.9 returning-browser opt-in + low-priority dispatch
 
   This file replaces only js/analytics.js on the GitHub Pages portfolio.
   Cloudflare Worker, dashboard, D1 schema, and analytics-config.js stay unchanged.
@@ -21,7 +21,9 @@
     || location.protocol === 'file:';
   const optOutKey = 'partyzra_analytics_opt_out';
   const sessionKey = 'partyzra_analytics_session';
-  const version = '2.4.0';
+  const version = '2.9.0';
+  const visitorConsentKey = 'partyzra_returning_consent';
+  const visitorIdKey = 'partyzra_returning_visitor_id';
 
   // The public shell (index.html, photography.html, music.html) contains an
   // iframe. Look at the shell's query string so the opt-out links work from
@@ -44,7 +46,12 @@
   const preference = queryPreference();
   if (preference) {
     try {
-      if (preference === 'off') localStorage.setItem(optOutKey, '1');
+      if (preference === 'off') {
+        localStorage.setItem(optOutKey, '1');
+        // Revoking all analytics also revokes persistent visitor recognition.
+        localStorage.setItem(visitorConsentKey, 'no');
+        localStorage.removeItem(visitorIdKey);
+      }
       else localStorage.removeItem(optOutKey);
     } catch (_) {
       // If browser storage is disabled, the URL preference still applies
@@ -90,6 +97,26 @@
     }
   };
 
+  // Only generate a stable, random browser ID after explicit visitor choice.
+  // No fingerprint, IP, device attribute, third-party cookie, or identifier
+  // generation before consent. Normal session analytics remain unchanged.
+  const getVisitorId = () => {
+    if (isOptedOut()) return null;
+    try {
+      if (localStorage.getItem(visitorConsentKey) !== 'yes') return null;
+      const stored = localStorage.getItem(visitorIdKey);
+      if (/^v1-[a-f0-9]{32}$/.test(stored || '')) return stored;
+      if (!crypto.getRandomValues) return null;
+      const bytes = crypto.getRandomValues(new Uint8Array(16));
+      const next = 'v1-' + [...bytes].map(b => b.toString(16).padStart(2, '0')).join('');
+      localStorage.setItem(visitorIdKey, next);
+      return next;
+    } catch (_) {
+      // Without storage/crypto, report only the existing session data.
+      return null;
+    }
+  };
+
   const externalReferrer = () => {
     // Prefer the outside referrer, not the URL of the site's own shell iframe.
     try {
@@ -108,9 +135,11 @@
   let idleHandle = null;
 
   const dispatch = details => {
+    const visitorId = getVisitorId();
     const payload = {
       ...details,
-      session_id: getSessionId()
+      session_id: getSessionId(),
+      ...(visitorId ? { visitor_id: visitorId } : {})
     };
 
     // text/plain keeps the cross-origin request simple (no CORS preflight).

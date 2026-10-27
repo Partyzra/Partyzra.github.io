@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark"><title>Analytics & Privacy — Partyzra</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{background:#0a0b0c;color:#eeeae3;font:15px/1.8 system-ui,-apple-system,Segoe UI,sans-serif;margin:0}main{max-width:740px;margin:auto;padding:70px 24px 90px}h1{font:normal clamp(36px,6vw,57px) Georgia,serif;letter-spacing:-.045em;margin:0 0 20px}h2{font-size:12px;letter-spacing:.15em;text-transform:uppercase;margin-top:36px;color:#e2bb72}p,li{color:#c9c7c0}a{color:#e2bb72}nav{font-size:12px;letter-spacing:.14em;color:#9d9a92;margin-bottom:44px}code{color:#eeeae3}footer{margin-top:50px;padding-top:24px;border-top:1px solid #333;font-size:12px;color:#999}
+</style>
+</head><body><main><nav>PARTYZRA / PRIVACY</nav>
+<h1>Analytics &amp; privacy.</h1>
+<p>This independently hosted portfolio uses a custom Cloudflare Worker and Cloudflare D1 database to understand which pages, albums, and photographs visitors explore.</p>
+<h2>Basic site measurements</h2>
+<p>Ordinary page and photo interactions may be recorded using temporary session identifiers, event times, page names, image filenames, album selections, and referring websites where supplied. These events help measure engagement. They are not intended to identify people.</p>
+<h2>Optional returning-browser measurement</h2>
+<p>If you select <strong>Allow</strong> in the browser notice, the site generates a random first-party identifier and saves it in your browser's local storage. It sends that identifier with future analytics events, allowing multiple browsing sessions from the same browser to be grouped. No long-term browser identifier is generated before you opt in.</p>
+<p>Recognition is only for this browser profile and is not reliable across other browsers or devices. This is pseudonymous tracking, not personal identification. No advertising profiles are created or shared with advertisers.</p>
+<h2>Your controls</h2>
+<p>Use <strong>Privacy</strong> in the bottom-left of the public site to allow or stop optional returning-browser recognition. Stopping removes the identifier from that browser so future events will not be associated with it. Already recorded events remain in the database; stopping alone does not erase prior records.</p>
+<p>You can also <a href="https://partyzra.github.io/?analytics=off">disable site analytics in this browser</a>, or <a href="https://partyzra.github.io/?analytics=on">turn basic analytics back on</a>. These preferences are browser-specific and can be reset when browser storage is cleared.</p>
+<h2>Data handling</h2>
+<p>The custom analytics events intentionally do not store IP addresses, precise locations, names, emails, or browser fingerprints. Requests reach Cloudflare, which processes connection data as part of delivering the service. The site owner may exclude personal public IPs at the Worker before events are written. Analytics records are retained for historical engagement comparisons; no automatic deletion schedule is currently configured.</p>
+<p>Because consent and privacy rules vary by location, this notice is explanatory and not a complete legal determination of every requirement. You can contact the site owner through the contact information displayed on the portfolio to discuss privacy questions or data requests.</p>
+<footer>Last updated October 2026 · <a href="https://partyzra.github.io/">Back to Partyzra</a></footer>
+</main></body></html>

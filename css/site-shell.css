@@ -244,3 +244,29 @@ body.site-shell-page {
   pointer-events: none;
   opacity: 0;
 }
+
+/* Analytics V2.9: compact, optional returning-browser consent. */
+.site-analytics-privacy-trigger {
+  position: fixed; z-index: 2147483640;
+  left: 14px; bottom: 12px; border: 0; background: rgba(16,18,19,.85);
+  color: #b0aea8; font: 10px/1.2 system-ui, sans-serif; letter-spacing: .04em;
+  padding: 7px 10px; cursor: pointer; border-radius: 5px;
+}
+.site-analytics-privacy-trigger:hover, .site-analytics-privacy-trigger:focus-visible { color: #eeeae3; outline-color: #b6935a; }
+.site-analytics-consent {
+  position: fixed; z-index: 2147483641; left: 14px; bottom: 48px;
+  width: min(350px, calc(100vw - 28px)); padding: 17px 18px;
+  background: #151718; border: 1px solid #5e5545; border-radius: 9px;
+  box-shadow: 0 13px 35px rgba(0,0,0,.56); color: #eeeae3;
+  font: 12px/1.65 system-ui, sans-serif;
+}
+.site-analytics-consent[hidden], .site-analytics-consent-actions button[hidden] { display: none !important; }
+.site-analytics-consent strong { display: block; font: 17px/1.25 Georgia,serif; font-weight: 400; }
+.site-analytics-consent p { color: #c2c0ba; margin: 10px 0 15px; }
+.site-analytics-consent-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.site-analytics-consent-actions button {
+  border: 1px solid #524d45; border-radius: 5px; color: #dedad0;
+  background: #242526; padding: 7px 12px; cursor: pointer; font: 11px system-ui,sans-serif;
+}
+.site-analytics-consent-actions button.site-analytics-consent-yes { background: #ac8952; border-color: #ac8952; color: #101112; }
+.site-analytics-consent-actions a { color: #a5a29b; text-decoration: underline; font-size: 10px; }

@@ -82,6 +82,9 @@ async function handleTrack(request, env) {
   const label = clean(payload.label, 240);
   const referrer = cleanReferrer(payload.referrer);
   const sessionId = clean(payload.session_id, 64);
+  // An optional, consent-based random ID. No IPs, fingerprints, or inferred identity.
+  const submittedVisitorId = clean(payload.visitor_id, 64);
+  const visitorId = /^v1-[a-f0-9]{32}$/.test(submittedVisitorId) ? submittedVisitorId : null;
 
   if (!['page_view', 'photo_view', 'custom_event'].includes(eventType)) {
     return withCors(json({ ok: false, error: 'invalid_event_type' }, 400), origin);
@@ -97,9 +100,9 @@ async function handleTrack(request, env) {
 
   try {
     await env.DB.prepare(`
-      INSERT INTO events (event_type, page, item, label, referrer, session_id)
-      VALUES (?1, ?2, ?3, ?4, ?5, ?6)
-    `).bind(eventType, page, item || null, label || null, referrer || null, sessionId).run();
+      INSERT INTO events (event_type, page, item, label, referrer, session_id, visitor_id)
+      VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)
+    `).bind(eventType, page, item || null, label || null, referrer || null, sessionId, visitorId).run();
   } catch (_) {
     return withCors(json({ ok: false, error: 'database_write_failed' }, 500), origin);
   }
@@ -360,10 +363,65 @@ async function renderDashboard(env, url) {
     const activityPage = Math.min(requestedPage, activityPageCount);
     const activityOffset = (activityPage - 1) * activitySize;
     const recent = await queryRows(env, `
-      SELECT event_type, page, item, label, created_at
+      SELECT event_type, page, item, label, created_at, visitor_id
       FROM events WHERE 1=1 ${filter.sql}
       ORDER BY created_at DESC, id DESC LIMIT ? OFFSET ?
     `, ...filter.args, activitySize, activityOffset);
+
+    // Visitors are browsers that explicitly opted into cross-session recognition.
+    // Historical and declined-consent sessions remain unlinked, not discarded.
+    // First-ever timestamps are computed across ALL stored events so date filters
+    // do not wrongly treat a returning browser as brand new.
+    const visitorSince = range.startUtc || '0000-01-01 00:00:00';
+    const visitorUntil = range.endUtc;
+    const visitorFilter = [visitorSince, visitorUntil];
+    const [visitorStatsRows, visitorRows, unlinkedRows] = await Promise.all([
+      queryRows(env, `
+        WITH browser_history AS (
+          SELECT visitor_id,
+            MIN(created_at) AS first_seen,
+            COUNT(DISTINCT session_id) AS lifetime_sessions,
+            MAX(CASE WHEN created_at >= ? AND created_at < ? THEN created_at END) AS last_in_range
+          FROM events WHERE visitor_id IS NOT NULL
+          GROUP BY visitor_id
+        )
+        SELECT COUNT(*) AS known_browsers,
+          SUM(CASE WHEN first_seen >= ? THEN 1 ELSE 0 END) AS newly_seen,
+          SUM(CASE WHEN lifetime_sessions > 1 THEN 1 ELSE 0 END) AS returning_browsers,
+          SUM(CASE WHEN lifetime_sessions = 1 THEN 1 ELSE 0 END) AS seen_once
+        FROM browser_history WHERE last_in_range IS NOT NULL
+      `, ...visitorFilter, visitorSince),
+      queryRows(env, `
+        SELECT visitor_id, MIN(created_at) AS first_seen,
+          MAX(created_at) AS last_seen,
+          COUNT(DISTINCT session_id) AS lifetime_sessions,
+          COUNT(DISTINCT CASE WHEN created_at >= ? AND created_at < ? THEN session_id END) AS period_sessions,
+          MAX(CASE WHEN created_at >= ? AND created_at < ? THEN created_at END) AS last_in_range
+        FROM events WHERE visitor_id IS NOT NULL
+        GROUP BY visitor_id HAVING period_sessions > 0
+        ORDER BY last_in_range DESC, visitor_id ASC LIMIT 12
+      `, ...visitorFilter, ...visitorFilter),
+      queryRows(env, `
+        SELECT COUNT(DISTINCT session_id) AS unlinked_sessions
+        FROM events WHERE visitor_id IS NULL AND created_at >= ? AND created_at < ?
+      `, ...visitorFilter)
+    ]);
+    let visitorSessionHistory = [];
+    if (visitorRows.length) {
+      const ids = visitorRows.map(row => row.visitor_id);
+      const placeholders = ids.map(() => '?').join(',');
+      visitorSessionHistory = await queryRows(env, `
+        SELECT visitor_id, session_id,
+          MIN(created_at) AS started_at, MAX(created_at) AS ended_at,
+          COUNT(*) AS events,
+          SUM(CASE WHEN event_type = 'page_view' THEN 1 ELSE 0 END) AS page_views,
+          SUM(CASE WHEN event_type = 'photo_view' THEN 1 ELSE 0 END) AS photo_opens,
+          GROUP_CONCAT(DISTINCT CASE WHEN event_type = 'page_view' THEN page END) AS pages
+        FROM events WHERE visitor_id IN (${placeholders})
+        GROUP BY visitor_id, session_id
+        ORDER BY started_at DESC
+      `, ...ids);
+    }
 
     return new Response(dashboardHtml({
       chosen, range, totals: totalsRows[0] || {}, pages, photos, daily, recent,
@@ -371,6 +429,8 @@ async function renderDashboard(env, url) {
         total: totalActivity, offset: activityOffset },
       subjects, galleryFunnel: galleryFunnel[0] || {}, recentPhotos, trends, comparison,
       albumTotals: albumTotals[0] || {}, namedAlbums, recentAlbums, infrastructure,
+      visitorStats: visitorStatsRows[0] || {}, visitorRows, visitorSessionHistory,
+      unlinkedSessions: Number(unlinkedRows[0]?.unlinked_sessions || 0),
       sources: summarizeSources(sources)
     }), {
       headers: {
@@ -589,7 +649,8 @@ function summarizeSources(rows) {
 }
 
 function dashboardHtml({ chosen, range, totals, pages, photos, daily, recent, activity, sources,
-  subjects, galleryFunnel, recentPhotos, trends, comparison, albumTotals, namedAlbums, recentAlbums, infrastructure }) {
+  subjects, galleryFunnel, recentPhotos, trends, comparison, albumTotals, namedAlbums, recentAlbums, infrastructure,
+  visitorStats, visitorRows, visitorSessionHistory, unlinkedSessions }) {
   const number = value => Number(value || 0).toLocaleString('en-US');
   const count = key => Number(totals[key] || 0);
   const infra = infrastructure || {};
@@ -707,6 +768,28 @@ function dashboardHtml({ chosen, range, totals, pages, photos, daily, recent, ac
     <span>Page ${number(activity.page)} of ${number(activity.pageCount)}</span>
     ${activity.page < activity.pageCount ? `<a class="activity-page-link" href="${activityLink(activity.page + 1)}">Older →</a>` : '<span class="activity-disabled">Older →</span>'}
   </nav>`;
+  const visitors = visitorStats || {};
+  const histories = new Map();
+  for (const visit of visitorSessionHistory || []) {
+    if (!histories.has(visit.visitor_id)) histories.set(visit.visitor_id, []);
+    const list = histories.get(visit.visitor_id);
+    if (list.length < 6) list.push(visit);
+  }
+  const browserAlias = visitorId => 'Browser ' + String(visitorId || '').slice(3, 9).toUpperCase();
+  const visitorList = visitorRows.length ? visitorRows.map(row => {
+    const sessions = histories.get(row.visitor_id) || [];
+    const returned = Number(row.lifetime_sessions || 0) > 1;
+    const entries = sessions.map(visit => `<div class="visitor-history-row">
+      <span>${escapeHtml(formatMountain(visit.started_at))}</span>
+      <span>${number(visit.page_views)} pages · ${number(visit.photo_opens)} photos</span>
+      <small>${escapeHtml(visit.pages || 'Interaction only')}</small>
+    </div>`).join('');
+    return `<details class="visitor-record"><summary><span class="visitor-name">${escapeHtml(browserAlias(row.visitor_id))}</span>
+      <span class="visitor-status ${returned ? 'is-returning' : ''}">${returned ? 'Returned' : 'Seen once'}</span>
+      <span>${number(row.lifetime_sessions)} sessions</span><span>Last: ${escapeHtml(formatMountain(row.last_in_range))}</span></summary>
+      <div class="visitor-details"><p>First recorded: ${escapeHtml(formatMountain(row.first_seen))} · Latest: ${escapeHtml(formatMountain(row.last_seen))} · ${number(row.period_sessions)} sessions in selected range</p>
+        ${entries}<small>Up to six newest sessions shown. A browser isn't necessarily one person.</small></div></details>`;
+  }).join('') : '<p class="empty">No browsers have opted into returning-visit recognition in this period.</p>';
   const activityRows = recent.length ? recent.map(row => {
     const isAlbum = row.event_type === 'custom_event' && row.item === 'album_select';
     const name = row.event_type === 'page_view' ? 'Page view' : row.event_type === 'photo_view'
@@ -714,9 +797,10 @@ function dashboardHtml({ chosen, range, totals, pages, photos, daily, recent, ac
     const item = row.event_type === 'page_view' ? prettyPage(row.page) :
       isAlbum ? (row.label || 'Album') : stripFrameLabel(row.label || row.item || prettyPage(row.page));
     const file = row.event_type === 'page_view' ? row.page : isAlbum ? 'Photography collection' : row.item;
+    const browser = row.visitor_id ? ` · ${escapeHtml(browserAlias(row.visitor_id))}` : ''; 
     return `<tr><td class="date-cell">${escapeHtml(formatMountain(row.created_at))}</td>
       <td><span class="event-tag">${name}</span></td>
-      <td><span class="activity-name">${escapeHtml(item)}</span><span class="activity-sub">${escapeHtml(file || '')}</span></td></tr>`;
+      <td><span class="activity-name">${escapeHtml(item)}</span><span class="activity-sub">${escapeHtml(file || '')}${browser}</span></td></tr>`;
   }).join('') : '<tr><td colspan="3" class="empty">No activity in this period.</td></tr>';
   const updated = new Intl.DateTimeFormat('en-US', {
     timeZone: DASHBOARD_TZ, month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short'
@@ -746,12 +830,12 @@ main{max-width:1260px;margin:auto;padding:42px 28px 80px}
 .photo-intro{display:flex;justify-content:space-between;align-items:baseline;gap:14px;margin:30px 0 12px;border-top:1px solid var(--stroke);padding-top:20px}.photo-intro h2{font:400 31px/1.1 Georgia,serif;letter-spacing:-.045em;margin:0}.photo-intro p{font-size:11px;color:var(--faint);margin:0}.photo-intro em{color:var(--gold);font-style:italic}
 .photo-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-bottom:11px}.photo-metric{background:var(--panel);border:1px solid var(--stroke);border-radius:10px;padding:17px 19px}.photo-metric small{display:block;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}.photo-metric strong{display:block;font:400 30px/1.4 Georgia,serif;font-variant-numeric:tabular-nums;margin-top:3px}.photo-metric span{display:block;color:var(--faint);font-size:10px;margin-top:2px}
 .rank-meta{display:block;font-size:10px;color:var(--faint);margin-top:3px}.subject-row{padding:13px 0}.photo-detail{margin-top:11px}.trend-row,.photo-activity-row{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:12px 0;border-bottom:1px solid var(--stroke-soft)}.trend-row:last-child,.photo-activity-row:last-child{border-bottom:none}.trend-info,.photo-activity-info{min-width:0}.trend-info strong,.photo-activity-info strong{display:block;font-size:12px;font-weight:500;overflow-wrap:anywhere}.trend-info span,.photo-activity-info span{display:block;font-size:10px;color:var(--faint);margin-top:4px;overflow-wrap:anywhere}.trend-change{font-size:11px;flex-shrink:0;color:var(--muted);font-variant-numeric:tabular-nums}.trend-change.positive{color:var(--gold)}.trend-change.negative{color:var(--faint)}.photo-activity-row time{font-size:10px;color:var(--muted);white-space:nowrap;flex-shrink:0}
-.infra-intro{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;margin:34px 0 12px;border-top:1px solid var(--stroke);padding-top:22px}.infra-intro h2{font:400 31px/1.1 Georgia,serif;letter-spacing:-.045em;margin:0}.infra-intro h2 em{color:var(--gold);font-style:italic}.infra-intro p{font-size:11px;color:var(--faint);margin:7px 0 0}.health-pill{display:inline-flex;align-items:center;gap:8px;border:1px solid #4b533f;background:#171b15;border-radius:999px;padding:8px 12px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#c8d4b8;white-space:nowrap}.health-pill.issue{border-color:#684642;background:#1d1514;color:#dfaaa2}.health-dot{width:7px;height:7px;border-radius:50%;background:#9db477;box-shadow:0 0 0 4px rgba(157,180,119,.08)}.health-pill.issue .health-dot{background:#d17f72;box-shadow:0 0 0 4px rgba(209,127,114,.08)}.infra-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-bottom:11px}.infra-metric{background:var(--panel);border:1px solid var(--stroke);border-radius:10px;padding:17px 19px}.infra-metric small{display:block;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}.infra-metric strong{display:block;font:400 25px/1.4 Georgia,serif;margin-top:4px;font-variant-numeric:tabular-nums}.infra-metric span{display:block;color:var(--faint);font-size:10px;margin-top:2px}.status-ok{color:#c8d4b8}.infra-check{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--stroke-soft);font-size:11px}.infra-check:last-child{border-bottom:none}.infra-check span{color:var(--muted)}.infra-check strong{font-weight:500;color:var(--text);text-align:right}.infra-note{font-size:10px;line-height:1.7;color:var(--faint);margin:13px 1px 4px}.album-intro{margin-top:33px}.album-note{font-size:10px;line-height:1.7;color:var(--faint);margin:13px 1px 4px}.empty{font-size:12px;color:var(--faint);padding:8px 0}.privacy{border-top:1px solid var(--stroke);padding-top:18px;margin-top:26px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:10px;line-height:1.8;color:var(--faint)}.privacy p{margin:0}.privacy strong{color:var(--muted);font-weight:500}
+.infra-intro{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;margin:34px 0 12px;border-top:1px solid var(--stroke);padding-top:22px}.infra-intro h2{font:400 31px/1.1 Georgia,serif;letter-spacing:-.045em;margin:0}.infra-intro h2 em{color:var(--gold);font-style:italic}.infra-intro p{font-size:11px;color:var(--faint);margin:7px 0 0}.health-pill{display:inline-flex;align-items:center;gap:8px;border:1px solid #4b533f;background:#171b15;border-radius:999px;padding:8px 12px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#c8d4b8;white-space:nowrap}.health-pill.issue{border-color:#684642;background:#1d1514;color:#dfaaa2}.health-dot{width:7px;height:7px;border-radius:50%;background:#9db477;box-shadow:0 0 0 4px rgba(157,180,119,.08)}.health-pill.issue .health-dot{background:#d17f72;box-shadow:0 0 0 4px rgba(209,127,114,.08)}.infra-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-bottom:11px}.infra-metric{background:var(--panel);border:1px solid var(--stroke);border-radius:10px;padding:17px 19px}.infra-metric small{display:block;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}.infra-metric strong{display:block;font:400 25px/1.4 Georgia,serif;margin-top:4px;font-variant-numeric:tabular-nums}.infra-metric span{display:block;color:var(--faint);font-size:10px;margin-top:2px}.status-ok{color:#c8d4b8}.infra-check{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--stroke-soft);font-size:11px}.infra-check:last-child{border-bottom:none}.infra-check span{color:var(--muted)}.infra-check strong{font-weight:500;color:var(--text);text-align:right}.infra-note{font-size:10px;line-height:1.7;color:var(--faint);margin:13px 1px 4px}.album-intro{margin-top:33px}.album-note{font-size:10px;line-height:1.7;color:var(--faint);margin:13px 1px 4px}.empty{font-size:12px;color:var(--faint);padding:8px 0}.visitor-metrics{margin-top:11px}.visitor-intro{margin-top:27px}.visitor-record{border-bottom:1px solid var(--stroke-soft);padding:12px 0}.visitor-record summary{display:flex;align-items:center;gap:12px;flex-wrap:wrap;list-style:none;cursor:pointer;font-size:11px;color:var(--muted)}.visitor-record summary::-webkit-details-marker{display:none}.visitor-record summary:before{content:"+";color:var(--gold);font-size:16px}.visitor-record[open] summary:before{content:"−"}.visitor-name{color:var(--text);font-weight:600;min-width:110px}.visitor-status{font-size:10px;border:1px solid var(--stroke);padding:2px 7px;border-radius:6px}.visitor-status.is-returning{color:var(--gold);border-color:#69563b}.visitor-details{padding:10px 0 3px 25px}.visitor-details p,.visitor-details small{font-size:10px;color:var(--faint)}.visitor-history-row{display:flex;gap:12px;flex-wrap:wrap;border-top:1px solid var(--stroke-soft);padding:9px 0;font-size:11px}.visitor-history-row small{width:100%;color:var(--faint)}.visitor-note{font-size:11px;line-height:1.8;color:var(--faint);margin:12px 2px 0}.privacy{border-top:1px solid var(--stroke);padding-top:18px;margin-top:26px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:10px;line-height:1.8;color:var(--faint)}.privacy p{margin:0}.privacy strong{color:var(--muted);font-weight:500}
 @media(max-width:920px){.dashboard-grid,.lower{grid-template-columns:1fr}.cards,.photo-metrics,.infra-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.panel{padding:20px}}
 @media(max-width:560px){main{padding:23px 13px 56px}.mast{margin-bottom:28px}.top{display:block}.top-note{text-align:left;margin-top:17px}.controls{align-items:flex-start}.filters{width:100%;justify-content:space-between}.filter{padding:8px 9px}.cards,.photo-metrics,.infra-metrics{gap:8px}.photo-intro,.infra-intro{display:block}.photo-intro p,.infra-intro p{margin-top:9px}.health-pill{margin-top:14px}.photo-metric{padding:15px 13px}.photo-activity-row{align-items:flex-start;flex-direction:column;gap:5px}.card{padding:17px 14px;min-height:126px}.panel{padding:16px}.chart-legend{gap:9px}.chart{gap:2px}.tick{font-size:8px}.date-cell{font-size:10px}.table-wrap{overflow-x:auto}.privacy{display:block}}
 </style></head>
 <body><main>
-  <div class="mast"><div class="brandmark" aria-hidden="true">P</div><div class="brandtext">PARTYZRA</div><span class="edition">Private / Statistics 02.8.1</span></div>
+  <div class="mast"><div class="brandmark" aria-hidden="true">P</div><div class="brandtext">PARTYZRA</div><span class="edition">Private / Statistics 02.9</span></div>
   <header class="top"><div><p class="eyebrow">Portfolio intelligence</p><h1>Behind the <em>frames.</em></h1></div>
     <div class="top-note">TIMEZONE&nbsp; <strong>Mountain · ${escapeHtml(currentZoneAbbreviation())}</strong><br>
       UPDATED&nbsp; <strong>${escapeHtml(updated)}</strong><br>Refresh to see new activity</div></header>
@@ -771,6 +855,16 @@ main{max-width:1260px;margin:auto;padding:42px 28px 80px}
       <div class="table-wrap"><table><thead><tr><th>Mountain Time</th><th>Event</th><th>Detail</th></tr></thead><tbody>${activityRows}</tbody></table></div>
       ${activityPager}</section>
   </div>
+  <div class="photo-intro visitor-intro"><h2>Behind the <em>visits.</em></h2><p>Opt-in browser recognition · Selected period</p></div>
+  <section class="photo-metrics visitor-metrics" aria-label="Returning browser summary">
+    <article class="photo-metric"><small>Known browsers</small><strong>${number(visitors.known_browsers)}</strong><span>Browsers recognized in this range</span></article>
+    <article class="photo-metric"><small>Newly recognized</small><strong>${number(visitors.newly_seen)}</strong><span>First recognized during this range</span></article>
+    <article class="photo-metric"><small>Returned</small><strong>${number(visitors.returning_browsers)}</strong><span>Two or more recorded browser sessions</span></article>
+    <article class="photo-metric"><small>Unlinked sessions</small><strong>${number(unlinkedSessions)}</strong><span>No optional returning-browser identifier</span></article>
+  </section>
+  <section class="panel" aria-label="Returning browser histories"><div class="panelhead"><h2>Recent recognized browsers</h2><span class="hint">Latest 12 in selected period · Expand for sessions</span></div>
+    ${visitorList}<p class="visitor-note">“Newly recognized” refers to the first opt-in event, not necessarily a person's first visit. “Returned” means at least two distinct tracked sessions across all history; these categories can overlap. Unlinked sessions include historical visits and people who declined optional recognition. Session/browser counts are not counts of people. Older events remain unchanged.</p>
+  </section>
   <div class="infra-intro"><div><h2>Infrastructure <em>health.</em></h2><p>Live Worker + D1 checks · independent of the selected analytics range</p></div>
     <span class="health-pill ${infraHealthy ? '' : 'issue'}"><i class="health-dot" aria-hidden="true"></i>${escapeHtml(infraStatus)}</span></div>
   <section class="infra-metrics" aria-label="Infrastructure health summary">
@@ -841,8 +935,8 @@ main{max-width:1260px;margin:auto;padding:42px 28px 80px}
       <p class="hint" style="margin-top:16px">A session is a temporary, anonymous browser session—not a unique person. One person can create several sessions.</p></section>
   </div>
   <footer class="privacy"><p><strong>Private by design.</strong> Counts use existing anonymous session IDs, timestamps, page/photo opens, and referrers.<br>
-    No IP addresses, names, email addresses, precise location, or browser fingerprints are intentionally stored.</p>
-    <p>DATA STORED IN UTC · DISPLAYED IN AMERICA/DENVER<br>PARTYZRA ANALYTICS · V2.8.1</p></footer>
+    No IP addresses, names, email addresses, precise location, or browser fingerprints are intentionally stored. An optional random browser ID is stored only after a visitor opts in.</p>
+    <p>DATA STORED IN UTC · DISPLAYED IN AMERICA/DENVER<br>PARTYZRA ANALYTICS · V2.9</p></footer>
 </main></body></html>`;
 }
 

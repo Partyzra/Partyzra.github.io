@@ -22,42 +22,114 @@ main{max-width:1260px;margin:auto;padding:42px 28px 80px}
 .photo-intro{display:flex;justify-content:space-between;align-items:baseline;gap:14px;margin:30px 0 12px;border-top:1px solid var(--stroke);padding-top:20px}.photo-intro h2{font:400 31px/1.1 Georgia,serif;letter-spacing:-.045em;margin:0}.photo-intro p{font-size:11px;color:var(--faint);margin:0}.photo-intro em{color:var(--gold);font-style:italic}
 .photo-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-bottom:11px}.photo-metric{background:var(--panel);border:1px solid var(--stroke);border-radius:10px;padding:17px 19px}.photo-metric small{display:block;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}.photo-metric strong{display:block;font:400 30px/1.4 Georgia,serif;font-variant-numeric:tabular-nums;margin-top:3px}.photo-metric span{display:block;color:var(--faint);font-size:10px;margin-top:2px}
 .rank-meta{display:block;font-size:10px;color:var(--faint);margin-top:3px}.subject-row{padding:13px 0}.photo-detail{margin-top:11px}.trend-row,.photo-activity-row{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:12px 0;border-bottom:1px solid var(--stroke-soft)}.trend-row:last-child,.photo-activity-row:last-child{border-bottom:none}.trend-info,.photo-activity-info{min-width:0}.trend-info strong,.photo-activity-info strong{display:block;font-size:12px;font-weight:500;overflow-wrap:anywhere}.trend-info span,.photo-activity-info span{display:block;font-size:10px;color:var(--faint);margin-top:4px;overflow-wrap:anywhere}.trend-change{font-size:11px;flex-shrink:0;color:var(--muted);font-variant-numeric:tabular-nums}.trend-change.positive{color:var(--gold)}.trend-change.negative{color:var(--faint)}.photo-activity-row time{font-size:10px;color:var(--muted);white-space:nowrap;flex-shrink:0}
-.album-intro{margin-top:33px}.album-note{font-size:10px;line-height:1.7;color:var(--faint);margin:13px 1px 4px}.empty{font-size:12px;color:var(--faint);padding:8px 0}.privacy{border-top:1px solid var(--stroke);padding-top:18px;margin-top:26px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:10px;line-height:1.8;color:var(--faint)}.privacy p{margin:0}.privacy strong{color:var(--muted);font-weight:500}
-@media(max-width:920px){.dashboard-grid,.lower{grid-template-columns:1fr}.cards,.photo-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.panel{padding:20px}}
-@media(max-width:560px){main{padding:23px 13px 56px}.mast{margin-bottom:28px}.top{display:block}.top-note{text-align:left;margin-top:17px}.controls{align-items:flex-start}.filters{width:100%;justify-content:space-between}.filter{padding:8px 9px}.cards,.photo-metrics{gap:8px}.photo-intro{display:block}.photo-intro p{margin-top:9px}.photo-metric{padding:15px 13px}.photo-activity-row{align-items:flex-start;flex-direction:column;gap:5px}.card{padding:17px 14px;min-height:126px}.panel{padding:16px}.chart-legend{gap:9px}.chart{gap:2px}.tick{font-size:8px}.date-cell{font-size:10px}.table-wrap{overflow-x:auto}.privacy{display:block}}
+.infra-intro{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;margin:34px 0 12px;border-top:1px solid var(--stroke);padding-top:22px}.infra-intro h2{font:400 31px/1.1 Georgia,serif;letter-spacing:-.045em;margin:0}.infra-intro h2 em{color:var(--gold);font-style:italic}.infra-intro p{font-size:11px;color:var(--faint);margin:7px 0 0}.health-pill{display:inline-flex;align-items:center;gap:8px;border:1px solid #4b533f;background:#171b15;border-radius:999px;padding:8px 12px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#c8d4b8;white-space:nowrap}.health-pill.issue{border-color:#684642;background:#1d1514;color:#dfaaa2}.health-dot{width:7px;height:7px;border-radius:50%;background:#9db477;box-shadow:0 0 0 4px rgba(157,180,119,.08)}.health-pill.issue .health-dot{background:#d17f72;box-shadow:0 0 0 4px rgba(209,127,114,.08)}.infra-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-bottom:11px}.infra-metric{background:var(--panel);border:1px solid var(--stroke);border-radius:10px;padding:17px 19px}.infra-metric small{display:block;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}.infra-metric strong{display:block;font:400 25px/1.4 Georgia,serif;margin-top:4px;font-variant-numeric:tabular-nums}.infra-metric span{display:block;color:var(--faint);font-size:10px;margin-top:2px}.status-ok{color:#c8d4b8}.infra-check{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--stroke-soft);font-size:11px}.infra-check:last-child{border-bottom:none}.infra-check span{color:var(--muted)}.infra-check strong{font-weight:500;color:var(--text);text-align:right}.infra-note{font-size:10px;line-height:1.7;color:var(--faint);margin:13px 1px 4px}.album-intro{margin-top:33px}.album-note{font-size:10px;line-height:1.7;color:var(--faint);margin:13px 1px 4px}.empty{font-size:12px;color:var(--faint);padding:8px 0}.visitor-metrics{margin-top:11px}.visitor-intro{margin-top:27px}.visitor-record{border-bottom:1px solid var(--stroke-soft);padding:12px 0}.visitor-record summary{display:flex;align-items:center;gap:12px;flex-wrap:wrap;list-style:none;cursor:pointer;font-size:11px;color:var(--muted)}.visitor-record summary::-webkit-details-marker{display:none}.visitor-record summary:before{content:"+";color:var(--gold);font-size:16px}.visitor-record[open] summary:before{content:"−"}.visitor-name{color:var(--text);font-weight:600;min-width:110px}.visitor-status{font-size:10px;border:1px solid var(--stroke);padding:2px 7px;border-radius:6px}.visitor-status.is-returning{color:var(--gold);border-color:#69563b}.visitor-details{padding:10px 0 3px 25px}.visitor-details p,.visitor-details small{font-size:10px;color:var(--faint)}.visitor-history-row{display:flex;gap:12px;flex-wrap:wrap;border-top:1px solid var(--stroke-soft);padding:9px 0;font-size:11px}.visitor-history-row small{width:100%;color:var(--faint)}.visitor-note{font-size:11px;line-height:1.8;color:var(--faint);margin:12px 2px 0}.privacy{border-top:1px solid var(--stroke);padding-top:18px;margin-top:26px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:10px;line-height:1.8;color:var(--faint)}.privacy p{margin:0}.privacy strong{color:var(--muted);font-weight:500}
+@media(max-width:920px){.dashboard-grid,.lower{grid-template-columns:1fr}.cards,.photo-metrics,.infra-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.panel{padding:20px}}
+@media(max-width:560px){main{padding:23px 13px 56px}.mast{margin-bottom:28px}.top{display:block}.top-note{text-align:left;margin-top:17px}.controls{align-items:flex-start}.filters{width:100%;justify-content:space-between}.filter{padding:8px 9px}.cards,.photo-metrics,.infra-metrics{gap:8px}.photo-intro,.infra-intro{display:block}.photo-intro p,.infra-intro p{margin-top:9px}.health-pill{margin-top:14px}.photo-metric{padding:15px 13px}.photo-activity-row{align-items:flex-start;flex-direction:column;gap:5px}.card{padding:17px 14px;min-height:126px}.panel{padding:16px}.chart-legend{gap:9px}.chart{gap:2px}.tick{font-size:8px}.date-cell{font-size:10px}.table-wrap{overflow-x:auto}.privacy{display:block}}
 </style></head>
-<body><main>
-  <div class="mast"><div class="brandmark" aria-hidden="true">P</div><div class="brandtext">PARTYZRA</div><span class="edition">Private / Statistics 02.7</span></div>
+<body><div style="background:#4b3b26;color:#fff3d9;padding:9px 20px;text-align:center;font:12px system-ui">ILLUSTRATIVE DATA ONLY — NOT YOUR LIVE ANALYTICS</div><main>
+  <div class="mast"><div class="brandmark" aria-hidden="true">P</div><div class="brandtext">PARTYZRA</div><span class="edition">Private / Statistics 02.9</span></div>
   <header class="top"><div><p class="eyebrow">Portfolio intelligence</p><h1>Behind the <em>frames.</em></h1></div>
     <div class="top-note">TIMEZONE&nbsp; <strong>Mountain · MDT</strong><br>
-      UPDATED&nbsp; <strong>Oct 21, 6:53 PM MDT</strong><br>Refresh to see new activity</div></header>
+      UPDATED&nbsp; <strong>Oct 27, 4:31 PM MDT</strong><br>Refresh to see new activity</div></header>
   <div class="controls"><nav class="filters" aria-label="Date range"><a class="filter "
     href="/dashboard?range=today&activity_size=100" >Today</a><a class="filter "
     href="/dashboard?range=7d&activity_size=100" >7 Days</a><a class="filter "
     href="/dashboard?range=30d&activity_size=100" >30 Days</a><a class="filter is-active"
-    href="/dashboard?range=all&activity_size=100" aria-current="page">All Time</a></nav><div class="period">Oct 21 – Oct 21, 2026</div></div>
+    href="/dashboard?range=all&activity_size=100" aria-current="page">All Time</a></nav><div class="period">Oct 27 – Oct 27, 2026</div></div>
   <section class="cards" aria-label="Traffic summary">
-    <article class="card"><span class="cardlabel">Sessions</span><span class="cardvalue">12</span><span class="cardsub">Anonymous browsing sessions</span></article>
-    <article class="card"><span class="cardlabel">Page views</span><span class="cardvalue">82</span><span class="cardsub">6.8 pages per session</span></article>
-    <article class="card"><span class="cardlabel">Photograph opens</span><span class="cardvalue">82</span><span class="cardsub">82 distinct image files</span></article>
-    <article class="card"><span class="cardlabel">Photo engagement</span><span class="cardvalue">25%</span><span class="cardsub">3 sessions opened a photo</span></article>
+    <article class="card"><span class="cardlabel">Sessions</span><span class="cardvalue">5</span><span class="cardsub">Anonymous browsing sessions</span></article>
+    <article class="card"><span class="cardlabel">Page views</span><span class="cardvalue">5</span><span class="cardsub">1.0 pages per session</span></article>
+    <article class="card"><span class="cardlabel">Photograph opens</span><span class="cardvalue">0</span><span class="cardsub">0 distinct image files</span></article>
+    <article class="card"><span class="cardlabel">Photo engagement</span><span class="cardvalue">0%</span><span class="cardsub">0 sessions opened a photo</span></article>
   </section>
+  <div class="lower activity-section">
+    <section class="panel" id="recent-activity"><div class="panelhead"><h2>Recent activity</h2><span class="hint">Mountain Time · Selected date range</span></div>
+      <div class="activity-controls">
+        <span class="activity-count">Showing 1–5 of 5 events</span>
+        <nav class="activity-sizes" aria-label="Events per page">Show <a href="/dashboard?range=all&activity_size=20&activity_page=1#recent-activity" class="activity-size"
+      >20</a><a href="/dashboard?range=all&activity_size=50&activity_page=1#recent-activity" class="activity-size"
+      >50</a><a href="/dashboard?range=all&activity_size=100&activity_page=1#recent-activity" class="activity-size selected"
+      aria-current="page">100</a><a href="/dashboard?range=all&activity_size=250&activity_page=1#recent-activity" class="activity-size"
+      >250</a></nav>
+      </div>
+      <div class="table-wrap"><table><thead><tr><th>Mountain Time</th><th>Event</th><th>Detail</th></tr></thead><tbody><tr><td class="date-cell">Oct 27, 4:31 PM MDT</td>
+      <td><span class="event-tag">Page view</span></td>
+      <td><span class="activity-name">Home</span><span class="activity-sub">/home</span></td></tr><tr><td class="date-cell">Oct 27, 4:31 PM MDT</td>
+      <td><span class="event-tag">Page view</span></td>
+      <td><span class="activity-name">Home</span><span class="activity-sub">/home · Browser 012345</span></td></tr><tr><td class="date-cell">Oct 27, 4:31 PM MDT</td>
+      <td><span class="event-tag">Page view</span></td>
+      <td><span class="activity-name">Home</span><span class="activity-sub">/home · Browser 012345</span></td></tr><tr><td class="date-cell">Oct 27, 4:31 PM MDT</td>
+      <td><span class="event-tag">Page view</span></td>
+      <td><span class="activity-name">Home</span><span class="activity-sub">/home</span></td></tr><tr><td class="date-cell">Oct 27, 4:31 PM MDT</td>
+      <td><span class="event-tag">Page view</span></td>
+      <td><span class="activity-name">Home</span><span class="activity-sub">/home</span></td></tr></tbody></table></div>
+      <nav class="activity-pager" aria-label="Recent activity pages">
+    <span class="activity-disabled">← Newer</span>
+    <span>Page 1 of 1</span>
+    <span class="activity-disabled">Older →</span>
+  </nav></section>
+  </div>
+  <div class="photo-intro visitor-intro"><h2>Behind the <em>visits.</em></h2><p>Opt-in browser recognition · Selected period</p></div>
+  <section class="photo-metrics visitor-metrics" aria-label="Returning browser summary">
+    <article class="photo-metric"><small>Known browsers</small><strong>1</strong><span>Browsers recognized in this range</span></article>
+    <article class="photo-metric"><small>Newly recognized</small><strong>1</strong><span>First recognized during this range</span></article>
+    <article class="photo-metric"><small>Returned</small><strong>1</strong><span>Two or more recorded browser sessions</span></article>
+    <article class="photo-metric"><small>Unlinked sessions</small><strong>3</strong><span>No optional returning-browser identifier</span></article>
+  </section>
+  <section class="panel" aria-label="Returning browser histories"><div class="panelhead"><h2>Recent recognized browsers</h2><span class="hint">Latest 12 in selected period · Expand for sessions</span></div>
+    <details class="visitor-record"><summary><span class="visitor-name">Browser 012345</span>
+      <span class="visitor-status is-returning">Returned</span>
+      <span>2 sessions</span><span>Last: Oct 27, 4:31 PM MDT</span></summary>
+      <div class="visitor-details"><p>First recorded: Oct 27, 4:31 PM MDT · Latest: Oct 27, 4:31 PM MDT · 2 sessions in selected range</p>
+        <div class="visitor-history-row">
+      <span>Oct 27, 4:31 PM MDT</span>
+      <span>1 pages · 0 photos</span>
+      <small>/home</small>
+    </div><div class="visitor-history-row">
+      <span>Oct 27, 4:31 PM MDT</span>
+      <span>1 pages · 0 photos</span>
+      <small>/home</small>
+    </div><small>Up to six newest sessions shown. A browser isn't necessarily one person.</small></div></details><p class="visitor-note">“Newly recognized” refers to the first opt-in event, not necessarily a person's first visit. “Returned” means at least two distinct tracked sessions across all history; these categories can overlap. Unlinked sessions include historical visits and people who declined optional recognition. Session/browser counts are not counts of people. Older events remain unchanged.</p>
+  </section>
+  <div class="infra-intro"><div><h2>Infrastructure <em>health.</em></h2><p>Live Worker + D1 checks · independent of the selected analytics range</p></div>
+    <span class="health-pill "><i class="health-dot" aria-hidden="true"></i>All systems normal</span></div>
+  <section class="infra-metrics" aria-label="Infrastructure health summary">
+    <article class="infra-metric"><small>Analytics Worker</small><strong class="status-ok">Operational</strong><span>This dashboard request reached the Worker</span></article>
+    <article class="infra-metric"><small>D1 Database</small><strong class="status-ok">Operational</strong><span>Live SELECT probe · 0.40 ms</span></article>
+    <article class="infra-metric"><small>Last event</small><strong>0s ago</strong><span>Oct 27, 4:31 PM MDT</span></article>
+    <article class="infra-metric"><small>D1 Size</small><strong>8.0 KB</strong><span>5 stored analytics events</span></article>
+  </section>
+  <div class="lower infra-detail">
+    <section class="panel"><div class="panelhead"><h2>Service checks</h2><span class="hint">Current configuration</span></div>
+      <div class="infra-check"><span>Dashboard authentication</span><strong>Active</strong></div>
+      <div class="infra-check"><span>Tracking origin lock</span><strong>Active · 1 allowed</strong></div>
+      <div class="infra-check"><span>Owner traffic exclusion</span><strong>Configured</strong></div>
+      <div class="infra-check"><span>Maximum event payload</span><strong>8,000 bytes</strong></div>
+    </section>
+    <section class="panel"><div class="panelhead"><h2>Data health</h2><span class="hint">All-time system state</span></div>
+      <div class="infra-check"><span>Events received · last hour</span><strong>5</strong></div>
+      <div class="infra-check"><span>Events received · last 24 hours</span><strong>5</strong></div>
+      <div class="infra-check"><span>Oldest stored event</span><strong>Oct 27, 4:31 PM MDT</strong></div>
+      <div class="infra-check"><span>D1 execution region</span><strong>Not reported</strong></div>
+    </section>
+  </div>
+  <p class="infra-note">Health values above come directly from this Worker and its D1 binding. Cloudflare account-level Worker request/error/CPU history is intentionally not fetched here yet; adding that later would require a restricted Cloudflare Analytics API token stored as a Worker secret.</p>
   <div class="dashboard-grid">
     <section class="panel"><div class="panelhead"><div><h2>Traffic timeline</h2><span class="hint">Monthly activity · Mountain Time</span></div><div class="chart-legend"><span class="key"><i class="key-page"></i>Page views</span><span class="key"><i class="key-photo"></i>Photo opens</span></div></div>
       <div class="chart-wrap" role="group" aria-label="Timeline of page views and photo opens">
         <div class="chart-grid" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
-        <div class="chart"><div class="chart-column" title="Oct 2026: 82 page views, 82 photo opens" aria-label="Oct 2026: 82 page views, 82 photo opens">
-      <div class="chart-stack"><span class="stack-photo" style="height:50.000%"></span><span class="stack-page" style="height:50.000%"></span></div>
+        <div class="chart"><div class="chart-column" title="Oct 2026: 5 page views, 0 photo opens" aria-label="Oct 2026: 5 page views, 0 photo opens">
+      <div class="chart-stack"><span class="stack-photo" style="height:0.000%"></span><span class="stack-page" style="height:100.000%"></span></div>
       <span class="tick">Oct 2026</span>
     </div></div>
-      </div><div class="chart-footer"><span>164 plotted events</span><span>Peak: 164 per month</span></div>
+      </div><div class="chart-footer"><span>5 plotted events</span><span>Peak: 5 per month</span></div>
     </section>
     <section class="panel"><div class="panelhead"><h2>Pages</h2><span class="hint">Page views</span></div>
     <div class="rank-row">
       <span class="rank-num">01</span>
       <div class="rank-body"><div class="rank-name">Home</div>
       <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">82</span>
+      <span class="rank-value">5</span>
     </div></section>
   </div>
   <div class="photo-intro"><h2>Through the <em>lens.</em></h2><p>Photography insights · Selected date range</p></div>
@@ -65,172 +137,16 @@ main{max-width:1260px;margin:auto;padding:42px 28px 80px}
     <article class="photo-metric"><small>Gallery sessions</small><strong>0</strong><span>Sessions viewing Photography</span></article>
     <article class="photo-metric"><small>Gallery → photo</small><strong>0%</strong><span>0 of 0 gallery sessions opened an image</span></article>
     <article class="photo-metric"><small>Alternate frames</small><strong>0</strong><span>Opens of secondary frames</span></article>
-    <article class="photo-metric"><small>Opens / photo session</small><strong>27.3</strong><span>Average among sessions that opened photographs</span></article>
+    <article class="photo-metric"><small>Opens / photo session</small><strong>0.0</strong><span>Average among sessions that opened photographs</span></article>
   </section>
   <div class="lower photo-detail">
-    <section class="panel"><div class="panelhead"><h2>Top photographs</h2><span class="hint">All frames grouped by title</span></div><div class="rank-row subject-row">
-      <span class="rank-num">01</span>
-      <div class="rank-body"><div class="rank-name">Test 0</div>
-        <span class="rank-meta">1 photo-opening session · 1 file</span>
-        <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span></div><div class="rank-row subject-row">
-      <span class="rank-num">02</span>
-      <div class="rank-body"><div class="rank-name">Test 100</div>
-        <span class="rank-meta">1 photo-opening session · 1 file</span>
-        <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span></div><div class="rank-row subject-row">
-      <span class="rank-num">03</span>
-      <div class="rank-body"><div class="rank-name">Test 104</div>
-        <span class="rank-meta">1 photo-opening session · 1 file</span>
-        <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span></div><div class="rank-row subject-row">
-      <span class="rank-num">04</span>
-      <div class="rank-body"><div class="rank-name">Test 108</div>
-        <span class="rank-meta">1 photo-opening session · 1 file</span>
-        <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span></div><div class="rank-row subject-row">
-      <span class="rank-num">05</span>
-      <div class="rank-body"><div class="rank-name">Test 112</div>
-        <span class="rank-meta">1 photo-opening session · 1 file</span>
-        <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span></div><div class="rank-row subject-row">
-      <span class="rank-num">06</span>
-      <div class="rank-body"><div class="rank-name">Test 116</div>
-        <span class="rank-meta">1 photo-opening session · 1 file</span>
-        <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span></div><div class="rank-row subject-row">
-      <span class="rank-num">07</span>
-      <div class="rank-body"><div class="rank-name">Test 12</div>
-        <span class="rank-meta">1 photo-opening session · 1 file</span>
-        <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span></div><div class="rank-row subject-row">
-      <span class="rank-num">08</span>
-      <div class="rank-body"><div class="rank-name">Test 120</div>
-        <span class="rank-meta">1 photo-opening session · 1 file</span>
-        <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span></div><div class="rank-row subject-row">
-      <span class="rank-num">09</span>
-      <div class="rank-body"><div class="rank-name">Test 124</div>
-        <span class="rank-meta">1 photo-opening session · 1 file</span>
-        <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span></div><div class="rank-row subject-row">
-      <span class="rank-num">10</span>
-      <div class="rank-body"><div class="rank-name">Test 128</div>
-        <span class="rank-meta">1 photo-opening session · 1 file</span>
-        <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span></div><div class="rank-row subject-row">
-      <span class="rank-num">11</span>
-      <div class="rank-body"><div class="rank-name">Test 132</div>
-        <span class="rank-meta">1 photo-opening session · 1 file</span>
-        <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span></div><div class="rank-row subject-row">
-      <span class="rank-num">12</span>
-      <div class="rank-body"><div class="rank-name">Test 136</div>
-        <span class="rank-meta">1 photo-opening session · 1 file</span>
-        <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span></div></section>
+    <section class="panel"><div class="panelhead"><h2>Top photographs</h2><span class="hint">All frames grouped by title</span></div><p class="empty">No photographs opened in this period.</p></section>
     <section class="panel"><div class="panelhead"><h2>Gaining attention</h2><span class="hint">Period comparison</span></div><p class="empty">Choose Today, 7 Days, or 30 Days to compare with the preceding equal-length period.</p>
       <p class="hint" style="margin-top:14px">Changes compare photograph opens in equal-length Mountain Time periods. “New in period” means no opens in the previous period—not a new visitor or a newly uploaded photo.</p></section>
   </div>
   <div class="lower">
-    <section class="panel"><div class="panelhead"><h2>Individual image files</h2><span class="hint">Alternate frames counted separately</span></div>
-    <div class="rank-row">
-      <span class="rank-num">01</span>
-      <div class="rank-body"><div class="rank-name">Test 0</div>
-      <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span>
-    </div>
-    <div class="rank-row">
-      <span class="rank-num">02</span>
-      <div class="rank-body"><div class="rank-name">Test 4</div>
-      <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span>
-    </div>
-    <div class="rank-row">
-      <span class="rank-num">03</span>
-      <div class="rank-body"><div class="rank-name">Test 8</div>
-      <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span>
-    </div>
-    <div class="rank-row">
-      <span class="rank-num">04</span>
-      <div class="rank-body"><div class="rank-name">Test 12</div>
-      <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span>
-    </div>
-    <div class="rank-row">
-      <span class="rank-num">05</span>
-      <div class="rank-body"><div class="rank-name">Test 16</div>
-      <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span>
-    </div>
-    <div class="rank-row">
-      <span class="rank-num">06</span>
-      <div class="rank-body"><div class="rank-name">Test 20</div>
-      <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span>
-    </div>
-    <div class="rank-row">
-      <span class="rank-num">07</span>
-      <div class="rank-body"><div class="rank-name">Test 24</div>
-      <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span>
-    </div>
-    <div class="rank-row">
-      <span class="rank-num">08</span>
-      <div class="rank-body"><div class="rank-name">Test 28</div>
-      <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span>
-    </div>
-    <div class="rank-row">
-      <span class="rank-num">09</span>
-      <div class="rank-body"><div class="rank-name">Test 32</div>
-      <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span>
-    </div>
-    <div class="rank-row">
-      <span class="rank-num">10</span>
-      <div class="rank-body"><div class="rank-name">Test 36</div>
-      <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span>
-    </div>
-    <div class="rank-row">
-      <span class="rank-num">11</span>
-      <div class="rank-body"><div class="rank-name">Test 40</div>
-      <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span>
-    </div>
-    <div class="rank-row">
-      <span class="rank-num">12</span>
-      <div class="rank-body"><div class="rank-name">Test 44</div>
-      <div class="meter"><span style="width:100%"></span></div></div>
-      <span class="rank-value">1</span>
-    </div></section>
-    <section class="panel"><div class="panelhead"><h2>Latest photo opens</h2><span class="hint">Latest 8 in range</span></div><div class="photo-activity-row">
-      <div class="photo-activity-info"><strong>Test 324</strong>
-      <span>item324</span></div>
-      <time>Oct 21, 6:52 PM MDT</time></div><div class="photo-activity-row">
-      <div class="photo-activity-info"><strong>Test 320</strong>
-      <span>item320</span></div>
-      <time>Oct 21, 6:52 PM MDT</time></div><div class="photo-activity-row">
-      <div class="photo-activity-info"><strong>Test 316</strong>
-      <span>item316</span></div>
-      <time>Oct 21, 6:52 PM MDT</time></div><div class="photo-activity-row">
-      <div class="photo-activity-info"><strong>Test 312</strong>
-      <span>item312</span></div>
-      <time>Oct 21, 6:52 PM MDT</time></div><div class="photo-activity-row">
-      <div class="photo-activity-info"><strong>Test 308</strong>
-      <span>item308</span></div>
-      <time>Oct 21, 6:52 PM MDT</time></div><div class="photo-activity-row">
-      <div class="photo-activity-info"><strong>Test 304</strong>
-      <span>item304</span></div>
-      <time>Oct 21, 6:52 PM MDT</time></div><div class="photo-activity-row">
-      <div class="photo-activity-info"><strong>Test 300</strong>
-      <span>item300</span></div>
-      <time>Oct 21, 6:52 PM MDT</time></div><div class="photo-activity-row">
-      <div class="photo-activity-info"><strong>Test 296</strong>
-      <span>item296</span></div>
-      <time>Oct 21, 6:52 PM MDT</time></div></section>
+    <section class="panel"><div class="panelhead"><h2>Individual image files</h2><span class="hint">Alternate frames counted separately</span></div><p class="empty">No photo opens in this period.</p></section>
+    <section class="panel"><div class="panelhead"><h2>Latest photo opens</h2><span class="hint">Latest 8 in range</span></div><p class="empty">No recent photograph opens in this period.</p></section>
   </div>
   <div class="photo-intro album-intro"><h2>Inside the <em>collections.</em></h2><p>Album selections · Selected date range</p></div>
   <section class="photo-metrics" aria-label="Album analytics summary">
@@ -244,233 +160,16 @@ main{max-width:1260px;margin:auto;padding:42px 28px 80px}
     <section class="panel"><div class="panelhead"><h2>Latest album selections</h2><span class="hint">Latest 10 in range · Mountain Time</span></div><p class="empty">No album changes recorded in this period yet.</p></section>
   </div>
   <p class="album-note">Album Analytics starts collecting data after this portfolio update is published. The default “All” gallery load is already counted as a photography page view, so only deliberate tab changes count as album selections. This does not measure time spent within an album or associate individual photo opens with an album.</p>
-  <div class="lower activity-section">
-    <section class="panel" id="recent-activity"><div class="panelhead"><h2>Recent activity</h2><span class="hint">Mountain Time · Selected date range</span></div>
-      <div class="activity-controls">
-        <span class="activity-count">Showing 1–100 of 327 events</span>
-        <nav class="activity-sizes" aria-label="Events per page">Show <a href="/dashboard?range=all&activity_size=20&activity_page=1#recent-activity" class="activity-size"
-      >20</a><a href="/dashboard?range=all&activity_size=50&activity_page=1#recent-activity" class="activity-size"
-      >50</a><a href="/dashboard?range=all&activity_size=100&activity_page=1#recent-activity" class="activity-size selected"
-      aria-current="page">100</a><a href="/dashboard?range=all&activity_size=250&activity_page=1#recent-activity" class="activity-size"
-      >250</a></nav>
-      </div>
-      <div class="table-wrap"><table><thead><tr><th>Mountain Time</th><th>Event</th><th>Detail</th></tr></thead><tbody><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item326</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 324</span><span class="activity-sub">item324</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 323</span><span class="activity-sub">item323</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item322</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 320</span><span class="activity-sub">item320</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 319</span><span class="activity-sub">item319</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item318</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 316</span><span class="activity-sub">item316</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 315</span><span class="activity-sub">item315</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item314</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 312</span><span class="activity-sub">item312</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 311</span><span class="activity-sub">item311</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item310</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 308</span><span class="activity-sub">item308</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 307</span><span class="activity-sub">item307</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item306</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 304</span><span class="activity-sub">item304</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 303</span><span class="activity-sub">item303</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item302</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 300</span><span class="activity-sub">item300</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 299</span><span class="activity-sub">item299</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item298</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 296</span><span class="activity-sub">item296</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 295</span><span class="activity-sub">item295</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item294</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 292</span><span class="activity-sub">item292</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 291</span><span class="activity-sub">item291</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item290</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 288</span><span class="activity-sub">item288</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 287</span><span class="activity-sub">item287</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item286</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 284</span><span class="activity-sub">item284</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 283</span><span class="activity-sub">item283</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item282</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 280</span><span class="activity-sub">item280</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 279</span><span class="activity-sub">item279</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item278</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 276</span><span class="activity-sub">item276</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 275</span><span class="activity-sub">item275</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item274</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 272</span><span class="activity-sub">item272</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 271</span><span class="activity-sub">item271</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item270</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 268</span><span class="activity-sub">item268</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 267</span><span class="activity-sub">item267</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item266</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 264</span><span class="activity-sub">item264</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 263</span><span class="activity-sub">item263</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item262</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 260</span><span class="activity-sub">item260</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 259</span><span class="activity-sub">item259</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item258</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 256</span><span class="activity-sub">item256</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 255</span><span class="activity-sub">item255</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item254</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 252</span><span class="activity-sub">item252</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 251</span><span class="activity-sub">item251</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item250</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 248</span><span class="activity-sub">item248</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 247</span><span class="activity-sub">item247</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item246</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 244</span><span class="activity-sub">item244</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 243</span><span class="activity-sub">item243</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item242</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 240</span><span class="activity-sub">item240</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 239</span><span class="activity-sub">item239</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item238</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 236</span><span class="activity-sub">item236</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 235</span><span class="activity-sub">item235</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item234</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 232</span><span class="activity-sub">item232</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 231</span><span class="activity-sub">item231</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Lagoon</span><span class="activity-sub">item230</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Page view</span></td>
-      <td><span class="activity-name">Home</span><span class="activity-sub">/</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Photo opened</span></td>
-      <td><span class="activity-name">Test 228</span><span class="activity-sub">item228</span></td></tr><tr><td class="date-cell">Oct 21, 6:52 PM MDT</td>
-      <td><span class="event-tag">Interaction</span></td>
-      <td><span class="activity-name">Test 227</span><span class="activity-sub">item227</span></td></tr></tbody></table></div>
-      <nav class="activity-pager" aria-label="Recent activity pages">
-    <span class="activity-disabled">← Newer</span>
-    <span>Page 1 of 4</span>
-    <a class="activity-page-link" href="/dashboard?range=all&activity_size=100&activity_page=2#recent-activity">Older →</a>
-  </nav></section>
-  </div>
   <div class="lower">
     <section class="panel"><div class="panelhead"><h2>Traffic sources</h2><span class="hint">Referrers from page views</span></div>
-      <div class="sources"><div class="source-row"><span>Direct / unknown</span><strong>82</strong></div></div><p class="hint">Sources depend on referrer information supplied by browsers.</p></section>
+      <div class="sources"><div class="source-row"><span>Direct / unknown</span><strong>5</strong></div></div><p class="hint">Sources depend on referrer information supplied by browsers.</p></section>
     <section class="panel"><div class="panelhead"><h2>Activity details</h2><span class="hint">Selected period</span></div>
-      <div class="source-row"><span>All recorded events</span><strong>327</strong></div>
-      <div class="source-row"><span>Custom events (including album tabs)</span><strong>163</strong></div>
-      <div class="source-row"><span>Session photo-engagement rate</span><strong>25%</strong></div>
+      <div class="source-row"><span>All recorded events</span><strong>5</strong></div>
+      <div class="source-row"><span>Custom events (including album tabs)</span><strong>0</strong></div>
+      <div class="source-row"><span>Session photo-engagement rate</span><strong>0%</strong></div>
       <p class="hint" style="margin-top:16px">A session is a temporary, anonymous browser session—not a unique person. One person can create several sessions.</p></section>
   </div>
   <footer class="privacy"><p><strong>Private by design.</strong> Counts use existing anonymous session IDs, timestamps, page/photo opens, and referrers.<br>
-    No IP addresses, names, email addresses, precise location, or browser fingerprints are intentionally stored.</p>
-    <p>DATA STORED IN UTC · DISPLAYED IN AMERICA/DENVER<br>PARTYZRA ANALYTICS · V2.7</p></footer>
+    No IP addresses, names, email addresses, precise location, or browser fingerprints are intentionally stored. An optional random browser ID is stored only after a visitor opts in.</p>
+    <p>DATA STORED IN UTC · DISPLAYED IN AMERICA/DENVER<br>PARTYZRA ANALYTICS · V2.9</p></footer>
 </main></body></html>
