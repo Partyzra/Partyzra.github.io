@@ -82,9 +82,9 @@ async function handleTrack(request, env) {
   const label = clean(payload.label, 240);
   const referrer = cleanReferrer(payload.referrer);
   const sessionId = clean(payload.session_id, 64);
-  // An optional, consent-based random ID. No IPs, fingerprints, or inferred identity.
-  const submittedVisitorId = clean(payload.visitor_id, 64);
-  const visitorId = /^v1-[a-f0-9]{32}$/.test(submittedVisitorId) ? submittedVisitorId : null;
+  // V2.9.1: never link newly received events to a long-term browser ID,
+  // even if an older cached V2.9 script still sends visitor_id.
+  const visitorId = null;
 
   if (!['page_view', 'photo_view', 'custom_event'].includes(eventType)) {
     return withCors(json({ ok: false, error: 'invalid_event_type' }, 400), origin);
@@ -789,7 +789,7 @@ function dashboardHtml({ chosen, range, totals, pages, photos, daily, recent, ac
       <span>${number(row.lifetime_sessions)} sessions</span><span>Last: ${escapeHtml(formatMountain(row.last_in_range))}</span></summary>
       <div class="visitor-details"><p>First recorded: ${escapeHtml(formatMountain(row.first_seen))} · Latest: ${escapeHtml(formatMountain(row.last_seen))} · ${number(row.period_sessions)} sessions in selected range</p>
         ${entries}<small>Up to six newest sessions shown. A browser isn't necessarily one person.</small></div></details>`;
-  }).join('') : '<p class="empty">No browsers have opted into returning-visit recognition in this period.</p>';
+  }).join('') : '<p class="empty">No historical returning-browser records in this period.</p>';
   const activityRows = recent.length ? recent.map(row => {
     const isAlbum = row.event_type === 'custom_event' && row.item === 'album_select';
     const name = row.event_type === 'page_view' ? 'Page view' : row.event_type === 'photo_view'
@@ -835,7 +835,7 @@ main{max-width:1260px;margin:auto;padding:42px 28px 80px}
 @media(max-width:560px){main{padding:23px 13px 56px}.mast{margin-bottom:28px}.top{display:block}.top-note{text-align:left;margin-top:17px}.controls{align-items:flex-start}.filters{width:100%;justify-content:space-between}.filter{padding:8px 9px}.cards,.photo-metrics,.infra-metrics{gap:8px}.photo-intro,.infra-intro{display:block}.photo-intro p,.infra-intro p{margin-top:9px}.health-pill{margin-top:14px}.photo-metric{padding:15px 13px}.photo-activity-row{align-items:flex-start;flex-direction:column;gap:5px}.card{padding:17px 14px;min-height:126px}.panel{padding:16px}.chart-legend{gap:9px}.chart{gap:2px}.tick{font-size:8px}.date-cell{font-size:10px}.table-wrap{overflow-x:auto}.privacy{display:block}}
 </style></head>
 <body><main>
-  <div class="mast"><div class="brandmark" aria-hidden="true">P</div><div class="brandtext">PARTYZRA</div><span class="edition">Private / Statistics 02.9</span></div>
+  <div class="mast"><div class="brandmark" aria-hidden="true">P</div><div class="brandtext">PARTYZRA</div><span class="edition">Private / Statistics 02.9.1</span></div>
   <header class="top"><div><p class="eyebrow">Portfolio intelligence</p><h1>Behind the <em>frames.</em></h1></div>
     <div class="top-note">TIMEZONE&nbsp; <strong>Mountain · ${escapeHtml(currentZoneAbbreviation())}</strong><br>
       UPDATED&nbsp; <strong>${escapeHtml(updated)}</strong><br>Refresh to see new activity</div></header>
@@ -855,15 +855,15 @@ main{max-width:1260px;margin:auto;padding:42px 28px 80px}
       <div class="table-wrap"><table><thead><tr><th>Mountain Time</th><th>Event</th><th>Detail</th></tr></thead><tbody>${activityRows}</tbody></table></div>
       ${activityPager}</section>
   </div>
-  <div class="photo-intro visitor-intro"><h2>Behind the <em>visits.</em></h2><p>Opt-in browser recognition · Selected period</p></div>
+  <div class="photo-intro visitor-intro"><h2>Behind the <em>visits.</em></h2><p>Historical browser recognition only · no longer collected</p></div>
   <section class="photo-metrics visitor-metrics" aria-label="Returning browser summary">
-    <article class="photo-metric"><small>Known browsers</small><strong>${number(visitors.known_browsers)}</strong><span>Browsers recognized in this range</span></article>
-    <article class="photo-metric"><small>Newly recognized</small><strong>${number(visitors.newly_seen)}</strong><span>First recognized during this range</span></article>
+    <article class="photo-metric"><small>Known browsers</small><strong>${number(visitors.known_browsers)}</strong><span>Historically recognized browsers</span></article>
+    <article class="photo-metric"><small>Newly recognized</small><strong>${number(visitors.newly_seen)}</strong><span>Historically first recognized in this range</span></article>
     <article class="photo-metric"><small>Returned</small><strong>${number(visitors.returning_browsers)}</strong><span>Two or more recorded browser sessions</span></article>
-    <article class="photo-metric"><small>Unlinked sessions</small><strong>${number(unlinkedSessions)}</strong><span>No optional returning-browser identifier</span></article>
+    <article class="photo-metric"><small>Unlinked sessions</small><strong>${number(unlinkedSessions)}</strong><span>No long-term browser identifier</span></article>
   </section>
   <section class="panel" aria-label="Returning browser histories"><div class="panelhead"><h2>Recent recognized browsers</h2><span class="hint">Latest 12 in selected period · Expand for sessions</span></div>
-    ${visitorList}<p class="visitor-note">“Newly recognized” refers to the first opt-in event, not necessarily a person's first visit. “Returned” means at least two distinct tracked sessions across all history; these categories can overlap. Unlinked sessions include historical visits and people who declined optional recognition. Session/browser counts are not counts of people. Older events remain unchanged.</p>
+    ${visitorList}<p class="visitor-note">“Newly recognized” refers to the first opt-in event, not necessarily a person's first visit. “Returned” means at least two distinct tracked sessions across all history; these categories can overlap. Unlinked sessions include historical and new visits. Persistent browser recognition is discontinued; these linked histories are historical only. Sessions/browsers are not counts of people. All old events remain unchanged.</p>
   </section>
   <div class="infra-intro"><div><h2>Infrastructure <em>health.</em></h2><p>Live Worker + D1 checks · independent of the selected analytics range</p></div>
     <span class="health-pill ${infraHealthy ? '' : 'issue'}"><i class="health-dot" aria-hidden="true"></i>${escapeHtml(infraStatus)}</span></div>
