@@ -2892,7 +2892,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York10.jpg",
-    "title": "Everyone Is A Coder",
+    "title": "Night City",
     "album": "New York",
     "collection": "City",
     "year": "",
