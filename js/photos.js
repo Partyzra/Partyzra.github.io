@@ -2918,7 +2918,7 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "New York12.jpg",
+    "file": "New York12.2.jpg",
     "title": "Night Corner",
     "album": "New York",
     "collection": "City",
