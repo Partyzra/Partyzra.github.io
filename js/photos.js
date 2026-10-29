@@ -2431,8 +2431,8 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
 {
-    "file": "Veteran Monument.jpg",
-    "variants": ["Veteran Monument1.jpg"],
+    "file": "Veteran Monument1.jpg",
+    "variants": ["Veteran Monument.jpg"],
     "title": "Veteran Monument",
     "album": "Layton",
     "collection": "City",
