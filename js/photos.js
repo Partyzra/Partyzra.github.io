@@ -3946,6 +3946,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Plants VS Zombies.jpg",
+    "variants": ["Jules & Savannah.jpg", "Charles & Lily.jpg"],
     "title": "Plants VS Zombies",
     "slug": "plantsvszombies",
     "album": "Layton",
