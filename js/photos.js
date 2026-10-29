@@ -3327,7 +3327,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "New York45.jpg",
     "variants": ["New York45.2.jpg", "New York45.1.jpg"],
-    "title": "Statue of Liberty",
+    "title": "The Statue of Liberty",
     "album": "New York",
     "collection": "City",
     "year": "",

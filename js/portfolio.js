@@ -32,60 +32,93 @@
   // the selected Photography hero pool, then keep cycling through the remaining images.
   // Each incoming image is preloaded before its crossfade, while the first image
   // is assigned immediately so the hero never intentionally waits on a hold timer.
-  const homeHero = qs('.home-page .hero-v3');
-  const heroPrimary = homeHero ? qs('.hero-photo', homeHero) : null;
+const FIRST_HERO_FILE = 'New York11.jpg';
 
-  if (homeHero && heroPrimary) {
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const heroAlternate = document.createElement('div');
-    heroAlternate.className = 'hero-photo hero-photo--alternate is-hero-hidden';
-    heroAlternate.setAttribute('aria-hidden', 'true');
-    heroPrimary.after(heroAlternate);
+const homeHero = qs('.home-page .hero-v3');
+const heroPrimary = homeHero ? qs('.hero-photo', homeHero) : null;
 
-    const HERO_HOLD_MS = 12000;
-    const HERO_FADE_MS = 2000;
-    const HERO_MOTIONS = ['zoom-in', 'zoom-out', 'pan-left', 'pan-right'];
-    const normalize = value => String(value || '').trim().toLowerCase();
+if (homeHero && heroPrimary) {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const shuffled = values => {
-      const copy = [...values];
-      for (let i = copy.length - 1; i > 0; i -= 1) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [copy[i], copy[j]] = [copy[j], copy[i]];
-      }
-      return copy;
+  const heroAlternate = document.createElement('div');
+  heroAlternate.className = 'hero-photo hero-photo--alternate is-hero-hidden';
+  heroAlternate.setAttribute('aria-hidden', 'true');
+  heroPrimary.after(heroAlternate);
+
+  const HERO_HOLD_MS = 12000;
+  const HERO_FADE_MS = 2000;
+  const HERO_MOTIONS = ['zoom-in', 'zoom-out', 'pan-left', 'pan-right'];
+
+  const normalize = value =>
+    String(value || '').trim().toLowerCase();
+
+  const shuffled = values => {
+    const copy = [...values];
+
+    for (let i = copy.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+
+    return copy;
+  };
+
+  const loadPhotoManifest = () => new Promise(resolve => {
+    if (Array.isArray(window.PORTFOLIO_PHOTOS)) {
+      resolve(window.PORTFOLIO_PHOTOS);
+      return;
+    }
+
+    const existing = document.querySelector(
+      'script[data-home-photo-manifest]'
+    );
+
+    if (existing) {
+      existing.addEventListener('load', () => {
+        resolve(
+          Array.isArray(window.PORTFOLIO_PHOTOS)
+            ? window.PORTFOLIO_PHOTOS
+            : []
+        );
+      }, { once: true });
+
+      existing.addEventListener(
+        'error',
+        () => resolve([]),
+        { once: true }
+      );
+
+      return;
+    }
+
+    const script = document.createElement('script');
+
+    script.src = 'js/photos.js';
+    script.dataset.homePhotoManifest = '';
+
+    script.onload = () => {
+      resolve(
+        Array.isArray(window.PORTFOLIO_PHOTOS)
+          ? window.PORTFOLIO_PHOTOS
+          : []
+      );
     };
 
-    const loadPhotoManifest = () => new Promise(resolve => {
-      if (Array.isArray(window.PORTFOLIO_PHOTOS)) {
-        resolve(window.PORTFOLIO_PHOTOS);
-        return;
-      }
+    script.onerror = () => resolve([]);
 
-      const existing = document.querySelector('script[data-home-photo-manifest]');
-      if (existing) {
-        existing.addEventListener('load', () => {
-          resolve(Array.isArray(window.PORTFOLIO_PHOTOS) ? window.PORTFOLIO_PHOTOS : []);
-        }, { once: true });
-        existing.addEventListener('error', () => resolve([]), { once: true });
-        return;
-      }
+    document.head.appendChild(script);
+  });
 
-      const script = document.createElement('script');
-      script.src = 'js/photos.js';
-      script.dataset.homePhotoManifest = '';
-      script.onload = () => resolve(Array.isArray(window.PORTFOLIO_PHOTOS) ? window.PORTFOLIO_PHOTOS : []);
-      script.onerror = () => resolve([]);
-      document.head.appendChild(script);
-    });
+  /*
+    Homepage hero images use your generated WebP thumbnails.
+    This keeps the landing page lightweight.
+  */
+  const heroSourceCandidates = file => [
+    `Images/photo-thumbs/${file}.webp`
+  ];
 
-    // Homepage backgrounds must stay lightweight. Never fall back to a
-    // camera-original photograph simply because a thumbnail path is missing.
-    const heroSourceCandidates = file => [
-      `Images/photo-thumbs/${file}.webp`
-    ];
-
-    const preloadFirstAvailable = candidates => new Promise(resolve => {
+  const preloadFirstAvailable = candidates =>
+    new Promise(resolve => {
       let index = 0;
 
       const tryNext = () => {
@@ -96,187 +129,389 @@
 
         const src = candidates[index++];
         const image = new Image();
+
         image.decoding = 'async';
+
         image.onload = () => resolve(src);
         image.onerror = tryNext;
+
         image.src = src;
       };
 
       tryNext();
     });
 
-    const setHeroBackground = (layer, src) => {
-      layer.style.backgroundImage = `url(${JSON.stringify(src)})`;
-      layer.style.backgroundPosition = 'center center';
-      layer.style.backgroundSize = 'cover';
-      layer.style.backgroundRepeat = 'no-repeat';
-    };
+  const setHeroBackground = (layer, src) => {
+    layer.style.backgroundImage =
+      `url(${JSON.stringify(src)})`;
 
-    let previousMotion = '';
+    layer.style.backgroundPosition = 'center center';
+    layer.style.backgroundSize = 'cover';
+    layer.style.backgroundRepeat = 'no-repeat';
+  };
 
-    const startHeroMotion = layer => {
-      if (reduceMotion) {
-        layer.removeAttribute('data-hero-motion');
-        return;
-      }
+  let previousMotion = '';
 
-      const available = HERO_MOTIONS.filter(motion => motion !== previousMotion);
-      const motion = available[Math.floor(Math.random() * available.length)] || HERO_MOTIONS[0];
-      previousMotion = motion;
-
-      // Removing/re-adding the attribute restarts the one-way CSS animation even
-      // when this DOM layer is reused for a later slide.
+  const startHeroMotion = layer => {
+    if (reduceMotion) {
       layer.removeAttribute('data-hero-motion');
-      void layer.offsetWidth;
-      layer.dataset.heroMotion = motion;
-    };
+      return;
+    }
 
-    let activeLayer = heroPrimary;
-    let standbyLayer = heroAlternate;
-    let slides = [];
-    let slideIndex = 0;
-    let heroTimer = null;
-    let transitionTimer = null;
-    let heroRunning = false;
+    const available = HERO_MOTIONS.filter(
+      motion => motion !== previousMotion
+    );
 
-    const scheduleNext = delay => {
-      if (reduceMotion || slides.length < 2) return;
-      window.clearTimeout(heroTimer);
-      heroTimer = window.setTimeout(showNextHero, delay);
-    };
+    const motion =
+      available[Math.floor(Math.random() * available.length)]
+      || HERO_MOTIONS[0];
 
-    const showNextHero = async () => {
-      if (heroRunning || slides.length < 2) return;
+    previousMotion = motion;
 
-      if (document.hidden) {
-        scheduleNext(1000);
-        return;
-      }
+    /*
+      Reapplying the attribute restarts the existing
+      one-direction hero movement.
+    */
+    layer.removeAttribute('data-hero-motion');
 
-      heroRunning = true;
-      let attempts = 0;
-      let source = null;
-      let file = null;
+    void layer.offsetWidth;
 
-      while (!source && attempts < slides.length - 1) {
-        slideIndex = (slideIndex + 1) % slides.length;
+    layer.dataset.heroMotion = motion;
+  };
 
-        // Give each complete pass a fresh order while preventing an immediate
-        // repeat of the photograph that just finished.
-        if (slideIndex === 0 && slides.length > 2) {
-          const currentFile = slides[slides.length - 1];
-          const reshuffled = shuffled(slides);
-          if (normalize(reshuffled[0]) === normalize(currentFile)) {
-            [reshuffled[0], reshuffled[1]] = [reshuffled[1], reshuffled[0]];
-          }
-          slides = reshuffled;
+  let activeLayer = heroPrimary;
+  let standbyLayer = heroAlternate;
+
+  let slides = [];
+  let slideIndex = 0;
+
+  let heroTimer = null;
+  let transitionTimer = null;
+  let heroRunning = false;
+
+  const scheduleNext = delay => {
+    if (reduceMotion || slides.length < 1) return;
+
+    window.clearTimeout(heroTimer);
+
+    heroTimer = window.setTimeout(
+      showNextHero,
+      delay
+    );
+  };
+
+  const showNextHero = async () => {
+    if (heroRunning || slides.length < 1) return;
+
+    if (document.hidden) {
+      scheduleNext(1000);
+      return;
+    }
+
+    heroRunning = true;
+
+    let attempts = 0;
+    let source = null;
+    let file = null;
+
+    while (!source && attempts < slides.length) {
+      slideIndex =
+        (slideIndex + 1) % slides.length;
+
+      /*
+        Once every random image has been seen,
+        shuffle them again for the next pass.
+      */
+      if (
+        slideIndex === 0 &&
+        slides.length > 2
+      ) {
+        const currentFile =
+          slides[slides.length - 1];
+
+        const reshuffled =
+          shuffled(slides);
+
+        /*
+          Avoid immediately showing the same
+          image twice across a reshuffle.
+        */
+        if (
+          normalize(reshuffled[0]) ===
+          normalize(currentFile)
+        ) {
+          [
+            reshuffled[0],
+            reshuffled[1]
+          ] = [
+            reshuffled[1],
+            reshuffled[0]
+          ];
         }
 
-        file = slides[slideIndex];
-        source = await preloadFirstAvailable(heroSourceCandidates(file));
-        attempts += 1;
+        slides = reshuffled;
       }
 
-      if (!source || !file) {
-        heroRunning = false;
-        scheduleNext(1200);
-        return;
-      }
+      file = slides[slideIndex];
 
-      setHeroBackground(standbyLayer, source);
-      startHeroMotion(standbyLayer);
+      source =
+        await preloadFirstAvailable(
+          heroSourceCandidates(file)
+        );
 
+      attempts += 1;
+    }
+
+    if (!source || !file) {
+      heroRunning = false;
+      scheduleNext(1200);
+      return;
+    }
+
+    setHeroBackground(
+      standbyLayer,
+      source
+    );
+
+    startHeroMotion(
+      standbyLayer
+    );
+
+    requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          standbyLayer.classList.remove('is-hero-hidden');
-          standbyLayer.classList.add('is-hero-visible');
-          activeLayer.classList.remove('is-hero-visible');
-          activeLayer.classList.add('is-hero-hidden');
-        });
+        standbyLayer.classList.remove(
+          'is-hero-hidden'
+        );
+
+        standbyLayer.classList.add(
+          'is-hero-visible'
+        );
+
+        activeLayer.classList.remove(
+          'is-hero-visible'
+        );
+
+        activeLayer.classList.add(
+          'is-hero-hidden'
+        );
       });
+    });
 
-      window.clearTimeout(transitionTimer);
-      transitionTimer = window.setTimeout(() => {
-        const previousActive = activeLayer;
-        activeLayer = standbyLayer;
-        standbyLayer = previousActive;
+    window.clearTimeout(
+      transitionTimer
+    );
 
-        standbyLayer.classList.remove('is-hero-visible');
-        standbyLayer.classList.add('is-hero-hidden');
+    transitionTimer =
+      window.setTimeout(() => {
+        const previousActive =
+          activeLayer;
+
+        activeLayer =
+          standbyLayer;
+
+        standbyLayer =
+          previousActive;
+
+        standbyLayer.classList.remove(
+          'is-hero-visible'
+        );
+
+        standbyLayer.classList.add(
+          'is-hero-hidden'
+        );
 
         heroRunning = false;
-        scheduleNext(HERO_HOLD_MS);
-      }, HERO_FADE_MS);
-    };
 
-    loadPhotoManifest().then(async photos => {
+        scheduleNext(
+          HERO_HOLD_MS
+        );
+      }, HERO_FADE_MS);
+  };
+
+  loadPhotoManifest().then(
+    async photos => {
+
       const seen = new Set();
       const photoFiles = [];
 
-      // Optional homepage curation:
-      // Add `hero: true` to any entry in js/photos.js that you specifically
-      // want in the landing-page rotation. As soon as at least one photo is
-      // marked, the hero uses only marked photos. With no marks, the current
-      // full-archive rotation remains unchanged.
-      const curatedHeroPhotos = photos.filter(photo => photo?.hero === true);
-      const heroPhotos = curatedHeroPhotos.length ? curatedHeroPhotos : photos;
+      /*
+        Preserve your existing hero:true behavior.
 
+        If any photos are marked:
+          hero: true
+
+        only those photos enter the RANDOM rotation.
+
+        New York11.jpg is allowed to be the opening
+        image whether or not it has hero:true.
+      */
+      const curatedHeroPhotos =
+        photos.filter(
+          photo => photo?.hero === true
+        );
+
+      const heroPhotos =
+        curatedHeroPhotos.length
+          ? curatedHeroPhotos
+          : photos;
+
+      /*
+        Find the permanent opening photograph
+        from the complete photos.js manifest.
+      */
+      const firstHeroPhoto =
+        photos.find(
+          photo =>
+            normalize(photo?.file) ===
+            normalize(FIRST_HERO_FILE)
+        );
+
+      /*
+        Build the normal randomized pool.
+
+        IMPORTANT:
+        New York11.jpg is deliberately excluded
+        so it doesn't randomly appear again later.
+      */
       heroPhotos.forEach(photo => {
-        const file = String(photo?.file || '').trim();
-        const key = normalize(file);
-        if (!file || seen.has(key)) return;
+        const file =
+          String(photo?.file || '').trim();
+
+        const key =
+          normalize(file);
+
+        if (
+          !file ||
+          key === normalize(FIRST_HERO_FILE) ||
+          seen.has(key)
+        ) {
+          return;
+        }
+
         seen.add(key);
         photoFiles.push(file);
       });
 
-      if (!photoFiles.length) return;
-
-      // No fixed opening photograph: every load starts from a freshly shuffled
-      // hero pool. Keep the hero visually hidden until the first randomized
-      // photograph has actually loaded; this prevents the legacy Sunset fallback
-      // (or a partially loaded thumbnail) from flashing during startup.
-      slides = shuffled(photoFiles);
-      slideIndex = 0;
+      slides =
+        shuffled(photoFiles);
 
       let firstSource = null;
       let firstFile = null;
-      let firstIndex = 0;
 
-      // Normally the first item succeeds immediately. Walking the shuffled list
-      // also makes startup resilient if a thumbnail/original is ever missing.
-      // Bound missing-file retries so a bad thumbnail set cannot stall startup.
-      while (!firstSource && firstIndex < Math.min(slides.length, 12)) {
-        firstFile = slides[firstIndex];
-        firstSource = await preloadFirstAvailable(heroSourceCandidates(firstFile));
-        if (!firstSource) firstIndex += 1;
+      /*
+        FIRST CHOICE:
+        Always try New York11.jpg.
+      */
+      if (firstHeroPhoto) {
+        firstFile =
+          String(
+            firstHeroPhoto.file || ''
+          ).trim();
+
+        firstSource =
+          await preloadFirstAvailable(
+            heroSourceCandidates(
+              firstFile
+            )
+          );
       }
 
-      if (!firstSource || !firstFile) return;
+      /*
+        Safety fallback:
+        if New York11.jpg or its WebP thumbnail
+        ever goes missing, use a normal random
+        photo rather than leaving a black hero.
+      */
+      let fallbackIndex = 0;
 
-      slideIndex = firstIndex;
-      setHeroBackground(heroPrimary, firstSource);
-      startHeroMotion(heroPrimary);
+      while (
+        !firstSource &&
+        fallbackIndex <
+          Math.min(slides.length, 12)
+      ) {
+        firstFile =
+          slides[fallbackIndex];
 
-      // Give the browser a painted hidden frame before revealing the image. The
-      // existing opacity transition then becomes a true first-load fade-in.
+        firstSource =
+          await preloadFirstAvailable(
+            heroSourceCandidates(
+              firstFile
+            )
+          );
+
+        if (!firstSource) {
+          fallbackIndex += 1;
+        }
+      }
+
+      if (
+        !firstSource ||
+        !firstFile
+      ) {
+        return;
+      }
+
+      /*
+        If New York11 successfully opened,
+        -1 means the first random transition
+        will start at slides[0].
+      */
+      slideIndex =
+        firstHeroPhoto &&
+        normalize(firstFile) ===
+          normalize(FIRST_HERO_FILE)
+          ? -1
+          : fallbackIndex;
+
+      setHeroBackground(
+        heroPrimary,
+        firstSource
+      );
+
+      startHeroMotion(
+        heroPrimary
+      );
+
+      /*
+        Preserve the existing first-load fade.
+      */
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          heroPrimary.classList.remove('is-hero-hidden');
-          heroPrimary.classList.add('is-hero-visible');
+          heroPrimary.classList.remove(
+            'is-hero-hidden'
+          );
+
+          heroPrimary.classList.add(
+            'is-hero-visible'
+          );
         });
       });
 
-      scheduleNext(HERO_HOLD_MS);
-    });
+      /*
+        New York11 stays visible for the same
+        normal 12-second hero duration.
+      */
+      scheduleNext(
+        HERO_HOLD_MS
+      );
+    }
+  );
 
-    document.addEventListener('visibilitychange', () => {
+  document.addEventListener(
+    'visibilitychange',
+    () => {
       if (document.hidden) {
-        window.clearTimeout(heroTimer);
+        window.clearTimeout(
+          heroTimer
+        );
+
         return;
       }
+
       scheduleNext(1000);
-    });
-  }
+    }
+  );
+}
 
   // Dynamic copyright year. Scope this to the footer only.
   // Photography items also use data-year as metadata, so a global [data-year]
