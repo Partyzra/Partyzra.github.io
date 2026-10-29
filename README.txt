@@ -1,23 +1,20 @@
-PARTYZRA — LATEST WORK HOMEPAGE LINK V1
+PARTYZRA PHOTOGRAPHY — 4-COLUMN GRID V1
 
-Based directly on the uploaded up-to-date repository.
-
-Replace:
-  home.html
-  css/style.css
+Replace only:
   photography-content.html
-  js/photography-page.js
 
-WHAT IT DOES
-- Adds a small "Latest work ↗" link at the lower-left of the homepage hero.
-- Styling intentionally echoes the Observe / Listen / Watch hero language:
-  restrained uppercase text, a fine connecting rule, and a subtle arrow.
-- It reveals after the three main hero words, rather than competing with them.
-- The link points to: photography.html#latest
-- Photography now reserves #latest as an album deep link.
-- Opening that URL activates the existing Latest album (newest-first).
-- Existing photo deep links such as photography.html#seagulls are unchanged.
+CHANGE:
+- Photography gallery uses 4 columns on screens wider than 1000px.
+- Existing tablet/mobile breakpoints are untouched.
+- No JavaScript changes.
+- No changes to albums, Latest, viewer, deep links, share links, loading, or photo order.
 
-CACHE BUMPS
-- home.html: css/style.css?v=4.17.31
-- photography-content.html: photography-page.js?v=2.9.5
+The added rule is intentionally a tiny inline CSS override:
+
+@media (min-width: 1001px) {
+  .photo-page .photo-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+To revert, restore your previous photography-content.html or remove that rule.
