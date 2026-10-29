@@ -2919,7 +2919,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York12.2.jpg",
-    "title": "Night Corner",
+    "title": "Street Corner",
     "album": "New York",
     "collection": "City",
     "year": "",
