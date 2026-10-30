@@ -3380,7 +3380,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York50.jpg",
-    "title": "Monopoly Man",
+    "title": "Central Park",
     "album": "New York",
     "collection": "City",
     "year": "",
