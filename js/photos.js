@@ -3958,20 +3958,6 @@ const PORTFOLIO_PHOTOS = [
       "city"
     ],
     "note": ""
-  },
-  {
-    "file": "Maple.jpg",
-    "title": "Maple",
-    "slug": "maple",
-    "album": "Animals",
-    "collection": "Animals",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "cat"
-    ],
-    "note": ""
   }
 
 
