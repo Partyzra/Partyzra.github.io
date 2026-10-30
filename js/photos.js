@@ -2918,7 +2918,7 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "New York12.2.jpg",
+    "file": "New York12.jpg",
     "title": "Street Corner",
     "album": "New York",
     "collection": "City",
@@ -2952,19 +2952,6 @@ const PORTFOLIO_PHOTOS = [
     "location": "",
     "featured": false,
     "hero": true,
-    "tags": [
-      "city"
-    ],
-    "note": ""
-  },
-  {
-    "file": "New York15.jpg",
-    "title": "Shirts",
-    "album": "New York",
-    "collection": "City",
-    "year": "",
-    "location": "",
-    "featured": false,
     "tags": [
       "city"
     ],
