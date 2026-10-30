@@ -3920,8 +3920,8 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York88.jpg",
-    "title": "Brooklyn Bridge",
-    "slug": "brooklynbridge1",
+    "title": "Brooklyn",
+    "slug": "brooklyn",
     "album": "New York",
     "collection": "City",
     "year": "",
