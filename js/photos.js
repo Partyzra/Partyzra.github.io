@@ -3645,19 +3645,6 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "New York71.jpg",
-    "title": "Yankee Stadium",
-    "album": "New York",
-    "collection": "City",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "city"
-    ],
-    "note": ""
-  },
-  {
     "file": "New York72.jpg",
     "title": "Hard Rock Cafe",
     "album": "New York",
@@ -3932,6 +3919,20 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
+    "file": "New York88.jpg",
+    "title": "Brooklyn Bridge",
+    "slug": "brooklynbridge1",
+    "album": "New York",
+    "collection": "City",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
     "file": "Plants VS Zombies.jpg",
     "variants": ["Jules & Savannah.jpg", "Charles & Lily.jpg"],
     "title": "Plants VS Zombies",
@@ -3946,6 +3947,7 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   }
+
 
 
 ];
