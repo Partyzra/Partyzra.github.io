@@ -1061,19 +1061,6 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Antelope Drive.jpg",
-    "title": "Antelope Dr",
-    "collection": "Nature",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": "",
-    "album": "Antelope Island"
-  },
-  {
     "file": "Capitol.png",
     "title": "Capitol",
     "collection": "landscape",
