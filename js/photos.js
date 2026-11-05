@@ -1422,6 +1422,18 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
 {
+    "file": "Fox1.jpg",
+    "title": "Fox",
+    "collection": "Nature",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "animals"
+    ],
+    "note": ""
+  },
+{
     "file": "Fox1.5.jpg",
     "title": "Fox",
     "collection": "Nature",
@@ -3341,7 +3353,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York48.jpg",
-    "title": "Thank the rain",
+    "title": "Thank The Rain",
     "album": "New York",
     "collection": "City",
     "year": "",
@@ -3925,6 +3937,20 @@ const PORTFOLIO_PHOTOS = [
     "title": "Plants VS Zombies",
     "slug": "plantsvszombies",
     "album": "Layton",
+    "collection": "City",
+    "year": "",
+    "location": "",
+    "featured": false,
+    "tags": [
+      "city"
+    ],
+    "note": ""
+  },
+  {
+    "file": "New York89.jpg",
+    "title": "Subway",
+    "slug": "subway1",
+    "album": "New York",
     "collection": "City",
     "year": "",
     "location": "",
