@@ -303,6 +303,8 @@
 
      if (stem === 'new york50') return '0% 17%';      // top-ish
 
+     if (stem === 'new york46') return '0% 50%';      // to the left
+
 
 
   };
