@@ -3312,7 +3312,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York45.jpg",
-    "variants": ["New York45.2.jpg", "New York45.1.jpg"],
+    "variants": ["New York45.2.jpg"],
     "title": "The Statue of Liberty",
     "album": "New York",
     "collection": "City",
@@ -3471,19 +3471,6 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "New York57.jpg",
     "title": "Bowery Street",
-    "album": "New York",
-    "collection": "City",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "city"
-    ],
-    "note": ""
-  },
-  {
-    "file": "New York58.jpg",
-    "title": "Ellis Island",
     "album": "New York",
     "collection": "City",
     "year": "",
