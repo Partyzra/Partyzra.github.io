@@ -4060,7 +4060,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Kaysville8.jpg",
-    "title": "House",
+    "title": "Thanksgiving Decoration",
     "slug": "house2",
     "album": "Kaysville",
     "collection": "City",
@@ -4229,7 +4229,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Kaysville20.jpg",
     "title": "Madeleine Amour",
-    "slug": "house",
+    "slug": "madeleineamour",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
@@ -4241,9 +4241,9 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Mountain View.jpg",
-    "title": "House",
-    "slug": "house",
+    "file": "Kaysville21.jpg",
+    "title": "Mountain View",
+    "slug": "mountainview",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
@@ -4257,7 +4257,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Kaysville22.jpg",
     "title": "Fire Department",
-    "slug": "house",
+    "slug": "firedepartment",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
@@ -4271,7 +4271,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Kaysville23.jpg",
     "title": "Fire Department",
-    "slug": "house",
+    "slug": "firedepartment1",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
@@ -4299,7 +4299,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Kaysville25.jpg",
     "title": "Sidewalk",
-    "slug": "house",
+    "slug": "sidewalk",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
@@ -4313,7 +4313,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Kaysville26.jpg",
     "title": "Iola Smith Memorial Parkway",
-    "slug": "house",
+    "slug": "memorialparkway",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
@@ -4327,7 +4327,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Kaysville27.jpg",
     "title": "Slow Zone",
-    "slug": "house",
+    "slug": "slowzone",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
@@ -4341,7 +4341,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Kaysville28.jpg",
     "title": "Andy",
-    "slug": "house",
+    "slug": "andy",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
@@ -4355,7 +4355,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Kaysville29.jpg",
     "title": "Giova",
-    "slug": "house",
+    "slug": "giova",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
@@ -4369,7 +4369,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Kaysville30.jpg",
     "title": "Veterinary Hospital",
-    "slug": "house",
+    "slug": "veterinaryhospital",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
@@ -4383,7 +4383,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Kaysville31.jpg",
     "title": "Pet Grooming",
-    "slug": "house",
+    "slug": "petgrooming",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
@@ -4397,7 +4397,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Kaysville32.jpg",
     "title": "Garage",
-    "slug": "house",
+    "slug": "garage",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
@@ -4411,7 +4411,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Kaysville33.jpg",
     "title": "Old Home",
-    "slug": "house",
+    "slug": "oldhome",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
@@ -4425,7 +4425,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Kaysville34.jpg",
     "title": "Old Porch",
-    "slug": "house",
+    "slug": "oldporch",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
@@ -4438,8 +4438,8 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Kaysville35.jpg",
-    "title": "House",
-    "slug": "house",
+    "title": "Roofing",
+    "slug": "roofing",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
@@ -4452,8 +4452,8 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Kaysville36.jpg",
-    "title": "House",
-    "slug": "house",
+    "title": "Enter",
+    "slug": "enter",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
@@ -4467,7 +4467,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Kaysville37.jpg",
     "title": "Tabernacle",
-    "slug": "house",
+    "slug": "tabernacle1",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
@@ -4481,7 +4481,7 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Kaysville38.jpg",
     "title": "Scarecrow",
-    "slug": "house",
+    "slug": "scarecrow",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
