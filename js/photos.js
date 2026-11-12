@@ -4103,8 +4103,8 @@ const PORTFOLIO_PHOTOS = [
   {
     "file": "Kaysville11.jpg",
     "title": "Stone Bench",
-    "slug": "house",
-    "album": "stonebench",
+    "slug": "stonebench",
+    "album": "Kaysville",
     "collection": "City",
     "year": "",
     "location": "",
