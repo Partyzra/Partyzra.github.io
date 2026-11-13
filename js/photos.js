@@ -4061,7 +4061,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Kaysville10.jpg",
-    "variations": ["Kaysville9.jpg"],
+    "variants": ["Kaysville9.jpg"],
     "title": "Little Free Library",
     "slug": "littlelibrary1",
     "album": "Kaysville",
@@ -4076,7 +4076,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Kaysville11.jpg",
-    "variations": ["Kaysville11.2.jpg"],
+    "variants": ["Kaysville11.2.jpg"],
     "title": "Stone Bench",
     "slug": "stonebench",
     "album": "Kaysville",
@@ -4133,7 +4133,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Kaysville15.jpg",
-    "variations": ["Kaysville15.1.jpg"],
+    "variants": ["Kaysville15.1.jpg"],
     "title": "Sugar Moose",
     "slug": "sugarmoose",
     "album": "Kaysville",
