@@ -2890,19 +2890,6 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "New York10.jpg",
-    "title": "Night City",
-    "album": "New York",
-    "collection": "City",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "city"
-    ],
-    "note": ""
-  },
-  {
     "file": "New York11.jpg",
     "variants": ["Ghost Leg.jpg"],
     "title": "Headlights",
