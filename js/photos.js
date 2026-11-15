@@ -2837,20 +2837,8 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "New York6.jpg",
-    "title": "Manhattan",
-    "album": "New York",
-    "collection": "City",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "city"
-    ],
-    "note": ""
-  },
-  {
     "file": "New York7.jpg",
+    "variants": ["New York6.jpg"],
     "title": "Downtown",
     "album": "New York",
     "collection": "City",
@@ -3950,6 +3938,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Kaysville1.jpg",
+    "variants": ["Kaysville 37.jpg"],
     "title": "Tabernacle",
     "slug": "tabernacle",
     "album": "Kaysville",
@@ -4348,20 +4337,6 @@ const PORTFOLIO_PHOTOS = [
     "file": "Kaysville36.jpg",
     "title": "Enter",
     "slug": "enter",
-    "album": "Kaysville",
-    "collection": "City",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "city"
-    ],
-    "note": ""
-  },
-  {
-    "file": "Kaysville37.jpg",
-    "title": "Tabernacle",
-    "slug": "tabernacle1",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
