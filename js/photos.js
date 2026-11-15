@@ -3981,7 +3981,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Kaysville4.jpg",
-    "title": "Creamery",
+    "title": "Old Structure",
     "slug": "creamery",
     "album": "Kaysville",
     "collection": "City",
@@ -4022,8 +4022,8 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Kaysville10.jpg",
-    "variants": ["Kaysville9.jpg"],
+    "file": "Kaysville9.jpg",
+    "variants": ["Kaysville10.jpg"],
     "title": "Little Free Library",
     "slug": "littlelibrary1",
     "album": "Kaysville",
