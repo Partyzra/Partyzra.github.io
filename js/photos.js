@@ -4018,20 +4018,6 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Kaysville5.jpg",
-    "title": "Senior Center",
-    "slug": "seniorcenter",
-    "album": "Kaysville",
-    "collection": "City",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "city"
-    ],
-    "note": ""
-  },
-  {
     "file": "Kaysville7.jpg",
     "title": "Path",
     "slug": "path1",
@@ -4118,22 +4104,8 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Kaysville14.jpg",
-    "title": "Johnson's Carpet",
-    "slug": "carpet",
-    "album": "Kaysville",
-    "collection": "City",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "city"
-    ],
-    "note": ""
-  },
-  {
-    "file": "Kaysville15.jpg",
-    "variants": ["Kaysville15.1.jpg"],
+    "file": "Kaysville15.1.jpg",
+    "variants": ["Kaysville15.jpg"],
     "title": "Sugar Moose",
     "slug": "sugarmoose",
     "album": "Kaysville",
@@ -4161,35 +4133,8 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Kaysville17.jpg",
-    "title": "City Center",
-    "slug": "citycenter",
-    "album": "Kaysville",
-    "collection": "City",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "city"
-    ],
-    "note": ""
-  },
-  {
-    "file": "Kaysville18.jpg",
-    "title": "Bus Stop",
-    "slug": "busstop",
-    "album": "Kaysville",
-    "collection": "City",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "city"
-    ],
-    "note": ""
-  },
-  {
     "file": "Kaysville19.jpg",
+    "variants": ["Kaysville18.jpg"],
     "title": "Bus Stop",
     "slug": "busstop1",
     "album": "Kaysville",
@@ -4218,8 +4163,8 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Kaysville21.jpg",
-    "title": "Mountain View",
-    "slug": "mountainview",
+    "title": "E-Bike",
+    "slug": "ebike",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
@@ -4234,20 +4179,6 @@ const PORTFOLIO_PHOTOS = [
     "file": "Kaysville22.jpg",
     "title": "Fire Department",
     "slug": "firedepartment",
-    "album": "Kaysville",
-    "collection": "City",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "city"
-    ],
-    "note": ""
-  },
-  {
-    "file": "Kaysville23.jpg",
-    "title": "Fire Department",
-    "slug": "firedepartment1",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
@@ -4486,20 +4417,6 @@ const PORTFOLIO_PHOTOS = [
     "file": "Kaysville40.jpg",
     "title": "Slug",
     "slug": "slug",
-    "album": "Kaysville",
-    "collection": "City",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "city"
-    ],
-    "note": ""
-  },
-  {
-    "file": "Kaysville41.jpg",
-    "title": "Botanical Garden",
-    "slug": "botanicalgarden1",
     "album": "Kaysville",
     "collection": "City",
     "year": "",

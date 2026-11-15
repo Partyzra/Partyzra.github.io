@@ -305,6 +305,8 @@
 
      if (stem === 'new york46') return '0% 50%';      // to the left
 
+     if (stem === 'buffalo10') return '0% 50%';      // to the left
+
 
 
   };
