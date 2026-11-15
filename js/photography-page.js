@@ -299,6 +299,7 @@
      if (stem === 'new york82') return '50% 29%';   // top
 
      if (stem === 'new york86') return '50% 26%';   // top
+
      if (stem === 'new york5') return '50% 46%';   // centre top
 
      if (stem === 'new york50') return '0% 17%';      // top-ish
@@ -307,6 +308,7 @@
 
      if (stem === 'buffalo10') return '0% 50%';      // to the left
 
+     if (stem === 'kaysville9') return '50% 30%';      // to the top
 
 
   };
