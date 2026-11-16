@@ -4123,20 +4123,6 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
-    {
-    "file": "Kaysville21.jpg",
-    "title": "E-Bike",
-    "slug": "madeleineamour",
-    "album": "Kaysville",
-    "collection": "City",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "city"
-    ],
-    "note": ""
-  },
   {
     "file": "Kaysville22.jpg",
     "title": "Fire Department",
