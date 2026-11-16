@@ -4363,22 +4363,9 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Kaysville39.jpg",
+    "variants": ["Kaysville40.jpg"],
     "title": "Botanical Garden",
     "slug": "botanicalgarden",
-    "album": "Kaysville",
-    "collection": "City",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "city"
-    ],
-    "note": ""
-  },
-  {
-    "file": "Kaysville40.jpg",
-    "title": "Slug",
-    "slug": "slug",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
