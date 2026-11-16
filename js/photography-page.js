@@ -306,7 +306,7 @@
 
      if (stem === 'new york46') return '0% 50%';      // to the left
 
-     if (stem === 'buffalo10') return '0% 50%';      // to the left
+     if (stem === 'buffalo10') return '20% 50%';      // to the left
 
      if (stem === 'kaysville9') return '50% 30%';      // to the top
 
