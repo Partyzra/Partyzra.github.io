@@ -4024,7 +4024,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Kaysville11.1.jpg",
-    "variants": ["Kaysville11.2.jpg"],
+    "variants": ["Kaysville11.2.jpg", "Kaysville11.3.jpg"],
     "title": "Stone Bench",
     "slug": "stonebench",
     "album": "Kaysville",
