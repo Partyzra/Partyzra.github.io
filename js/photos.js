@@ -4037,7 +4037,7 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Kaysville11.jpg",
+    "file": "Kaysville11.1.jpg",
     "variants": ["Kaysville11.2.jpg"],
     "title": "Stone Bench",
     "slug": "stonebench",
@@ -4248,21 +4248,7 @@ const PORTFOLIO_PHOTOS = [
       "city"
     ],
     "note": ""
-  },
-  {
-    "file": "Kaysville30.jpg",
-    "title": "Veterinary Hospital",
-    "slug": "veterinaryhospital",
-    "album": "Kaysville",
-    "collection": "City",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "city"
-    ],
-    "note": ""
-  },
+  },  
   {
     "file": "Kaysville31.jpg",
     "title": "Pet Grooming",
