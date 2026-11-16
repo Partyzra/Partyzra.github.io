@@ -3248,7 +3248,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York41.jpg",
-    "title": "9/11 Memorial",
+    "title": "The Chocolate Room",
     "album": "New York",
     "collection": "City",
     "year": "",
