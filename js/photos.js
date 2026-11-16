@@ -3994,20 +3994,6 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Kaysville7.jpg",
-    "title": "Path",
-    "slug": "path1",
-    "album": "Kaysville",
-    "collection": "City",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "city"
-    ],
-    "note": ""
-  },
-  {
     "file": "Kaysville8.jpg",
     "title": "Thanksgiving Decoration",
     "slug": "house2",
@@ -4052,7 +4038,7 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
   {
-    "file": "Kaysville12.jpg",
+    "file": "Kaysville12.4.jpg",
     "title": "Playground",
     "slug": "playground",
     "album": "Kaysville",
