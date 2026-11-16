@@ -4123,10 +4123,10 @@ const PORTFOLIO_PHOTOS = [
     ],
     "note": ""
   },
-  {
+    {
     "file": "Kaysville21.jpg",
     "title": "E-Bike",
-    "slug": "ebike",
+    "slug": "madeleineamour",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
