@@ -4251,6 +4251,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "Kaysville33.jpg",
+    "variants": ["Kaysville33.1.jpg"],
     "title": "Old Home",
     "slug": "oldhome",
     "album": "Kaysville",
