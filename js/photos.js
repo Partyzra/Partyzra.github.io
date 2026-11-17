@@ -2972,7 +2972,7 @@ const PORTFOLIO_PHOTOS = [
   },
   {
     "file": "New York19.jpg",
-    "title": "Gummy Bear",
+    "title": "Subway",
     "album": "New York",
     "collection": "City",
     "year": "",
