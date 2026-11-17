@@ -580,15 +580,15 @@
     return b.__manifestIndex - a.__manifestIndex;
   });
 
-  // Open the Photography archive on All by default. A reserved #latest
-  // deep link opens the virtual Latest album; ordinary #photo-slug hashes
-  // still start on All so the direct-photo viewer can find every photograph.
+  // Open the Photography archive on Latest by default. The reserved #latest
+  // deep link does the same. Ordinary #photo-slug hashes still start on All
+  // so existing direct-photo/share links keep their familiar viewer context.
   const initialHashKey = (() => {
     const raw = window.location.hash.replace(/^#/, '');
     if (!raw) return '';
     try { return slugify(decodeURIComponent(raw)); } catch (_) { return slugify(raw); }
   })();
-  let activeAlbum = initialHashKey === 'latest' ? 'Latest' : 'All';
+  let activeAlbum = initialHashKey && initialHashKey !== 'latest' ? 'All' : 'Latest';
 
   // Keep the existing curated album order, then automatically append any
   // custom album names declared directly in photos.js. This means a new entry
@@ -639,7 +639,7 @@
   function renderAlbumNav() {
     if (!albumNav) return;
 
-    const names = ['All', 'Latest', ...albumNames];
+    const names = ['Latest', 'All', ...albumNames];
     const fragment = document.createDocumentFragment();
 
     names.forEach(name => {
@@ -2043,7 +2043,7 @@
     if (!slug) return false;
 
     // Always search the All archive so a direct link works regardless of which
-    // album the photograph belongs to. The default page load is already All.
+    // album the photograph belongs to. Direct photo hashes intentionally use All.
     buttons = qsa('.photo-grid-button', grid);
     const target = buttons.find(button => button.dataset.slug === slug);
     if (!target) return false;

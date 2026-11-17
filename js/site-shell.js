@@ -76,7 +76,12 @@
     const path = window.location.pathname.toLowerCase();
     if (path.endsWith('/photography.html') || path.endsWith('photography.html')) return 'photography';
     if (path.endsWith('/music.html') || path.endsWith('music.html')) return 'music';
-    return 'home';
+
+    // The bare site/root URL is now Photography. Preserve the old landing
+    // page only for its explicit Film / About / Contact section deep links.
+    const hash = String(window.location.hash || '').toLowerCase();
+    if (hash === '#film' || hash === '#about' || hash === '#contact') return 'home';
+    return 'photography';
   };
 
   let currentRoute = routeFromLocation();
@@ -318,9 +323,10 @@
     setFrameVisible(contentFrame, false);
     // music-persistence.js will register itself when ready.
   } else {
-    ensureContentFrame(currentRoute);
-    setFrameVisible(contentFrame, true);
-    setFrameVisible(musicFrame, false);
+    // Run the normal route loader on first paint as well. This lets index.html
+    // show Photography by default, while index.html#film/#about/#contact still
+    // swaps in the preserved Home content when explicitly requested.
+    loadRoute(currentRoute, window.location.hash, { push: false });
   }
 
   syncCompactPlayer();
