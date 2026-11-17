@@ -3,14 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Photography portfolio by Ryan.">
+  <meta name="description" content="Ryan's portfolio of photography, original music, and film work.">
   <meta name="theme-color" content="#0a0b0d">
-  <title>Photography — Ryan</title>
+  <title>Ryan — Photography, Music & Film</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/site-shell.css?v=2.9.1">
+  <script>
+    // The public root now opens the Photography page directly.
+    location.replace('photography.html' + location.search + location.hash);
+  </script>
   <!-- Set browser privacy before the embedded content page starts. -->
   <script>
     (function () {
@@ -23,7 +27,7 @@
   </script>
 </head>
 <body class="site-shell-page">
-  <iframe class="site-shell-frame" data-site-shell-frame src="photography-content.html" title="Photography portfolio"></iframe>
+  <iframe class="site-shell-frame" data-site-shell-frame src="home.html" title="Ryan portfolio"></iframe>
 
   <audio class="site-soundtrack-audio" data-site-soundtrack preload="metadata"></audio>
   <div class="site-soundtrack-player" aria-label="Original music controls" aria-hidden="true">
@@ -42,6 +46,6 @@
     </button>
   </div>
 
-  <script src="js/site-shell.js?v=2.9.2"></script>
+  <script src="js/site-shell.js?v=2.9.1"></script>
 </body>
 </html>
