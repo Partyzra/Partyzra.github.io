@@ -2416,20 +2416,6 @@ const PORTFOLIO_PHOTOS = [
     "note": ""
   },
 {
-    "file": "1142.jpg",
-    "variants": ["Sherma.jpg"],
-    "title": "1142",
-    "album": "Layton",
-    "collection": "City",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "nature"
-    ],
-    "note": ""
-  },
-{
     "file": "Veteran Monument1.jpg",
     "variants": ["Veteran Monument.jpg"],
     "title": "Veteran Monument",
@@ -3983,20 +3969,6 @@ const PORTFOLIO_PHOTOS = [
     "file": "Kaysville4.jpg",
     "title": "Old Structure",
     "slug": "creamery",
-    "album": "Kaysville",
-    "collection": "City",
-    "year": "",
-    "location": "",
-    "featured": false,
-    "tags": [
-      "city"
-    ],
-    "note": ""
-  },
-  {
-    "file": "Kaysville8.jpg",
-    "title": "Thanksgiving Decoration",
-    "slug": "house2",
     "album": "Kaysville",
     "collection": "City",
     "year": "",
